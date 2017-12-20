@@ -275,6 +275,27 @@ case 'preview':
 	wp_redirect($url);
 	exit();
 
+/* LOCAL CODE */
+/* If the query is 'draft', revert a published post to draft status. */
+case 'draft':
+        /* check_admin_referer('update-post_' . $post_id); */
+
+        if ( ! $post )
+                wp_die( __( 'This item has already been deleted.' ) );
+
+        if ( ! $post_type_object )
+                wp_die( __( 'Invalid post type.' ) );
+
+        if ( ! ($post->post_status == 'publish') )
+                wp_die( __( 'This post is not published; cannot revert to draft.' ) );
+
+	$np = array('ID' => $post_id, 'post_status' => 'draft');
+	wp_update_post($np);
+
+        wp_redirect( add_query_arg('reverted', 1, $sendback) );
+        exit();
+/* END LOCAL CODE */
+
 default:
 	/**
 	 * Fires for a given custom post action request.

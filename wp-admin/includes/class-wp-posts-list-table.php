@@ -1295,6 +1295,25 @@ class WP_Posts_List_Table extends WP_List_Table {
 					__( 'View' )
 				);
 			}
+
+			/* LOCAL CODE */
+			/* If the post is published, allow it to be reverted to Draft status.  Only
+			   a user with the capability to publish a post can revert it to a draft. */
+		        if (('post' === $post->post_type) && ($post->post_status === 'publish') && current_user_can( 'publish_post', $post->ID ) &&
+			    (current_user_can( 'edit_others_posts' ) || ($post->post_author == get_current_user_id()))) {
+        			$post_type_object = get_post_type_object( $post->post_type );
+        			if ( !$post_type_object )
+                			return;
+        			$draft_query = add_query_arg( 'action', 'draft', admin_url( sprintf( $post_type_object->_edit_link, $post->ID ) ) );
+                        	$actions['draft'] = sprintf(
+                                	'<a href="%s" aria-label="%s">%s</a>',
+                                	$draft_query,
+                                	/* translators: %s: post title */
+                                	esc_attr( sprintf( __( 'Draft &#8220;%s&#8221;' ), $title ) ),
+                                	__( 'Revert&nbsp;to&nbsp;Draft' )
+                        	);
+			}
+			/* END LOCAL CODE */
 		}
 
 		if ( is_post_type_hierarchical( $post->post_type ) ) {

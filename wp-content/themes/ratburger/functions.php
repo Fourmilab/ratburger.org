@@ -1,6 +1,6 @@
 <?php
 /**
- * Twenty Sixteen functions and definitions
+ * Ratburger functions and definitions
  *
  * Set up the theme and provides some helper functions, which are used in the
  * theme as custom template tags. Others are attached to action and filter
@@ -121,8 +121,9 @@ function twentysixteen_setup() {
 	/*
 	 * This theme styles the visual editor to resemble the theme style,
 	 * specifically font, colors, icons, and column width.
-	 */
-	add_editor_style( array( 'css/editor-style.css', twentysixteen_fonts_url() ) );
+	 */ 
+	/* We don't use no steenkin' Google fonts. */
+	/* add_editor_style( array( 'css/editor-style.css', twentysixteen_fonts_url() ) ); */
 
 	// Indicate widget sidebars can use selective refresh in the Customizer.
 	add_theme_support( 'customize-selective-refresh-widgets' );
@@ -244,7 +245,8 @@ add_action( 'wp_head', 'twentysixteen_javascript_detection', 0 );
  */
 function twentysixteen_scripts() {
 	// Add custom fonts, used in the main stylesheet.
-	wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );
+	// We don't use no steenkin' Google fonts
+	// wp_enqueue_style( 'twentysixteen-fonts', twentysixteen_fonts_url(), array(), null );
 
 	// Add Genericons, used in the main stylesheet.
 	wp_enqueue_style( 'genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1' );
@@ -432,3 +434,54 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 	return $args;
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
+
+/**
+ * Custom KSES filter for the Forums component.
+ *
+ * @since 1.2.0
+ *
+ * @param string $content Content to sanitize.
+ * @return string Sanitized string.
+ */
+function ratburger_forums_filter_kses( $content ) {
+        global $allowedtags;
+
+        $forums_allowedtags = $allowedtags;
+        $forums_allowedtags['span'] = array();
+        $forums_allowedtags['span']['class'] = array();
+        $forums_allowedtags['div'] = array();
+        $forums_allowedtags['div']['class'] = array();
+        $forums_allowedtags['div']['id'] = array();
+        $forums_allowedtags['a']['class'] = array();
+        $forums_allowedtags['img'] = array();
+        $forums_allowedtags['br'] = array();
+        $forums_allowedtags['p'] = array();
+        $forums_allowedtags['img']['src'] = array();
+        $forums_allowedtags['img']['alt'] = array();
+        $forums_allowedtags['img']['class'] = array();
+        $forums_allowedtags['img']['width'] = array();
+        $forums_allowedtags['img']['height'] = array();
+        $forums_allowedtags['img']['class'] = array();
+        $forums_allowedtags['img']['id'] = array();
+        $forums_allowedtags['code'] = array();
+        $forums_allowedtags['blockquote'] = array();
+
+	/* Ratburger additional allowed tags */
+	$forums_allowedtags['pre'] = array();
+	$forums_allowedtags['pre']['style'] = array();
+	$forums_allowedtags['span']['style'] = array();
+	$forums_allowedtags['div']['style'] = array();
+
+        /**
+         * Filters the allowed HTML tags for forum posts.
+         *
+         * @since 1.2.0
+         *
+         * @param array $forums_allowedtags Array of allowed HTML tags.
+         */
+        $forums_allowedtags = apply_filters( 'bp_forums_allowed_tags', $forums_allowedtags );
+        return wp_kses( $content, $forums_allowedtags );
+}
+
+remove_filter('bp_get_the_topic_post_content', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_the_topic_post_content', 'ratburger_forums_filter_kses', 1);
