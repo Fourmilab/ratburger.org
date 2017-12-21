@@ -7,7 +7,7 @@ submit them via a pull request for incorporation into the Ratburger
 site and this repository.
 
 The design goals for Ratburger are speed, reliability, minimalism,
-and ease of use.  Consequently, the site deliberately eachews features
+and ease of use.  Consequently, the site deliberately eschews features
 which require contacting dozens of other Web resources and downloading
 hundreds of files to display a simple page.  These gimmicks may be
 superficially attractive, but they result in frustratingly slow

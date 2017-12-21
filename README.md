@@ -29,7 +29,7 @@ document home of a HTTP/HTTPS Web server.  The MySQL database used by
 WordPress and BuddyPress is not included in the repository; you'll have to
 create your own, adding users and passwords for administrators.  Also,
 since Git does not preserve file permissions, there are several directories
-into which the server needs to write for such fuctions as image uploads
+into which the server needs to write for such functions as image uploads
 on which you'll have to manually set the appropriate ownership and
 permissions.  See a WordPress installation reference for details of these
 matters.
