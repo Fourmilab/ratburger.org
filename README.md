@@ -49,7 +49,7 @@ at an affordable price with a catchy name.  We further thought about bundling
 the editor with a number of other in-house tools, such as a **diff**
 utility that ran on MS-DOS, as _RatPack_.  Nothing ever came of this.
 
-In 2004, remembering this, I registered the domain name **ratbuger.org**, which
+In 2004, remembering this, I registered the domain name **ratburger.org**, which
 I subsequently used as my own equivalent of **example.com** in software and
 documentation, but the domain was otherwise unused.  While setting up the
 prototype of the new discussion site in December 2017, I used the
@@ -67,7 +67,7 @@ the name and a decade after I registered the domain **ratburger.org**.
 
 The main purpose of this repository is to implement the principle of
 [radical transparency](http://www.ratburger.org/index.php/2017/12/18/radical-transparency/)
-which I adopted for the site's implementation, to served as a worked
+which I adopted for the site's implementation, to serve as a worked
 example and "code mine" for those wishing to set up similar discussion
 sites, and a means for code-savvy members of the Rarburger community to
 chip in and help improve the site's user experience.
