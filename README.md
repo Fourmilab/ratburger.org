@@ -69,7 +69,7 @@ The main purpose of this repository is to implement the principle of
 [radical transparency](http://www.ratburger.org/index.php/2017/12/18/radical-transparency/)
 which I adopted for the site's implementation, to serve as a worked
 example and "code mine" for those wishing to set up similar discussion
-sites, and a means for code-savvy members of the Rarburger community to
+sites, and a means for code-savvy members of the Ratburger community to
 chip in and help improve the site's user experience.
 
 **[Visit Ratburger.org](https://www.ratburger.org/)**
