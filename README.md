@@ -72,5 +72,5 @@ example and "code mine" for those wishing to set up similar discussion
 sites, and a means for code-savvy members of the Rarburger community to
 chip in and help improve the site's user experience.
 
-**[Visit Ratburger.org](https://www.ratburger.org/)
+**[Visit Ratburger.org](https://www.ratburger.org/)**
 
