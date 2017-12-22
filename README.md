@@ -60,7 +60,7 @@ itself to numerous humorous spin-offs.  So, when the time went to go
 live, Ratburger it was.
 
 The name, and the site, has nothing whatsoever to do with the eponymous
-children's book, which was published thirty years after the we coined
+children's book, which was published thirty years after we coined
 the name and a decade after I registered the domain **ratburger.org**.
 
 ## About the Repository
