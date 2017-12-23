@@ -483,3 +483,38 @@ function ratburger_forums_filter_kses( $content ) {
 
 remove_filter('bp_get_the_topic_post_content', 'bp_forms_filter_kses', 1);
 add_filter('bp_get_the_topic_post_content', 'ratburger_forums_filter_kses', 1);
+
+/*
+
+    Allow additional tags in WordPress KSES filtering
+
+*/
+
+function ratburger_add_allowed_tags() {
+	global $allowedtags;
+
+	$allowedtags['pre'] = array('style'=>array());
+}
+
+add_action('init', 'ratburger_add_allowed_tags', 10);
+
+function ratburger_filter_tiny_mce_before_init( $options ) {
+ 
+    if ( ! isset( $options['extended_valid_elements'] ) ) {
+        $options['extended_valid_elements'] = '';
+    } else {
+        $options['extended_valid_elements'] .= ',';
+    }
+ 
+    if ( ! isset( $options['custom_elements'] ) ) {
+        $options['custom_elements'] = '';
+    } else {
+        $options['custom_elements'] .= ',';
+    }
+ 
+    $options['extended_valid_elements'] .= 'pre[class|id|style]';
+    $options['custom_elements']         .= 'pre[class|id|style]';
+    return $options;
+}
+
+add_filter('tiny_mce_before_init', 'ratburger_filter_tiny_mce_before_init');
