@@ -141,8 +141,17 @@ class TMCECF_CommentController {
             $width = false;
             $height = false;
 
+	    /** RATBURGER LOCAL CODE **/
+	    /* We allow images in comments to be as large as 600 pixels in
+	       maximum dimension.  This should, of course, be a setting in
+	       the plug-in; this is just a hack to make it meet our needs. */
+	    /*
             $max_width = 200;
             $max_height = 300;
+	    */
+	    $max_width = 600;
+            $max_height = 600;
+	    /** END RATBURGER LOCAL CODE **/
             $src = false;
             $alt = '';
             foreach ($attributes[0] as $attribute_string) {
