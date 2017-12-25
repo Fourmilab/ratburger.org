@@ -1,0 +1,233 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugins Garbage Collector\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-30 08:57+0700\n"
+"PO-Revision-Date: \n"
+"Last-Translator: パソコン生活サポートPasonal <pc-school@pasonal.com>\n"
+"Language-Team: ShinePHP.com <vladimir@shinephp.com>\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.6\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../plugins-garbage-collector.php:39
+msgid "Plugins Garbage Collector"
+msgstr ""
+
+#: ../plugins-garbage-collector.php:41
+msgid "requires WordPress 4.0 or newer."
+msgstr "最新バーションか、WordPress 4.0以上が必要です。"
+
+#: ../plugins-garbage-collector.php:42
+msgid "Please update!"
+msgstr "アップデートしてください！"
+
+#: ../includes/class-plugins-garbage-collector.php:64
+msgid "Scan"
+msgstr "スキャン"
+
+#: ../includes/class-plugins-garbage-collector.php:77
+msgid "Changelog"
+msgstr "更新履歴"
+
+#: ../includes/class-plugins-garbage-collector.php:133
+msgid "Turn on at least one Search checkbox before start Scan process!"
+msgstr ""
+"前回のスキャンを開始するためには、少なくとも1以上のチェックボックスを選択し"
+"てください！"
+
+#: ../includes/class-plugins-garbage-collector.php:134
+msgid "Receive plugins list"
+msgstr "プラグインのリスト"
+
+#: ../includes/class-plugins-garbage-collector.php:135
+msgid "Scanning"
+msgstr "スキャニングの"
+
+#: ../includes/class-plugins-garbage-collector.php:136
+msgid "Checking plugin"
+msgstr "プラグインのチェック"
+
+#: ../includes/class-plugins-garbage-collector.php:137
+msgid "will take some time. Please confirm to continue"
+msgstr "処理には時間がかかります。"
+
+#: ../includes/class-plugins-garbage-collector.php:138
+msgid "Select at least one table before click on Delete button"
+msgstr ""
+"削除ボタンをクリックする前に、少なくとも１つのテーブルを選択してください。"
+
+#: ../includes/class-plugins-garbage-collector.php:139
+msgid ""
+"Delete database tables last confirmation: Click \"Cancel\" if you have any "
+"doubt."
+msgstr ""
+"削除するテーブルの最終確認：やめたい場合は、\"キャンセル\"をクリックしてくだ"
+"さい。"
+
+#: ../includes/lib.php:108
+msgid "active"
+msgstr "アクティブ"
+
+#: ../includes/lib.php:110
+msgid "inactive"
+msgstr "非アクティブ"
+
+#: ../includes/lib.php:113
+msgid "deleted?"
+msgstr "削除されましたか？"
+
+#: ../includes/lib.php:161
+msgid " checked"
+msgstr "確認済み"
+
+#: ../includes/lib.php:191
+msgid "Tables are deleted: "
+msgstr "削除されたテーブル:"
+
+#: ../includes/lib.php:198
+msgid "Tables are deleted successfully: "
+msgstr "テーブルは正常に削除されました:"
+
+#: ../includes/lib.php:227 ../includes/lib.php:357
+msgid "Hide"
+msgstr "隠す"
+
+#: ../includes/lib.php:228 ../includes/lib.php:358
+msgid "Table Name"
+msgstr "テーブル名"
+
+#: ../includes/lib.php:229
+msgid "Records #"
+msgstr "レコード #"
+
+#: ../includes/lib.php:230
+msgid "KBytes #"
+msgstr "キロバイト #"
+
+#: ../includes/lib.php:231 ../includes/lib.php:360
+msgid "Plugin Name"
+msgstr "プラグイン名"
+
+#: ../includes/lib.php:232 ../includes/lib.php:361
+msgid "Plugin State"
+msgstr "プラグインの状態"
+
+#: ../includes/lib.php:241
+msgid ""
+"Let's see what tables in your database do not belong to the core WordPress "
+"installation:"
+msgstr ""
+"コアのWordPress にインストールされていない、データベース内のテーブルを見てみ"
+"ましょう："
+
+#: ../includes/lib.php:321 ../includes/lib.php:522
+msgid ""
+"Some tables are hidden by you. Turn on \"Show hidden DB tables\" option and "
+"click \"Scan\" button again to show them."
+msgstr ""
+"いくつかのテーブルは非表示になっています。「非表示のテーブルを表示する」に"
+"チェックし、再度「スキャン」ボタンを押してください。"
+
+#: ../includes/lib.php:329
+msgid "Delete Tables"
+msgstr "テーブルを削除"
+
+#: ../includes/lib.php:333 ../includes/lib.php:534
+msgid "Attention!"
+msgstr "注意！"
+
+#: ../includes/lib.php:334
+msgid ""
+"Operation rollback is not possible. Consider to make database backup first. "
+"Please double think before click \"Delete Tables\" button."
+msgstr ""
+"ロールバック（取り消し）は出来ません。削除する前にデータベースを必ずバック"
+"アップしておいてください。\"テーブルを削除\"ボタンをクリックする前によくお考"
+"えください。"
+
+#: ../includes/lib.php:343
+msgid "Congratulations! It seems that your WordPress database is clean."
+msgstr "おめでとう！WordPress データベースがクリーンになりました。"
+
+#: ../includes/lib.php:359
+msgid "Extra Field"
+msgstr "追加フィールド"
+
+#: ../includes/lib.php:530
+msgid "Delete Extra Columns"
+msgstr "不要な（追加された）列を削除する"
+
+#: ../includes/lib.php:535
+msgid ""
+"Operation rollback is not possible. Consider to make database backup first. "
+"Please double think before click <code>Delete Extra Columns</code> button."
+msgstr ""
+"操作のロールバック（取り消し）は出来ません。なので、データベースを必ずバック"
+"アップしておいてください。<code>不要な列を削除</code>ボタンをクリックする前"
+"によくお考えください。"
+
+#: ../includes/lib.php:544
+msgid ""
+"Congratulations! It seems that your WordPress database tables structure is "
+"not changed"
+msgstr "おめでとう！WordPressのデータベースは変更されていないようです。"
+
+#: ../includes/lib.php:558
+msgid ""
+"This feature is still under development and will be realized in the future "
+"version"
+msgstr ""
+"現在、この機能は調整中です、将来のバージョンで実装される可能性があります。"
+
+#: ../includes/lib.php:625
+msgid "Table was hidden"
+msgstr "隠しテーブル"
+
+#: ../includes/lib.php:645
+msgid "Table was shown"
+msgstr "通常のテーブル"
+
+#: ../includes/options.php:29
+msgid "Search DB for tables created by plugins"
+msgstr "プラグインにより作成れたテーブルを検索"
+
+#: ../includes/options.php:30
+msgid "Search none-WP tables"
+msgstr "WP テーブル - なし を検索"
+
+#: ../includes/options.php:33
+msgid ""
+"Search DB for changes which plugins made to the original WP tables structure"
+msgstr "プラグインにより、元のWPテーブルに加えられた変更を検索"
+
+#: ../includes/options.php:34
+msgid "Search WP tables structure changes (beta - experimental)"
+msgstr "WP テーブルの変更 を検索(ベータ-実験)"
+
+#: ../includes/options.php:37
+msgid "Include tables which are hidden by your request to the search results"
+msgstr "検索結果に隠されたテーブルを含めます。"
+
+#: ../includes/options.php:38
+msgid "Show hidden tables"
+msgstr "隠しテーブルを表示する"
+
+#: ../includes/options.php:41
+msgid "Scan Database"
+msgstr "データベースのスキャン"
+
+#: ../includes/options.php:41
+msgid ""
+"Click this button to gather information how plugins use your WordPress "
+"database"
+msgstr ""
+"WordPress のデータベースで使用しているプラグインの情報を収集するためには、こ"
+"のボタンをクリックしてください。"

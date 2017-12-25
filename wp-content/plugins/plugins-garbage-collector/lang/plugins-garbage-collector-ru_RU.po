@@ -1,0 +1,319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugins Garbage Collector\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-30 08:57+0700\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Vladimir Garagulya <support@role-editor.com>\n"
+"Language-Team: ShinePHP.com <vladimir@shinephp.com>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../plugins-garbage-collector.php:39
+msgid "Plugins Garbage Collector"
+msgstr "Plugins Garbage Collector"
+
+#: ../plugins-garbage-collector.php:41
+msgid "requires WordPress 4.0 or newer."
+msgstr " требует WordPress 4.0 или новее"
+
+#: ../plugins-garbage-collector.php:42
+msgid "Please update!"
+msgstr "Пожалуйста обновите!"
+
+#: ../includes/class-plugins-garbage-collector.php:64
+msgid "Scan"
+msgstr "Сканирование"
+
+#: ../includes/class-plugins-garbage-collector.php:77
+msgid "Changelog"
+msgstr "История изменений"
+
+#: ../includes/class-plugins-garbage-collector.php:133
+msgid "Turn on at least one Search checkbox before start Scan process!"
+msgstr ""
+"Включите по крайней мере один чек-бокс перед началом процесса сканироваия!"
+
+#: ../includes/class-plugins-garbage-collector.php:134
+msgid "Receive plugins list"
+msgstr "Получаю список плагинов"
+
+#: ../includes/class-plugins-garbage-collector.php:135
+msgid "Scanning"
+msgstr "Сканирование"
+
+#: ../includes/class-plugins-garbage-collector.php:136
+msgid "Checking plugin"
+msgstr "Проверяется плагин"
+
+#: ../includes/class-plugins-garbage-collector.php:137
+msgid "will take some time. Please confirm to continue"
+msgstr "займет некоторое время. Подтверждите, пожалуйста, чтобы продолжить"
+
+#: ../includes/class-plugins-garbage-collector.php:138
+msgid "Select at least one table before click on Delete button"
+msgstr "Выберите по крайней мере одну таблицу перед щелчком по клавише Delete"
+
+#: ../includes/class-plugins-garbage-collector.php:139
+msgid ""
+"Delete database tables last confirmation: Click \"Cancel\" if you have any "
+"doubt."
+msgstr ""
+"Последней подтверждение перед операций удаления таблиц из базы данных: "
+"Щелкните \"Отмена\", если не уверены."
+
+#: ../includes/lib.php:108
+msgid "active"
+msgstr "активен"
+
+#: ../includes/lib.php:110
+msgid "inactive"
+msgstr "не активен"
+
+#: ../includes/lib.php:113
+msgid "deleted?"
+msgstr "удален?"
+
+#: ../includes/lib.php:161
+msgid " checked"
+msgstr "проверено"
+
+#: ../includes/lib.php:191
+msgid "Tables are deleted: "
+msgstr "Таблицы удалены:"
+
+#: ../includes/lib.php:198
+msgid "Tables are deleted successfully: "
+msgstr "Таблицы успешно удалены:"
+
+#: ../includes/lib.php:227 ../includes/lib.php:357
+msgid "Hide"
+msgstr "Скрыть"
+
+#: ../includes/lib.php:228 ../includes/lib.php:358
+msgid "Table Name"
+msgstr "Название таблицы"
+
+#: ../includes/lib.php:229
+msgid "Records #"
+msgstr "Записей #"
+
+#: ../includes/lib.php:230
+msgid "KBytes #"
+msgstr "Килобайт #"
+
+#: ../includes/lib.php:231 ../includes/lib.php:360
+msgid "Plugin Name"
+msgstr "Название плагина"
+
+#: ../includes/lib.php:232 ../includes/lib.php:361
+msgid "Plugin State"
+msgstr "Состояние плагина"
+
+#: ../includes/lib.php:241
+msgid ""
+"Let's see what tables in your database do not belong to the core WordPress "
+"installation:"
+msgstr ""
+"Давайте посмотрим, какие таблицы в вашей базе данных не принадлежат основной "
+"установке WordPress:"
+
+#: ../includes/lib.php:321 ../includes/lib.php:522
+msgid ""
+"Some tables are hidden by you. Turn on \"Show hidden DB tables\" option and "
+"click \"Scan\" button again to show them."
+msgstr ""
+"Некоторые таблицы скрыты вами. Включи опцию \"Показать скрытые таблицы\" и "
+"щелкни \"Сканировать\", чтобы отобразить из снова."
+
+#: ../includes/lib.php:329
+msgid "Delete Tables"
+msgstr "Удалить Таблицы"
+
+#: ../includes/lib.php:333 ../includes/lib.php:534
+msgid "Attention!"
+msgstr "Внимание!"
+
+#: ../includes/lib.php:334
+msgid ""
+"Operation rollback is not possible. Consider to make database backup first. "
+"Please double think before click \"Delete Tables\" button."
+msgstr ""
+"Откат операции не возможен. Сделайте резервную копию базы данных сначала. "
+"Пожалуйста, хорошо подумайте перед щелчком по кнопке \"Удалить Таблицы\""
+
+#: ../includes/lib.php:343
+msgid "Congratulations! It seems that your WordPress database is clean."
+msgstr "Поздравляем! Похоже, что ваша WordPress база данных чиста."
+
+#: ../includes/lib.php:359
+msgid "Extra Field"
+msgstr "Добавл. поле"
+
+#: ../includes/lib.php:530
+msgid "Delete Extra Columns"
+msgstr "Удалить столбцы"
+
+#: ../includes/lib.php:535
+msgid ""
+"Operation rollback is not possible. Consider to make database backup first. "
+"Please double think before click <code>Delete Extra Columns</code> button."
+msgstr ""
+"Откат операции не возможен. Сделайте резервную копию базы данных сначала. "
+"Пожалуйста, хорошо подумайте перед щелчком по кнопке <code>Удалить Таблицы</"
+"code>"
+
+#: ../includes/lib.php:544
+msgid ""
+"Congratulations! It seems that your WordPress database tables structure is "
+"not changed"
+msgstr "Поздравляем! Похоже, что ваша WordPress база данных чиста."
+
+#: ../includes/lib.php:558
+msgid ""
+"This feature is still under development and will be realized in the future "
+"version"
+msgstr "Эта функция ещё в разработке и будет реализована в следующей версии"
+
+#: ../includes/lib.php:625
+msgid "Table was hidden"
+msgstr "Tаблицы скрыта"
+
+#: ../includes/lib.php:645
+msgid "Table was shown"
+msgstr "Таблица отображена"
+
+#: ../includes/options.php:29
+msgid "Search DB for tables created by plugins"
+msgstr "Искать таблицы, созданные плагинами"
+
+#: ../includes/options.php:30
+msgid "Search none-WP tables"
+msgstr "Искать таблицы, не принадлежащие WordPress"
+
+#: ../includes/options.php:33
+msgid ""
+"Search DB for changes which plugins made to the original WP tables structure"
+msgstr ""
+"Искать изменения, внесенные плагинами в структуру таблиц базы данных "
+"WordPress"
+
+#: ../includes/options.php:34
+msgid "Search WP tables structure changes (beta - experimental)"
+msgstr "Найти изменения в структуре таблиц WordPress (бета - эксперимент)"
+
+#: ../includes/options.php:37
+msgid "Include tables which are hidden by your request to the search results"
+msgstr "Включить скрытые вами таблицы в результаты сканирования"
+
+#: ../includes/options.php:38
+msgid "Show hidden tables"
+msgstr "Показать скрытые таблицы"
+
+#: ../includes/options.php:41
+msgid "Scan Database"
+msgstr "Сканировать базу данных"
+
+#: ../includes/options.php:41
+msgid ""
+"Click this button to gather information how plugins use your WordPress "
+"database"
+msgstr ""
+"Щелкните &lt;Сканирование&gt;, чтобы собрать информацию о том, как плагины "
+"используют базу данных вашего WordPress"
+
+#~ msgid "deactivated"
+#~ msgstr "не активен"
+
+#~ msgid "About this Plugin:"
+#~ msgstr "Об этом плагине:"
+
+#~ msgid "Author's website"
+#~ msgstr "Вебсайт автора"
+
+#~ msgid "Plugin webpage"
+#~ msgstr "Вебстраница плагина"
+
+#~ msgid "FAQ"
+#~ msgstr "FAQ"
+
+#~ msgid "Donate"
+#~ msgstr "Поддержка"
+
+#~ msgid "Greetings:"
+#~ msgstr "Благодарности:"
+
+#~ msgid "It's me, the author"
+#~ msgstr "Это я, автор"
+
+#~ msgid "For the help with Chinese translation"
+#~ msgstr "За помощь с китайским переводом"
+
+#~ msgid "For the help with Czech translation"
+#~ msgstr "За помощь с чешским переводом"
+
+#~ msgid "For the help with Dutch translation"
+#~ msgstr "За помощь с датским переводом"
+
+#~ msgid "For the help with French translation"
+#~ msgstr "За помощь с французским переводом"
+
+#~ msgid "For the help with German translation"
+#~ msgstr "За помощь с немецким переводом"
+
+#~ msgid "For the help with Indonesian translation"
+#~ msgstr "За помощь с индонезийским переводом"
+
+#~ msgid "For the help with Italian translation"
+#~ msgstr "За помощь с итальянским переводом"
+
+#~ msgid "For the help with Japanese translation"
+#~ msgstr "За помощь с японским переводом"
+
+#~ msgid "For the help with Lithuanian translation"
+#~ msgstr "За помощь с чешским переводом"
+
+#~ msgid "For the help with Polish translation"
+#~ msgstr "За помощь с польским переводом"
+
+#~ msgid "For the help with Spanish translation"
+#~ msgstr "За помощь с испанским переводом"
+
+#~ msgid "For the help with bug fix and contribution to source code"
+#~ msgstr "За помощь в поиске и исправлении ошибок, разработке кода"
+
+#~ msgid ""
+#~ "Do you wish to see your name with link to your site here? You are "
+#~ "welcome! Your help with translation and new ideas are very appreciated."
+#~ msgstr ""
+#~ "Желаете увидеть здесь свое имя и ссылку на ваш сайт? Добро пожаловать! "
+#~ "Ваша помощь с переводом и новые идеи будут как нельзя кстати."
+
+#~ msgid "More plugins from"
+#~ msgstr "Ещё плагины от"
+
+#~ msgid "No items found."
+#~ msgstr "Ничего не найдено."
+
+#~ msgid "Recent Posts:"
+#~ msgstr "Последние статьи:"
+
+#~ msgid ""
+#~ "Click &lt;Scan&gt; to gather information how plugins use your WordPress "
+#~ "database"
+#~ msgstr ""
+#~ "Щелкните &lt;Сканирование&gt;, чтобы собрать информацию о том, как "
+#~ "плагины используют базу данных вашего WordPress"
+
+#~ msgid "Cleanup: please confirm to continue"
+#~ msgstr "Зачистка: пожалуйста подтвердите, чтобы продолжить"
+
+#~ msgid "Action Page"
+#~ msgstr "Страница действий"
