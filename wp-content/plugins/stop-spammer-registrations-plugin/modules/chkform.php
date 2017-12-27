@@ -17,6 +17,14 @@ class chkform extends be_module {
 			return false;
 		}
 
+		/* RATBURGER LOCAL CODE */
+		/* Allow POST requests from admin-ajax.php made by comment editor. */
+                if ( strpos( $uri, 'admin-ajax.php' ) !== false ) {
+// sfs_debug_msg("continue check wp-login.php $ip");
+                        return false;
+                }
+		/* END RATBURGER LOCAL CODE */
+
 // sfs_debug_msg("Allowed $uri $ip");
 		return "Post request not in wp-comments-post.php or wp-login.php - $uri";
 	}

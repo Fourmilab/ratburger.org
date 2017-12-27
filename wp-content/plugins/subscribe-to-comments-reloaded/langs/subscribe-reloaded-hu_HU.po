@@ -1,0 +1,2318 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Subscribe to Comments Reloaded\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-27 23:24-0600\n"
+"PO-Revision-Date: 2017-06-07 20:49-0600\n"
+"Last-Translator: Reedyseth - Israel Barragan <reedyseth@gmail.com>\n"
+"Language-Team: Web Geeks <epoxhun@gmail.com>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: options/index.php:59 utils/stcr_manage.php:230 utils/stcr_manage.php:412
+#: utils/stcr_manage.php:413
+msgid "Manage subscriptions"
+msgstr "Feliratkozás kezelése"
+
+#: options/index.php:60 utils/stcr_manage.php:418 utils/stcr_manage.php:419
+msgid "Comment Form"
+msgstr "Hozzászólás Űrlap"
+
+#: options/index.php:61 utils/stcr_manage.php:424 utils/stcr_manage.php:425
+msgid "Management Page"
+msgstr "Feliratkozás Kezelés Oldal"
+
+#: options/index.php:62 utils/stcr_manage.php:430 utils/stcr_manage.php:431
+msgid "Notifications"
+msgstr "Értesítések"
+
+#: options/index.php:63 options/panel2.php:58 options/panel3.php:82
+#: options/panel4.php:89 utils/stcr_manage.php:436 utils/stcr_manage.php:437
+msgid "Options"
+msgstr "Beállítások"
+
+#: options/index.php:65 utils/stcr_manage.php:452 utils/stcr_manage.php:453
+msgid "You can help"
+msgstr "Segíthetsz"
+
+#: options/index.php:66 utils/stcr_manage.php:458 utils/stcr_manage.php:459
+msgid "Support"
+msgstr "Падтрымка"
+
+#: options/index.php:67 utils/stcr_manage.php:464 utils/stcr_manage.php:465
+msgid "Donate"
+msgstr ""
+
+#: options/panel1-add-subscription.php:8 options/panel1.php:61
+msgid "Add New Subscription"
+msgstr "Új Feliratkozás hozzáadása "
+
+#: options/panel1-add-subscription.php:13
+#: options/panel1-edit-subscription.php:13
+msgid "Post:"
+msgstr "Bejegyzés:"
+
+#: options/panel1-add-subscription.php:16 options/panel1.php:72
+#: options/panel1.php:133 templates/key_expired.php:72
+#: templates/request-management-link.php:104 templates/subscribe.php:110
+msgid "Email"
+msgstr "Email"
+
+#: options/panel1-add-subscription.php:20
+#: options/panel1-edit-subscription.php:26 options/panel1.php:39
+#: options/panel1.php:76 options/panel1.php:141 options/panel1.php:159
+msgid "Status"
+msgstr "Státusz"
+
+#: options/panel1-add-subscription.php:22
+#: options/panel1-edit-subscription.php:29 options/panel1.php:42
+#: options/panel1.php:79 options/panel1.php:173 templates/author.php:64
+#: templates/user.php:76
+msgid "Active"
+msgstr "Aktív"
+
+#: options/panel1-add-subscription.php:23
+#: options/panel1-edit-subscription.php:30 options/panel1.php:43
+#: options/panel1.php:80
+msgid "Replies only"
+msgstr "Csak a válaszokra"
+
+#: options/panel1-add-subscription.php:24 options/panel1.php:81
+msgid "Ask user to confirm"
+msgstr "Megerősítés kérés"
+
+#: options/panel1-add-subscription.php:26
+#: options/panel1-edit-subscription.php:33 options/panel1.php:46
+msgid "Update"
+msgstr "Frissítés"
+
+#: options/panel1-business-logic.php:23
+msgid "Subscription added."
+msgstr "Feliratkozás hozzáadva."
+
+#: options/panel1-business-logic.php:39
+msgid "Subscriptions updated."
+msgstr "Feliratkozás frissítve."
+
+#: options/panel1-business-logic.php:51
+msgid "Subscription deleted."
+msgstr "Feliratkozás törölve."
+
+#: options/panel1-business-logic.php:70 templates/author.php:24
+#: templates/user.php:33
+msgid "Subscriptions deleted:"
+msgstr "Feliratkozások törölve:"
+
+#: options/panel1-business-logic.php:74 templates/author.php:28
+#: templates/user.php:37
+msgid "Subscriptions suspended:"
+msgstr "Feliratkozások kikapcsolva:"
+
+#: options/panel1-business-logic.php:78 templates/author.php:32
+#: templates/user.php:41
+msgid "Subscriptions activated:"
+msgstr "Feliratkozások bekapcsolva:"
+
+#: options/panel1-business-logic.php:82 options/panel1-business-logic.php:86
+#: templates/author.php:36 templates/author.php:40 templates/user.php:45
+#: templates/user.php:49
+msgid "Subscriptions updated:"
+msgstr "Feliratkozások frissítva:"
+
+#: options/panel1-business-logic.php:110
+msgid "&laquo; Previous"
+msgstr "&laquo; Előző"
+
+#: options/panel1-business-logic.php:114
+msgid "Next &raquo;"
+msgstr "Következő &raquo;"
+
+#: options/panel1-edit-subscription.php:8
+msgid "Update Subscription"
+msgstr "Értesítés frissítése"
+
+#: options/panel1-edit-subscription.php:11
+#: options/panel1-edit-subscription.php:21
+#: options/panel1-edit-subscription.php:22
+#: options/panel1-edit-subscription.php:23
+msgid "optional"
+msgstr "nem kötelező"
+
+#: options/panel1-edit-subscription.php:11 options/panel1.php:23
+#: options/panel1.php:124 options/panel1.php:201 options/panel1.php:213
+#: templates/author.php:53 templates/user.php:65
+msgid ""
+"Please remember: this operation cannot be undone. Are you sure you want to "
+"proceed?"
+msgstr ""
+"Kérlek vedd figyelembe, hogy ezt nem tudod visszavonni. Biztos folytatod?"
+
+#: options/panel1-edit-subscription.php:16 options/panel1.php:27
+msgid "From"
+msgstr "Feladó"
+
+#: options/panel1-edit-subscription.php:20 options/panel1.php:33
+msgid "To"
+msgstr "Címzett"
+
+#: options/panel1-edit-subscription.php:28 options/panel1.php:41
+msgid "Keep unchanged"
+msgstr "Maradjon változatlan"
+
+#: options/panel1-edit-subscription.php:31 options/panel1.php:44
+msgid "Suspended"
+msgstr "Kikapcsolva"
+
+#: options/panel1.php:20
+msgid "Mass Update Subscriptions"
+msgstr "Feliratkozások csoportos frissítése"
+
+#: options/panel1.php:28 options/panel1.php:29 options/panel1.php:30
+msgid "email address"
+msgstr "Küldő e-mail címe"
+
+#: options/panel1.php:34 options/panel1.php:35 options/panel1.php:36
+msgid "optional - new email address"
+msgstr "Абнавіць электронны адрас"
+
+#: options/panel1.php:49
+msgid "More info"
+msgstr "Dettagli"
+
+#: options/panel1.php:55
+msgid ""
+"This option will allow you to change an email address for another one or to "
+"update the same status for all the subscription on a specific email address."
+msgstr ""
+
+#: options/panel1.php:68
+msgid "Post ID"
+msgstr "Post ID"
+
+#: options/panel1.php:83
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: options/panel1.php:98
+msgid "Search subscriptions"
+msgstr "Feliratkozás keresés"
+
+#: options/panel1.php:102
+#, php-format
+msgid ""
+"You can either <a href=\"%s\">view all the subscriptions</a> or find those "
+"where the"
+msgstr ""
+"Megnézheted <a href=\"%s\">az összes feliratkozást</a> vagy megkeresheted, "
+"ahol"
+
+#: options/panel1.php:106
+msgid "email"
+msgstr "email"
+
+#: options/panel1.php:107
+msgid "post ID"
+msgstr "post ID"
+
+#: options/panel1.php:108
+msgid "status"
+msgstr "státusz"
+
+#: options/panel1.php:111
+msgid "equals"
+msgstr "egyenlő"
+
+#: options/panel1.php:112
+msgid "contains"
+msgstr "tartalmazza"
+
+#: options/panel1.php:113
+msgid "does not contain"
+msgstr "nem tartalmazza"
+
+#: options/panel1.php:114
+msgid "starts with"
+msgstr "ezzel kezdődik"
+
+#: options/panel1.php:115
+msgid "ends with"
+msgstr "ezzel végződik"
+
+#: options/panel1.php:118
+msgid "results per page:"
+msgstr "eredmény oldal:"
+
+#: options/panel1.php:120
+msgid "Search"
+msgstr "Keresés"
+
+#: options/panel1.php:128
+msgid "Reverse the order by Post ID"
+msgstr "Fordított sorrend Post ID alapján"
+
+#: options/panel1.php:129 options/panel1.php:130
+msgid "Reverse the order by Date/Time"
+msgstr "Fordított sorrend Dátum/Idő szerint"
+
+#: options/panel1.php:132
+msgid "Post (ID)"
+msgstr "Post (ID)"
+
+#: options/panel1.php:135
+msgid "Search query:"
+msgstr "Keresett kifejezés:"
+
+#: options/panel1.php:135
+msgid "Rows:"
+msgstr "Oszlopok:"
+
+#: options/panel1.php:135
+msgid "of"
+msgstr "ennyiből"
+
+#: options/panel1.php:142 options/panel1.php:158
+msgid "Date and Time"
+msgstr "Dátum és Idő"
+
+#: options/panel1.php:168 templates/author.php:59 templates/user.php:71
+msgid "Replies"
+msgstr "Válaszok"
+
+#: options/panel1.php:169 templates/author.php:60 templates/user.php:72
+msgid "Replies Unconfirmed"
+msgstr ""
+
+#: options/panel1.php:170 templates/author.php:61 templates/user.php:73
+msgid "All Comments"
+msgstr "Minden új hozzászólás"
+
+#: options/panel1.php:171 templates/author.php:62 templates/user.php:74
+msgid "Unconfirmed"
+msgstr ""
+
+#: options/panel1.php:172 templates/author.php:63 templates/user.php:75
+msgid "Inactive"
+msgstr "Aktív"
+
+#: options/panel1.php:201 options/panel1.php:213 templates/author.php:93
+#: templates/user.php:111
+msgid "Delete"
+msgstr "Törlés"
+
+#: options/panel1.php:202 options/panel1.php:212
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: options/panel1.php:204 options/panel1.php:210
+msgid "Subscription"
+msgstr "Feliratkozás"
+
+#: options/panel1.php:224 templates/author.php:90 templates/user.php:107
+msgid "Action:"
+msgstr "Tevékenység:"
+
+#: options/panel1.php:227
+msgid "Delete forever"
+msgstr "Végleges törlés"
+
+#: options/panel1.php:228 templates/author.php:94 templates/user.php:112
+msgid "Suspend"
+msgstr "Kikapcsolás"
+
+#: options/panel1.php:229
+msgid "Activate and set to Y"
+msgstr "Aktiválás és Y-ra állítás"
+
+#: options/panel1.php:230
+msgid "Activate and set to R"
+msgstr "Aktiválás és R-re állítás"
+
+#: options/panel1.php:231
+msgid "Activate"
+msgstr "Aktiválás"
+
+#: options/panel1.php:235 templates/author.php:99 templates/user.php:118
+msgid "Update subscriptions"
+msgstr "Feliratkozások frissítése"
+
+#: options/panel1.php:238
+msgid "Sorry, no subscriptions match your search criteria."
+msgstr "Bocsi, nincs a keresésnek megfelelő feliratkozás."
+
+#: options/panel10.php:35
+msgid "The log file has been successfully deleted."
+msgstr ""
+
+#: options/panel10.php:40
+msgid "Can't delete the log file, check the file permissions."
+msgstr ""
+
+#: options/panel10.php:46
+msgid "The log file does not exists."
+msgstr ""
+
+#: options/panel10.php:60 options/panel10.php:104
+msgid "Enable Log Information"
+msgstr ""
+
+#: options/panel10.php:66 options/panel10.php:113
+msgid "Enable Auto clean log data"
+msgstr ""
+
+#: options/panel10.php:87 options/panel2.php:49 options/panel3.php:70
+#: options/panel4.php:78 options/panel5.php:18 options/panel5.php:67
+msgid "Your settings have been successfully updated."
+msgstr "Beállításaid sikeresen frissítve."
+
+#: options/panel10.php:89 options/panel2.php:51 options/panel3.php:72
+#: options/panel4.php:80 options/panel5.php:20 options/panel5.php:69
+msgid "There was an error updating the following fields:"
+msgstr "Hiba volt az alábbi mezők frissítésekor."
+
+#: options/panel10.php:106 options/panel10.php:115 options/panel2.php:66
+#: options/panel2.php:76 options/panel2.php:105 options/panel5.php:85
+#: options/panel5.php:94 options/panel5.php:111 options/panel5.php:120
+#: options/panel5.php:129 options/panel5.php:138 options/panel5.php:148
+#: options/panel5.php:157 options/panel5.php:167 options/panel5.php:176
+#: options/panel5.php:185
+msgid "Yes"
+msgstr "Igen"
+
+#: options/panel10.php:107 options/panel10.php:116 options/panel2.php:67
+#: options/panel2.php:77 options/panel2.php:106 options/panel5.php:86
+#: options/panel5.php:95 options/panel5.php:112 options/panel5.php:121
+#: options/panel5.php:130 options/panel5.php:139 options/panel5.php:149
+#: options/panel5.php:158 options/panel5.php:168 options/panel5.php:177
+#: options/panel5.php:186 utils/stcr_manage.php:814
+msgid "No"
+msgstr "Nem"
+
+#: options/panel10.php:108
+msgid ""
+"If enabled, will log information of the plugin. Helpful for debugging "
+"purposes."
+msgstr ""
+
+#: options/panel10.php:119
+msgid "Hourly"
+msgstr ""
+
+#: options/panel10.php:120
+msgid "Twice Daily"
+msgstr ""
+
+#: options/panel10.php:121
+msgid "Daily"
+msgstr ""
+
+#: options/panel10.php:123
+msgid "If enabled, StCR will auto clean your information every day."
+msgstr ""
+
+#: options/panel10.php:128
+msgid "Clean Up Log Archive"
+msgstr ""
+
+#: options/panel10.php:132
+msgid ""
+"If you want to clean up the log archive please click the following button"
+msgstr ""
+
+#: options/panel10.php:134
+msgid "Clean"
+msgstr ""
+
+#: options/panel10.php:141 options/panel10.php:144
+msgid "System Information"
+msgstr ""
+
+#: options/panel10.php:158 options/panel2.php:230 options/panel3.php:253
+#: options/panel4.php:283 options/panel5.php:219
+msgid "Save Changes"
+msgstr "Változások Mentése"
+
+#: options/panel2.php:12 options/panel2.php:63
+msgid "Enable default checkbox"
+msgstr "Alapértelmezett jelölőnégyzet bekapcsolás"
+
+#: options/panel2.php:15 options/panel2.php:73
+msgid "Checked by default"
+msgstr "Alapértelmezettként bepipálva"
+
+#: options/panel2.php:18
+msgid "Checked by default Value"
+msgstr "Alapértelmezettként bepipálva"
+
+#: options/panel2.php:21 options/panel2.php:24 options/panel2.php:102
+msgid "Advanced subscription"
+msgstr "Haladó feliratkozás"
+
+#: options/panel2.php:27 options/panel2.php:130
+msgid "Custom inline style"
+msgstr "Egyedi inline style"
+
+#: options/panel2.php:30 options/panel2.php:139
+msgid "Custom HTML"
+msgstr "Egyedi HTML"
+
+#: options/panel2.php:34
+msgid "Checkbox label"
+msgstr "Jelölőnégyzet címke"
+
+#: options/panel2.php:37 options/panel2.php:180
+msgid "Subscribed label"
+msgstr "Feliratkozott címke"
+
+#: options/panel2.php:40
+msgid "Awaiting label"
+msgstr "Várakozás címke"
+
+#: options/panel2.php:43 options/panel2.php:213
+msgid "Author label"
+msgstr "Szerző címke"
+
+#: options/panel2.php:68
+msgid ""
+"Disable this option if you want to move the subscription checkbox to a "
+"different place on your page."
+msgstr ""
+"Kapcsolt ki ezt a lehetőséget, ha a feliratkozás jelölőnégyzetet az oldalon "
+"máshol akarod elhelyezni."
+
+#: options/panel2.php:78
+msgid "Decide if the checkbox should be checked by default or not."
+msgstr "Döntsd el, a jelölőnégyzet alaphelyzetben be van jelölve vagy nem."
+
+#: options/panel2.php:87
+msgid "Default Checkbox Value"
+msgstr "Alapértelmezett jelölőnégyzet bekapcsolás"
+
+#: options/panel2.php:91 options/panel2.php:120
+msgid "All new comments"
+msgstr "Minden új hozzászólás"
+
+#: options/panel2.php:92 options/panel2.php:121
+msgid "Replies to this comment"
+msgstr "Csak a válaszokra"
+
+#: options/panel2.php:94
+msgid ""
+"Select the default option for the Checkbox. Be careful! Some users might "
+"like to be subscribed to all the post."
+msgstr ""
+"Választd ki az alapértéket. Vigyázz! Néhány felhasználó minden "
+"hozzászólásról értesülni akar."
+
+#: options/panel2.php:107
+msgid ""
+"Allow users to choose from different subscription types (all, replies only)."
+msgstr ""
+"Lehetőséget ad a felhasználóknak a feliratkozási szinek használatára "
+"(minden, csak saját hozzászólásukra érkező)."
+
+#: options/panel2.php:115
+msgid "Advanced default"
+msgstr "Alapértelmezettként bepipálva"
+
+#: options/panel2.php:119
+msgid "None"
+msgstr "Egyik sem"
+
+#: options/panel2.php:124
+msgid ""
+"The default subscription type that should be selected when Advanced "
+"subscriptions are enable."
+msgstr ""
+"Az alapértelmezett feliratkozási mód, amikor a Haladó feliratkozás be van "
+"kapcsolva."
+
+#: options/panel2.php:135
+msgid "Custom inline CSS to add to the checkbox."
+msgstr "Egyedi inline CSS a jelölőnégyzethez."
+
+#: options/panel2.php:152
+msgid ""
+"Custom HTML code to be used when displaying the checkbox. Allowed tags: "
+"[checkbox_field], [checkbox_label]"
+msgstr ""
+"Egyedi HTML kód a jelölőnégyzet meellett. Használható címkék: "
+"[checkbox_field], [checkbox_label]"
+
+#: options/panel2.php:158
+msgid "Messages for your visitors"
+msgstr "Üzenetek a látogatóknak"
+
+#: options/panel2.php:162
+msgid "Default label"
+msgstr "Alapértelmezett címke"
+
+#: options/panel2.php:175
+msgid "Label associated to the checkbox. Allowed tag: [subscribe_link]"
+msgstr "A jelölőnégyzethez tartozó címke. Használható címkék: [subscribe_link]"
+
+#: options/panel2.php:192
+msgid ""
+"Label shown to those who are already subscribed to a post. Allowed tag: "
+"[manager_link]"
+msgstr ""
+"Címke azoknak, akik már feliratkoztak a bejegyzéshez. Használható címkék: "
+"[manager_link]"
+
+#: options/panel2.php:197
+msgid "Pending label"
+msgstr "Megerősítésre vár címke"
+
+#: options/panel2.php:209
+msgid ""
+"Label shown to those who are already subscribed, but haven't clicked on the "
+"confirmation link yet. Allowed tag: [manager_link]"
+msgstr ""
+"Címke azoknak, akik feliratkoztak, de még nem erősítették meg. Használható "
+"címkék: [manager_link]"
+
+#: options/panel2.php:225
+msgid ""
+"Label shown to authors (and administrators). Allowed tag: [manager_link]"
+msgstr ""
+"Címke a szerzőknek (és adminisztrátoroknak). Használható címkék: "
+"[manager_link]"
+
+#: options/panel3.php:13 options/panel3.php:87
+msgid "Virtual Management Page"
+msgstr "Virtuális Feliratkozások Kezelés Oldal"
+
+#: options/panel3.php:18 options/panel3.php:96
+msgid "Page title"
+msgstr "Oldal cím"
+
+#: options/panel3.php:23 options/panel3.php:105
+msgid "Management URL"
+msgstr "Feliratkozás Kezelése URL"
+
+#: options/panel3.php:28 options/panel3.php:117
+msgid "Custom HEAD meta"
+msgstr "Egyedi HEAD meta"
+
+#: options/panel3.php:34 options/panel3.php:131
+msgid "Request link"
+msgstr "Kérés link"
+
+#: options/panel3.php:39 options/panel3.php:149
+msgid "Request submitted"
+msgstr "Kérés beküldve"
+
+#: options/panel3.php:44 options/panel3.php:167
+msgid "Subscribe without commenting"
+msgstr "Feliratkozás hozzászólás nélkül"
+
+#: options/panel3.php:49 options/panel3.php:185
+msgid "Subscription processed"
+msgstr "Feliratkozás feldolgozva"
+
+#: options/panel3.php:54 options/panel3.php:203
+msgid "Subscription processed (DCI)"
+msgstr "Feliratkozás feldolgozva (DCI)"
+
+#: options/panel3.php:59 options/panel3.php:220
+msgid "Authors"
+msgstr "Szerzők"
+
+#: options/panel3.php:64 options/panel3.php:236
+msgid "Users"
+msgstr "Felhasználók"
+
+#: options/panel3.php:90
+msgid "Enabled"
+msgstr "Bekapcsolva"
+
+#: options/panel3.php:91
+msgid "Disabled"
+msgstr "Kikapcsolva"
+
+#: options/panel3.php:92
+msgid ""
+"Disable the virtual management page if you need to create a <a href="
+"\"https://github.com/stcr/subscribe-to-comments-reloaded/wiki/KB#create-a-"
+"real-management-page\">real page</a> to make your theme happy."
+msgstr ""
+"Kikapcsolja a Virtuális Feliratkozások Kezelés Oldalt, ha <a href=\"http://"
+"behstant.com/subscribe-reloaded/realMgnPage.php\">igazi oldalt</a> kell "
+"létrehoznod, a weboldalsablonod miatt."
+
+#: options/panel3.php:101
+msgid "Title of the page your visitors will use to manage their subscriptions."
+msgstr ""
+"Az oldal címe, melyet a felhasználók a feliratkozás kezeléshez fognak "
+"használni."
+
+#: options/panel3.php:109
+msgid ""
+"The permalink for your management page (something like <code>/manage-"
+"subscriptions</code> or <code>/?page_id=345</code>). This page <b>does not</"
+"b> actually exist in the system, but its link must follow your permalink "
+"structure."
+msgstr ""
+"A feliratkozás kezelés oldal barátságos url-je (valami ilyesmi <code>/"
+"feliratkozas-kezeles</code> vagy <code>/?page_id=345</code>). Ez az oldal "
+"jelenleg <b>nem létezik</b> a weboldaladon, de a linknek követnei kell az "
+"oldaladon használt barátságos url struktúrát."
+
+#: options/panel3.php:111
+msgid ""
+"Warning: it looks like the value you are using may be incompatible with your "
+"permalink structure"
+msgstr ""
+"Figyelem: úgy néz ki a megadott érték nem kompatibilis a barátságos url "
+"struktúráddal"
+
+#: options/panel3.php:121
+msgid ""
+"Specify your custom HTML code to be added to the HEAD section of the page. "
+"Use <strong>single</strong> quotes for values."
+msgstr ""
+"Add meg az egyedi HTML kódot, amit az oldal HEAD részében jelenítünk meg. "
+"Használj <strong>aposztrofot</strong> az értékekhez."
+
+#: options/panel3.php:127 options/panel4.php:135
+msgid "Messages"
+msgstr "Üzenetek"
+
+#: options/panel3.php:144
+msgid "Text shown to those who request to manage their subscriptions."
+msgstr "Szöveg azoknak, akik kérik a feliratkozás kezelés linket."
+
+#: options/panel3.php:162
+msgid ""
+"Thank you note shown after the request here above has been processed. "
+"Allowed tags: [post_title], [post_permalink]"
+msgstr ""
+"Köszönet szöveg, amit akkor mutatunk, amikor a fenti kérés feldolgozásra "
+"került. Használható címkék: [post_title], [post_permalink]"
+
+#: options/panel3.php:180
+msgid ""
+"Text shown to those who want to subscribe without commenting. Allowed tags: "
+"[post_title], [post_permalink]"
+msgstr ""
+"Szöveg azoknak, akik hozzászólás nélkül akarnak feliratkozni. Használható "
+"címkék: [post_title], [post_permalink]"
+
+#: options/panel3.php:198
+msgid ""
+"Thank you note shown after the subscription request has been processed "
+"(double check-in disabled). Allowed tags: [post_title], [post_permalink]"
+msgstr ""
+"Köszönet szöveg, amit akkor mutatunk, amikor a fenti kérés feldolgozásra "
+"került (dupla ellenőrzés kikapcsolva). Használható címkék: [post_title], "
+"[post_permalink]"
+
+#: options/panel3.php:216
+msgid ""
+"Thank you note shown after the subscription request has been processed "
+"(double check-in enabled). Allowed tags: [post_title], [post_permalink]"
+msgstr ""
+"Köszönet szöveg, amit akkor mutatunk, amikor a fenti kérés feldolgozásra "
+"került (dupla ellenőrzés bekapcsolva). Használható címkék: [post_title], "
+"[post_permalink]"
+
+#: options/panel3.php:232
+msgid "Introductory text for the authors' management page."
+msgstr "Bevezető szöveg a szerzők kezelő oldalához."
+
+#: options/panel3.php:248
+msgid "Introductory text for the users' management page."
+msgstr "Bevezető szöveg a felhasználók kezelőoldalához."
+
+#: options/panel4.php:15 options/panel4.php:94
+msgid "Sender name"
+msgstr "Küldő neve"
+
+#: options/panel4.php:20 options/panel4.php:25 options/panel4.php:107
+msgid "Sender email address"
+msgstr "Küldő e-mail címe"
+
+#: options/panel4.php:30 options/panel4.php:140
+msgid "Notification subject"
+msgstr "Értesítés tárgya"
+
+#: options/panel4.php:36 options/panel4.php:42 options/panel4.php:153
+msgid "Notification message"
+msgstr "Értesítés szövege"
+
+#: options/panel4.php:47 options/panel4.php:177
+msgid "Double check subject"
+msgstr "Dupla ellenőrzés tárgya"
+
+#: options/panel4.php:52 options/panel4.php:190
+msgid "Double check message"
+msgstr "Dupla ellenőrzés szövege"
+
+#: options/panel4.php:57 options/panel4.php:210
+msgid "Management subject"
+msgstr "Feliratkozás Kezelés tárgya"
+
+#: options/panel4.php:62 options/panel4.php:67
+msgid "Management message"
+msgstr "Feliratkozás Kezelés szövege"
+
+#: options/panel4.php:72 options/panel4.php:243
+msgid "Management Email message"
+msgstr ""
+
+#: options/panel4.php:101
+msgid ""
+"Name to use for the \"from\" field when sending a new notification to the "
+"user."
+msgstr "Feladó név (az értesítő \"from\" mezőhöz)."
+
+#: options/panel4.php:115
+msgid ""
+"Email address to use for the \"from\" field when sending a new notification "
+"to the user."
+msgstr "Feladó e-mail cím (az értesítő \"from\" mezőhöz)."
+
+#: options/panel4.php:121
+msgid "Reply To"
+msgstr "Csak a válaszokra"
+
+#: options/panel4.php:128
+msgid ""
+"This will be use when the user click reply on their email agent. If not set "
+"will be the same as the Sender email address."
+msgstr ""
+
+#: options/panel4.php:147
+msgid "Subject of the notification email. Allowed tag: [post_title]"
+msgstr "Értesítő e-mail tárgya. Használható címkék: [post_title]"
+
+#: options/panel4.php:170
+msgid ""
+"Content of the notification email. Allowed tags: [post_title], "
+"[comment_permalink], [comment_author], [comment_content], [post_permalink], "
+"[manager_link], [comment_gravatar]"
+msgstr ""
+
+#: options/panel4.php:171
+msgid ""
+"<p><strong>Note: To get a default template clear all the content and save "
+"the options.</strong></p>"
+msgstr ""
+
+#: options/panel4.php:184
+msgid "Subject of the confirmation email. Allowed tag: [post_title]"
+msgstr "A megerősítő e-mail tárgya. Használható címkék: [post_title]"
+
+#: options/panel4.php:204
+msgid ""
+"Content of the confirmation email. Allowed tags: [post_permalink], "
+"[confirm_link], [post_title], [manager_link]"
+msgstr ""
+"A megerősítő e-mail szövege. Használható címkék: [post_permalink], "
+"[confirm_link], [post_title], [manager_link]"
+
+#: options/panel4.php:217
+msgid ""
+"Subject of the mail sent to those who request to access their management "
+"page. Allowed tag: [blog_name]"
+msgstr ""
+"Feliratkozás Kezelés linket kérők e-mailjének tárgya. Használható címkék: "
+"[blog_name]"
+
+#: options/panel4.php:223
+msgid "Management Page message"
+msgstr ""
+
+#: options/panel4.php:237
+msgid "Content of the management Page message. Allowed tags: [blog_name]."
+msgstr ""
+
+#: options/panel4.php:257
+msgid ""
+"Content of the management email message. Allowed tags: [blog_name], "
+"[manager_link]."
+msgstr ""
+
+#: options/panel4.php:263
+msgid "One Click Unsubscribe"
+msgstr "Az admin is feliratkozhat"
+
+#: options/panel4.php:277
+msgid ""
+"Content of the One Click confirmation. Allowed tags: [post_title], "
+"[blog_name]"
+msgstr "A megerősítő e-mail tárgya. Használható címkék: [post_title]"
+
+#: options/panel5.php:29 options/panel5.php:83
+msgid "Show StCR checkbox / dropdown"
+msgstr ""
+
+#: options/panel5.php:32
+msgid "Safetly Uninstall"
+msgstr ""
+
+#: options/panel5.php:35 options/panel5.php:100
+msgid "Autopurge requests"
+msgstr "Kérések automatikus ürítése"
+
+#: options/panel5.php:38 options/panel5.php:118
+msgid "Enable double check"
+msgstr "Dupla ellenőrzés bekapcsolása"
+
+#: options/panel5.php:41 options/panel5.php:109
+msgid "StCR Position"
+msgstr ""
+
+#: options/panel5.php:44 options/panel5.php:126
+msgid "Subscribe authors"
+msgstr "Subscribe authors"
+
+#: options/panel5.php:47 options/panel5.php:136
+msgid "Enable HTML emails"
+msgstr "HTML e-mailek bekapcsolása"
+
+#: options/panel5.php:50
+msgid "HTMLify Links in HTML emails"
+msgstr "HTML linkekké alakítás a HTML e-mailekben"
+
+#: options/panel5.php:53
+msgid "Send trackbacks"
+msgstr "Trackback küldés"
+
+#: options/panel5.php:56
+msgid "Notify admin"
+msgstr "Admin értesítés"
+
+#: options/panel5.php:59 options/panel5.php:174
+msgid "Let admin subscribe"
+msgstr "Az admin is feliratkozhat"
+
+#: options/panel5.php:62 options/panel5.php:183
+msgid "BCC admin on Notifications"
+msgstr "Titkos másolat az adminisztrátornak az értesítésekről"
+
+#: options/panel5.php:87
+msgid ""
+"This option will disable the StCR checkbox or dropdown in you comment form. "
+"You should leave it to Yes always.  "
+msgstr ""
+
+#: options/panel5.php:92
+msgid "Safely Uninstall"
+msgstr ""
+
+#: options/panel5.php:96
+msgid ""
+"This option will allow you to delete the plugin with WordPress without "
+"loosing your subscribers. Any database table and plugin options are wipeout."
+msgstr ""
+
+#: options/panel5.php:103
+msgid "days"
+msgstr "nap"
+
+#: options/panel5.php:104
+msgid ""
+"Delete pending subscriptions (not confirmed) after X days. Zero disables "
+"this feature."
+msgstr ""
+"Meg nem erősített feliratkozások törlése X nap után. Nulla érték esetén "
+"nincs törlés."
+
+#: options/panel5.php:113
+msgid ""
+"If this option is enable the subscription box will be above the submit "
+"button in your comment form. Use this when your theme is outdated and using "
+"the incorrect WordPress Hooks and the checkbox is not displayed."
+msgstr ""
+
+#: options/panel5.php:122
+msgid ""
+"Send a notification email to confirm the subscription (to avoid addresses "
+"misuse)."
+msgstr ""
+"Megerősítő email küldés a feliratkozáshoz (helytelen email cím elkerüléshez)."
+
+#: options/panel5.php:131
+msgid ""
+"Automatically subscribe authors to their own articles (not retroactive)."
+msgstr ""
+"Automatically subscribe authors to their own articles (not retroactive)."
+
+#: options/panel5.php:140
+msgid ""
+"If enabled, will send email messages with content-type = text/html instead "
+"of text/plain"
+msgstr ""
+"Bekapcsolva az e-mail értesítéseknél a content-type = text/html lesz text/"
+"plain helyett"
+
+#: options/panel5.php:145
+msgid "HTMLify links in emails"
+msgstr "HTML linkekké alakítás az e-mailekben"
+
+#: options/panel5.php:150
+msgid ""
+"If enabled, will wrap all links in messages with <code>&lt;a href=\"\"&gt;"
+"&lt;/a&gt;</code> (only when HTML emails enabled)."
+msgstr ""
+"Ha bekapcsolod, a szövegben található linkeket ilyen linkké alakítja "
+"<code>&lt;a href=\"\"&gt;&lt;/a&gt;</code> (csak ha a HTML e-mail be van "
+"kapcsolva)."
+
+#: options/panel5.php:155
+msgid "Process trackbacks"
+msgstr "Trackback-ek feldolgozása"
+
+#: options/panel5.php:159
+msgid ""
+"Notify users when a new trackback or pingback is added to the discussion."
+msgstr ""
+"Felhasználó értesítése, ha új trackback vagy pingback érkezik egy "
+"beszélgetéshez."
+
+#: options/panel5.php:164
+msgid "Track all subscriptions"
+msgstr "Minden feliratkozás követése"
+
+#: options/panel5.php:169
+msgid "Notify the administrator when users subscribe without commenting."
+msgstr ""
+"Adminisztrátori értesítés, ha valaki hozzászólás nélkül iratkozik fel "
+"értesítésre."
+
+#: options/panel5.php:178
+msgid "Let the administrator subscribe to comments when logged in."
+msgstr "Az adminisztrátor bejelentkezve fel tudjon iratkoznu."
+
+#: options/panel5.php:187
+msgid "Send a copy of all Notifications to the administrator."
+msgstr "Másolat küldés minden értesítésről az adminisztrátornak."
+
+#: options/panel5.php:192
+msgid "StCR Unique Key"
+msgstr "StCR Unique Key"
+
+#: options/panel5.php:197
+msgid "This Unique Key is not set, please click the following button to "
+msgstr "Nincs Unique Key (egyedi kulcs) beállítva. Kattints a következő gombra"
+
+#: options/panel5.php:201 options/panel5.php:212
+msgid "Generate"
+msgstr "Generálás"
+
+#: options/panel5.php:209
+msgid ""
+"This Unique Key will be use to send the notification to your subscribers "
+"with more security."
+msgstr ""
+"Ezt a Unique Key-t használjuk, hogy a feliratkozóknak az értesítések "
+"nagyobb\n"
+"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tbiztonsággal menjenek ki."
+
+#: options/panel7.php:8 options/panel8.php:8
+msgid "Support the developers"
+msgstr "Támogasd a fejlesztőt"
+
+#: options/panel7.php:18
+msgid ""
+"How valuable is the feature offered by this plugin to your visitors? please "
+"consider supporting the author if this plugin made your web site better, "
+"especially if you are making money out of it. Any donation received will be "
+"reinvested in the development of <strong>Subscribe to Comments Reloaded</"
+"strong>, and to buy some food for my hungry family."
+msgstr ""
+"Mennyire hasznos ezen plugin szolgáltatása a látogatóidnak? Subscribe to "
+"Comments Reloaded most és mindig ingyenes lesz, de kérlek fontold meg, a "
+"fejlesztő támogatását, főleg, ha oldaladdal pénzt is keresel. Minden "
+"beérkező támogatást a Subscribe to Comments Reloaded plugin "
+"továbbfejlesztésére, no meg egy kis ételre fordítok - éhes családom számára."
+
+#: options/panel7.php:20
+msgid "Don't want to donate? You can still help"
+msgstr "Nem akarsz adakozni? Akkor is segíthetsz"
+
+#: options/panel7.php:21
+msgid ""
+"If you don't want to donate money, please consider blogging about my plugin "
+"with a link to the plugin's page. Please let your readers know what makes "
+"your blog better. You can also contribute donating your time: do not "
+"hesitate to send me bug reports, your localization files, ideas on how to "
+"improve <strong>Subscribe to Comments Reloaded</strong> and so on. Whatever "
+"you do, thanks for using my plugin!"
+msgstr ""
+"Ha nem akarsz pénzzel támogatni, kérlek írj a plugin-ról, és helyezd el a "
+"plugin linkjét benne. Írd meg, hogyan tette blogodat jobbá ez a megoldás. "
+"Segíthetsz az időddel is: ne habozz, küldj hibajelentést, fordítás fájlokat, "
+"fejlesztési ötleteket, stb. Bármit is teszel, köszönöm hogy az én plugin-"
+"emet használod!"
+
+#: options/panel7.php:23
+msgid "Subscribe to the Beta testers"
+msgstr "Subscribe authors"
+
+#: options/panel7.php:24
+msgid ""
+"Before a new Update we release a Beta version so that our current users can "
+"give us feedback if they find a bug, If you want to join the tester list you "
+"can add your email <a href='http://eepurl.com/biCk1b' target='_blank'>here</"
+"a>"
+msgstr ""
+
+#: options/panel7.php:26
+msgid "Vote and show your appreciation"
+msgstr "Szavazz és mutasd meg, ha tetszik"
+
+#: options/panel7.php:27
+msgid ""
+"Tell other people if <strong>Subscribe to Comments Reloaded</strong> works "
+"for you and how good it is. <a href=\"http://wordpress.org/extend/plugins/"
+"subscribe-to-comments-reloaded/\">Rate it</a> on its Plugin Directory page."
+msgstr ""
+"Mondd el másoknak is, ha a Subscribe to Comments Reloaded jól szolgál az "
+"oldalodon. <a href=\"http://wordpress.org/extend/plugins/subscribe-to-"
+"comments-reloaded/\">Értékeld</a> a Plugin oldalon."
+
+#: options/panel8.php:18
+msgid "Did you find a Bug on the plugin?"
+msgstr "Hibát találtál a plugin-ben?"
+
+#: options/panel8.php:19
+msgid ""
+"Please report any bug on the <a href=\"https://github.com/stcr/subscribe-to-"
+"comments-reloaded/issues/new?title=Bug%20Report:%20%3Cshort%20description"
+"%3E&labels=bug\" target=\"_blank\">GitHub</a> Page rather than on the "
+"WordPress Support page."
+msgstr ""
+"Kérlek a hibát a <a href=\"https://github.com/stcr/subscribe-to-comments-"
+"reloaded/issues/\" target=\"_blank\">GitHub</a> oldalon jelezd a WordPress "
+"támogatás oldal helyett."
+
+#: options/panel9.php:11
+msgid "Support Subscribe to Comments Reloaded"
+msgstr "Subscribe to Comments Reloaded Fontos Közlendő"
+
+#: options/panel9.php:12
+msgid ""
+"Every contribution that you make is high valuable, so if you consider this "
+"plugin a helpful tool we will use your donation to invest on support and "
+"developing time."
+msgstr ""
+
+#: templates/author.php:67 templates/user.php:83
+msgid "Title"
+msgstr "Cím"
+
+#: templates/author.php:70 templates/user.php:82
+msgid "Subscription Date"
+msgstr ""
+
+#: templates/author.php:71
+msgid "Subscription Email"
+msgstr ""
+
+#: templates/author.php:72 templates/user.php:84
+msgid "Subscription Status"
+msgstr ""
+
+#: templates/author.php:88 templates/user.php:104
+msgid "Select all"
+msgstr "Mind kiválasztása"
+
+#: templates/author.php:89 templates/user.php:106
+msgid "Invert selection"
+msgstr "Fordított kiválasztás"
+
+#: templates/author.php:92 templates/user.php:110
+msgid "Choose your action"
+msgstr ""
+
+#: templates/author.php:95 templates/user.php:113
+msgid "All comments"
+msgstr "Minden új hozzászólás"
+
+#: templates/author.php:96 templates/user.php:114
+#: wp_subscribe_reloaded.php:1122
+msgid "Replies to my comments"
+msgstr "Csak a válaszokra"
+
+#: templates/author.php:102 templates/confirm.php:28
+#: templates/request-management-link.php:114 templates/user.php:124
+msgid "Return to Post"
+msgstr ""
+
+#: templates/author.php:107 templates/one-click-unsubscribe.php:30
+#: templates/user.php:128
+msgid "No subscriptions match your search criteria."
+msgstr "Nincs a keresésnek megfelelő feliratkozás."
+
+#: templates/key_expired.php:8
+msgid ""
+"Woohaa the link to manage your subscriptions has expired, don't worry, just "
+"enter your email below and a new link will be send."
+msgstr ""
+
+#: templates/key_expired.php:74 templates/request-management-link.php:106
+#: templates/subscribe.php:112
+msgid "Send"
+msgstr "Küldés"
+
+#: templates/subscribe.php:50 templates/subscribe.php:51
+msgid "New subscription to"
+msgstr "Új feliratkozás erre"
+
+#: templates/subscribe.php:51
+msgid "User:"
+msgstr "Felhasználó:"
+
+#: templates/user.php:79
+msgid "Email to manage"
+msgstr ""
+
+#: templates/wrong-request.php:9
+msgid "You have request to manage another email address and this is forbidden."
+msgstr ""
+
+#: utils/stcr_manage.php:223
+msgid ""
+"Notify me of followup comments via e-mail. You can also <a "
+"href='[subscribe_link]'>subscribe</a> without commenting."
+msgstr ""
+"A hozzászólásokról email-ben kérek értesítést.  <a "
+"href='[subscribe_link]'>Feliratkozás</a> hozzászólás nélkül is lehetséges."
+
+#: utils/stcr_manage.php:224
+msgid ""
+"You are subscribed to this post. <a href='[manager_link]'>Manage</a> your "
+"subscriptions."
+msgstr ""
+"Feliratkozva ehhez a bejegyzéshez.  <a href='[manager_link]'Saját "
+"feliratkozásaink kezelése</a>."
+
+#: utils/stcr_manage.php:225
+msgid ""
+"Your subscription to this post needs to be confirmed. <a "
+"href='[manager_link]'>Manage your subscriptions</a>."
+msgstr ""
+"A feliratkozási szándékot meg kell erősíteni: <a "
+"href='[manager_link]'>Feliratkozás kezelése</a>."
+
+#: utils/stcr_manage.php:226
+msgid ""
+"You can <a href='[manager_link]'>manage the subscriptions</a> of this post."
+msgstr ""
+"<a href='[manager_link]'>Saját feliratkozásunk kezelése</a>  ennél a "
+"bejegyzésnél."
+
+#: utils/stcr_manage.php:232
+msgid ""
+"To manage your subscriptions, please enter your email address here below. We "
+"will send you a message containing the link to access your personal "
+"management page."
+msgstr ""
+"A feliratkozások kezeléséhez alul meg kell adni az email címet, amelyre "
+"elküldjük azt a hivatkozást, amellyel a saját kezelési oldalra lehet belépni."
+
+#: utils/stcr_manage.php:233
+msgid ""
+"Thank you for using our subscription service. Your request has been "
+"completed, and you should receive an email with the management link in a few "
+"minutes."
+msgstr ""
+"Köszönjük, hogy használod az értesítőket. Néhány percen belül e-mailben "
+"megkapot a beállításokhoz szükséges linked."
+
+#: utils/stcr_manage.php:234
+msgid ""
+"You can follow the discussion on <strong>[post_title]</strong> without "
+"having to leave a comment. Cool, huh? Just enter your email address in the "
+"form here below and you're all set."
+msgstr ""
+"<strong>[post_title]</strong> című bejegyzésünkhöz történő hozzászólásokat "
+"úgy is figyelemmel lehet kísérni, ha az olvasó nem szól hozzá a témához. "
+"Csak meg kell adni a saját email címet az alul található mezőbe, és máris "
+"minden készen áll."
+
+#: utils/stcr_manage.php:235
+msgid ""
+"Thank you for using our subscription service. Your request has been "
+"completed. You will receive a notification email every time a new comment to "
+"this article is approved and posted by the administrator."
+msgstr ""
+"<strong>Köszönjük, hogy használtad a feliratkozás szolgáltatásunkat!</"
+"strong><br /> A kérést rögzítettük; minden egyes alkalommal küldünk egy "
+"értesítést email címedre, amikor a bejegyzéshez új hozzászólás érkezik."
+
+#: utils/stcr_manage.php:236
+msgid ""
+"Thank you for using our subscription service. In order to confirm your "
+"request, please check your email for the verification message and follow the "
+"instructions."
+msgstr ""
+"Köszönjük, hogy használtad a feliratkozás szolgáltatásunkat! A kérésed "
+"megerősítéséhez, kérjük ellenőrizd e-mailcímed, és kövesd az instrukciókat."
+
+#: utils/stcr_manage.php:237
+msgid ""
+"In order to cancel or suspend one or more notifications, select the "
+"corresponding checkbox(es) and click on the button at the end of the list."
+msgstr ""
+"Az értesítések kikapcsolásához, vagy törléséhez válaszd ki a kívánt "
+"értesítést, majd a megfelelő állapotot és kattints az Értesítés frissítése "
+"gombra."
+
+#: utils/stcr_manage.php:238
+msgid ""
+"In order to cancel or suspend one or more notifications, select the "
+"corresponding checkbox(es) and click on the button at the end of the list. "
+"You are currently subscribed to:"
+msgstr ""
+"Az értesítések kikapcsolásához, megszűntetéséhez, válassz jelölőnégyzetet és "
+"a lista végén kattints a megfelelő gombra. Jelenleg ezek az értesítéseid:"
+
+#: utils/stcr_manage.php:242
+msgid "There is a new comment to [post_title]"
+msgstr "Új hozzászólás ehhez [post_title]"
+
+#: utils/stcr_manage.php:243
+msgid ""
+"There is a new comment to [post_title].\n"
+"Comment Link: [comment_permalink]\n"
+"Author: [comment_author]\n"
+"Comment:\n"
+"[comment_content]\n"
+"Permalink: [post_permalink]\n"
+"Manage your subscriptions: [manager_link]"
+msgstr ""
+"Új hozzászólás érkezett ehhez: [post_title].\n"
+"Hozzászólás Link: [comment_permalink]\n"
+"Írta: [comment_author]\n"
+"Hozzászólás:\n"
+"[comment_content]\n"
+"Permalink: [post_permalink]\n"
+"Értesítési beállítások: [manager_link]"
+
+#: utils/stcr_manage.php:244
+msgid "Please confirm your subscription to [post_title]"
+msgstr "Kérlek, erősítsd meg feliratkozásod erre [post_title]"
+
+#: utils/stcr_manage.php:245
+msgid ""
+"You have requested to be notified every time a new comment is added to:\n"
+"[post_permalink]\n"
+"\n"
+"Please confirm your request by clicking on this link:\n"
+"[confirm_link]"
+msgstr ""
+"Azt kérted, értesítsünk, amikor új hozzászólás érkezik ehhez:\n"
+"[post_permalink]\n"
+"\n"
+"Kérlek, erősítsd meg a feliratkozást az alábbi linkre kattintva:\n"
+"[confirm_link]"
+
+#: utils/stcr_manage.php:246
+msgid "Manage your subscriptions on [blog_name]"
+msgstr "Ártesítés beállítások - [blog_name]"
+
+#: utils/stcr_manage.php:247
+msgid ""
+"You have requested to manage your subscriptions to the articles on "
+"[blog_name]. Please check the Subscriptions management link in your email"
+msgstr ""
+
+#: utils/stcr_manage.php:248
+msgid ""
+"You have requested to manage your subscriptions to the articles on "
+"[blog_name]. Follow this link to access your personal page:\n"
+"[manager_link]"
+msgstr ""
+"A [blog_name] oldal értesítési beállításainak elérése:\n"
+"[manager_link]"
+
+#: utils/stcr_manage.php:470 utils/stcr_manage.php:471
+msgid "StCR System"
+msgstr ""
+
+#: utils/stcr_manage.php:490 utils/stcr_manage.php:518
+#: utils/stcr_manage.php:545 utils/stcr_manage.php:572
+#: utils/stcr_manage.php:599 utils/stcr_manage.php:626
+#: utils/stcr_manage.php:653 utils/stcr_manage.php:680
+#: utils/stcr_manage.php:707 utils/stcr_manage.php:735
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: utils/stcr_manage.php:785
+msgid "Subscriptions"
+msgstr "Feliratkozás"
+
+#: utils/stcr_manage.php:841
+msgid ""
+"Need help on how to use Subscribe to Comments Reloaded? Visit the official"
+msgstr ""
+"Segítségre van szükséged, a Subscribe to Comments Reloaded használatához? "
+"Látogasson el a hivatalos"
+
+#: utils/stcr_manage.php:841
+msgid "support forum"
+msgstr "támogatói fórumra"
+
+#: utils/stcr_manage.php:842
+msgid "Feeling generous?"
+msgstr "Nagylelkű napod van?"
+
+#: utils/stcr_manage.php:842
+msgid "Donate a few bucks!"
+msgstr "Adakozz egy pár dolcsit!"
+
+#: utils/stcr_upgrade.php:67
+msgid "Important Notice"
+msgstr "Fontos Közlendő"
+
+#: utils/stcr_upgrade.php:115
+msgid ""
+"<strong>Subscribe to Comments Reloaded:</strong> The information in your "
+"database has been sanitized to prevent the raw html messages. <a class="
+"\"dismiss\" href=\"#\">Dismiss.  </a><img class=\"stcr-loading-animation\" "
+"src=\""
+msgstr ""
+
+#: utils/stcr_upgrade.php:170
+msgid ""
+"<strong>Subscribe to Comments Reloaded:</strong> Comment subscription data "
+"from the <strong>Subscribe to Comments</strong> plugin was detected and "
+"automatically imported into <strong>Subscribe to Comments Reloaded</strong>."
+msgstr ""
+"<strong>Subscribe to Comments</strong> által kezelt feliratkozási adatokat "
+"találtunk és importáltunk is őket a <strong>Subscribe to Comments Reloaded</"
+"strong>-be."
+
+#: utils/stcr_upgrade.php:170
+msgid ""
+" It is recommended that you now <strong>deactivate</strong> Subscribe to "
+"Comments to prevent confusion between the two plugins."
+msgstr ""
+"Javasoljuk, hogy most <strong>kapcsold ki</strong> a Subscribe to Comments-"
+"et, hogy megelőzzük a két plugin összeakadását."
+
+#: utils/stcr_upgrade.php:171
+msgid ""
+"If you have subscription data from Subscribe to Comments Reloaded < v2.0 "
+"that you want to import, you'll need to import that data manually, as only "
+"one import routine will ever run to prevent data loss."
+msgstr ""
+"Ha a Subscribe to Comments Reloaded v2.0 előtti verzióban vannak "
+"importálandó feliratkozási adataid, ezeket manuálisan kell importálnod, mert "
+"az adatvesztés megelőzése érdekében csak egyetlen importálási folyamatot "
+"alkalmazunk."
+
+#: utils/stcr_upgrade.php:172 utils/stcr_upgrade.php:244
+#: utils/stcr_upgrade.php:393
+msgid ""
+"Please visit <a href=\"options-general.php?page=subscribe-to-comments-"
+"reloaded/options/index.php\">Settings -> Subscribe to Comments</a> to review "
+"your configuration.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img class="
+"\"stcr-loading-animation\" src=\""
+msgstr ""
+
+#: utils/stcr_upgrade.php:243
+msgid ""
+"<strong>Subscribe to Comments Reloaded:</strong> Comment subscription data "
+"from the <strong>Comment Reply Notification</strong> plugin was detected and "
+"automatically imported into <strong>Subscribe to Comments Reloaded</strong>."
+msgstr ""
+"<strong>Comment Reply Notification</strong> által kezelt feliratkozási "
+"adatokat találtunk és importáltunk is őket a <strong>Subscribe to Comments "
+"Reloaded</strong>-be."
+
+#: utils/stcr_upgrade.php:243
+msgid ""
+" It is recommended that you now <strong>deactivate</strong> Comment Reply "
+"Notification to prevent confusion between the two plugins."
+msgstr ""
+"Javasoljuk, hogy most <strong>kapcsold ki</strong> a Comment Reply "
+"Notification-t, hogy megelőzzük a két plugin összeakadását."
+
+#: utils/stcr_upgrade.php:390
+msgid ""
+"<strong>Subscribe to Comments Reloaded:</strong> Plugin options and comment "
+"subscription data from the <strong>WP Comment Subscriptions</strong> plugin "
+"were detected and automatically imported into <strong>Subscribe to Comments "
+"Reloaded</strong>."
+msgstr ""
+"<strong>WP Comment Subscriptions</strong> által kezelt feliratkozási "
+"adatokat és beállításokat találtunk és importáltunk is őket a "
+"<strong>Subscribe to Comments Reloaded</strong>-be."
+
+#: utils/stcr_upgrade.php:390
+msgid ""
+" It is recommended that you now <strong>deactivate</strong> WP Comment "
+"Subscriptions to prevent confusion between the two plugins."
+msgstr ""
+"Javasoljuk, hogy most <strong>kapcsold ki</strong> a WP Comment "
+"Subscriptions-t, hogy megelőzzük a két plugin összeakadását."
+
+#: utils/stcr_upgrade.php:391
+msgid ""
+"If you have subscription data from another plugin (such as Subscribe to "
+"Comments or Subscribe to Comments Reloaded < v2.0) that you want to import, "
+"you'll need to import that data manually, as only one import routine will "
+"ever run to prevent data loss."
+msgstr ""
+"Ha feliratkozási adataid vannak másik pluginban (mind például a Subscribe to "
+"Comments vagy a Subscribe to Comments Reloaded v2.0-nél régebbi verziói) és "
+"ezeket szeretnéd importálni, ezeket manuálisan kell importálnod, mert az "
+"adatvesztés megelőzése érdekében csak egyetlen importálási folyamatot "
+"alkalmazunk."
+
+#: utils/stcr_upgrade.php:392
+msgid ""
+"<strong>Note:</strong> If you were previously using the "
+"<code>wp_comment_subscriptions_show()</code> function or the <code>[wpcs-"
+"subscribe-url]</code> shortcode, you'll need to replace those with "
+"<code>subscribe_reloaded_show()</code> and <code>[subscribe-url]</code> "
+"respectively."
+msgstr ""
+"<strong>Megjegyzés:</strong> Ha korábban a "
+"<code>wp_comment_subscriptions_show()</code> funkciót vagy a <code>[wpcs-"
+"subscribe-url]</code> shortcode-ot használtad, ezeket le kell cserélned a "
+"<code>subscribe_reloaded_show()</code> funkcióra és a <code>[subscribe-url]</"
+"code> shortcode-ra."
+
+#: utils/stcr_upgrade.php:406
+msgid ""
+"<strong>Thank you for installing Subscribe to Comments Reloaded!</strong>."
+msgstr ""
+
+#: utils/stcr_upgrade.php:407 utils/stcr_upgrade.php:527
+msgid ""
+"If you find a bug or an issue you can report it <a href=\"https://github.com/"
+"stcr/subscribe-to-comments-reloaded/issues\" target=\"_blank\">here</a>."
+msgstr ""
+
+#: utils/stcr_upgrade.php:408
+msgid ""
+"Please consider to make a donation to support the plugin, you can donate via "
+"<a href=\"\n"
+"https://www.paypal.com/cgi-bin/webscr?"
+"cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
+"%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
+"%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
+msgstr ""
+
+#: utils/stcr_upgrade.php:410
+msgid ""
+"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
+"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for detailed "
+"information on plugin changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </"
+"a><img class=\"stcr-loading-animation\" src=\""
+msgstr ""
+
+#: utils/stcr_upgrade.php:421
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+"160106."
+msgstr ""
+
+#: utils/stcr_upgrade.php:422
+msgid ""
+"This version includes many changes and fixes to improve your experience with "
+"the plugin, including One Click Unsubscribe, Rich Text Editor to create HTML "
+"email templates, Subscription Checkbox position, and more!"
+msgstr ""
+
+#: utils/stcr_upgrade.php:423 utils/stcr_upgrade.php:438
+#: utils/stcr_upgrade.php:460 utils/stcr_upgrade.php:483
+#: utils/stcr_upgrade.php:504 utils/stcr_upgrade.php:532
+msgid ""
+"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
+"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for a "
+"complete list of changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img "
+"class=\"stcr-loading-animation\" src=\""
+msgstr ""
+
+#: utils/stcr_upgrade.php:436
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+"160115."
+msgstr ""
+
+#: utils/stcr_upgrade.php:437
+msgid ""
+"This version includes fixes to broken links while managing your subscriptions"
+msgstr ""
+
+#: utils/stcr_upgrade.php:451
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+"160831"
+msgstr ""
+
+#: utils/stcr_upgrade.php:452 utils/stcr_upgrade.php:474
+msgid "This version includes fixes to many bugs and also new features, "
+msgstr ""
+
+#: utils/stcr_upgrade.php:454 utils/stcr_upgrade.php:477
+msgid ""
+"<strong>New Feature</strong> Add new option to set the Reply To email "
+"address. This will help the subscribers to use the Reply option in their "
+"email agents."
+msgstr ""
+
+#: utils/stcr_upgrade.php:455 utils/stcr_upgrade.php:478
+msgid ""
+"<strong>New Feature</strong> Improve the Admin Menu for StCR. Replace the "
+"StCR menu on the Settings Menu for a new Menu with sub menus for the pages."
+msgstr ""
+
+#: utils/stcr_upgrade.php:456 utils/stcr_upgrade.php:479
+msgid ""
+"<strong>New Feature</strong> Safely Uninstall option to Delete the plugin "
+"without loosing your subscriptions. You can use this option also for reset "
+"all the settings, see the FAQ."
+msgstr ""
+
+#: utils/stcr_upgrade.php:457 utils/stcr_upgrade.php:480
+msgid ""
+"<strong>New Feature</strong> Now the WordPress Authors can use the "
+"<strong>Subscribe authors</strong> option to autor subscribe to a Custom "
+"Post Type."
+msgstr ""
+
+#: utils/stcr_upgrade.php:458 utils/stcr_upgrade.php:481
+msgid ""
+"<strong>New Feature</strong> A new field was added under the notification "
+"options to and the management link only by email and not to display it on "
+"the request link page."
+msgstr ""
+
+#: utils/stcr_upgrade.php:473
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+"160902"
+msgstr ""
+
+#: utils/stcr_upgrade.php:476
+msgid ""
+"<strong>Fix update</strong> this version Fixes some issue trigger by the "
+"previous 160831 version."
+msgstr ""
+
+#: utils/stcr_upgrade.php:493 wp_subscribe_reloaded.php:123
+msgid "Settings"
+msgstr "Beállítások"
+
+#: utils/stcr_upgrade.php:497
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+"160915"
+msgstr ""
+
+#: utils/stcr_upgrade.php:498 utils/stcr_upgrade.php:519
+msgid "This version includes fixes and improvements, "
+msgstr ""
+
+#: utils/stcr_upgrade.php:501
+msgid ""
+"<strong>Change</strong> the radio buttons in the management page for a "
+"dropdown."
+msgstr ""
+
+#: utils/stcr_upgrade.php:502
+msgid ""
+"<strong>Improve</strong> Email validation for empty values and using a regex."
+msgstr ""
+
+#: utils/stcr_upgrade.php:514
+msgid "Log Settings"
+msgstr ""
+
+#: utils/stcr_upgrade.php:518
+msgid ""
+"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
+msgstr ""
+
+#: utils/stcr_upgrade.php:522
+msgid ""
+"<strong>Fix</strong> Wrong confirmation link when the double check option is "
+"enable."
+msgstr ""
+
+#: utils/stcr_upgrade.php:523
+msgid "<strong>Improve</strong> Manage subscription page. Take a look ;)."
+msgstr ""
+
+#: utils/stcr_upgrade.php:528
+msgid "The support of this plugin is given thanks to your donations."
+msgstr ""
+
+#: utils/stcr_upgrade.php:529
+msgid ""
+"Help to keep the support alive. You can donate via <i class=\"fa fa-paypal\" "
+"aria-hidden=\"true\"></i> <a href=\"\n"
+"https://www.paypal.com/cgi-bin/webscr?"
+"cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
+"%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
+"%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
+msgstr ""
+
+#: utils/stcr_utils.php:195
+msgid "StCR Notification"
+msgstr "Értesítések"
+
+#: wp_subscribe_reloaded.php:1120
+msgid "Don't subscribe"
+msgstr "Nem iratkozom fel"
+
+#: wp_subscribe_reloaded.php:1121
+msgid "All"
+msgstr "Mindenre"
+
+#~ msgid ""
+#~ "Content of the notification email. Allowed tags: [post_title], "
+#~ "[comment_permalink], [comment_author], [comment_content], "
+#~ "[post_permalink], [manager_link]"
+#~ msgstr ""
+#~ "Az értesítő e-mail szövege. Használható címkék: [post_title], "
+#~ "[comment_permalink], [comment_author], [comment_content], "
+#~ "[post_permalink], [manager_link]"
+
+#~ msgid "Legend: Y = all comments, R = replies only, C = inactive"
+#~ msgstr ""
+#~ "Magyarázat: Y = minden hozzászólás, R = csak az enyémre adott válaszok, C "
+#~ "= kikapcsolva"
+
+#~ msgid ""
+#~ "Please visit <a href=\"options-general.php?page=subscribe-to-comments-"
+#~ "reloaded/options/index.php\">Settings -> Subscribe to Comments</a> to "
+#~ "review your configuration.<a class=\"dismiss\" href=\"#\">Got it.  </"
+#~ "a><img class=\"stcr-loading-animation\" src=\""
+#~ msgstr ""
+#~ "Látogass el a <a href=\"options-general.php?page=subscribe-to-comments-"
+#~ "reloaded/options/index.php\">Beállítások -> Subscribe to Comments</a> "
+#~ "oldalra a beállítások ellenőrzéséhez."
+
+#~ msgid "StCR Subscription Box Position"
+#~ msgstr "Új feliratkozás erre"
+
+#~ msgid ""
+#~ "Content of the management email. Allowed tags: [blog_name], [manager_link]"
+#~ msgstr ""
+#~ "Feliratkozás Kezelés e-mail szövege. Használható címkék: [blog_name], "
+#~ "[manager_link]"
+
+#~ msgid ""
+#~ "The information in your database has been sanitize to prevent the raw "
+#~ "html messages."
+#~ msgstr ""
+#~ "Az adatbázisban található információ tisztításra kerül, a html tartalom "
+#~ "elkerüléséhez."
+
+#~ msgid "Set to Y"
+#~ msgstr "Beállítás Y-ra"
+
+#~ msgid "Daily digest"
+#~ msgstr "Napi legjobb"
+
+#~ msgid "Subscribed"
+#~ msgstr "Feliratkozva"
+
+#~ msgid "Digest"
+#~ msgstr "Kivonat"
+
+#~ msgid "Pending"
+#~ msgstr "Függőben"
+
+#~ msgid "Bold"
+#~ msgstr "Kövér"
+
+#~ msgid "Italic"
+#~ msgstr "Dőlt"
+
+#~ msgid "Link"
+#~ msgstr "Link"
+
+#~ msgid "Image"
+#~ msgstr "Kép"
+
+#~ msgid "Notify authors"
+#~ msgstr "Szerzők értesítése"
+
+#~ msgid "Notify the administrator when a new comment is posted."
+#~ msgstr "Adminisztrátor értesítése, ha új hozzászólás érkezik."
+
+#~ msgid "Sponsor's Corner"
+#~ msgstr "Szponzor Sarok"
+
+#~ msgid ""
+#~ "If you want to sponsor this plugin, don't hesitate to <a href='http://"
+#~ "behstant.com/negocio/contact.php' target='_blank'>contact me</a>."
+#~ msgstr ""
+#~ "Ha támogatni akarod ezt a plugin-t, ne habozz <a href='http://www."
+#~ "duechiacchiere.it/contatto'>keress meg</a>."
+
+#~ msgid "Management Page ID"
+#~ msgstr "ID старонкі кіравання"
+
+#~ msgid "Management page"
+#~ msgstr "Старонка кіравання"
+
+#~ msgid "Awaiting confirmation"
+#~ msgstr "Чакае пацверджання"
+
+#~ msgid "Stats"
+#~ msgstr "Статыстыка"
+
+#~ msgid "Other Messages"
+#~ msgstr "Іншыя паведамленні"
+
+#~ msgid "The status has been successfully updated. Rows affected:"
+#~ msgstr "Статут паспяхова абноўлены. Зменены радкі:"
+
+#~ msgid ""
+#~ "Update the email address associated to a specific subscription (by post "
+#~ "ID)."
+#~ msgstr "Абнавіць эл. адрас вызначанай падпіскі (па ID запісы)."
+
+#~ msgid "PID"
+#~ msgstr "ID запісы"
+
+#~ msgid "Change status"
+#~ msgstr "Змяніць статут"
+
+#~ msgid ""
+#~ "Change the status of an email address or permanently delete all its "
+#~ "subscriptions."
+#~ msgstr ""
+#~ "Змяніць статут электроннага адрасу ці цалкам выдаліць усё яго падпіскі."
+
+#~ msgid "Resume"
+#~ msgstr "Аднавіць"
+
+#~ msgid ""
+#~ "You can \"mass update\" all the occurrences of a given email address "
+#~ "(exact matches only)."
+#~ msgstr ""
+#~ "Вы можаце змяніць усе выкарыстанні вызначанага электроннага адрасу ў базе "
+#~ "дадзеных на новы (толькі для дакладных супадзенняў)."
+
+#~ msgid "Search email address"
+#~ msgstr "Шукаць электронны адрас"
+
+#~ msgid "Legend: Y: subscribed, N: suspended, C: awaiting confirmation"
+#~ msgstr "(Расшыфроўка: Y: падпісана, N: прыпынена, C: чакае пацверджання)"
+
+#~ msgid "StCR table has been successfully optimized."
+#~ msgstr "Табліца StCR паспяхова абноўлена."
+
+#~ msgid "Filter by date"
+#~ msgstr "Filtra per data"
+
+#~ msgid "Month"
+#~ msgstr "Mese"
+
+#~ msgid "Year"
+#~ msgstr "Anno"
+
+#~ msgid "No data to display"
+#~ msgstr "Nessun dato da visualizzare"
+
+#~ msgid "optimize"
+#~ msgstr "аптымізаваць"
+
+#~ msgid "Database"
+#~ msgstr "База дадзеных"
+
+#~ msgid "Engine"
+#~ msgstr "Прылада"
+
+#~ msgid "Created on"
+#~ msgstr "Створана"
+
+#~ msgid "Records"
+#~ msgstr "Запісы"
+
+#~ msgid "Average Record Length"
+#~ msgstr "Сярэдняя даўжыня запісу"
+
+#~ msgid "Approximate Overhead"
+#~ msgstr "Прибл. аб'ём карыстацкіх дадзеных"
+
+#~ msgid "Custom CSS Class"
+#~ msgstr "Клас змянянага CSS"
+
+#~ msgid ""
+#~ "Custom CSS class to associate to the checkbox, if you want to customize "
+#~ "its style."
+#~ msgstr ""
+#~ "Клас змянянага CSS для акенца выбару, калі вы жадаеце змяніць яго стыль"
+
+#~ msgid "Subscriptions have been successfully updated."
+#~ msgstr "Падпіскі паспяхова абноўлены."
+
+#~ msgid "Sorry, no subscriptions found."
+#~ msgstr "Выбачыце, падпіскі не знойдзены."
+
+#~ msgid "All the subscriptions have been successfully updated."
+#~ msgstr "Усе падпіскі паспяхова абноўлены."
+
+#~ msgid ""
+#~ "Disable the virtual management page if you need to create a <a href="
+#~ "\"http://lab.duechiacchiere.it/index.php?topic=71.0\">real page</a> to "
+#~ "make your theme happy."
+#~ msgstr ""
+#~ "Disable the virtual management page if you need to create a <a href="
+#~ "\"http://lab.duechiacchiere.it/index.php?topic=71.0\">real page</a> to "
+#~ "make your theme happy."
+
+#~ msgid "Remove or suspend email address"
+#~ msgstr "Выдаліць ці прыпыніць электронны адрас"
+
+#~ msgid ""
+#~ "Your subscription has been successfully confirmed. Thank you for using "
+#~ "our notification service. Now you will receive a message every time "
+#~ "someone posts a new comment to"
+#~ msgstr ""
+#~ "La tua iscrizione &egrave; stata confermata con successo. Grazie per aver "
+#~ "usato il nostro servizio di notifica. Da ora in poi riceverai un "
+#~ "messaggio ogni volta che qualcuno lascia un commento per:"
+
+#~ msgid ""
+#~ "The permalink for your management page. This page <b>does not</b> "
+#~ "actually exist in the system, is generated on-the-fly. It should start "
+#~ "with a / (i.e. <code>/manage-subscriptions</code>)"
+#~ msgstr ""
+#~ "Il <b>permalink</b> per la pagina di gestione. Questa pagina non esiste "
+#~ "in Wordpress, viene generata al volo dal plugin. Dovrebbe iniziare con "
+#~ "uno / (ad es. <code>/gestisci-sottoscrizioni</code)"
+
+#~ msgid ""
+#~ "The ID (<strong>not the permalink!</strong>) of the management page you "
+#~ "created."
+#~ msgstr ""
+#~ "L'ID (<strong>non il permalink!</strong>) della pagina di gestione che "
+#~ "hai creato."
+
+#~ msgid ""
+#~ "Send a notification email to confirm the subscription (to avoid addresses "
+#~ "misuse)"
+#~ msgstr ""
+#~ "Invia una email per confermare l'iscrizione ad un dato articolo (per "
+#~ "evitare l'uso scorretto di indirizzi email di terzi)"
+
+#~ msgid ""
+#~ "Oops, Huston we have a problem! Please contact the administrator of this "
+#~ "blog for further details."
+#~ msgstr ""
+#~ "Ouch, Huston abbiamo un problema! Per favore contatta l'amministratore di "
+#~ "questo blog per maggiori informazioni."
+
+#~ msgid ""
+#~ "You can manage the subscriptions to your articles on this page. In order "
+#~ "to cancel or suspend one or more notifications, select the corresponding "
+#~ "checkbox(es) and click on the button at the end of the list."
+#~ msgstr ""
+#~ "Tramite questa pagina puoi gestire le tue sottoscrizioni al mio blog. Se "
+#~ "desideri disdire o sospendere una o pi&ugrave; notifiche, spunta le "
+#~ "caselle corrispondenti agli articoli e clicca sul pusante in fondo alla "
+#~ "lista."
+
+#~ msgid ""
+#~ "You can manage your subscriptions to the article of this blog on this "
+#~ "page. In order to cancel or suspend one or more notifications, select the "
+#~ "corresponding checkbox(es) and click on the button at the end of the "
+#~ "list. You are currently subscribed to:"
+#~ msgstr ""
+#~ "Tramite questa pagina puoi gestire le tue sottoscrizioni al mio blog. Se "
+#~ "desideri disdire o sospendere una o pi&ugrave; notifiche, spunta le "
+#~ "caselle corrispondenti agli articoli e clicca sul pusante in fondo alla "
+#~ "lista. Al momento, risulti iscritto a:"
+
+#~ msgid ""
+#~ "If you know the ID of a post you want to manage, enter it in the field "
+#~ "here below to see a list of email addresses subscribed to it"
+#~ msgstr ""
+#~ "Se conosci l'ID dell'articolo che vuoi gestire, inseriscilo nel campo qui "
+#~ "di seguito per accedere alla relativa lista di indirizzi email iscritti "
+#~ "alla discussione"
+
+#~ msgid "Search post ID"
+#~ msgstr "Cerca ID"
+
+#~ msgid ""
+#~ "If you know the email address you want to manage, enter it in the field "
+#~ "here below to see a list of articles this reader is currently watching"
+#~ msgstr ""
+#~ "Se conosci l'indirizzo email che vuoi gestire, inseriscilo nel campo qui "
+#~ "di seguito per accedere alla relativa lista di articoli che sta "
+#~ "attualmente seguendo"
+
+#~ msgid "Search by email address"
+#~ msgstr "Cerca per indirizzo email"
+
+#~ msgid ""
+#~ "You are the author of this entry. <a href='[manager_link]'>Manage</a> its "
+#~ "subscriptions."
+#~ msgstr ""
+#~ "Sei l'autore di quest'articolo. Gestisci gli utenti <a "
+#~ "href='[manager_link]'>iscritti</a> alla discussione."
+
+#~ msgid "Filters"
+#~ msgstr "Filtri"
+
+#~ msgid "Search by post ID"
+#~ msgstr "Cerca per ID dell'articolo"
+
+#~ msgid "Thank you"
+#~ msgstr "Grazie"
+
+#~ msgid "\"From\" name"
+#~ msgstr "Nome del mittente"
+
+#~ msgid "Dashboard"
+#~ msgstr "Bacheca"
+
+#~ msgid "Visitors"
+#~ msgstr "Visitatori"
+
+#~ msgid "Traffic Sources"
+#~ msgstr "Sorgenti di traffico"
+
+#~ msgid "Content"
+#~ msgstr "Contenuto"
+
+#~ msgid "Raw Data"
+#~ msgstr "Dati grezzi"
+
+#~ msgid "World Map"
+#~ msgstr "Mappa"
+
+#~ msgid "Current filters:"
+#~ msgstr "Filtri attivi:"
+
+#~ msgid "Filter pageviews where"
+#~ msgstr "Filtra accessi in cui:"
+
+#~ msgid "Browser"
+#~ msgstr "Browser"
+
+#~ msgid "Browser version"
+#~ msgstr "Versione Browser"
+
+#~ msgid "CSS version"
+#~ msgstr "Versione CSS"
+
+#~ msgid "Country Code"
+#~ msgstr "Codice Paese"
+
+#~ msgid "Domain"
+#~ msgstr "Dominio"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "Language Code"
+#~ msgstr "Codice Lingua"
+
+#~ msgid "Operating System"
+#~ msgstr "Sistema operativo"
+
+#~ msgid "Permalink"
+#~ msgstr "Permalink"
+
+#~ msgid "Referer"
+#~ msgstr "Riferimento"
+
+#~ msgid "Screen Resolution"
+#~ msgstr "Risoluzione schermo"
+
+#~ msgid "Is equal to"
+#~ msgstr "Uguale a"
+
+#~ msgid "Day"
+#~ msgstr "Giorno"
+
+#~ msgid "Go"
+#~ msgstr "Vai"
+
+#~ msgid "reset"
+#~ msgstr "annulla"
+
+#~ msgid "Pageviews by day - Click on a day for hourly metrics"
+#~ msgstr ""
+#~ "Pagine al giorno - Clicca su un giorno per vedere il dettaglio orario"
+
+#~ msgid "Pageviews by hour"
+#~ msgstr "Accessi orari"
+
+#~ msgid "About WP-SlimStat"
+#~ msgstr "Informazioni su WP-SlimStat"
+
+#~ msgid "Total Hits"
+#~ msgstr "Totale accessi"
+
+#~ msgid "Data Size"
+#~ msgstr "Dimensione DB"
+
+#~ msgid "Tracking Active"
+#~ msgstr "Tracciamento attivo"
+
+#~ msgid "Summary for"
+#~ msgstr "Panoramica del"
+
+#~ msgid "this period"
+#~ msgstr "periodo"
+
+#~ msgid "Unique IPs"
+#~ msgstr "IP unici"
+
+#~ msgid "Avg Pageviews"
+#~ msgstr "Media accessi"
+
+#~ msgid "On"
+#~ msgstr "Il"
+
+#~ msgid "Last Month"
+#~ msgstr "Mese scorso"
+
+#~ msgid "User agents"
+#~ msgstr "User agents"
+
+#~ msgid "Popular pages of all time"
+#~ msgstr "Pagine in assoluto pi&ugrave; popolari"
+
+#~ msgid "Open %s in a new window"
+#~ msgstr "Apri %s in una nuova finestra"
+
+#~ msgid "Recent Keywords"
+#~ msgstr "Parole chiave recenti"
+
+#~ msgid "Recent Countries"
+#~ msgstr "Paesi recenti"
+
+#~ msgid "c-"
+#~ msgstr "c-"
+
+#~ msgid "Traffic Sources Overview"
+#~ msgstr "Panoramica sorgenti di traffico"
+
+#~ msgid "Human Visits by day - Click on a day for hourly metrics"
+#~ msgstr ""
+#~ "Visite umane al giorno - Clicca su un giorno per vedere il dettaglio "
+#~ "orario"
+
+#~ msgid "Human Visits by hour"
+#~ msgstr "Visite umane per ogni ora"
+
+#~ msgid "Human visits"
+#~ msgstr "Visitatori umani"
+
+#~ msgid "One time visitors"
+#~ msgstr "Una sola visita"
+
+#~ msgid "Bots"
+#~ msgstr "Bot"
+
+#~ msgid "Pages per visit"
+#~ msgstr "Pagine per visita"
+
+#~ msgid "Longest visit"
+#~ msgstr "Visita pi&ugrave; lunga"
+
+#~ msgid "Languages"
+#~ msgstr "Lingue"
+
+#~ msgid "l-"
+#~ msgstr "l-"
+
+#~ msgid "Languages - Just Visitors"
+#~ msgstr "Lingue - Solo visitatori"
+
+#~ msgid "IP Addresses and Domains"
+#~ msgstr "Indirizzi IP e Domini"
+
+#~ msgid "Recent Browsers"
+#~ msgstr "Browser recenti"
+
+#~ msgid "Operating Systems"
+#~ msgstr "Sistemi operativi"
+
+#~ msgid "Browsers and Operating Systems"
+#~ msgstr "Browser e Sistemi operativi"
+
+#~ msgid "Screen Resolutions"
+#~ msgstr "Risoluzioni schermo"
+
+#~ msgid "Screen Resolutions with colordepth"
+#~ msgstr "Risoluzioni schermo e colori"
+
+#~ msgid "Plugins"
+#~ msgstr "Plugin"
+
+#~ msgid "Flash"
+#~ msgstr "Flash"
+
+#~ msgid "Silverlight"
+#~ msgstr "Silverlight"
+
+#~ msgid "Acrobat"
+#~ msgstr "Acrobat"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Media Player"
+#~ msgstr "Media Player"
+
+#~ msgid "Real Player"
+#~ msgstr "Real Player"
+
+#~ msgid "Top Countries"
+#~ msgstr "Panoramica dei Paesi"
+
+#~ msgid "Details about Recent Visits"
+#~ msgstr "Dettagli sulle visite recenti"
+
+#~ msgid "Direct visit to"
+#~ msgstr "Visita diretta a"
+
+#~ msgid "Traffic Sources by day - Click on a day for hourly metrics"
+#~ msgstr ""
+#~ "Sorgenti di traffico al giorno - Clicca su un giorno per vedere il "
+#~ "dettaglio orario"
+
+#~ msgid "Traffic Sources by hour"
+#~ msgstr "Sorgenti di traffico orarie"
+
+#~ msgid "Unique Referers"
+#~ msgstr "Sorgenti uniche"
+
+#~ msgid "Direct Visits"
+#~ msgstr "Visite dirette"
+
+#~ msgid "Unique Pages Referred"
+#~ msgstr "Pagine uniche riferite"
+
+#~ msgid "Recent bouncing pages"
+#~ msgstr "Pagine di rimbalzo"
+
+#~ msgid "Unique Internal"
+#~ msgstr "Ricerche interne"
+
+#~ msgid "Top Keywords"
+#~ msgstr "Parole chiave principali"
+
+#~ msgid "Traffic Sources for"
+#~ msgstr "Sorgenti di traffico del"
+
+#~ msgid "Sites for"
+#~ msgstr "Siti del"
+
+#~ msgid "Recent Keywords &raquo; Pages"
+#~ msgstr "Parole chiave &raquo; Pagine"
+
+#~ msgid "Open referer in a new window"
+#~ msgstr "Apri il riferimento in una nuova finestra"
+
+#~ msgid ""
+#~ "Average pageviews per visit by day - Click on a day for hourly metrics"
+#~ msgstr ""
+#~ "Pagine al giorno - Clicca su un giorno per vedere il dettaglio orario"
+
+#~ msgid "Average pageviews per visit by hour"
+#~ msgstr "Media oraria delle pagine per visita"
+
+#~ msgid "Recent Contents"
+#~ msgstr "Contenuti recenti"
+
+#~ msgid "Recent Feeds"
+#~ msgstr "Feed recenti"
+
+#~ msgid "Recent 404 pages"
+#~ msgstr "Pagine 404 recenti"
+
+#~ msgid "Recent Internal Searches"
+#~ msgstr "Ricerche interne"
+
+#~ msgid "Top Exit Pages for"
+#~ msgstr "Pagine d'uscita del"
+
+#~ msgid "Recent Outbound Links"
+#~ msgstr "Link in uscita"
+
+#~ msgid "Recent Downloads"
+#~ msgstr "Download recenti"
+
+#~ msgid "Order by"
+#~ msgstr "Ordina per"
+
+#~ msgid "Country"
+#~ msgstr "Paese"
+
+#~ msgid "Date/Time"
+#~ msgstr "Data/Ora"
+
+#~ msgid "Language"
+#~ msgstr "Lingua"
+
+#~ msgid "Descending"
+#~ msgstr "Decrescente"
+
+#~ msgid "Starting from record #"
+#~ msgstr "A partire dalla riga n."
+
+#~ msgid "No records found"
+#~ msgstr "Nessun record trovato"
+
+#~ msgid "Records: %d - %d. Order by: %s %s"
+#~ msgstr "Righe: %d - %d. Ordinamento: %s %s"
+
+#~ msgid "N/A"
+#~ msgstr "N/D"
+
+#~ msgid "Direct visit"
+#~ msgstr "Visita diretta"
+
+#~ msgid ""
+#~ "World Map - Values represent the percentage of hits coming from that "
+#~ "Country"
+#~ msgstr ""
+#~ "Mappa del mondo - I valori rappresentano le visite in percentuale "
+#~ "provenienti da ogni Paese"
+
+#~ msgid "Pluggable custom reports"
+#~ msgstr "Rapporti personalizzati"
+
+#~ msgid ""
+#~ "Yes, you can! Create and view your personalized analytics for WP "
+#~ "SlimStat. In order to do this, just write a new plugin that fetches the "
+#~ "desired information from the database and then hook it to the action "
+#~ "<code>wp_slimstat_custom_report</code>. A demo plugin comes with the "
+#~ "package. It shows how to write custom reports in 5 minutes. You can find "
+#~ "it inside the plugin&apos;s folder: <code>wp-slimstat-custom-report-demo."
+#~ "php</code>. For more information, visit my <a href=\"http://lab."
+#~ "duechiacchiere.it/\" target=\"_blank\">support forum</a>."
+#~ msgstr ""
+#~ "Si, si pu&ograve;! Creare e vedere le proprie statistiche personalizzate "
+#~ "per WP SlimStat. Per far questo, ti basta scrivere un nuovo plugin che "
+#~ "preleva le informazioni desiderate dal database, per poi agganciarlo al "
+#~ "codice <code>wp_slimstat_custom_report</code>. Un esempio &egrave; "
+#~ "incluso con la distribuzione. Mostra come scrivere rapporti "
+#~ "personalizzati in 5 minuti. Lo trovi nella cartella del plugin: <code>wp-"
+#~ "slimstat-custom-report-demo.php</code>. Per ulteriori informazioni, "
+#~ "visita il mio <a href=\"http://lab.duechiacchiere.it/\" target=\"_blank"
+#~ "\">forum di supporto</a>."
+
+#~ msgid "Domains"
+#~ msgstr "Domini"
+
+#~ msgid "Visits"
+#~ msgstr "Visite"
+
+#~ msgid "Unique Visits"
+#~ msgstr "Visite uniche"
