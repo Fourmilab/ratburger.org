@@ -83,9 +83,12 @@ function alpr_replace_content($content)
 				}
 				echo $alpr_post_ending; // Add limited ending
 				// Add link if link text exists
+				/* RATBURGER LOCAL CODE
+				   Disable this share so it doesn't happen even if accidentally enabled
 				if ($alpr_post_linktext != "" && $alpr_share == "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>" ;
 				}
+				*/
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
 				}
@@ -146,9 +149,12 @@ function alpr_replace_content($content)
 				
 				echo $alpr_post_ending; // Add limited ending
 				// Add link if link text exists
+				/* RATBURGER LOCAL CODE
+				   Disable this share so it doesn't happen even if accidentally enabled
 				if ($alpr_post_linktext != "" && $alpr_share == "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
 				}
+				*/
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
 				}
@@ -173,13 +179,43 @@ function alpr_replace_content($content)
 			
 			if ($ismoretag2[0] != "more") {
 				echo $paragraphcut[0];
-				echo $alpr_post_ending;
-				if ($alpr_post_linktext != "" && $alpr_share == "on"){
-					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
+				/* RATBURGER LOCAL CODE */
+				/* Remove void paragraphs from the end of $paragraphcut */
+
+				while ((count($paragraphcut) > 0)
+					&& (trim($paragraphcut[count($paragraphcut) - 1]) === '')) {
+// error_log('Trimmed element ' . count($paragraphcut) . ' (' . $paragraphcut[count($paragraphcut) - 1] . ')');
+					array_splice($paragraphcut, count($paragraphcut) - 1);
+				} 
+
+				/* Include first *two* paragraphs of content, if present. */
+				if (count($paragraphcut) > 1) {
+					echo "</p>";
+					echo $paragraphcut[1];
 				}
-				if ($alpr_post_linktext != "" && $alpr_share != "on"){
-					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+				
+				// Only append continuation and link if we trimmed content
+/*
+if (count($paragraphcut) == 3) {
+error_log(print_r(count($paragraphcut), true));
+error_log($paragraphcut[2]);
+}
+*/
+				if (count($paragraphcut) > 2) {
+					/* END RATBURGER LOCAL CODE */
+					echo $alpr_post_ending;
+					/* RATBURGER LOCAL CODE
+					   Disable this share so it doesn't happen even if accidentally enabled
+					if ($alpr_post_linktext != "" && $alpr_share == "on"){
+						echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
+					}
+					*/
+					if ($alpr_post_linktext != "" && $alpr_share != "on"){
+						echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+					}
+				/* RATBURGER LOCAL CODE */
 				}
+				/* END RATBURGER LOCAL CODE */
 				echo "</p>";
 			}
 			else {
@@ -296,8 +332,6 @@ function alpr_admin(){
     	Auto Limit Posts
     	    		<br><br>
     	<span style="margin-left:24px;margin-bottom:22px;"><a style="color:#2b95ff;text-decoration:none;letter-spacing:2px;font-size:15px;" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8LEU4AZ8DWET2" target="_blank">You are very welcome to donate for Auto Limit Posts any amount you like</a></span>
-    		<br>
-    <span style="margin-left:24px;"><a style="color:#2b95ff;text-decoration:none;letter-spacing:2px;font-size:15px;" href="https://www.socializer.info/share.asp?docurl=https://www.thefreewindows.com/16305/download-auto-limit-posts-free-wordpress-plugin-create-automatic-excerpts&doctitle=Auto Limit Posts" target="_blank">Share</a> <i style="font-size:15px;">&</i> <a style="color:#2b95ff;text-decoration:none;letter-spacing:2px;font-size:15px;" target="_blank" href="https://www.socializer.info/follow.asp?docurlf=https://www.facebook.com/TheFreeWindows&docurlt=https://twitter.com/TheFreeWindows&myname=TheFreeWindows">Follow!</a></span>
     	</h2>
   
   
@@ -360,16 +394,7 @@ function alpr_admin(){
 			
 			<div style="line-height:188%;"><strong style="margin-left:22px;">Optional Link CSS</strong> (You can also use an <b>#alpr</b> reference in your main style sheet)
 		<br> &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; Default is &mdash; <span style="color:grey;">border: none; text-decoration: none; letter-spacing: 1px;</span></div>
-		
-		
-		<br><br>
-		
-		<label style="margin-left:22px;"><input type="checkbox" name="alpr_share" <?php if($alpr_share== "on"){ echo 'checked="checked"'; } ?>/> Include also a Share option</label> <br>
-		<div style="margin-left:22px;color:grey;margin-top:8px;">(This will let your visitors or yourself share a post on top social networks even when browsing an index / archive page.)</div>
-		<br>
-		<input style="width:222px;color:#C45A57;box-shadow: 2px 2px 7px #DBDBDB; -webkit-box-shadow: 2px 2px 7px #DBDBDB; -moz-box-shadow: 2px 2px 7px #DBDBDB;" name="alpr_post_sharetext" type="text" value="<?php echo $input_sharetext; ?>" /> <strong>Share description</strong> (e.g. Share it now!)
-		
-		
+				
 			</td>
 		</tr>
 	</table>
@@ -409,15 +434,11 @@ function alpr_admin(){
 
 <div class="submit" style="background:#F5F5F5;padding:7pt;margin:12px 42px 32px 0;-moz-border-radius: 29px;border-radius: 29px;">
 
-<input style="cursor:pointer;letter-spacing:7px;color:#2b95ff;-moz-border-radius: 22px;border-radius: 22px;border:1px solid white;background:white;padding:1px 19px;font-size:17px;" type="submit" name="Submit" value="<?php _e(' Save your settings '); ?>" />  &raquo;&nbsp; <a style="color:#2b95ff;text-decoration:none;letter-spacing:2px;font-size:17px;" href="https://www.socializer.info/share.asp?docurl=https://www.thefreewindows.com/16305/download-auto-limit-posts-free-wordpress-plugin-create-automatic-excerpts&doctitle=Auto Limit Posts" target="_blank">Share this plugin with your friends</a> &nbsp; &nbsp;  &raquo;&nbsp; <a style="color:#2b95ff;text-decoration:none;letter-spacing:2px;font-size:17px;" target="_blank" href="https://www.socializer.info/follow.asp?docurlf=https://www.facebook.com/TheFreeWindows&docurlt=https://twitter.com/TheFreeWindows&docurlg=https://plus.google.com/107469524242742386932&myname=TheFreeWindows">Follow!</a>
+<input style="cursor:pointer;letter-spacing:7px;color:#2b95ff;-moz-border-radius: 22px;border-radius: 22px;border:1px solid white;background:white;padding:1px 19px;font-size:17px;" type="submit" name="Submit" value="<?php _e(' Save your settings '); ?>" />
 
 </div>
 
 </form>
-
-<div align="center" style="padding:22px;font-size:17px;letter-spacing:1px;">
-	
-	&raquo; Don't miss also the <a style="color:#2b95ff;text-decoration:none;font-size:18px;font-variant:small-caps;" target="_blank" href="https://www.thefreewindows.com/5598/socializer-share-wordpress-posts-pages/">Socializer!</a> & the <a style="color:#2b95ff;text-decoration:none;font-size:18px;font-variant:small-caps;" target="_blank" href="https://www.thefreewindows.com/15816/reveal-posts-visitors-share-social-networks/">Social Share Motivator</a> free WordPress plugins</div>
 
 
 <div align="center" style="text-align:center;margin-top:70px;"> &nbsp;  &nbsp;  &nbsp; <a style="color:silver;text-decoration:none;font-weight:bold;font-size:20pt;letter-spacing:3px;" href="https://www.thefreewindows.com/" target="_blank">TheFreeWindows</a></div>
