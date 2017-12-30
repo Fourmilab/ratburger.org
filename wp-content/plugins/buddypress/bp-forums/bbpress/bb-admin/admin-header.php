@@ -46,7 +46,7 @@ if ( 'f' == bb_get_user_setting( 'fm' ) ) {
 				<h1><a href="<?php bb_uri(); ?>"><span><?php bb_option('name'); ?></span> <em><?php _e('Visit Site'); ?></em></a></h1>
 				<div id="bbUserInfo">
 					<p>
-						<?php printf( __('Howdy, %1$s'), bb_get_profile_link( array( 'text' => bb_get_current_user_info( 'name' ) ) ) );?>
+						<?php printf( __('Greetings, %1$s'), bb_get_profile_link( array( 'text' => bb_get_current_user_info( 'name' ) ) ) );?>
 						| <?php bb_logout_link( array( 'redirect' => bb_get_uri( null, null, BB_URI_CONTEXT_HEADER ) ) ); ?>
 					</p>
 				</div>
