@@ -1,0 +1,127 @@
+/**
+ * WP External Links Plugin
+ * Admin Style
+ */
+
+.wpel-no-label,
+.wpel-no-label th,
+.wpel-no-label td {
+    padding-top: 0;
+}
+.wpel-no-label th:after {
+    content: '\00a0';
+}
+
+.wpel-hidden {
+    display: none;
+}
+
+/**
+ * Menu Icon 
+ */
+
+a.toplevel_page_wpel-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f14c';
+}
+
+a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
+    font-family: FontAwesome;
+    content:  '\f14c';
+}
+
+/**
+ * Tabs 
+ */
+
+.wpel-settings-page .nav-tab i,
+.wpel-network-page .nav-tab i {
+    margin-right: 5px;
+}
+
+.wpel-settings-page .nav-tab-support,
+.wpel-network-page .nav-tab-support {
+    float: right;
+}
+
+.wpel-settings-page form,
+.wpel-network-page form {
+    position: relative;
+}
+
+.js-wpel-apply-child td {
+    padding-left: 30px;
+}
+
+.wpel-icon-type-image-column {
+    min-width: 10em;
+    float: left;
+}
+.wpel-icon-type-image-column:after {
+    clear: both;
+}
+
+::-webkit-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: #ccc;
+   font-style: italic;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ccc;
+   font-style: italic;
+}
+:-ms-input-placeholder {
+   color: #ccc;
+   font-style: italic;
+}
+
+
+/**
+ * Background Icon
+ */
+
+.wpel-settings-page form:before,
+.wpel-network-page form:before {
+    font-family: FontAwesome;
+    opacity: 0.2;
+    color: #aaa;
+    font-size: 200pt;
+    position: absolute;
+    top: 140px;
+    right: 40px;
+    z-index: -1;
+}
+
+.wpel-settings-page-external-links form:before {
+    content: "\f14c";
+}
+.wpel-settings-page-internal-links form:before {
+    content: "\f096";
+}
+.wpel-settings-page-excluded-links form:before {
+    content: "\f14d";
+}
+.wpel-settings-page-exceptions form:before {
+    content: "\f009";
+}
+.wpel-settings-page-admin form:before {
+    content: "\f085";
+}
+.wpel-settings-page-support form:before {
+    content: "\f128";
+}
+
+.wpel-network-page-network-settings form:before {
+    content: "\f0e8";
+}
+.wpel-network-page-network-admin-settings form:before {
+    content: "\f085";
+}
+.wpel-network-page-support form:before {
+    content: "\f128";
+}
+
+
