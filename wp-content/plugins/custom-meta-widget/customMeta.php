@@ -203,6 +203,14 @@ function widget( $args, $instance ) {
 	foreach( $content as $checked => $output )
 		if( (int) esc_attr( $instance[$checked] ) === 1 ) echo $output; ?>
 	
+	<?php
+        /* RATBURGER LOCAL CODE
+           Hard-code local entries in the Meta widget */ ?>
+        <li><a href="/index.php/podcasts/">Podcasts</a></li>
+        <li><a href="/index.php/statistics/">Access Statistics</a></li>
+        <?php
+	/* END LOCAL CODE */ ?>
+
 	</ul>
     
 	<?php echo $after_widget;
