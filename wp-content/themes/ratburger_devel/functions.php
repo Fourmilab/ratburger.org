@@ -467,7 +467,9 @@ function ratburger_forums_filter_kses( $content ) {
 	/* Ratburger additional allowed tags */
 	$forums_allowedtags['pre'] = array();
 	$forums_allowedtags['pre']['style'] = array();
+	$forums_allowedtags['span'] = array();
 	$forums_allowedtags['span']['style'] = array();
+	$forums_allowedtags['div'] = array();
 	$forums_allowedtags['div']['style'] = array();
 
         /**
@@ -483,6 +485,29 @@ function ratburger_forums_filter_kses( $content ) {
 
 remove_filter('bp_get_the_topic_post_content', 'bp_forms_filter_kses', 1);
 add_filter('bp_get_the_topic_post_content', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_the_topic_post_excerpt', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_the_topic_post_excerpt', 'ratburger_forums_filter_kses', 1);
+
+remove_filter('bp_get_activity_action', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_action', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_content_body', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_content_body', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_content', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_content', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_parent_content', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_parent_content', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_latest_update', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_latest_update', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_latest_update_excerpt', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_latest_update_excerpt', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_get_activity_feed_item_description', 'bp_forms_filter_kses', 1);
+add_filter('bp_get_activity_feed_item_description', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_activity_content_before_save', 'bp_forms_filter_kses', 1);
+add_filter('bp_activity_content_before_save', 'ratburger_forums_filter_kses', 1);
+remove_filter('bp_activity_latest_update_content', 'bp_forms_filter_kses', 1);
+add_filter('bp_activity_latest_update_content', 'ratburger_forums_filter_kses', 1);
+
+
 
 /*
 
@@ -494,6 +519,13 @@ function ratburger_add_allowed_tags() {
 	global $allowedtags;
 
 	$allowedtags['pre'] = array('style'=>array());
+	$allowedtags['ol'] = array();
+	$allowedtags['ul'] = array();
+	$allowedtags['li'] = array();
+	$allowedtags['p'] = array();
+	$allowedtags['p'] ['style'] = array();
+	$allowedtags['span'] = array();
+	$allowedtags['span'] ['style'] = array();
 }
 
 add_action('init', 'ratburger_add_allowed_tags', 10);
