@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: de_DE\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-17 14:08+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: na <na@na.com>\n"
+"Language-Team: JUICEDaniel <juicedaniel@blog.juiced.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../quote-comments.php:60
+msgid "Click here or select text to quote comment"
+msgstr "Zum Zitieren hier klicken oder Text auswählen"
+
+#: ../quote-comments.php:146
+msgid "Quote-link title?"
+msgstr ""
+
+#: ../quote-comments.php:152
+msgid "Show author in quote?"
+msgstr ""
+
+#: ../quote-comments.php:153
+msgid "Show authors"
+msgstr ""
+
+#: ../quote-comments.php:158
+msgid "Insert Quote link using which hook?"
+msgstr ""
+
+#: ../quote-comments.php:159
+msgid "Which plugin hook should be used to insert the quote link?"
+msgstr ""
+
+#: ../quote-comments.php:203
+msgid "settings saved."
+msgstr ""
+
+#: ../quote-comments.php:210
+msgid ": General Options"
+msgstr ""
+
+#: ../quote-comments.php:215
+#: ../quote-comments.php:327
+msgid "Save changes"
+msgstr ""
+
+#~ msgid "Quote"
+#~ msgstr "Zitat"
