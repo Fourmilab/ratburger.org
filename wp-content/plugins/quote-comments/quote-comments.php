@@ -2,35 +2,17 @@
 /*
 Plugin Name: Quote Comments
 Plugin URI: https://github.com/metodiew/Quote-Comments
-Description: Creates a little quote icon in comment boxes which, when clicked, copies that comment to the comment box wrapped in blockquotes.
-Version: 2.2
-Author: Stanko Metodiev
+Description: Creates a little quote icon in comment boxes which, when clicked, copies that comment to the comment box wrapped in blockquotes.  Extensively modified for use on Ratburger.org.
+Version: 3.0
+Author: Stanko Metodiev, John Walker
 Author URI: https://metodiew.com
 */
-
-/**
- * @TODO
- * 
- * This is the real TO DO list:
- * - fix all notifications, notes, issues and errors
- * - improve the code base
- */
-
- 
- /**
-  * That's the previous @TODO:
-  * 
-	- phase out "get_comment_time" option
-	- clean up remaining functions for reply
-	- improve reply layout
-	- recode JS
-  */
 
 load_plugin_textdomain('quote-comments', NULL, dirname(plugin_basename(__FILE__)) . "/languages");
 
 // Add a define variable, we'll need it later :)
 if ( ! defined( 'QUOTE_COMMENTS_VERSION' ) ) {
-	define( 'QUOTE_COMMENTS_VERSION', '2.2' );
+	define( 'QUOTE_COMMENTS_VERSION', '3.0' );
 }
 
 function quote_scripts () {
@@ -48,15 +30,12 @@ if (!is_admin()) {
 	add_action('init', 'quote_scripts');
 }
 
-
-
-
-
-
 function add_quote_button($output) {
 
-
 	global $user_ID;
+//if ($user_ID && !current_user_can('administrator')) {  /* *** RESTRICT TO ADMINISTRATOR FOR TESTING *** */
+// return $output;
+//}
 	if (get_option('comment_registration') && !$user_ID) {
 		
 		return $output;
@@ -65,11 +44,17 @@ function add_quote_button($output) {
 
 		$commentID = get_comment_id();
 
+		/* RATBURGER LOCAL CODE
+		   We use a different TinyMCE comment mechanism.  Always
+		   enable it.
 		if (function_exists('mcecomment_init')) {
 			$mce = ", true";
 		} else {
 			$mce = ", false";
 		}
+		*/
+		$mce = ", true";
+		/* END RATBURGER LOCAL CODE */
 
 		// quote link
 		$button = "";
@@ -86,16 +71,21 @@ function add_quote_button($output) {
 		$button .= 'title="' . __('Click here or select text to quote comment', 'quote-comments'). '" ';
 		
 		if( get_option('quote_comments_author') == true ) {
-			$button .= 'onmousedown="quote(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
+			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
 		} else {
-			$button .= 'onmousedown="quote(\'' . get_comment_ID() .'\', null, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
+			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', null, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
 		}
 		
+		/* RATBURGER LOCAL CODE
+		   We don't need this.
 		$button .= 'try { addComment.moveForm(\'div-comment-'.get_comment_ID().'\', \''.get_comment_ID().'\', \'respond\', \''.get_the_ID().'\'); } catch(e) {}; ';
+		*/
 		$button .= 'return false;">';
 		$button .= "" . get_option('quote_comments_title') . "";
 		
 		
+		/* RATBURGER LOCAL CODE
+		   We don't use this.
 		// reply link
 		if (get_option('quote_comments_replylink') == true) {
 			$button .= '</a>&nbsp;&nbsp;';
@@ -106,6 +96,7 @@ function add_quote_button($output) {
 			$button .= 'return false;">';
 			$button .= "" . get_option('quote_comments_replytitle') . "";
 		}
+		*/
 		
 		
 		// close anchor link if body text (if using get comment time, this </a> is already here due to a bug)
@@ -130,78 +121,65 @@ function add_quote_button($output) {
 
 }
 
-// this function to be phased out with "get_comment_time"
+/*  Add the quote button to the comment header.  This gets called by a hook on
+    get_comment_time, which actually gets called twice within our theme.  We
+    must use a crude hack to only append the button on the second instance,
+    where it really belongs.  */
+
 function add_quote_button_filter($output) {
 
 	global $user_ID;
+//if ($user_ID && !current_user_can('administrator')) {  /* *** RESTRICT TO ADMINISTRATOR FOR TESTING *** */
+// return $output;
+//}
 	if (get_option('comment_registration') && !$user_ID) {
 		
 		return $output;
 		
 	} else if (!is_feed() && comments_open()) {
 
+		/* RATBURGER LOCAL CODE
+		   We have to check for and skip the first invocation of the
+		   comment date, used in internal metadata, and not try to
+		   inject the quote link there.  This brutal hack recognises
+		   the time zone signature which appears at the end of the
+		   metadata item and returns it unmodified. */
+		if (preg_match("/[\+\-]\d\d:\d\d$/", $output)) {
+			return $output;
+		}
+		/* END RATBURGER LOCAL CODE */
+
 		$commentID = get_comment_id();
 
-		if (function_exists('mcecomment_init')) {
-			$mce = ", true";
-		} else {
-			$mce = ", false";
-		}
+                $mce = ", true";
 
 		// quote link
 		$button = "";
-		$button .= '</a>&nbsp;&nbsp;';
+		$button .= '</time></a>&nbsp;&nbsp;';
 		$button .= '<span id="name'.get_comment_ID().'" style="display: none;">'.get_comment_author().'</span>';
 		$button .= '<a class="comment_quote_link" ';
 		$button .= 'href="javascript:void(null)" ';
 		$button .= 'title="' . __('Click here or select text to quote comment', 'quote-comments'). '" ';
 		
 		if( get_option('quote_comments_author') == true ) {
-			$button .= 'onmousedown="quote(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
+			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
 		} else {
-			$button .= 'onmousedown="quote(\'' . get_comment_ID() .'\', null, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
+			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', null, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
 		}
 		
-		$button .= 'try { addComment.moveForm(\'div-comment-'.get_comment_ID().'\', \''.get_comment_ID().'\', \'respond\', \''.get_the_ID().'\'); } catch(e) {}; ';
 		$button .= 'return false;">';
 		$button .= "" . get_option('quote_comments_title') . "";
 		
-		
-		// reply link
-		if (get_option('quote_comments_replylink') == true) {
-			$button .= '</a>&nbsp;&nbsp;';
-			$button .= '<a class="comment_reply_link" href="javascript:void(null)" ';
-			$button .= 'title="' . __('Click here to respond to author', 'quote-comments'). '" ';
-			$button .= 'onmousedown="inlinereply(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
-			$button .= 'try { addComment.moveForm(\'div-comment-'.get_comment_ID().'\', \''.get_comment_ID().'\', \'respond\', \''.get_the_ID().'\'); } catch(e) {}; ';
-			$button .= 'return false;">';
-			$button .= "" . get_option('quote_comments_replytitle') . "";
-		}
-		
-		// close anchor link if body text
-		if (get_option('quote_comments_pluginhook') == "get_comment_text") {
-			$button .= "</a>";
-		}
-
-
+		$button .= "</a>";
+		$button .= '<a href="javascript:void(null)"><time datetime="00:00">'; // Dummy to close tags properly
 
 		if (comments_open() && have_comments() && get_comment_type() != "pingback" && get_comment_type() != "trackback") {
 			return($output . $button);
 		}
-
-	
 	} else {
-	
 		return($output . $button);
-	
 	}
-
-
-
 }
-
-
-
 
 if (get_option('quote_comments_pluginhook') == 'get_comment_time') {
 	if (!is_admin()) {
@@ -209,16 +187,11 @@ if (get_option('quote_comments_pluginhook') == 'get_comment_time') {
 	}
 } else {
 	if (!is_admin()) {
-		//add_action('get_comment_text', 'add_quote_button');
 		add_filter('get_comment_text', 'add_quote_button');
 	}
 }
 
-
-
-
 function add_quote_tags($output) {
-	
 
 	global $user_ID;
 	if (get_option('comment_registration') && !$user_ID) {
@@ -234,51 +207,19 @@ function add_quote_tags($output) {
 		return $output;
 		
 	}
-
-
-/*
-	global $user_ID;
-	if (get_option('comment_registration') && !$user_ID) {
-		
-		echo $output;
-		
-	} else if (!is_feed() && comments_open()) {
-	
-	    echo "\n<div id='q-".get_comment_ID()."'>\n\n\n" . $output . "\n\n\n</div>\n";
-	
-	} else {
-	
-		echo $output;
-		
-	}
-*/
-	
 }
+
 if (!is_admin()) {
-	//add_filter('get_comment_text', 'add_quote_tags');
 	add_filter('get_comment_text', 'add_quote_tags', 1);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Options Page
  */
 
-
 // Options
 $qc_themename = "Quote Comments";
 $qc_shortname = "quote_comments";
-
 
 $qc_options = array (
 
@@ -314,12 +255,7 @@ $qc_options = array (
 		"options" => array( 'get_comment_time' => "<code>get_comment_time</code> (places the link close to the authors name)",
 							'get_comment_text' => "<code>get_comment_text</code> (places the link after the comment body text -- most compatible)") ),
 
-
 );
-
-
-
-
 
 function quotecomments_add_admin() {
 
@@ -493,7 +429,5 @@ function quotecomments_admin() {
 }
 
 add_action('admin_menu' , 'quotecomments_add_admin'); 
-
-
 
 ?>

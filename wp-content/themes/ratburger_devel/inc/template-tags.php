@@ -43,6 +43,13 @@ function twentysixteen_entry_meta() {
 
 	if ( 'post' === get_post_type() ) {
 		twentysixteen_entry_taxonomies();
+		/* RATBURGER LOCAL CODE */
+		if (!(is_front_page() || is_home())) {
+			printf('<a class="post_quote_link" href="javascript:void(null)" title="Click here or select text to quote post" onclick="qc_quote_post(&#039;' .
+				get_the_ID() . '&#039;, &#039;' .
+				get_the_author() . '&#039;, &#039;comment&#039;);return false;" data-wpel-link="internal">[Quote]</a>');
+		}
+		/* END RATBURGER LOCAL CODE */
 	}
 
 	if ( ! is_singular() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
