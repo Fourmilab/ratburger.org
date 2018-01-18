@@ -275,7 +275,7 @@ case 'preview':
 	wp_redirect($url);
 	exit();
 
-/* LOCAL CODE */
+/* RATBURGER LOCAL CODE */
 /* If the query is 'draft', revert a published post to draft status. */
 case 'draft':
         /* check_admin_referer('update-post_' . $post_id); */
@@ -294,7 +294,7 @@ case 'draft':
 
         wp_redirect( add_query_arg('reverted', 1, $sendback) );
         exit();
-/* END LOCAL CODE */
+/* END RATBURGER LOCAL CODE */
 
 default:
 	/**

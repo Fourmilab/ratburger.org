@@ -214,7 +214,11 @@ function wp_admin_bar_my_account_item( $wp_admin_bar ) {
 
 	$avatar = get_avatar( $user_id, 26 );
 	/* translators: %s: current user's display name */
+    /* RATBURGER LOCAL CODE
+	$howdy  = sprintf( __( 'Howdy, %s' ), '<span class="display-name">' . $current_user->display_name . '</span>' );
+    */
 	$howdy  = sprintf( __( 'Greetings, %s' ), '<span class="display-name">' . $current_user->display_name . '</span>' );
+    /* END RATBURGER LOCAL CODE */
 	$class  = empty( $avatar ) ? '' : 'with-avatar';
 
 	$wp_admin_bar->add_menu( array(

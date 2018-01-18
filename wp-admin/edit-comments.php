@@ -8,7 +8,11 @@
 
 /** WordPress Administration Bootstrap */
 require_once( dirname( __FILE__ ) . '/admin.php' );
+/* RATBURGER LOCAL CODE
+if ( ! current_user_can( 'edit_posts' ) ) {
+*/
 if ( ! current_user_can( 'edit_others_posts' ) ) {
+/* END RATBURGER LOCAL CODE */
 	wp_die(
 		'<h1>' . __( 'Cheatin&#8217; uh?' ) . '</h1>' .
 		'<p>' . __( 'Sorry, you are not allowed to edit comments.' ) . '</p>',
