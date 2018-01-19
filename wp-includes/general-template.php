@@ -878,7 +878,10 @@ function get_custom_logo( $blog_id = 0 ) {
 	if ( $custom_logo_id ) {
 		$custom_logo_attr = array(
 			'class'    => 'custom-logo',
+			/* RATBURGER LOCAL CODE
+			   Disable this.  It causes an HTML5 validation error.
 			'itemprop' => 'logo',
+			END RATBURGER LOCAL CODE */
 		);
 
 		/*
@@ -894,7 +897,12 @@ function get_custom_logo( $blog_id = 0 ) {
 		 * If the alt attribute is not empty, there's no need to explicitly pass
 		 * it because wp_get_attachment_image() already adds the alt attribute.
 		 */
+		/* RATBURGER LOCAL CODE
+		   Remove "itemprop", which causes an HTML5 validation error.
 		$html = sprintf( '<a href="%1$s" class="custom-logo-link" rel="home" itemprop="url">%2$s</a>',
+		*/
+		$html = sprintf( '<a href="%1$s" class="custom-logo-link" rel="home">%2$s</a>',
+		/* END RATBURGER LOCAL CODE */
 			esc_url( home_url( '/' ) ),
 			wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr )
 		);

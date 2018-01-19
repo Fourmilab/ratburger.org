@@ -90,7 +90,12 @@ function alpr_replace_content($content)
 				}
 				*/
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
+					/* RATBURGER LOCAL CODE
+					   Disable id='alpr'.  It's a duplicate
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+					*/
+					echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+					/* END RATBURGER LOCAL CODE */
 				}
 				echo "</p>";
 			}
@@ -156,7 +161,12 @@ function alpr_replace_content($content)
 				}
 				*/
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
+					/* RATBURGER LOCAL CODE
+                                  	   Remove id='alpr' which causes duplicate	
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+					*/
+					echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+					/* END RATBURGER LOCAL CODE */
 				}
 				echo "</p>";
 			}
@@ -211,7 +221,12 @@ error_log($paragraphcut[2]);
 					}
 					*/
 					if ($alpr_post_linktext != "" && $alpr_share != "on"){
+						/* RATBURGER LOCAL CODE
+						   Remove id='alpr' which causes validation fail due to duplicate
 						echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+						*/
+						echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+						/* END RATBURGER LOCAL CODE */
 					}
 				/* RATBURGER LOCAL CODE */
 				}

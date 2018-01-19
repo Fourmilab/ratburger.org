@@ -56,9 +56,7 @@
 					?>
 				</a>
 				<?php echo $wp_ulike_template['counter']; ?>
-			</div>
-			<?php echo $wp_ulike_template['microdata']; ?>
-		</div>
+			</div><?php echo $wp_ulike_template['microdata']; ?></div>
 	<?php
 		do_action( 'wp_ulike_after_template' );
 		return ob_get_clean(); // data is now in here
