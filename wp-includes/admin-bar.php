@@ -556,7 +556,14 @@ function wp_admin_bar_my_sites_menu( $wp_admin_bar ) {
 			) );
 		}
 
+		/* RATBURGER LOCAL CODE
+		   Show comments item only if user can edit_others_posts,
+		   since edit-comments.php allows editing comments of
+		   all users.
 		if ( current_user_can( 'edit_posts' ) ) {
+		*/
+		if ( current_user_can( 'edit_others_posts' ) ) {
+		/* END RATBURGER LOCAL CODE */
 			$wp_admin_bar->add_menu( array(
 				'parent' => $menu_id,
 				'id'     => $menu_id . '-c',
@@ -786,7 +793,14 @@ function wp_admin_bar_new_content_menu( $wp_admin_bar ) {
  * @param WP_Admin_Bar $wp_admin_bar
  */
 function wp_admin_bar_comments_menu( $wp_admin_bar ) {
+	/* RATBURGER LOCAL CODE
+           Show comments item only if user can edit_others_posts,
+	   since edit-comments.php allows editing comments of
+           all users.
 	if ( !current_user_can('edit_posts') )
+	*/
+	if ( !current_user_can('edit_others_posts') )
+	/* END RATBURGER LOCAL CODE */
 		return;
 
 	$awaiting_mod = wp_count_comments();

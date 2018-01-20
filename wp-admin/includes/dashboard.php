@@ -271,6 +271,14 @@ function wp_dashboard_right_now() {
 	}
 	// Comments
 	$num_comm = wp_count_comments();
+    /* RATBURGER LOCAL CODE 
+       We only want to provide a link to edit-comments.php, which
+       allows editing comments of all users, if the user has the
+       edit_others_posts capability.  We do this in a somewhat
+       baroque way to allow easier integration of this local code
+       (in two blocks, see below) into future WordPress releases. */
+    if (current_user_can( 'edit_others_posts' )) {
+    /* END RATBURGER LOCAL CODE */
 	if ( $num_comm && ( $num_comm->approved || $num_comm->moderated ) ) {
 		$text = sprintf( _n( '%s Comment', '%s Comments', $num_comm->approved ), number_format_i18n( $num_comm->approved ) );
 		?>
@@ -289,6 +297,21 @@ function wp_dashboard_right_now() {
 		?>"><a href="edit-comments.php?comment_status=moderated" aria-label="<?php esc_attr_e( $aria_label ); ?>"><?php echo $text; ?></a></li>
 		<?php
 	}
+    /* RATBURGER LOCAL CODE
+       This is the second block of local code associated with only
+       providing an edit_comments.php link for users with
+       edit_others_posts capability.  It handles the case for users
+       without this capability, and shows just the approved comment
+       count. */
+    } else {
+	if ( $num_comm && $num_comm->approved ) {
+		$text = sprintf( _n( '%s Comment', '%s Comments', $num_comm->approved ), number_format_i18n( $num_comm->approved ) );
+		?>
+		<li class="comment-count"><?php echo $text; ?></li>
+		<?php
+    }
+    }
+    /* END RATBURGER LOCAL CODE */
 
 	/**
 	 * Filters the array of extra elements to list in the 'At a Glance'
