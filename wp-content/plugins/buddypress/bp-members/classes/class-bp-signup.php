@@ -164,9 +164,24 @@ class BP_Signup {
 
 		$sql = array();
 		$signups_table  = buddypress()->members->table_name_signups;
+/* RATBURGER LOCAL CODE
+   For some reason which I have not the time nor inclination to
+   investigate, the line above comes up with a null string, which
+   causes the subsequent MySQL query to fail with a scary error
+   message in the error log.  The following brutal hack hammers in
+   the correct MySQL table name in the Ratburger-db database so
+   the request will be correctly processed. */
+if ($signups_table == '') {
+    $signups_table = 'wp_signups';
+}
+/* END RATBURGER LOCAL CODE */
 		$sql['select']  = "SELECT * FROM {$signups_table}";
 		$sql['where']   = array();
 		$sql['where'][] = "active = 0";
+/* RATBURGER LOCAL CODE
+   Diagnostic for MySQL error messages on bad login attempts
+error_log("class_bp_signup query " . $signups_table);
+   END RATBURGER LOCAL CODE */
 
 		if ( empty( $r['include'] ) ) {
 
