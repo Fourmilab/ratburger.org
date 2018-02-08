@@ -1,11 +1,11 @@
 === Really Simple SSL ===
 Contributors: RogierLankhorst
 Donate link: https://www.paypal.me/reallysimplessl
-Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, tls, security, secure socket layers, hsts
+Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, TLS, security, secure socket layers, HSTS
 Requires at least: 4.2
 License: GPL2
 Tested up to: 4.9
-Stable tag: 2.5.24
+Stable tag: 2.5.25
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -18,7 +18,7 @@ To keep it lightweight, the options are kept to a minimum. The entire site will 
 * Activate this plugin
 * Enable SSL with one click
 
-Always backup before you go! If you do not have a sound backup policy, start having one! For a snapshot, install duplicator.
+Always backup before you go! If you do not have a sound backup policy, start having one! See https://really-simple-ssl.com/knowledge-base/backing-up-your-site/ for our recommendations.
 
 Really Simple SSL is on [GitHub](https://github.com/rlankhorst/really-simple-ssl) as well!
 
@@ -35,12 +35,12 @@ some cool features.
 * Premium support
 
 = What does the plugin actually do =
-* The plugin handles most issues that Wordpress has with ssl, like when you're behind a revers proxy/loadbalancer, or when no headers are passed which WordPress can use to detect SSL.
+* The plugin handles most issues that WordPress has with SSL, like when you're behind a reverse proxy/loadbalancer, or when no headers are passed which WordPress can use to detect SSL.
 * All incoming requests are redirected to https. Default with an internal WordPress redirect, but you can also enable a .htaccess redirect.
 * The site url and home url are changed to https.
 * Your insecure content is fixed by replacing all http:// urls with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
 
-[contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. More information about me or my work can be found on my [website](https://www.rogierlankhorst.com).
+[contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. Really Simple SSL is developed by [Really Simple Plugins](https://www.really-simple-plugins.com).
 
 = Like to have this plugin in your language? =
 Translations can be added very easily [here](https://translate.wordpress.org/projects/wp-plugins/really-simple-ssl). If you do, I can get you added as translation editor to approve the translations.
@@ -78,6 +78,10 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 2.5.25 =
+* Fix: "switch mixed content fixer hook" option not visible on the multisites settings page
+* Tweak: several typo's and uppercasing
+
 = 2.5.24 =
 * Fix: On multisite, admin_url forced current blog URL's over http even when the current blog was loaded over https. This will now only force http for other blog_urls than the current one, when they are on http and not https.
 
@@ -234,7 +238,7 @@ fix: Adjusted selection order of .htaccess rules, preventing redirect loops
 * Tweak: htaccess files and wpconfig are rewritten when the settings page is loaded
 
 = 2.3.9 =
-* Fix: removed internal Wordpress redirect as it causes issues for some users.
+* Fix: removed internal WordPress redirect as it causes issues for some users.
 * Tweak: improved url request method
 
 = 2.3.8 =
@@ -269,7 +273,7 @@ fix: Adjusted selection order of .htaccess rules, preventing redirect loops
 * Fixed some bugs in deactivation and activation of multisite
 
 = 2.3.0 =
-* Given more control over activation process by explicity asking to enable SSL.
+* Gave more control over activation process by explicity asking to enable SSL.
 * Added a notice if .htaccess is not writable
 
 = 2.2.20 =
@@ -298,7 +302,7 @@ Added code so JetPack will run smoothly on SSL as well, thanks to Konstantin for
 
 = 2.2.12 =
 * To prevent lockouts, it is no longer possible to activate plugin when wp-config.php is not writable. In case of loadbalancers, activating ssl without adding the necessary fix in the wp-config would cause a redirect loop which would lock you out of the admin.
-* Moved redirect above the wordpress rewrite rules in the htaccess.
+* Moved redirect above the WordPress rewrite rules in the htaccess file.
 * Added an option to disable the fallback javascript redirection to https.
 
 = 2.2.11 =
@@ -316,7 +320,7 @@ Edited the wpconfig define check to prevent warnings when none are needed.
 = 2.2.7 =
 * Extended detection of homeurl and siteurl constants in wp-config.php with regex to allow  for spaces in code.
 * Changed text domain to make this plugin language packs ready
-* Added 404 detection to ssl detection function, so subdomains can get checked properly on subdomain multisite installs
+* Added 404 detection to SSL detection function, so subdomains can get checked properly on subdomain multisite installs
 
 = 2.2.6 =
 Added slash in redirect rule
@@ -335,9 +339,9 @@ documentation update
 
 = 2.2.0 =
 * Added per site activation for multisite, but excluded this option for subfolder installs.
-* Added script to easily deactivate the plugin when you are locked out of the wordpress admin.
-* Added support for a situation where no server variables are given which can indicate ssl, which can cause Wordpress to generate errors and redirect loops.
-* Removed warning on Woocommerce force ssl after checkout, as only unforce ssl seems to be causing problems
+* Added script to easily deactivate the plugin when you are locked out of the WordPress admin.
+* Added support for a situation where no server variables are given which can indicate SSL, which can cause WordPress to generate errors and redirect loops.
+* Removed warning on WooCommerce force SSL after checkout, as only unforce SSL seems to be causing problems
 * Added Russian translation, thanks to xsascha
 * Improved redirect rules in the .htaccess
 * Added option te disable the plugin from editing the .htaccess in the settings
@@ -345,12 +349,12 @@ documentation update
 * Fixed a bug where insecure content scan would not scan custom post types
 
 = 2.1.18 =
-* Made woocommerce warning dismissable, as it does not seem to cause issues
-* Fixed a bug caused by WP native plugin_dir_url() returning relative path, resulting in no ssl messages
+* Made WooCommerce warning dismissable, as it does not seem to cause issues
+* Fixed a bug caused by WP native plugin_dir_url() returning relative path, resulting in no SSL messages
 
 = 2.1.17 =
 * Fixed a bug where example .htaccess rewrite rules weren't generated correctly
-* Added woocommerce to the plugin conflicts handler, as some settings conflict with this plugin, and are superfluous when you force your site to ssl anyway.
+* Added WooCommerce to the plugin conflicts handler, as some settings conflict with this plugin, and are superfluous when you force your site to SSL anyway.
 * Excluded transients from mixed content scan results
 
 = 2.1.16 =
@@ -361,14 +365,14 @@ documentation update
 
 = 2.1.15 =
 * Improved user interface with tabs
-* Changed function to test ssl test page from file_get_contents to curl, as this improves response time, which might prevent "no ssl messages"
-* Extended the mixed content fixer to replace src="http:// links, as these should always be https on an ssl site.
-* Added an errormessage in case of force rewrite titles in Yoast SEO plugin is used, as this prevents the plugin from fixing mixed content
+* Changed function to test SSL test page from file_get_contents to curl, as this improves response time, which might prevent "no SSL messages"
+* Extended the mixed content fixer to replace src="http:// links, as these should always be https on an SSL site.
+* Added an error message in case of force rewrite titles in Yoast SEO plugin is used, as this prevents the plugin from fixing mixed content
 
 = 2.1.14 =
 * Added support for loadbalancer and is_ssl() returning false: in that case a wp-config fix is needed.
 * Improved performance
-* Added debuggin option, so a trace log can be viewed
+* Added debugging option, so a trace log can be viewed
 * Fixed a bug where the rlrsssl_replace_url_args filter was not applied correctly.
 
 = 2.1.13 =
@@ -380,7 +384,7 @@ documentation update
 * Readded HSTS to the htaccess rules, but now as an option. Adding this should be done only when you are sure you do not want to revert back to http.
 
 = 2.1.11 =
-* Improved instructions regarding deinstalling when locked out of back-end
+* Improved instructions regarding uninstalling when locked out of back-end
 
 = 2.1.10 =
 * Removed HSTS headers, because it is difficult to roll back.
@@ -413,7 +417,7 @@ documentation update
 * Added detection of loadbalancer and cdn so .htaccess rules can be adapted accordingly. Fixes some redirect loop issues.
 * Added the possibility to disable the auto replace of insecure links
 * Added a scan to scan the website for insecure links
-* Added detection of in wp-config.php defined siteurl and homeurl, which could prevent from successfull url change.
+* Added detection of in wp-config.php defined siteurl and homeurl, which could prevent from successful url change.
 * Dropped the force ssl option (used when not ssl detected)
 * Thanks to Peter Tak, [PTA security](http://www.pta-security.nl/) for mentioning the owasp security best practice https://www.owasp.org/index.php/HTTP_Strict_Transport_Security in .htaccess,
 
