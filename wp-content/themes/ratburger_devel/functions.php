@@ -433,6 +433,8 @@ function twentysixteen_widget_tag_cloud_args( $args ) {
 }
 add_filter( 'widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args' );
 
+/* RATBURGER LOCAL CODE */
+
 /**
  * Custom KSES filter for the Forums component.
  *
@@ -464,13 +466,15 @@ function ratburger_forums_filter_kses( $content ) {
         $forums_allowedtags['code'] = array();
         $forums_allowedtags['blockquote'] = array();
 
-	/* Ratburger additional allowed tags */
-	$forums_allowedtags['pre'] = array();
-	$forums_allowedtags['pre']['style'] = array();
-	$forums_allowedtags['span'] = array();
-	$forums_allowedtags['span']['style'] = array();
-	$forums_allowedtags['div'] = array();
-	$forums_allowedtags['div']['style'] = array();
+	    /* Ratburger additional allowed tags */
+	    $forums_allowedtags['pre'] = array();
+	    $forums_allowedtags['pre']['style'] = array();
+	    $forums_allowedtags['span'] = array();
+	    $forums_allowedtags['span']['style'] = array();
+	    $forums_allowedtags['div'] = array();
+	    $forums_allowedtags['div']['style'] = array();
+        $forums_allowedtags['sub'] = array();
+        $forums_allowedtags['sup'] = array();
 
         /**
          * Filters the allowed HTML tags for forum posts.
@@ -507,8 +511,6 @@ add_filter('bp_activity_content_before_save', 'ratburger_forums_filter_kses', 1)
 remove_filter('bp_activity_latest_update_content', 'bp_forms_filter_kses', 1);
 add_filter('bp_activity_latest_update_content', 'ratburger_forums_filter_kses', 1);
 
-
-
 /*
 
     Allow additional tags in WordPress KSES filtering
@@ -526,6 +528,8 @@ function ratburger_add_allowed_tags() {
 	$allowedtags['p'] ['style'] = array();
 	$allowedtags['span'] = array();
 	$allowedtags['span'] ['style'] = array();
+    $allowedtags['sub'] = array();
+    $allowedtags['sup'] = array();
 }
 
 add_action('init', 'ratburger_add_allowed_tags', 10);
@@ -550,3 +554,19 @@ function ratburger_filter_tiny_mce_before_init( $options ) {
 }
 
 add_filter('tiny_mce_before_init', 'ratburger_filter_tiny_mce_before_init');
+
+/*
+
+    Add our custom items to the Meta widget
+
+*/
+
+function ratburger_meta_widget_items() {
+    echo '<li><a href="https://twitter.com/Ratburger_org" target="_blank">Twitter</a></li>';
+    echo '<li><a href="/index.php/podcasts/">Podcasts</a></li>';
+    echo '<li><a href="/index.php/statistics/">Access Statistics</a></li>';
+}
+
+add_action('wp_meta', 'ratburger_meta_widget_items');
+
+/* END RATBURGER LOCAL CODE */
