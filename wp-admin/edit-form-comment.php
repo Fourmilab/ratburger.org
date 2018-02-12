@@ -33,7 +33,17 @@ if ( 'approved' === wp_get_comment_status( $comment ) && $comment->comment_post_
 	</div>
 </div>
 <?php endif; ?>
-<div id="namediv" class="stuffbox">
+<?php
+/* RATBURGER LOCAL CODE
+   Only display the box which allows editing of comment
+   originator if the user has edit_others_posts capability. */
+echo '<div id="namediv" class="stuffbox"';
+if (!current_user_can('edit_others_posts')) {
+    echo ' style="display: none;"';
+}
+echo ">\n";
+/* END RATBURGER LOCAL CODE */
+?>
 <div class="inside">
 <fieldset>
 <legend class="edit-comment-author"><?php _e( 'Author' ) ?></legend>
@@ -78,7 +88,16 @@ if ( 'approved' === wp_get_comment_status( $comment ) && $comment->comment_post_
 <div class="submitbox" id="submitcomment">
 <div id="minor-publishing">
 
-<div id="misc-publishing-actions">
+<?php
+/* RATBURGER LOCAL CODE
+   Hide publishing actions if the user cannot edit_others_posts. */
+echo '<div id="misc-publishing-actions"';
+if (!current_user_can('edit_others_posts')) {
+    echo ' style="display: none;"';
+}
+echo ">\n";
+/* END RATBURGER LOCAL CODE */
+?>
 
 <fieldset class="misc-pub-section misc-pub-comment-status" id="comment-status-radio">
 <legend class="screen-reader-text"><?php _e( 'Comment status' ); ?></legend>
@@ -173,6 +192,12 @@ endif; ?>
 
 <div id="postbox-container-2" class="postbox-container">
 <?php
+/* RATBURGER LOCAL CODE */
+if (!current_user_can('edit_others_posts')) {
+    echo '<div style="display: none;">';
+    echo "\n";
+}
+/* END RATBURGER LOCAL CODE */
 /** This action is documented in wp-admin/edit-form-advanced.php */
 do_action( 'add_meta_boxes', 'comment', $comment );
 
@@ -188,6 +213,11 @@ do_action( 'add_meta_boxes_comment', $comment );
 do_meta_boxes(null, 'normal', $comment);
 
 $referer = wp_get_referer();
+/* RATBURGER LOCAL CODE */
+if (!current_user_can('edit_others_posts')) {
+    echo "</div>\n";
+}
+/* END RATBURGER LOCAL CODE */
 ?>
 </div>
 
