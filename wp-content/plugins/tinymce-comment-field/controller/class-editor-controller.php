@@ -46,10 +46,18 @@ class TMCECF_EditorController {
         endforeach;
 
         ob_start();
+        /* RATBURGER LOCAL CODE
+           Enable Add Media in comment composition editor.
         wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true, 'quicktags' => false,
                                        'media_buttons' => false,
                                        'tinymce' => array('height' => $height, 'directionality' => $text_direction,
                                                           'content_css' => $content_css)));
+        */
+        wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true, 'quicktags' => false,
+                                       'media_buttons' => true,
+                                       'tinymce' => array('height' => $height, 'directionality' => $text_direction,
+                                                          'content_css' => $content_css)));
+        /* END RATBURGER LOCAL CODE */        
         $comment_editor = ob_get_contents();
         ob_end_clean();
         $comment_editor = str_replace('post_id=0', 'post_id=' . get_the_ID(), $comment_editor);
