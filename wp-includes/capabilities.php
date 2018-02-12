@@ -373,7 +373,24 @@ function map_meta_cap( $cap, $user_id ) {
 		 * Fall back to the edit_posts capability, instead.
 		 */
 		if ( $post ) {
+            /* RATBURGER LOCAL CODE
 			$caps = map_meta_cap( 'edit_post', $user_id, $post->ID );
+            */
+            if (current_user_can('edit_others_posts')) {
+                /* Those able to edit the posts of other are allowed
+                   to edit comments of others as well. */
+                $caps[] = 'edit_others_posts';
+            } else {
+                /* We allow the users to edit only their own comments,
+                   regardless of the owner of the post on which the
+                   comment was made. */
+                if ($comment->user_id && ($user_id == $comment->user_id)) {
+                    $caps[] = 'edit_published_posts';
+                } else {
+                    $caps[] = 'do_not_allow';
+                }
+            }
+            /* END RATBURGER LOCAL CODE */
 		} else {
 			$caps = map_meta_cap( 'edit_posts', $user_id );
 		}
