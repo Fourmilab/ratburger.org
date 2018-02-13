@@ -476,7 +476,12 @@ function wpautop( $pee, $br = true ) {
 	// Change multiple <br>s into two line breaks, which will turn into paragraphs.
 	$pee = preg_replace('|<br\s*/?>\s*<br\s*/?>|', "\n\n", $pee);
 
+	/* RATBURGER LOCAL CODE
+	   Add <noscript> to the list of block-defining tags.
 	$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
+	*/
+	$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary|noscript)';
+	/* END RATBURGER LOCAL CODE */
 
 	// Add a double line break above block-level opening tags.
 	$pee = preg_replace('!(<' . $allblocks . '[\s/>])!', "\n\n$1", $pee);
