@@ -330,6 +330,11 @@ class Walker_Comment extends Walker {
 
 					<div class="comment-metadata">
 						<a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
+							<?php /* RATBURGER LOCAL CODE */
+							global $Ratburger_post_comment_number;
+							$Ratburger_post_comment_number++;
+							printf('#%d ', $Ratburger_post_comment_number);
+							/* END RATBURGER LOCAL CODE */ ?>
 							<time datetime="<?php comment_time( 'c' ); ?>">
 								<?php
 									/* translators: 1: comment date, 2: comment time */

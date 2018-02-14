@@ -50,6 +50,9 @@ if ( post_password_required() ) {
 
 		<ol class="comment-list">
 			<?php
+				/* RATBURGER LOCAL CODE */
+				$Ratburger_post_comment_number = 0;
+				/* END RATBURGER LOCAL CODE */
 				wp_list_comments( array(
 					'style'       => 'ol',
 					'short_ping'  => true,
