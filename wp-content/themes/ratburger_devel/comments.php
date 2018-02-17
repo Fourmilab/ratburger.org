@@ -51,7 +51,11 @@ if ( post_password_required() ) {
 		<ol class="comment-list">
 			<?php
 				/* RATBURGER LOCAL CODE */
+				global $Ratburger_post_comment_number;
 				$Ratburger_post_comment_number = 0;
+				if (get_query_var('cpage')) {
+					$Ratburger_post_comment_number = get_query_var('comments_per_page') * (get_query_var('cpage') - 1);
+				}
 				/* END RATBURGER LOCAL CODE */
 				wp_list_comments( array(
 					'style'       => 'ol',
