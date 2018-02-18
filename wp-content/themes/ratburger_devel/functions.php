@@ -569,4 +569,13 @@ function ratburger_meta_widget_items() {
 
 add_action('wp_meta', 'ratburger_meta_widget_items');
 
+/*
+	Utility function to dump a variable with a label
+
+*/
+
+function RB_dumpvar($label, $var) {
+	error_log($label . ": " . print_r($var, TRUE));
+}
+
 /* END RATBURGER LOCAL CODE */
