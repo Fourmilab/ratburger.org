@@ -183,9 +183,22 @@ function bp_notifications_get_notifications_for_user( $user_id, $format = 'strin
 	$renderable            = array(); // Renderable notifications.
 
 	// Group notifications by component and component_action and provide totals.
+	/* RATBURGER LOCAL CODE
+	   For wp-ulike notifications, guarantee component_action is unique */
+	$RB_component_action_suffix = 0;
+	/* END RATBURGER LOCAL CODE */
 	for ( $i = 0, $count = count( $notifications ); $i < $count; ++$i ) {
 		$notification = $notifications[$i];
+		/* RATBURGER LOCAL CODE
 		$grouped_notifications[$notification->component_name][$notification->component_action][] = $notification;
+		*/
+		if ($notification->component_name === 'wp_ulike') {
+		    $RB_component_action_suffix++;
+		    $grouped_notifications[$notification->component_name][$notification->component_action . '_RB' . $RB_component_action_suffix][] = $notification;
+		} else {
+		    $grouped_notifications[$notification->component_name][$notification->component_action][] = $notification;
+		}
+		/* END RATBURGER LOCAL CODE */
 	}
 
 	// Bail if no notification groups.
