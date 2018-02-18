@@ -520,20 +520,60 @@
 				//Extracting user id from the action value.
 				preg_match('/action_([0-9]+)/', $action, $user_ID);
 				$user_info 		= get_userdata($user_ID[1]);
+				/* RATBURGER LOCAL CODE
 				$custom_text 	= __('You have a new like from', WP_ULIKE_SLUG ) . ' "' . $user_info->display_name . '"';
+				*/
+				$custom_text = $user_info->display_name . " liked your ";
+				/* END RATBURGER LOCAL CODE */
 				//checking the ulike types
 				if($type[1] == 'liked'){
 					$custom_link  	= get_permalink($item_id);
+					/* RATBURGER LOCAL CODE
+					   Add title of post to post like notification */
+					$custom_text .= 'post ' . '"' .
+                                            get_post($item_id)->post_title . '"';
+					/* END RATBURGER LOCAL CODE */
 				}
 				else if($type[1] == 'topicliked'){
 					$custom_link  	= get_permalink($item_id);
+					/* RATBURGER LOCAL CODE
+					   Include group name in group post like */
+					$zzact = new BP_Activity_Activity($item_id);  // Activity for post
+					$zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
+					$custom_text .= 'post in group ' . '"' .
+                                            $zzgrp->name . '"';
+					/* END RATBURGER LOCAL CODE */
 				}
 				else if($type[1] == 'commentliked'){
 					$custom_link  	= get_comment_link( $item_id );
+					/* RATBURGER LOCAL CODE
+					   Add title of post commented on to comment like notification.
+					*/
+					$custom_text .= 'comment on ' . '"' .
+					    get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+					/* END RATBURGER LOCAL CODE */
 				}
 				else if($type[1] == 'activityliked'){
 					$custom_link  	= bp_activity_get_permalink( $item_id );
+					/* RATBURGER LOCAL CODE
+					   Include group name in group comment like notification.
+					*/
+					$zzact = new BP_Activity_Activity($item_id);  // Activity for comment
+					$zztype = 'post';
+					if ($zzact->type == 'activity_comment') {
+					    $zztype = 'comment';
+					    $zzact = new BP_Activity_Activity($zzact->item_id);  // Activity for parent group
+					}
+					$zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
+					$custom_text .= $zztype . ' in group ' . '"' .
+					    $zzgrp->name . '"';
+					/* END RATBURGER LOCAL CODE */
 				}
+				/* RATBURGER LOCAL CODE
+				   Add query to mark notification read if clicked.
+				*/
+//				$custom_link .= '?readnot=' . $item_id;
+				/* END RATBURGER LOCAL CODE */
 				// WordPress Toolbar
 				if ( 'string' === $format ) {
 					$return = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_text, $custom_link );
@@ -949,4 +989,4 @@
 	//Include wp_ulike class
 	require_once( plugin_dir_path( __FILE__ ) . 'classes/class-ulike.php' );	
 	//Include templates functions
-	require_once( plugin_dir_path( __FILE__ ) . 'wp-templates.php' );	
+	require_once( plugin_dir_path( __FILE__ ) . 'wp-templates.php' );
