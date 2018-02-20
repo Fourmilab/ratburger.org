@@ -578,4 +578,77 @@ function RB_dumpvar($label, $var) {
 	error_log($label . ": " . print_r($var, TRUE));
 }
 
+/*
+	Add notifications when a comment is added
+
+*/
+
+add_filter('wp_insert_comment', 'ratburger_wp_insert_comment', 10, 2);
+
+function ratburger_wp_insert_comment($id, $comment) {
+	$post = get_post($comment->comment_post_ID, 'OBJECT', 'raw');
+
+	/* If the comment was made by a person other than the
+	   author of the post, queue a notification of the
+	   comment to the post's author. */
+	if ($comment->user_id != $post->post_author) {
+//	if ($comment->user_id == 2) { // Hack for testing: only try for me.
+	    bp_notifications_add_notification(
+		array(
+		    'user_id' => $post->post_author,
+		    'item_id' => $comment->comment_ID,
+		    'secondary_item_id' => $post->ID,
+		    'component_name' => 'wp_ulike',
+		    'component_action' => 'wp_ulike_' . 'commentadded' . '_action_' . $comment->user_id,
+		    'date_notified' => bp_core_current_time(),
+		    'is_new' => 1
+	        )
+	    );
+	}
+
+	/* Now, walk through the comments on the post to which this
+	   is a comment and prepare an associative array of users,
+	   excluding the post author (who we've notified above) and
+	   the author of this comment, who have commented on the
+	   post.  Notify them of the new comment in the discussion
+	   of this post. */
+
+//	if ($comment->user_id == 2) { // Hack for testing: only try for me.
+	    $cq = new WP_Comment_Query;
+	    $comments = $cq->query(array(
+		'post_id' => $post->ID,
+		'fields' => 'ids',
+		'status' => 'approve',
+		'order' => 'ASC'
+		)
+	    );
+	    $commenters = array();
+	    foreach ($comments as $cmt) {
+		$c = get_comment($cmt, 'OBJECT');
+		if (!empty($c)) {
+		    if (!(($c->user_id == $comment->user_id) || ($c->user_id == $post->ID))) {
+			if ($c->user_id > 0) {	// Can't notify guests
+			    $commenters[$c->user_id] = 1;
+			}
+		    }
+		}
+	    }
+	    foreach (array_keys($commenters) as $commenter) {
+		if (($u = get_userdata($commenter)) && $u->user_registered) {
+                   bp_notifications_add_notification(
+                       array(
+                           'user_id' => $commenter,
+                           'item_id' => $comment->comment_ID,
+                           'secondary_item_id' => $post->ID,
+                           'component_name' => 'wp_ulike',
+                           'component_action' => 'wp_ulike_' . 'commentadded' . '_action_' . $comment->user_id,
+                           'date_notified' => bp_core_current_time(),
+                           'is_new' => 1
+                        )
+                    );
+		}
+	    }
+//	}
+}
+
 /* END RATBURGER LOCAL CODE */
