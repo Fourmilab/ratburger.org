@@ -510,8 +510,14 @@
 	 * @updated         2.5.1
 	 * @return          String
 	 */
-	add_filter( 'bp_notifications_get_notifications_for_user', 'wp_ulike_format_buddypress_notifications', 5, 5 );
+	add_filter( 'bp_notifications_get_notifications_for_user', 'wp_ulike_format_buddypress_notifications', 5, 8 );
+	/* RATBURGER LOCAL CODE
+	   Add $not_id (notification ID) argument
 	function wp_ulike_format_buddypress_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string' ) {
+	*/
+	function wp_ulike_format_buddypress_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string',
+	    $canon_act, $comp_name, $not_id = -1 ) {
+	/* END RATBURGER LOCAL CODE */
 		global $wp_filter,$wp_version;	
 			if (strpos($action, 'wp_ulike_') !== false) {
 				$custom_link	= '';
@@ -567,12 +573,27 @@
 					$zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
 					$custom_text .= $zztype . ' in group ' . '"' .
 					    $zzgrp->name . '"';
+				/* Handle notifications for new comments. */
+				} else if ($type[1] == 'commentadded') {
+					$custom_link = get_comment_link( $item_id );
+					$custom_text = $user_info->display_name . ' commented on ' . '"' .
+                                            get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
 					/* END RATBURGER LOCAL CODE */
 				}
 				/* RATBURGER LOCAL CODE
-				   Add query to mark notification read if clicked.
+				   Build urlencode()d $goto_link for redirect destination after marking the
+				   notification read.
 				*/
-//				$custom_link .= '?readnot=' . $item_id;
+				$goto_link = urlencode($custom_link);
+				/* Replace the $custom_link with a link to mark the notification read and
+				   specify the redirect to view the topic of the notification. */
+				$custom_kink = bp_get_root_domain() . '/members/' .
+				    wp_get_current_user()->user_login .
+				    '/notifications/unread/' .
+				     wp_nonce_url('', 'bp_notification_mark_read_' . $not_id) .
+				    '&action=read&notification_id=' . $not_id .
+				    '&goto=' . $goto_link;
+				$custom_link = $custom_kink;
 				/* END RATBURGER LOCAL CODE */
 				// WordPress Toolbar
 				if ( 'string' === $format ) {

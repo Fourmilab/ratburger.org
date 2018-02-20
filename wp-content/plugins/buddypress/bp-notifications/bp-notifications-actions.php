@@ -32,6 +32,11 @@ function bp_notifications_action_mark_read() {
 	$action = !empty( $_GET['action']          ) ? $_GET['action']          : '';
 	$nonce  = !empty( $_GET['_wpnonce']        ) ? $_GET['_wpnonce']        : '';
 	$id     = !empty( $_GET['notification_id'] ) ? $_GET['notification_id'] : '';
+	/* RATBURGER LOCAL CODE
+	   If specified, extract URL to which we redirect after marking
+	   the notification read. */
+	$goto = !empty( $_GET['goto'] ) ? $_GET['goto'] : '';
+	/* END RATBURGER LOCAL CODE */
 
 	// Bail if no action or no ID.
 	if ( ( 'read' !== $action ) || empty( $id ) || empty( $nonce ) ) {
@@ -44,6 +49,15 @@ function bp_notifications_action_mark_read() {
 	} else {
 		bp_core_add_message( __( 'There was a problem marking that notification.', 'buddypress' ), 'error' );
 	}
+
+	/* RATBURGER LOCAL CODE
+	   If $goto was specified, redirect to the URL it indicates
+	   instead of back to the unread notifications page. */
+	if (!empty($goto)) {
+	    $redir_url = urldecode($goto);
+	    bp_core_redirect($redir_url);
+	}
+	/* END RATBURGER LOCAL CODE */
 
 	// Redirect.
 	bp_core_redirect( bp_displayed_user_domain() . bp_get_notifications_slug() . '/unread/' );
