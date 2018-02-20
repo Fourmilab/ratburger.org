@@ -183,6 +183,9 @@ class Updraft_Restorer extends WP_Upgrader {
 		$this->strings['delete_failed'] = __('Failed to delete working directory after restoring.', 'updraftplus');
 		$this->strings['multisite_error'] = __('You are running on WordPress multisite - but your backup is not of a multisite site.', 'updraftplus');
 		$this->strings['unpack_failed'] = __('Failed to unpack the archive', 'updraftplus');
+		$this->strings['read_manifest_failed'] = __('Failed to read the manifest file from backup.', 'updraftplus');
+		$this->strings['manifest_not_found'] = __('Failed to find a manifest file in the backup.', 'updraftplus');
+		$this->strings['read_working_dir_failed'] = __('Failed to read from the working directory.', 'updraftplus');
 	}
 
 	/**
@@ -762,9 +765,10 @@ class Updraft_Restorer extends WP_Upgrader {
 	 * @param  string  $type        type of file
 	 * @param  array   $info        information array
 	 * @param  boolean $last_one    indicate if this is the last file to be restored
+	 * @param  boolean $last_entity indicate if this is the last entity of this type to be restored
 	 * @return boolean
 	 */
-	public function restore_backup($backup_file, $type, $info, $last_one = false) {
+	public function restore_backup($backup_file, $type, $info, $last_one = false, $last_entity = false) {
 
 		if ('more' == $type) {
 			$this->skin->feedback('not_possible');
@@ -986,6 +990,12 @@ class Updraft_Restorer extends WP_Upgrader {
 				}
 				
 				if (file_exists($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json')) {
+					// Before we cleanup and remove the manifest check if this is the last entity of this type, if it is then we want to remove anything that no longer exists in this manifest
+					if ($last_entity) {
+						$incremental_restore_prune = $this->incremental_restore_prune_files($working_dir, $type);
+						if (is_wp_error($incremental_restore_prune)) return $incremental_restore_prune;
+					}
+
 					$wp_filesystem->delete($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json');
 					if ($wp_filesystem->delete($working_dir)) $fixed_it_now = true;
 				}
@@ -1054,6 +1064,75 @@ class Updraft_Restorer extends WP_Upgrader {
 
 		return true;
 
+	}
+
+	/**
+	 * This method will read in the latest manifest file for an entity type and start the file prune.
+	 *
+	 * @param  string $working_dir - the directory we are working in
+	 * @param  string $type        - the type of file
+	 * @return boolean|WP_Error
+	 */
+	private function incremental_restore_prune_files($working_dir, $type) {
+		// Check file exists again just in case it some how got removed
+		if (file_exists($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json')) {
+			$entity_manifest = file_get_contents($working_dir . DIRECTORY_SEPARATOR . 'updraftplus-manifest.json');
+			$entity_manifest = json_decode($entity_manifest, true);
+			$base_path = WP_CONTENT_DIR . '/';
+			$path = $base_path . $type;
+			return $this->incremental_restore_scan_dir($base_path, $path, 1, $entity_manifest);
+		} else {
+			return new WP_Error('manifest_not_found', $this->strings['manifest_not_found']);
+		}
+	}
+
+	/**
+	 * This method will recursively scan each directory to the given listed_level which is located in the manifest and prune and files or folders that do not exist in the manifest.
+	 *
+	 * @param string  $base_path       - the base path of the entity type
+	 * @param string  $path            - the current path we are scanning
+	 * @param integer $current_level   - the level we are currently scanning at
+	 * @param array   $entity_manifest - the manifest array which includes the listed_level, directories and files to keep
+	 * @return boolean|WP_Error
+	 */
+	private function incremental_restore_scan_dir($base_path, $path, $current_level, $entity_manifest) {
+		
+		global $wp_filesystem;
+
+		$directroy_level = $entity_manifest['listed_levels'];
+		$entity_directories = $entity_manifest['contents']['directories'];
+		$entity_files = $entity_manifest['contents']['files'];
+
+		if (!isset($directroy_level) || !isset($entity_directories) || !isset($entity_files)) return new WP_Error('read_manifest_failed', $this->strings['read_manifest_failed']);
+
+		$directory_files = $wp_filesystem->dirlist($path);
+
+		if (isset($directory_files)) {
+			foreach ($directory_files as $file => $filestruc) {
+				if ($wp_filesystem->is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+					$directory = $path . DIRECTORY_SEPARATOR . $file;
+					// Check if we should go deeper in the file path, if not then check if this directory exists in the manifest, if not then remove it.
+					if ($current_level + 1 < $directroy_level) {
+						$incremental_restore_prune = $this->incremental_restore_scan_dir($base_path, $directory, $current_level + 1, $entity_manifest);
+						if (is_wp_error($incremental_restore_prune)) return $incremental_restore_prune;
+					} else {
+						$directory = str_replace($base_path, "", $directory);
+						if (!in_array($directory, $entity_directories)) {
+							$wp_filesystem->delete($base_path . $directory, true);
+						}
+					}
+				} else {
+					$file = str_replace($base_path, "", $path . DIRECTORY_SEPARATOR . $file);
+					if (!in_array($file, $entity_files)) {
+						$wp_filesystem->delete($base_path . $file, false);
+					}
+				}
+			}
+
+			return true;
+		} else {
+			return new WP_Error('read_working_dir_failed', $this->strings['read_working_dir_failed']);
+		}
 	}
 
 	private function move_existing_to_old($type, $get_dir, $wp_filesystem, $wp_filesystem_dir) {

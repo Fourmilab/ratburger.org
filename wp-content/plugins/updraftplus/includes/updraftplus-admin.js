@@ -1454,27 +1454,6 @@ jQuery(document).ready(function($) {
 			
 			$('#updraft_webdav_url_' + instance_id).val(updraft_webdav_url);
 		}
-		if (updraft_webdav_settings['host'].indexOf("/") >= 0) {
-			$('#updraft_webdav_host_error').show();
-		} else {
-			$('#updraft_webdav_host_error').hide();
-		}
-		
-		if (0 == updraft_webdav_settings['path'].indexOf("/") || "" === updraft_webdav_settings['path']) {
-			slash = "";
-		}
-		
-		if ("" === updraft_webdav_settings['user'] || "" === updraft_webdav_settings['pass']) {
-			colon = "";
-		}
-		
-		if ("" === updraft_webdav_settings['host'] || "" === updraft_webdav_settings['port']) {
-			colon_port = "";
-		}
-		
-		updraft_webdav_url = updraft_webdav_settings['webdav'] + updraft_webdav_settings['user'] + colon + encodeURIComponent(updraft_webdav_settings['pass']) + host +encodeURIComponent(updraft_webdav_settings['host']) + colon_port + updraft_webdav_settings['port'] + slash + updraft_webdav_settings['path'];
-		
-		$('#updraft_webdav_url_' + instance_id).val(updraft_webdav_url);
 	});
 	
 	$('#updraft-navtab-backups-content').on('click', '.updraft_existing_backups .updraft_existing_backups_row', function(e) {

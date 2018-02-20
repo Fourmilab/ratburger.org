@@ -186,8 +186,13 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		global $updraftplus;
 		if (is_a($updraftplus, 'UpdraftPlus')) $updraftplus->register_wp_http_option_hooks();
 		
+		// Allow the command class to perform any boiler-plate actions.
+		if (is_callable(array($command_class, '_pre_action'))) call_user_func(array($command_class, '_pre_action'), $command, $data, $extra_info);
+		
 		// Despatch
 		$msg = apply_filters('updraftcentral_listener_udrpc_action', call_user_func(array($command_class, $command), $data, $extra_info), $command_class, $class_prefix, $command, $data, $extra_info);
+
+		if (is_callable(array($command_class, '_post_action'))) call_user_func(array($command_class, '_post_action'), $command, $data, $extra_info);
 
 		if (is_a($updraftplus, 'UpdraftPlus')) $updraftplus->register_wp_http_option_hooks(false);
 		

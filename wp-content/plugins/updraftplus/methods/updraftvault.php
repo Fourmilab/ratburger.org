@@ -7,7 +7,7 @@ require_once(UPDRAFTPLUS_DIR.'/methods/s3.php');
 class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 {
 
 	private $vault_mothership = 'https://vault.updraftplus.com/plugin-info/';
-
+	
 	private $vault_config;
 
 	/**
@@ -131,10 +131,9 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 
 		// Use SSL to prevent snooping
 		if (empty($getconfig) || !is_array($getconfig) || empty($getconfig['accesskey'])) {
-			$getconfig = wp_remote_post($this->vault_mothership.'/?udm_action=vault_getconfig', array(
-				'timeout' => 25,
-				'body' => $post_body,
-			));
+			$config_array = apply_filters('updraftplus_vault_config_add_headers', array('timeout' => 25, 'body' => $post_body));
+			
+			$getconfig = wp_remote_post($this->vault_mothership.'/?udm_action=vault_getconfig', $config_array);
 		}
 		
 		$details_retrieved = false;
@@ -144,7 +143,6 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 		
 			if ($response_code >= 200 && $response_code < 300) {
 				$response = json_decode(wp_remote_retrieve_body($getconfig), true);
-
 				if (is_array($response) && isset($response['user_messages']) && is_array($response['user_messages'])) {
 					foreach ($response['user_messages'] as $message) {
 						if (!is_array($message)) continue;
@@ -174,6 +172,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 					$config['accesskey'] = $response['accesskey'];
 					$config['secretkey'] = $response['secretkey'];
 					$config['path'] = $response['path'];
+					$config['sessiontoken'] = (isset($response['sessiontoken']) ? $response['sessiontoken'] : '');
 				} elseif (is_array($response) && isset($response['result']) && ('token_unknown' == $response['result'] || 'site_duplicated' == $response['result'])) {
 					$updraftplus->log("This site appears to not be connected to UpdraftPlus Vault (".$response['result'].")");
 					$config['error'] = array('message' => 'site_not_connected', 'values' => array($response['result']));
@@ -181,6 +180,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 					$config['accesskey'] = '';
 					$config['secretkey'] = '';
 					$config['path'] = '';
+					$config['sessiontoken'] = '';
 					unset($config['quota']);
 					if (!empty($response['message'])) $config['error_message'] = $response['message'];
 					$details_retrieved = true;
@@ -290,7 +290,12 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 	public function get_configuration_template() {
 		// Used to decide whether we can afford HTTP calls or not, or would prefer to rely on cached data
 		$this->vault_in_config_print = true;
+
+		$shop_url_base = $this->get_url();
 		$get_more_quota = $this->get_url('get_more_quota');
+
+		$vault_settings = $this->get_options();
+		$connected = (!empty($vault_settings['token']) && !empty($vault_settings['email'])) ? true : false;
 		$classes = $this->get_css_classes();
 		$template_str = '
 			<tr class="'.$classes.'">
@@ -652,18 +657,18 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 
 		global $updraftplus;
 
-		// Use SSL to prevent snooping
-		$result = wp_remote_post($this->vault_mothership.'/?udm_action=vault_connect',
-			array(
-				'timeout' => 20,
-				'body' => array(
-					'e' => $email,
-					'p' => base64_encode($password),
-					'sid' => $updraftplus->siteid(),
-					'su' => base64_encode(home_url())
-				)
+		$remote_post_array = apply_filters('updraftplus_vault_config_add_headers', array(
+			'timeout' => 20,
+			'body' => array(
+				'e' => $email,
+				'p' => base64_encode($password),
+				'sid' => $updraftplus->siteid(),
+				'su' => base64_encode(home_url())
 			)
-		);
+		));
+		
+		// Use SSL to prevent snooping
+		$result = wp_remote_post($this->vault_mothership.'/?udm_action=vault_connect', $remote_post_array);
 
 		if (is_wp_error($result) || false === $result) return $result;
 

@@ -291,7 +291,10 @@ class UpdraftPlus {
 
 		// Already converted?
 		if (isset($current_setting['version'])) return $current_setting;
-		
+		if (empty($current_setting)) {
+			$remote_storage = $this->get_storage_object($method);
+			$current_setting = $remote_storage->get_default_options();
+		}
 		$new_setting = $this->wrap_remote_storage_options($current_setting);
 		
 		$already_active = true;
@@ -1125,7 +1128,8 @@ class UpdraftPlus {
 
 		$fullpath = $this->backups_dir_location().'/'.$file;
 		$orig_file_size = filesize($fullpath);
-		if ($uploaded_size >= $orig_file_size) return true;
+		
+		if ($uploaded_size >= $orig_file_size && !method_exists($caller, 'chunked_upload_finish')) return true;
 
 		$chunks = floor($orig_file_size / $chunk_size);
 		// There will be a remnant unless the file size was exactly on a chunk boundary
@@ -1137,23 +1141,26 @@ class UpdraftPlus {
 			return 1;
 		} elseif ($chunks < 2 && !$singletons) {
 			return 1;
-		} else {
+		}
 
+		// We have multiple chunks
+		if ($uploaded_size < $orig_file_size) {
+			
 			if (false == ($fp = @fopen($fullpath, 'rb'))) {
 				$this->log("$logname: failed to open file: $fullpath");
 				$this->log("$file: ".sprintf(__('%s Error: Failed to open local file', 'updraftplus'), $logname), 'error');
 				return false;
 			}
 
-			$errors_so_far = 0;
 			$upload_start = 0;
 			$upload_end = -1;
 			$chunk_index = 1;
 			// The file size minus one equals the byte offset of the final byte
 			$upload_end = min($chunk_size - 1, $orig_file_size - 1);
+			$errors_on_this_chunk = 0;
 			
 			while ($upload_start < $orig_file_size) {
-
+			
 				// Don't forget the +1; otherwise the last byte is omitted
 				$upload_size = $upload_end - $upload_start + 1;
 
@@ -1218,43 +1225,60 @@ class UpdraftPlus {
 					
 					// $uploaded_bytes = $upload_end + 1;
 					
+					// If there was an error, then we re-try the same chunk; we don't move on to the next one. Otherwise, we would need more code to handle potential 'intermediate' failed chunks (in case PHP dies before this method eventually returns false, and thus the intermediate chunk failure never gets detected)
+					$chunk_index++;
+					$errors_on_this_chunk = 0;
+					$upload_start = $upload_end + 1;
+					$upload_end += isset($new_chunk_size) ? $uploaded_amount + $new_chunk_size - $chunk_size : $uploaded_amount;
+					$upload_end = min($upload_end, $orig_file_size - 1);
+					
 				} else {
-					$errors_so_far++;
-					if ($errors_so_far >= 3) {
+				
+					$errors_on_this_chunk++;
+					
+					// Either $uploaded is false-y, or is a WP_Error
+					if (is_wp_error($uploaded)) {
+						$this->log("$logname: Chunk upload ($chunk_index) failed (".$uploaded->get_error_code().'): '.$uploaded->get_error_message());
+					} else {
+						$this->log("$logname: Chunk upload ($chunk_index) failed");
+					}
+					
+					if ($errors_on_this_chunk >= 3) {
 						@fclose($fp);
 						return false;
 					}
 				}
-				
-				$chunk_index++;
-				$upload_start = $upload_end + 1;
-				$upload_end += isset($new_chunk_size) ? $uploaded_amount + $new_chunk_size - $chunk_size : $uploaded_amount;
-				$upload_end = min($upload_end, $orig_file_size - 1);
 
 			}
 
 			@fclose($fp);
 
-			if ($errors_so_far) return false;
-
-			// All chunks are uploaded - now combine the chunks
-			$ret = true;
-			if (method_exists($caller, 'chunked_upload_finish')) {
-				$ret = $caller->chunked_upload_finish($file);
-				if (!$ret) {
-					$this->log("$logname - failed to re-assemble chunks");
-					$this->log(sprintf(__('%s error - failed to re-assemble chunks', 'updraftplus'), $logname), 'error');
-				}
-			}
-			if ($ret) {
-				$this->log("$logname upload: success");
-				// UpdraftPlus_RemoteStorage_Addons_Base calls this itself
-				if (!is_a($caller, 'UpdraftPlus_RemoteStorage_Addons_Base_v2')) $this->uploaded_file($file);
-			}
-
-			return $ret;
-
 		}
+
+		// All chunks are uploaded - now combine the chunks
+		$ret = true;
+		
+		// The action calls here exist to aid debugging
+		if (method_exists($caller, 'chunked_upload_finish')) {
+			do_action('updraftplus_pre_chunked_upload_finish', $file, $caller);
+			$ret = $caller->chunked_upload_finish($file);
+			if (!$ret) {
+				$this->log("$logname - failed to re-assemble chunks");
+				$this->log(sprintf(__('%s error - failed to re-assemble chunks', 'updraftplus'), $logname), 'error');
+			}
+			do_action('updraftplus_post_chunked_upload_finish', $file, $caller, $ret);
+		}
+		
+		if ($ret) {
+			// We allow chunked_upload_finish to return (int)1 to indicate that it took care of any logging.
+			if (true === $ret) $this->log("$logname upload: success");
+			$ret = true;
+			// UpdraftPlus_RemoteStorage_Addons_Base calls this itself
+			if (!is_a($caller, 'UpdraftPlus_RemoteStorage_Addons_Base_v2')) $this->uploaded_file($file);
+		}
+
+		return $ret;
+
 	}
 
 	/**
@@ -3509,14 +3533,14 @@ class UpdraftPlus {
 				
 				if ($remote_storage->supports_feature('multi_options')) {
 				
-					$settings = UpdraftPlus_Options::get_updraft_option('updraft_'.$method);
+					$settings_from_db = UpdraftPlus_Options::get_updraft_option('updraft_'.$method);
 					
-					if (!is_array($settings)) $settings = array();
+					$settings = is_array($settings_from_db) ? $settings_from_db : array();
 				
 					if (!isset($settings['version'])) $settings = $this->update_remote_storage_options_format($method);
 					
 					if (is_wp_error($settings)) {
-						error_log("UpdraftPlus: failed to convert storage options format: $method");
+						if (!empty($settings_from_db)) error_log("UpdraftPlus: failed to convert storage options format: $method");
 						$settings = array('settings' => array());
 					}
 

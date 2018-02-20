@@ -3987,7 +3987,7 @@ ENDHERE;
 		$_POST['updraft_restore'] is typically something like: array(0=>'db', 1=>'plugins', 2=>'themes'), etc.
 		i.e. array ('db', 'plugins', themes')
 		*/
-
+		
 		if (empty($restore_options)) {
 			// Gather the restore optons into one place - code after here should read the options, and not the HTTP layer
 			$restore_options = array();
@@ -3996,13 +3996,11 @@ ENDHERE;
 			}
 			$restore_options['updraft_encryptionphrase'] = empty($_POST['updraft_encryptionphrase']) ? '' : (string) stripslashes($_POST['updraft_encryptionphrase']);
 			$restore_options['updraft_restorer_wpcore_includewpconfig'] = empty($_POST['updraft_restorer_wpcore_includewpconfig']) ? false : true;
-			$restore_options['updraft_incremental_restore_point'] = empty($_POST['updraft_incremental_restore_point']) ? -1 : (int) $_POST['updraft_incremental_restore_point'];
+			$restore_options['updraft_incremental_restore_point'] = empty($restore_options['updraft_incremental_restore_point']) ? -1 : (int) $restore_options['updraft_incremental_restore_point'];
 			$updraftplus->jobdata_set('restore_options', $restore_options);
 		}
-
+		
 		$backupable_entities = $updraftplus->get_backupable_file_entities(true, true);
-
-		if (defined('UPDRAFTPLUS_INCREMENTAL_RESTORE_POINT') && is_int(UPDRAFTPLUS_INCREMENTAL_RESTORE_POINT)) $restore_options['updraft_incremental_restore_point'] = UPDRAFTPLUS_INCREMENTAL_RESTORE_POINT;
 
 		// If updraft_incremental_restore_point is equal to -1 then this is either not a incremental restore or we are going to restore up to the latest increment, so there is no need to prune the backup set of any unwanted backup archives.
 		if (isset($restore_options['updraft_incremental_restore_point']) && $restore_options['updraft_incremental_restore_point'] > 0) {
@@ -4192,8 +4190,9 @@ ENDHERE;
 			if (is_string($files)) $files = array($files);
 			foreach ($files as $fkey => $file) {
 				$last_one = (1 == count($second_loop) && 1 == count($files));
+				$last_entity = (1 == count($files));
 				try {
-					$val = $updraftplus_restorer->restore_backup($file, $type, $info, $last_one);
+					$val = $updraftplus_restorer->restore_backup($file, $type, $info, $last_one, $last_entity);
 				} catch (Exception $e) {
 					$log_message = 'Exception ('.get_class($e).') occurred during restore: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
 					$display_log_message = sprintf(__('A PHP exception (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage());

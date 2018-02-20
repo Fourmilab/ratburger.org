@@ -199,6 +199,26 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 				}
 			}
 
+			// Check this backup set has a incremental_sets array e.g may have been created before this array was introduced
+			if (isset($backups[$timestamp]['incremental_sets'])) {
+				$incremental_sets = array_keys($backups[$timestamp]['incremental_sets']);
+				// Check if there are more than one timestamp in the incremental set
+				if (1 < count($incremental_sets)) {
+					$incremental_select_html = '<label>'.__('Select your incremental restore point', 'updraftplus').': </label>';
+					$incremental_select_html .= '<select name="updraft_incremental_restore_point" id="updraft_incremental_restore_point">';
+					$first_timestamp = $incremental_sets[0];
+					
+					foreach ($incremental_sets as $timestamp) {
+						$pretty_date = get_date_from_gmt(gmdate('Y-m-d H:i:s', (int) $timestamp), 'M d, Y G:i');
+						$esc_pretty_date = esc_attr($pretty_date);
+						$incremental_select_html .= '<option value="'.$timestamp.'" '.selected($timestamp, $first_timestamp, false).'>'.$esc_pretty_date.'</option>';
+					}
+
+					$incremental_select_html .= '</select>';
+					$info['addui'] = empty($info['addui']) ? $incremental_select_html : $info['addui'].'<br>'.$incremental_select_html;
+				}
+			}
+
 			if (0 == count($err) && 0 == count($warn)) {
 				$mess_first = __('The backup archive files have been successfully processed. Now press Restore again to proceed.', 'updraftplus');
 			} elseif (0 == count($err)) {

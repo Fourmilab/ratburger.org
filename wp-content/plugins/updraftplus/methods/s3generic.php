@@ -9,6 +9,8 @@ require_once(UPDRAFTPLUS_DIR.'/methods/s3.php');
  */
 class UpdraftPlus_BackupModule_s3generic extends UpdraftPlus_BackupModule_s3 {
 
+	protected $use_v4 = false;
+
 	protected function set_region($obj, $region = '', $bucket_name = '') {
 		$config = $this->get_config();
 		$endpoint = ('' != $region && 'n/a' != $region) ? $region : $config['endpoint'];

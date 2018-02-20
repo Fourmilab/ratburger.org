@@ -47,10 +47,11 @@ class UpdraftPlus_S3 {
 	private $__accessKey = null; // AWS Access key
 	private $__secretKey = null; // AWS Secret key
 	private $__sslKey = null;
+	private $__session_token = null; //For Vault temporary users
 	private $_serverSideEncryption = false;
 
 	public $endpoint = 's3.amazonaws.com';
-	public $region = '';
+	public $region = 'us-east-1';
 	public $proxy = null;
 
 	// Added to cope with a particular situation where the user had no permission to check the bucket location, which necessitated using DNS-based endpoints.
@@ -81,14 +82,16 @@ class UpdraftPlus_S3 {
 	 * @param boolean $useSSL Enable SSL
 	 * @param boolean $sslCACert SSL Certificate
 	 * @param string|null $endpoint Endpoint
+	 * @param string $session_token The session token returned by AWS for temporary credentials access
 	 * @param string $region Region
-	 * @throws Exception
+
+	 * @throws Exception If cURL extension is not present
 	 *
 	 * @return self
 	 */
-	public function __construct($accessKey = null, $secretKey = null, $useSSL = true, $sslCACert = true, $endpoint = null, $region = '') {
+	public function __construct($accessKey = null, $secretKey = null, $useSSL = true, $sslCACert = true, $endpoint = null, $session_token = null, $region = 'us-east-1') {
 		if (null !== $accessKey && null !== $secretKey) {
-			$this->setAuth($accessKey, $secretKey);
+			$this->setAuth($accessKey, $secretKey, $session_token);
 		}
 		$this->useSSL = $useSSL;
 		$this->sslCACert = $sslCACert;
@@ -166,9 +169,10 @@ class UpdraftPlus_S3 {
 	 *
 	 * @return void
 	 */
-	public function setAuth($accessKey, $secretKey) {
+	public function setAuth($accessKey, $secretKey, $session_token = null) {
 		$this->__accessKey = $accessKey;
 		$this->__secretKey = $secretKey;
+		$this->__session_token = $session_token;
 	}
 
 	/**

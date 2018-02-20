@@ -3,12 +3,12 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 4.9
-Stable tag: 1.14.3
+Stable tag: 1.14.4
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
 
-Backup and restoration made easy. Complete backups; manual or scheduled (backup to S3, Dropbox, Google Drive, Rackspace, FTP, SFTP, email + others).
+Backup and restoration made easy. Complete backups; manual or scheduled (backup to Dropbox, S3, Google Drive, Rackspace, FTP, SFTP, email + others).
 
 == Description ==
 
@@ -149,7 +149,22 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.14.3 of the free version correspond to changes made in 2.14.3.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.14.4 of the free version correspond to changes made in 2.14.4.x of the paid version.
+
+= 1.14.4 - 19/Feb/2018 =
+
+* FEATURE: Now supports AWS v4 signatures (allowing use of new AWS regions) with old S3 SDK (which is used on PHP 5.2)
+* FIX: WebDAV options filter was not correctly saving any human-chosen description
+* FIX: Regression: Rackspace 'new user' wizard was not functioning
+* FIX: For chunked storage APIs that require a method to finally re-assemble chunks, if the first attempt failed, then a subsequent failed attempt could be incorrectly marked as having succeeded
+* FIX: First instance of each remote storage object was not using its internal default options
+* TWEAK: Added the ability to restore incremental backup sets (N.B. currently you cannot create incremental backup sets; this is part of our development of that feature)
+* TWEAK: Edit welcome banner
+* TWEAK: If 'lock admin' functionality (Premium) has been disabled by the site administrator, then include a line to that effect in the relevant section.
+* TWEAK: Allow UpdraftCentral classes to have boiler-plate pre and post-call methods
+* TWEAK: Do a bit more logging for Backblaze B2 uploads
+* TWEAK: Add a sanity check to prevent some PHP debug notices being logged in an upgrade situation
+* TWEAK: Resolved unwanted WebDAV remote storage JavaScript console message
 
 = 1.14.3 - 24/Jan/2018 =
 
@@ -683,7 +698,7 @@ Older changes are found in the changelog.txt file in the plugin directory.
 
 == License ==
 
-    Copyright 2011-17 David Anderson
+    Copyright 2011-18 David Anderson
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -703,6 +718,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
-
 == Upgrade Notice ==
-* 1.14.3: Various tweaks and small improvements - recommended update for all
+* 1.14.4: Various small fixes and tweaks and internal improvements - recommended update for all
