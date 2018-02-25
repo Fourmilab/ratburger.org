@@ -651,4 +651,52 @@ function ratburger_wp_insert_comment($id, $comment) {
 //	}
 }
 
+/*
+
+	Add notifications when a post is made to a group
+
+*/
+
+add_filter('bp_groups_posted_update', 'ratburger_bp_groups_posted_update', 10, 4);
+
+function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activity_id) {
+//RB_dumpvar('Group update', array($activity_id, $group_id, $user_id, $content));
+
+	//  Get a list of members in the group
+	$gmembc = groups_get_total_member_count($group_id);
+	$members = groups_get_group_members(
+	    array(
+		'group_id' => $group_id,
+		'page' => 1,
+		'per_page' => $gmembc,
+		'exclude_admins_mods' => false,
+		'exclude_banned' => true,
+		'exclude' => array($user_id)
+	    )
+	);
+//RB_dumpvar('Members', $members);
+
+	/*  Walk through the list of members sending notifications
+	    to each.  Note that we excluded the user who made the post
+	    in the query above, so we don't need to test for that here.  */
+
+	foreach ($members['members'] as $memb) {
+	    $uid = $memb->user_id;
+//RB_dumpvar("Notify", $uid);
+//if ($uid == 1) {
+	    bp_notifications_add_notification(
+               array(
+                   'user_id' => $uid,
+                   'item_id' => $activity_id,
+                   'secondary_item_id' => $group_id,
+                   'component_name' => 'wp_ulike',
+                   'component_action' => 'wp_ulike_' . 'grouppost' . '_action_' . $user_id,
+                   'date_notified' => bp_core_current_time(),
+                   'is_new' => 1
+                )
+            );
+//}
+	}
+}
+
 /* END RATBURGER LOCAL CODE */

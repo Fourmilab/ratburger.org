@@ -578,6 +578,12 @@
 					$custom_link = get_comment_link( $item_id );
 					$custom_text = $user_info->display_name . ' commented on ' . '"' .
                                             get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+				/* Handle notification for new posts in a group. */
+				} else if ($type[1] == 'grouppost') {
+					$grp = groups_get_group($secondary_item_id);
+					$custom_link = bp_get_group_permalink($grp) . '#activity-' . $item_id;
+                                        $custom_text = $user_info->display_name . ' posted an update in the ' .
+					    $grp->name . ' group';
 					/* END RATBURGER LOCAL CODE */
 				}
 				/* RATBURGER LOCAL CODE
