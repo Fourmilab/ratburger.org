@@ -15,6 +15,39 @@ if ( ! function_exists( 'add_action' ) ) {
 if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 {
 	class stcr_utils {
+        /**
+         * Check a given email to be valid.
+         *
+         * @since 15-Feb-2018
+         * @author Reedyseth
+         * @param $email
+         * @return mixed
+         */
+	    public function check_valid_email( $email )
+        {
+            $email = trim( $email );
+            $email = sanitize_email( $email );
+            return filter_var( $email, FILTER_VALIDATE_EMAIL );
+        }
+        /**
+         * Check for a valid number.
+         *
+         * @since 15-Feb-2018
+         * @author Reedyseth
+         * @param $number String|Integer to be validated
+         * @return bool True if number false otherwise
+         */
+        public function check_valid_number( $number )
+        {
+            $valid = true;
+
+            if ( ! is_numeric( $number ) )
+            {
+                $valid = false;
+            }
+
+            return $valid;
+        }
 
 		/*
 		 * This will retrieve an user/email from the prefix_subscribe_reloaded_subscribers table.
@@ -119,7 +152,51 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			return $key;
 		}
 		// end generate_key
+        public function stcr_translate_month( $date_str )
+        {
+            $months_long = array (
+                "January" => __("January","subscribe-reloaded"),
+                "February" => __("February","subscribe-reloaded"),
+                "March" => __("March","subscribe-reloaded"),
+                "April" => __("April","subscribe-reloaded"),
+                "May" => __("May","subscribe-reloaded"),
+                "June" => __("June","subscribe-reloaded"),
+                "July" => __("July","subscribe-reloaded"),
+                "August" => __("August","subscribe-reloaded"),
+                "September" => __("September","subscribe-reloaded"),
+                "October" => __("October","subscribe-reloaded"),
+                "November" => __("November","subscribe-reloaded"),
+                "December" => __("December","subscribe-reloaded")
+            );
 
+            $months_short = array (
+                "Jan" => __("Jan","subscribe-reloaded"),
+                "Feb" => __("Feb","subscribe-reloaded"),
+                "Mar" => __("Mar","subscribe-reloaded"),
+                "Apr" => __("Apr","subscribe-reloaded"),
+                "May" => __("May","subscribe-reloaded"),
+                "Jun" => __("Jun","subscribe-reloaded"),
+                "Jul" => __("Jul","subscribe-reloaded"),
+                "Aug" => __("Aug","subscribe-reloaded"),
+                "Sep" => __("Sep","subscribe-reloaded"),
+                "Oct" => __("Oct","subscribe-reloaded"),
+                "Nov" => __("Nov","subscribe-reloaded"),
+                "Dec" => __("Dec","subscribe-reloaded")
+            );
+
+            // Replace String
+            foreach( $months_long as $key => $value)
+            {
+                $date_str = str_replace( $key, $value, $date_str);
+            }
+            // Find String
+            foreach( $months_short as $key => $value)
+            {
+                $date_str = str_replace( $key, $value, $date_str);
+            }
+            // Return string
+            return $date_str;
+        }
 		/**
 		 * Creates the HTML structure to properly handle HTML messages
 		 */
@@ -234,6 +311,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
             add_option( 'subscribe_reloaded_auto_clean_log_frecuency', 'daily', '', 'yes' );
             add_option( 'subscribe_reloaded_enable_font_awesome', 'yes', '', 'yes' );
             add_option( 'subscribe_reloaded_delete_options_subscriptions', 'no', '', 'no' );
+            add_option( 'subscribe_reloaded_date_format', 'd M Y', '', 'no' );
         }
         /**
          * @since 08-February-2018
@@ -397,24 +475,22 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			// link the hooks
 			add_action('admin_enqueue_scripts',array( $this, 'register_admin_scripts') );
 		}
+        /**
+         * Hooking scripts for plugin pages.
+         * @since 22-Sep-2015
+         * @author reedyseth
+         */
+        public function hook_plugin_scripts() {
+            // link the hooks
+            add_action('wp_enqueue_scripts',array( $this, 'register_plugin_scripts') );
+        }
 		/**
 		 * Register scripts for plugin pages.
 		 * @since 22-Sep-2015
 		 * @author reedyseth
 		 */
 		public function register_plugin_scripts() {
-			$stcr_plugin_js  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/js/stcr-plugin.js';
-			// Javascript
-			wp_register_script('stcr-plugin-js', $stcr_plugin_js, array( 'jquery' ) );
-            // Enqueue Scripts
-            wp_enqueue_script('stcr-plugin-js');
-			// Styles
-			// $stcr_plugin_css  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/css/stcr-plugin-style.css';
-            $stcr_font_awesome_css  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/css/font-awesome.min.css';
-			//wp_register_style( 'stcr-plugin-style', $stcr_plugin_css );
-            // Enqueue the styles
-            //wp_enqueue_style('stcr-plugin-style');
-
+            $stcr_font_awesome_css = (is_ssl() ? str_replace('http://', 'https://', WP_PLUGIN_URL) : WP_PLUGIN_URL) . '/subscribe-to-comments-reloaded/includes/css/font-awesome.min.css';
             // Font Awesome
             if( get_option( 'subscribe_reloaded_enable_font_awesome' ) == "yes" )
             {
@@ -423,21 +499,13 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
             }
 		}
 		/**
-		 * Hooking scripts for plugin pages.
-		 * @since 22-Sep-2015
-		 * @author reedyseth
-		 */
-		public function hook_plugin_scripts() {
-			// link the hooks
-			add_action('wp_enqueue_scripts',array( $this, 'register_plugin_scripts') );
-		}
-		/**
 		 * Enqueue `style for plugin pages
 		 * @since 22-Sep-2015
 		 * @author reedyseth
 		 */
 		public function add_plugin_js_scripts() {
-			wp_enqueue_script('stcr-plugin-js');
+            // Enqueue Scripts
+            //wp_enqueue_script('stcr-plugin-js');
 		}
 		/**
 		 * Create a notice array with its settings and add it to the subscribe_reloaded_deferred_admin_notices
