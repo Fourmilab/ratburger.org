@@ -1,4 +1,12 @@
 <?php 
+/**
+ * Class for statistics process
+ * 
+ * @package    wp-ulike
+ * @author     Alimir 2018
+ * @link       https://wpulike.com
+ */
+
 if ( ! class_exists( 'wp_ulike_stats' ) ) {
 
 	class wp_ulike_stats extends wp_ulike_widget{
@@ -18,7 +26,7 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 		{
 			global $wpdb;
 			$this->wpdb = $wpdb;
-			add_action('admin_enqueue_scripts', array($this,'enqueue_script'));
+			add_action( 'admin_enqueue_scripts', array( $this,'enqueue_script' ) );
 		}
 
 		/**
@@ -42,7 +50,7 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 			// Register Script
 			wp_enqueue_script(
 				'wp_ulike_stats',
-				WP_ULIKE_ADMIN_URL . '/classes/js/statistics.js',
+				WP_ULIKE_ADMIN_URL . '/assets/js/statistics.js',
 				array('jquery'),
 				null,
 				true
@@ -353,9 +361,5 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 		}	
 
 	}
-	
-	// global variable
-	global $wp_ulike_stats;
-	$wp_ulike_stats = wp_ulike_stats::get_instance();
 	
 }

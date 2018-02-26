@@ -1,6 +1,6 @@
 <?php
 /**
- * Include admin files
+ * Include Files
  * 
  * @package    wp-ulike
  * @author     Alimir 2018
@@ -11,7 +11,6 @@
 if ( ! defined( 'WPINC' ) ) {
     die('No Naughty Business Please !');
 }
-//include about menu functions
-require_once( WP_ULIKE_ADMIN_DIR . '/admin-functions.php');
-//include logs menu functions
-require_once( WP_ULIKE_ADMIN_DIR . '/admin-hooks.php');
+
+include_once( 'general-functions.php' );
+include_once( 'general-hooks.php' );

@@ -1,4 +1,12 @@
 <?php 
+/**
+ * WP ULike Process Class
+ * 
+ * @package    wp-ulike
+ * @author     Alimir 2018
+ * @link       https://wpulike.com
+ */
+
 if ( ! class_exists( 'wp_ulike' ) ) {
 
 	class wp_ulike{
@@ -109,7 +117,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 					$this->wpdb->prefix . $table, 
 					array( 
 						$column 		=> $id, 
-						'date_time' 	=> current_time( 'mysql', true ),
+						'date_time' 	=> current_time( 'mysql' ),
 						'ip' 			=> $user_ip,
 						'user_id' 		=> $user_id,
 						'status' 		=> 'like' 
@@ -166,7 +174,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 						$this->wpdb->prefix . $table, 
 						array( 
 							$column 		=> $id, 
-							'date_time' 	=> current_time( 'mysql', true ),
+							'date_time' 	=> current_time( 'mysql' ),
 							'ip' 			=> $user_ip,
 							'user_id' 		=> $user_id,
 							'status' 		=> 'like' 
@@ -236,7 +244,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 						$this->wpdb->prefix . $table, 
 						array( 
 							$column 		=> $id, 
-							'date_time' 	=> current_time( 'mysql', true ),
+							'date_time' 	=> current_time( 'mysql' ),
 							'ip' 			=> $user_ip,
 							'user_id' 		=> $user_id,
 							'status' 		=> 'like' 
@@ -347,7 +355,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 						$this->wpdb->prefix . $table, 
 						array( 
 							$column 		=> $id, 
-							'date_time' 	=> current_time( 'mysql', true ),
+							'date_time' 	=> current_time( 'mysql' ),
 							'ip' 			=> $user_ip,
 							'user_id' 		=> $user_id,
 							'status' 		=> 'like' 
@@ -503,23 +511,24 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 			$counter = apply_filters( 'wp_ulike_count_box_template', '<span class="count-box">'. wp_ulike_format_number( $args['get_like'] ) .'</span>' , $args['get_like'] );
 			
 			$wp_ulike_template 	= apply_filters( 'wp_ulike_add_templates_args', array(
-					"ID"      		=> $args['id'],
-					"slug"      	=> $args['slug'],
-					"counter"		=> $counter,
-					"type"			=> $args['method'],
-					"status"  		=> $status,
-					"attributes" 	=> $args['attributes'],
-					"microdata" 	=> $args['microdata'],
-					"style"  		=> $args['style'],
-					"button_type"	=> $button_type,
-					"button_text"  	=> $button_text,
-					"general_class"	=> $general_class_name,
+					"ID"            => $args['id'],
+					"wrapper_class" => $args['wrapper_class'],
+					"slug"          => $args['slug'],
+					"counter"       => $counter,
+					"type"          => $args['method'],
+					"status"        => $status,
+					"attributes"    => $args['attributes'],
+					"microdata"     => $args['microdata'],
+					"style"         => $args['style'],
+					"button_type"   => $button_type,
+					"button_text"   => $button_text,
+					"general_class" => $general_class_name,
 					"button_class"  => $button_class_name
 				)
 			);
 			
 			
-			$wp_ulike_callback = apply_filters( 'wp_ulike_add_templates_list', call_user_func('wp_ulike_generate_templates_list') );
+			$wp_ulike_callback = call_user_func( 'wp_ulike_generate_templates_list' );
 			
 			$output			= '';
 			
@@ -735,9 +744,5 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 		
 		
 	}
-	
-	//global variables
-	global $wp_ulike_class;
-	$wp_ulike_class = wp_ulike::get_instance();
 	
 }
