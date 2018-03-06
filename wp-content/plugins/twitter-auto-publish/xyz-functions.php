@@ -49,7 +49,7 @@ if(!function_exists('xyz_twap_links')){
 
 			$links[] = '<a href="http://help.xyzscripts.com/docs/twitter-auto-publish/faq/"  title="FAQ">FAQ</a>';
 			$links[] = '<a href="http://help.xyzscripts.com/docs/twitter-auto-publish/"  title="Read Me">README</a>';
-			$links[] = '<a href="http://xyzscripts.com/support/" class="xyz_support" title="Support"></a>';
+			$links[] = '<a href="https://xyzscripts.com/support/" class="xyz_support" title="Support"></a>';
 			$links[] = '<a href="http://twitter.com/xyzscripts" class="xyz_twitt" title="Follow us on twitter"></a>';
 			$links[] = '<a href="https://www.facebook.com/xyzscripts" class="xyz_fbook" title="Facebook"></a>';
 			$links[] = '<a href="https://plus.google.com/+Xyzscripts" class="xyz_gplus" title="+1"></a>';
@@ -63,6 +63,7 @@ if(!function_exists('xyz_twap_string_limit')){
 function xyz_twap_string_limit($string, $limit) {
 
 	$space=" ";$appendstr=" ...";
+	if (function_exists('mb_strlen')) {
 	if(mb_strlen($string) <= $limit) return $string;
 	if(mb_strlen($appendstr) >= $limit) return '';
 	$string = mb_substr($string, 0, $limit-mb_strlen($appendstr));
@@ -71,7 +72,18 @@ function xyz_twap_string_limit($string, $limit) {
 		return $string.$appendstr;
 	else
 		return mb_substr($string, 0, $rpos).$appendstr;
-}
+	}
+	else {
+		if(strlen($string) <= $limit) return $string;
+		if(strlen($appendstr) >= $limit) return '';
+		$string = substr($string, 0, $limit-strlen($appendstr));
+		$rpos = strripos($string, $space);
+		if ($rpos===false)
+			return $string.$appendstr;
+		else
+			return substr($string, 0, $rpos).$appendstr;
+	}
+  }
 }
 if(!function_exists('xyz_twap_getimage')){
 function xyz_twap_getimage($post_ID,$description_org)
@@ -81,8 +93,6 @@ function xyz_twap_getimage($post_ID,$description_org)
 	if($post_thumbnail_id!="")
 	{
 		$attachmenturl=wp_get_attachment_url($post_thumbnail_id);
-// 		$attachmentimage=wp_get_attachment_image_src( $post_thumbnail_id, full );
-
 	}
 	else {
 		preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/is', $description_org, $matches);
@@ -95,8 +105,6 @@ function xyz_twap_getimage($post_ID,$description_org)
 			if(isset($matches[1][0]))
 				$attachmenturl = $matches[1][0];
 		}
-
-
 	}
 	return $attachmenturl;
 }

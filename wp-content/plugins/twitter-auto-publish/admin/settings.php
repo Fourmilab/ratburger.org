@@ -3,18 +3,22 @@ if( !defined('ABSPATH') ){ exit();}
 global $current_user;
 $auth_varble=0;
 wp_get_current_user();
-$imgpath= plugins_url()."/twitter-auto-publish/admin/images/";
+$imgpath= plugins_url()."/twitter-auto-publish/images/";
 $heimg=$imgpath."support.png";
 
 
-if(isset($_GET['twap_notice']) && $_GET['twap_notice'] == 'hide')
+if(!$_POST && isset($_GET['twap_notice']) && $_GET['twap_notice'] == 'hide')
 {
+	if (! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'],'twap-shw')){
+		wp_nonce_ays( 'twap-shw');
+		exit;
+	}
 	update_option('xyz_twap_dnt_shw_notice', "hide");
 	?>
 <style type='text/css'>
 #tw_notice_td
 {
-display:none;
+display:none !important;
 }
 </style>
 <div class="system_notice_area_style1" id="system_notice_area">
@@ -132,11 +136,11 @@ if(isset($_POST['twit']) && $terf==1)
 </div>
 <?php } ?>
 <script type="text/javascript">
-function detdisplay(id)
+function detdisplay_twap(id)
 {
 	document.getElementById(id).style.display='';
 }
-function dethide(id)
+function dethide_twap(id)
 {
 	document.getElementById(id).style.display='none';
 }
@@ -147,12 +151,12 @@ function dethide(id)
 <div style="width: 100%">
 
 	<h2>
-		 <img	src="<?php echo plugins_url()?>/twitter-auto-publish/admin/images/twitter-logo.png" height="16px"> Twitter Settings
+		 <img	src="<?php echo plugins_url()?>/twitter-auto-publish/images/twitter-logo.png" height="16px"> Twitter Settings
 	</h2>
 	
 <table class="widefat" style="width: 99%;background-color: #FFFBCC">
 <tr>
-<td id="bottomBorderNone">
+<td id="bottomBorderNone" style="border: 1px solid #FCC328;">
 	<div>
 		<b>Note :</b> You have to create a Twitter application before filling in following fields. 	
 		<br><b><a href="https://apps.twitter.com/app/new" target="_blank">Click here</a></b> to create new application. Specify the website for the application as :	<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?>		 </span> 
@@ -218,8 +222,8 @@ function dethide(id)
 				</tr>
 				<tr valign="top">
 					<td>Message format for posting <img src="<?php echo $heimg?>"
-						onmouseover="detdisplay('xyz_tw')" onmouseout="dethide('xyz_tw')">
-						<div id="xyz_tw" class="informationdiv"
+						onmouseover="detdisplay_twap('xyz_tw')" onmouseout="dethide_twap('xyz_tw')" style="width:13px;height:auto;">
+						<div id="xyz_tw" class="twap_informationdiv"
 							style="display: none; font-weight: normal;">
 							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
@@ -251,40 +255,30 @@ function dethide(id)
 				<tr valign="top">
 					<td>Attach image to twitter post
 					</td>
-					<td><select id="xyz_twap_twpost_image_permission"
-						name="xyz_twap_twpost_image_permission">
-							<option value="0"
-							<?php  if(get_option('xyz_twap_twpost_image_permission')==0) echo 'selected';?>>
-								No</option>
-							<option value="1"
-							<?php  if(get_option('xyz_twap_twpost_image_permission')==1) echo 'selected';?>>Yes</option>
-					</select>
+					<td  class="switch-field">
+						<label id="xyz_twap_twpost_image_permission_yes"><input type="radio" name="xyz_twap_twpost_image_permission" value="1" <?php  if(get_option('xyz_twap_twpost_image_permission')==1) echo 'checked';?>/>Yes</label>
+						<label id="xyz_twap_twpost_image_permission_no"><input type="radio" name="xyz_twap_twpost_image_permission" value="0" <?php  if(get_option('xyz_twap_twpost_image_permission')==0) echo 'checked';?>/>No</label>
 					</td>
 				</tr>
 				
 				<tr valign="top">
 					<td>Twitter character limit  <img src="<?php echo $heimg?>"
-							onmouseover="detdisplay('xyz_twap_tw_char_limit')" onmouseout="dethide('xyz_twap_tw_char_limit')">
-							<div id="xyz_twap_tw_char_limit" class="informationdiv" style="display: none;">
+							onmouseover="detdisplay_twap('xyz_twap_tw_char_limit')" onmouseout="dethide_twap('xyz_twap_tw_char_limit')" style="width:13px;height:auto;">
+							<div id="xyz_twap_tw_char_limit" class="twap_informationdiv" style="display: none;">
 							The character limit of tweets  is 280.<br/>
 							Use 140 for languages like Chinese, Japanese and Korean <br/>which won't get the 280 character limit.<br />
 							</div></td>
 				<td>
-					<input id="xyz_twap_tw_char_limit"  name="xyz_twap_tw_char_limit" type="text" value="<?php echo esc_html(get_option('xyz_twap_tw_char_limit'));?>" style="width: 200px">
+					<input id="xyz_twap_tw_char_limit"  name="xyz_twap_tw_char_limit" type="text" value="<?php echo esc_html(get_option('xyz_twap_tw_char_limit'));?>" style="width: 155px">
 				</td></tr>
 				
 				<tr valign="top">
 					<td>Enable auto publish	posts to my twitter account
 					</td>
-					<td><select id="xyz_twap_twpost_permission"
-						name="xyz_twap_twpost_permission">
-							<option value="0"
-							<?php  if(get_option('xyz_twap_twpost_permission')==0) echo 'selected';?>>
-								No</option>
-							<option value="1"
-							<?php  if(get_option('xyz_twap_twpost_permission')==1) echo 'selected';?>>Yes</option>
-					</select>
-					</td>
+			<td  class="switch-field">
+				<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" value="1" <?php  if(get_option('xyz_twap_twpost_permission')==1) echo 'checked';?>/>Yes</label>
+				<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" value="0" <?php  if(get_option('xyz_twap_twpost_permission')==0) echo 'checked';?>/>No</label>
+			</td>
 				</tr>
 
 				
@@ -318,7 +312,7 @@ function dethide(id)
 		if($_POST['xyz_twap_cat_all']=="All")
 			$twap_category_ids=$_POST['xyz_twap_cat_all'];//redio btn name
 		else
-			$twap_category_ids=$_POST['xyz_twap_sel_cat'];//dropdown
+			$twap_category_ids=$_POST['xyz_twap_catlist'];//dropdown
 
 		$xyz_customtypes="";
 		
@@ -328,7 +322,6 @@ function dethide(id)
         $xyz_twap_peer_verification=intval($_POST['xyz_twap_peer_verification']);
         $xyz_twap_premium_version_ads=intval($_POST['xyz_twap_premium_version_ads']);
         $xyz_twap_default_selection_edit=intval($_POST['xyz_twap_default_selection_edit']);
-        $xyz_twap_utf_decode_enable=intval($_POST['xyz_twap_utf_decode_enable']);
         
         //$xyz_twap_future_to_publish=$_POST['xyz_twap_future_to_publish'];
 		$twap_customtype_ids="";
@@ -370,7 +363,6 @@ function dethide(id)
 		update_option('xyz_twap_peer_verification',$xyz_twap_peer_verification);
 		update_option('xyz_twap_premium_version_ads',$xyz_twap_premium_version_ads);
 		update_option('xyz_twap_default_selection_edit',$xyz_twap_default_selection_edit);
-		update_option('xyz_twap_utf_decode_enable',$xyz_twap_utf_decode_enable);
 		//update_option('xyz_twap_future_to_publish',$xyz_twap_future_to_publish);
 	}
 	//$xyz_twap_future_to_publish=get_option('xyz_twap_future_to_publish');
@@ -383,7 +375,6 @@ function dethide(id)
 	$xyz_twap_peer_verification=esc_html(get_option('xyz_twap_peer_verification'));
 	$xyz_twap_premium_version_ads=esc_html(get_option('xyz_twap_premium_version_ads'));
 	$xyz_twap_default_selection_edit=esc_html(get_option('xyz_twap_default_selection_edit'));
-	$xyz_twap_utf_decode_enable=get_option('xyz_twap_utf_decode_enable');
 	?>
 		<h2>Basic Settings</h2>
 
@@ -396,80 +387,70 @@ function dethide(id)
 
 					<td  colspan="1" width="50%">Publish wordpress `pages` to twitter
 					</td>
-					<td><select name="xyz_twap_include_pages">
-
-							<option value="1"
-							<?php if($xyz_twap_include_pages=='1') echo 'selected'; ?>>Yes</option>
-
-							<option value="0"
-							<?php if($xyz_twap_include_pages!='1') echo 'selected'; ?>>No</option>
-					</select>
-					</td>
+			<td  class="switch-field">
+				<label id="xyz_twap_include_pages_yes"><input type="radio" name="xyz_twap_include_pages" value="1" <?php  if($xyz_twap_include_pages==1) echo 'checked';?>/>Yes</label>
+				<label id="xyz_twap_include_pages_no"><input type="radio" name="xyz_twap_include_pages" value="0" <?php  if($xyz_twap_include_pages==0) echo 'checked';?>/>No</label>
+			</td>
 				</tr>
 				
 				<tr valign="top">
 
 					<td  colspan="1">Publish wordpress `posts` to twitter
 					</td>
-					<td><select name="xyz_twap_include_posts" onchange="xyz_twap_show_postCategory(this.value);">
-
-							<option value="1"
-							<?php if($xyz_twap_include_posts=='1') echo 'selected'; ?>>Yes</option>
-
-							<option value="0"
-							<?php if($xyz_twap_include_posts!='1') echo 'selected'; ?>>No</option>
-					</select>
-					</td>
+			<td  class="switch-field">
+				<label id="xyz_twap_include_posts_yes"><input type="radio" name="xyz_twap_include_posts" value="1" <?php  if($xyz_twap_include_posts==1) echo 'checked';?>/>Yes</label>
+				<label id="xyz_twap_include_posts_no"><input type="radio" name="xyz_twap_include_posts" value="0" <?php  if($xyz_twap_include_posts==0) echo 'checked';?>/>No</label>
+			</td>
 				</tr>
 				
 				<tr valign="top" id="selPostCat">
 
 					<td  colspan="1">Select post categories for auto publish
 					</td>
-					<td><input type="hidden"
-						value="<?php echo esc_html($xyz_twap_include_categories);?>"
-						name="xyz_twap_sel_cat" id="xyz_twap_sel_cat"> <input type="radio"
-						name="xyz_twap_cat_all" id="xyz_twap_cat_all" value="All"
-						onchange="rd_cat_chn(1,-1)"
-						<?php if($xyz_twap_include_categories=="All") echo "checked"?>>All<font
-						style="padding-left: 10px;"></font><input type="radio"
-						name="xyz_twap_cat_all" id="xyz_twap_cat_all" value=""
-						onchange="rd_cat_chn(1,1)"
-						<?php if($xyz_twap_include_categories!="All") echo "checked"?>>Specific
+					<td class="switch-field">
+	                <input type="hidden" value="<?php echo esc_html($xyz_twap_include_categories);?>" name="xyz_twap_sel_cat" 
+			id="xyz_twap_sel_cat"> 
+					<label id="xyz_twap_include_categories_no">
+					<input type="radio"	name="xyz_twap_cat_all" id="xyz_twap_cat_all" value="All" onchange="rd_cat_chn(1,-1)" <?php if($xyz_twap_include_categories=="All") echo "checked"?>>All<font style="padding-left: 10px;"></font></label>
+					<label id="xyz_twap_include_categories_yes">
+					<input type="radio"	name="xyz_twap_cat_all" id="xyz_twap_cat_all" value=""	onchange="rd_cat_chn(1,1)" <?php if($xyz_twap_include_categories!="All") echo "checked"?>>Specific</label>
+					<br /> <br /> <div class="scroll_checkbox"  id="cat_dropdown_span">
+					<?php 
+					$args = array(
+							'show_option_all'    => '',
+							'show_option_none'   => '',
+							'orderby'            => 'name',
+							'order'              => 'ASC',
+							'show_last_update'   => 0,
+							'show_count'         => 0,
+							'hide_empty'         => 0,
+							'child_of'           => 0,
+							'exclude'            => '',
+							'echo'               => 0,
+							'selected'           => '1 3',
+							'hierarchical'       => 1,
+							'id'                 => 'xyz_twap_catlist',
+							'class'              => 'postform',
+							'depth'              => 0,
+							'tab_index'          => 0,
+							'taxonomy'           => 'category',
+							'hide_if_empty'      => false );
 
-						<span id="cat_dropdown_span"><br /> <br /> <?php 
-
-
-						$args = array(
-								'show_option_all'    => '',
-								'show_option_none'   => '',
-								'orderby'            => 'name',
-								'order'              => 'ASC',
-								'show_last_update'   => 0,
-								'show_count'         => 0,
-								'hide_empty'         => 0,
-								'child_of'           => 0,
-								'exclude'            => '',
-								'echo'               => 0,
-								'selected'           => '1 3',
-								'hierarchical'       => 1,
-								'id'                 => 'xyz_twap_catlist',
-								'class'              => 'postform',
-								'depth'              => 0,
-								'tab_index'          => 0,
-								'taxonomy'           => 'category',
-								'hide_if_empty'      => false );
-
-						if(count(get_categories($args))>0)
+					if(count(get_categories($args))>0)
+					{
+						$twap_categories=get_categories();
+						foreach ($twap_categories as $twap_cat)
 						{
-							$args['name']='xyz_twap_catlist';
-							echo str_replace( "<select", "<select multiple onClick=setcat(this) style='width:200px;height:auto !important;border:1px solid #cccccc;'", wp_dropdown_categories($args));
-						}
-						else
-							echo "NIL";
-
-						?><br /> <br /> </span>
-					</td>
+							$cat_id[]=$twap_cat->cat_ID;
+							$cat_name[]=$twap_cat->cat_name;
+							?>
+							<input type="checkbox" name="xyz_twap_catlist[]"  value="<?php  echo $twap_cat->cat_ID;?>" <?php if(is_array($xyz_twap_include_categories)) if(in_array($twap_cat->cat_ID, $xyz_twap_include_categories)) echo "checked" ?>/><?php echo $twap_cat->cat_name; ?>
+							<br/><?php }
+					}
+					else
+						echo "NIL";
+					?><br /> <br /> </div>
+				</td>
 				</tr>
 
 
@@ -508,25 +489,22 @@ function dethide(id)
 				</tr>
 				<tr valign="top">
 
-					<td scope="row" colspan="1" width="50%">Default selection of auto publish while editing posts/pages	
-					</td><td><select name="xyz_twap_default_selection_edit" >
-					
-					<option value ="1" <?php if($xyz_twap_default_selection_edit=='1') echo 'selected'; ?> >Yes </option>
-					
-					<option value ="0" <?php if($xyz_twap_default_selection_edit=='0') echo 'selected'; ?> >No </option>
-					</select> 
+					<td scope="row" colspan="1" width="50%">Default selection of auto publish while editing posts/pages/custom post types
 					</td>
+				<td  class="switch-field">
+					<label id="xyz_twap_default_selection_edit_yes"><input type="radio" name="xyz_twap_default_selection_edit" value="1" <?php  if($xyz_twap_default_selection_edit==1) echo 'checked';?>/>Enabled</label>
+					<label id="xyz_twap_default_selection_edit_no"><input type="radio" name="xyz_twap_default_selection_edit" value="0" <?php  if($xyz_twap_default_selection_edit==0) echo 'checked';?>/>Disabled</label>
+				</td>
 				</tr>
 
 				<tr valign="top">
 				
-				<td scope="row" colspan="1" width="50%">SSL peer verification	</td><td><select name="xyz_twap_peer_verification" >
-				
-				<option value ="1" <?php if($xyz_twap_peer_verification=='1') echo 'selected'; ?> >Enable </option>
-				
-				<option value ="0" <?php if($xyz_twap_peer_verification=='0') echo 'selected'; ?> >Disable </option>
-				</select> 
-				</td></tr>
+				<td scope="row" colspan="1" width="50%">Enable SSL peer verification in remote requests</td>
+				<td  class="switch-field">
+					<label id="xyz_twap_peer_verification_yes"><input type="radio" name="xyz_twap_peer_verification" value="1" <?php  if($xyz_twap_peer_verification==1) echo 'checked';?>/>Yes</label>
+					<label id="xyz_twap_peer_verification_no"><input type="radio" name="xyz_twap_peer_verification" value="0" <?php  if($xyz_twap_peer_verification==0) echo 'checked';?>/>No</label>
+				</td>
+				</tr>
 				
 				<tr valign="top">
 					<td scope="row" colspan="1">Apply filters during publishing	</td>
@@ -560,47 +538,14 @@ function dethide(id)
 					</td>
 				</tr>
 
-				<tr valign="top">
 
-					<td  colspan="1" width="50%">Enable utf-8 decoding before publishing
-					</td>
-					<td><select name="xyz_twap_utf_decode_enable">
-
-							<option value="1"
-							<?php if($xyz_twap_utf_decode_enable=='1') echo 'selected'; ?>>Yes</option>
-
-							<option value="0"
-							<?php if($xyz_twap_utf_decode_enable!='1') echo 'selected'; ?>>No</option>
-					</select>
-					</td>
-				</tr>
-
-	
-				<!--<tr valign="top">
-
-					<td scope="row" colspan="1">Enable "future_to_publish" hook	</td>
-					<td><select name="xyz_twap_future_to_publish" id="xyz_twap_future_to_publish" >
-					
-					<option value ="1" <?php //if($xyz_twap_future_to_publish=='1') echo 'selected'; ?> >Yes </option>
-					
-					<option value ="2" <?php // if($xyz_twap_future_to_publish=='2') echo 'selected'; ?> >No </option>
-					</select>
-					</td>
-				</tr>-->
-				
 				<tr valign="top">
 
 					<td  colspan="1">Enable credit link to author
 					</td>
-					<td><select name="xyz_credit_link" id="xyz_twap_credit_link">
-
-							<option value="twap"
-							<?php if($xyz_credit_link=='twap') echo 'selected'; ?>>Yes</option>
-
-							<option
-								value="<?php echo $xyz_credit_link!='twap'?$xyz_credit_link:0;?>"
-								<?php if($xyz_credit_link!='twap') echo 'selected'; ?>>No</option>
-					</select>
+					<td  class="switch-field">
+						<label id="xyz_credit_link_yes"><input type="radio" name="xyz_credit_link" value="twap" <?php  if($xyz_credit_link=='twap') echo 'checked';?>/>Yes</label>
+						<label id="xyz_credit_link_no"><input type="radio" name="xyz_credit_link" value="<?php echo $xyz_credit_link!='twap'?$xyz_credit_link:0;?>" <?php  if($xyz_credit_link!='twap') echo 'checked';?>/>No</label>
 					</td>
 				</tr>
 
@@ -611,15 +556,9 @@ function dethide(id)
 
 					<td  colspan="1">Enable premium version ads
 					</td>
-					<td><select name="xyz_twap_premium_version_ads" id="xyz_twap_premium_version_ads">
-
-							<option value="1"
-							<?php if($xyz_twap_premium_version_ads=='1') echo 'selected'; ?>>Yes</option>
-
-							<option
-								value="0"
-								<?php if($xyz_twap_premium_version_ads=='0') echo 'selected'; ?>>No</option>
-					</select>
+					<td  class="switch-field">
+						<label id="xyz_twap_premium_version_ads_yes"><input type="radio" name="xyz_twap_premium_version_ads" value="1" <?php  if($xyz_twap_premium_version_ads==1) echo 'checked';?>/>Yes</label>
+						<label id="xyz_twap_premium_version_ads_no"><input type="radio" name="xyz_twap_premium_version_ads" value="0" <?php  if($xyz_twap_premium_version_ads==0) echo 'checked';?>/>No</label>
 					</td>
 				</tr>
 
@@ -642,10 +581,14 @@ function dethide(id)
 		
 		
 </div>		
-
+<?php if (is_array($xyz_twap_include_categories))
+$xyz_twap_include_categories1=implode(',', $xyz_twap_include_categories);
+else 
+	$xyz_twap_include_categories1=$xyz_twap_include_categories;
+	?>
 	<script type="text/javascript">
 	//drpdisplay();
-var catval='<?php echo esc_html($xyz_twap_include_categories); ?>';
+var catval='<?php echo esc_html($xyz_twap_include_categories1); ?>';
 var custtypeval='<?php echo esc_html($xyz_twap_include_customposttypes); ?>';
 var get_opt_cats='<?php echo esc_html(get_option('xyz_twap_include_posts'));?>';
 jQuery(document).ready(function() {
@@ -658,7 +601,27 @@ jQuery(document).ready(function() {
 		  jQuery('#selPostCat').hide();
 	  else
 		  jQuery('#selPostCat').show();
-			  
+   var xyz_credit_link=jQuery("input[name='xyz_credit_link']:checked").val();
+   if(xyz_credit_link=='twap')
+	   xyz_credit_link=1;
+   else
+	   xyz_credit_link=0;
+   XyzTwapToggleRadio(xyz_credit_link,'xyz_credit_link');
+   
+   var xyz_twap_cat_all=jQuery("input[name='xyz_twap_cat_all']:checked").val();
+   if (xyz_twap_cat_all == 'All') 
+	   xyz_twap_cat_all=0;
+   else 
+	   xyz_twap_cat_all=1;
+   XyzTwapToggleRadio(xyz_twap_cat_all,'xyz_twap_include_categories'); 
+  
+
+   var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_default_selection_edit','xyz_twap_peer_verification','xyz_twap_premium_version_ads'];
+
+   jQuery.each(toggle_element_ids, function( index, value ) {
+		   checkedval= jQuery("input[name='"+value+"']:checked").val();
+		   XyzTwapToggleRadio(checkedval,value); 
+   	});
 	}); 
 	
 function setcat(obj)
@@ -681,11 +644,11 @@ document.getElementById('xyz_twap_sel_cat').value=sel_str;
 
 }
 
-var d1='<?php echo esc_html($xyz_twap_include_categories);?>';
-splitText = d1.split(",");
-jQuery.each(splitText, function(k,v) {
-jQuery("#xyz_twap_catlist").children("option[value="+v+"]").attr("selected","selected");
-});
+//var d1='<?php // echo esc_html($xyz_twap_include_categories1);?>';
+// splitText = d1.split(",");
+// jQuery.each(splitText, function(k,v) {
+// jQuery("#xyz_twap_catlist").children("option[value="+v+"]").attr("selected","selected");
+// });
 
 function rd_cat_chn(val,act)
 {
@@ -718,6 +681,20 @@ function xyz_twap_show_postCategory(val)
 	else
 		jQuery('#selPostCat').show();
 }
+var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_default_selection_edit','xyz_twap_peer_verification','xyz_credit_link','xyz_twap_premium_version_ads','xyz_twap_include_categories'];
+
+jQuery.each(toggle_element_ids, function( index, value ) {
+	jQuery("#"+value+"_no").click(function(){
+		XyzTwapToggleRadio(0,value);
+		if(value=='xyz_twap_include_posts')
+			xyz_twap_show_postCategory(0);
+	});
+	jQuery("#"+value+"_yes").click(function(){
+		XyzTwapToggleRadio(1,value);
+		if(value=='xyz_twap_include_posts')
+			xyz_twap_show_postCategory(1);
+	});
+	});
 </script>
 	<?php 
 ?>

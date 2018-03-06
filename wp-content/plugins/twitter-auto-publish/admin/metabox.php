@@ -60,14 +60,16 @@ if(isset($_GET['action']) && $_GET['action']=="edit" && !empty($_GET['post'])) /
 }
 function xyz_twap_addpostmetatags()
 {
-	$imgpath= plugins_url()."/twitter-auto-publish/admin/images/";
+	$imgpath= plugins_url()."/twitter-auto-publish/images/";
 	$heimg=$imgpath."support.png";
 	$xyz_twap_catlist=get_option('xyz_twap_include_categories');
+	if (is_array($xyz_twap_catlist))
+		$xyz_twap_catlist=implode(',', $xyz_twap_catlist);
 	?>
 <script>
 function displaycheck_twap()
 {
-var tcheckid=document.getElementById("xyz_twap_twpost_permission").value;
+var tcheckid=jQuery("input[name='xyz_twap_twpost_permission']:checked").val();
 if(tcheckid==1)
 {
 
@@ -100,22 +102,26 @@ function dethide_twap(id)
 
 
 jQuery(document).ready(function() {
-
+	displaycheck_twap();
+	
+	 var xyz_twap_twpost_permission=jQuery("input[name='xyz_twap_twpost_permission']:checked").val();
+	 XyzTwapToggleRadio(xyz_twap_twpost_permission,'xyz_twap_twpost_permission'); 
+		
 	jQuery('#category-all').bind("DOMSubtreeModified",function(){
-		get_categorylist(1);
+		twap_get_categorylist(1);
 		});
 	
-	get_categorylist(1);
+	twap_get_categorylist(1);
 	jQuery('#category-all').on("click",'input[name="post_category[]"]',function() {
-		get_categorylist(1);
+		twap_get_categorylist(1);
 				});
 
 	jQuery('#category-pop').on("click",'input[type="checkbox"]',function() {
-		get_categorylist(2);
+		twap_get_categorylist(2);
 				});
 });
 
-function get_categorylist(val)
+function twap_get_categorylist(val)
 {
 	var cat_list="";var chkdArray=new Array();var cat_list_array=new Array();
 	var posttype="<?php echo get_post_type() ;?>";
@@ -190,23 +196,18 @@ function inArray(needle, haystack) {
 <tr><td colspan="2" valign="top">&nbsp;</td></tr>
 
 	<tr valign="top">
-		<td class="xyz_twap_pleft15" width="60%">Enable auto publish	posts to my twitter account
+		<td class="xyz_twap_pleft15" width="60%">Enable auto publish posts to my twitter account
 		</td>
-		<td width="40%"><select id="xyz_twap_twpost_permission" name="xyz_twap_twpost_permission"
-			onchange="displaycheck_twap()">
-				<option value="0" >
-					No</option>
-				<option value="1"
-				<?php echo 'selected';?>>Yes</option>
-		</select>
-		</td>
+		<td  class="switch-field">
+		<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_1" value="1" checked/>Yes</label>
+		<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_0" value="0" />No</label>
+	</td>
 	</tr>
 	
 	<tr valign="top" id="twai_twap">
 		<td class="xyz_twap_pleft15">Attach image to twitter post
 		</td>
-		<td><select id="xyz_twap_twpost_image_permission" name="xyz_twap_twpost_image_permission"
-			onchange="displaycheck_twap()">
+		<td><select id="xyz_twap_twpost_image_permission" name="xyz_twap_twpost_image_permission">
 				<option value="0"
 				<?php  if(get_option('xyz_twap_twpost_image_permission')==0) echo 'selected';?>>
 					No</option>
@@ -218,8 +219,8 @@ function inArray(needle, haystack) {
 	
 	<tr valign="top" id="twmf_twap">
 		<td class="xyz_twap_pleft15">Message format for posting <img src="<?php echo $heimg?>"
-						onmouseover="detdisplay_twap('xyz_twap')" onmouseout="dethide_twap('xyz_twap')">
-						<div id="xyz_twap" class="informationdiv"
+						onmouseover="detdisplay_twap('xyz_twap')" onmouseout="dethide_twap('xyz_twap')" style="width:13px;height:auto;">
+						<div id="xyz_twap" class="twap_informationdiv"
 							style="display: none; font-weight: normal;">
 							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}
@@ -256,7 +257,6 @@ function inArray(needle, haystack) {
 	
 </table>
 <script type="text/javascript">
-	displaycheck_twap();
 
 	var edit_flag="<?php echo $GLOBALS['edit_flag'];?>";
 	if(edit_flag==1)
@@ -270,14 +270,8 @@ function inArray(needle, haystack) {
 			xyz_twap_default_selection_edit=0;
 		if(xyz_twap_default_selection_edit==1)
 			return;
-		
-				if(document.getElementById("xyz_twap_twpost_permission"))
-				{
-					document.getElementById("xyz_twap_twpost_permission").value=0;
-					document.getElementById("twmf_twap").style.display='none';
-					document.getElementById("twai_twap").style.display='none';
-					document.getElementById("twmftarea_twap").style.display='none';
-				}
+		jQuery('#xyz_twap_twpost_permission_0').attr('checked',true);
+		displaycheck_twap();
 
 
 	}
@@ -294,6 +288,16 @@ function inArray(needle, haystack) {
 	    jQuery("textarea#xyz_twap_twmessage").focus();
 
 	}
+	jQuery("#xyz_twap_twpost_permission_no").click(function(){
+		displaycheck_twap();
+		XyzTwapToggleRadio(0,'xyz_twap_twpost_permission');
+		
+	});
+	jQuery("#xyz_twap_twpost_permission_yes").click(function(){
+		displaycheck_twap();
+		XyzTwapToggleRadio(1,'xyz_twap_twpost_permission');
+		
+	});
 	</script>
 <?php 
 }

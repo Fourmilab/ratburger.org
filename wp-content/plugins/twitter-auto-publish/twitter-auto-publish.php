@@ -1,11 +1,11 @@
 <?php
 /*
  Plugin Name: Twitter Auto Publish
-Plugin URI: http://xyzscripts.com/wordpress-plugins/twitter-auto-publish/
+Plugin URI: https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/
 Description:   Publish posts automatically from your blog to Twitter social media. You can publish your posts to Twitter as simple text message or as text message with image. The plugin supports filtering posts by post-types and categories.
-Version: 1.3.4
+Version: 1.3.5
 Author: xyzscripts.com
-Author URI: http://xyzscripts.com/
+Author URI: https://xyzscripts.com/
 License: GPLv2 or later
 */
 
@@ -52,9 +52,8 @@ if(get_option('xyz_credit_link')=="twap"){
 
 }
 function xyz_twap_credit() {
-	$content = '<div style="clear:both;width:100%;text-align:center; font-size:11px; "><a target="_blank" title="Twitter Auto Publish" href="http://xyzscripts.com/wordpress-plugins/twitter-auto-publish/details" >Twitter Auto Publish</a> Powered By : <a target="_blank" title="PHP Scripts & Programs" href="http://www.xyzscripts.com" >XYZScripts.com</a></div>';
+	$content = '<div style="clear:both;width:100%;text-align:center; font-size:11px; "><a target="_blank" title="Twitter Auto Publish" href="https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/details" >Twitter Auto Publish</a> Powered By : <a target="_blank" title="PHP Scripts & Programs" href="http://www.xyzscripts.com" >XYZScripts.com</a></div>';
 	echo $content;
 }
 if(!function_exists('get_post_thumbnail_id'))
 	add_theme_support( 'post-thumbnails' );
-?>

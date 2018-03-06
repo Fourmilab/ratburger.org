@@ -1,10 +1,10 @@
 ﻿=== Twitter Auto Publish ===
 Contributors: f1logic
-Donate link: http://xyzscripts.com/donate/
+Donate link: https://xyzscripts.com/donate/
 Tags:  twitter, twitter auto publish, publish post to twitter, add link to twitter, twitter publishing, post to twitter, social media auto publish, social media publishing, social network auto publish, social media, social network
 Requires at least: 3.0
-Tested up to: 4.9.1
-Stable tag: 1.3.4
+Tested up to: 4.9.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 
 Publish posts automatically to Twitter.
@@ -58,7 +58,7 @@ The supported post elements which can be published are given below.
 
 = About =
 
-Twitter Auto Publish is developed and maintained by [XYZScripts](http://xyzscripts.com/ "xyzscripts.com"). For any support, you may [contact us](http://xyzscripts.com/support/ "XYZScripts Support").
+Twitter Auto Publish is developed and maintained by [XYZScripts](https://xyzscripts.com/ "xyzscripts.com"). For any support, you may [contact us](https://xyzscripts.com/support/ "XYZScripts Support").
 
 ★ [Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/ "Twitter Auto Publish User Guide")
 ★ [Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "Twitter Auto Publish FAQ")
@@ -73,7 +73,7 @@ Twitter Auto Publish is developed and maintained by [XYZScripts](http://xyzscrip
 3. You can configure the settings from Twitter Auto Publish menu. (Make sure to Authorize Twitter application after saving the settings.)
 4. Once these are done, posts should get automatically published based on your filter settings.
 
-If you need any further help, you may contact our [support desk](http://xyzscripts.com/support/ "XYZScripts Support").
+If you need any further help, you may contact our [support desk](https://xyzscripts.com/support/ "XYZScripts Support").
 
 == Frequently Asked Questions ==
 
@@ -107,7 +107,7 @@ SSL peer verification may not be functioning in your server. Please turn off SSL
 
 = More questions ? =
 
-[Drop a mail](http://xyzscripts.com/support/ "XYZScripts Support") and we shall get back to you with the answers.
+[Drop a mail](https://xyzscripts.com/support/ "XYZScripts Support") and we shall get back to you with the answers.
 
 
 == Screenshots ==
@@ -116,6 +116,10 @@ SSL peer verification may not be functioning in your server. Please turn off SSL
 2. Publishing options while creating a post.
 
 == Changelog ==
+
+= Twitter Auto Publish 1.3.5 =
+* Twitter api updated with wp_remote_get
+* Updated UI
 
 = Twitter Auto Publish 1.3.4 =
 * Added USER_DISPLAY_NAME in message formats
@@ -147,7 +151,7 @@ SSL peer verification may not be functioning in your server. Please turn off SSL
 = Twitter Auto Publish 1.2.2 =
 * Added option to enable/disable "future_to_publish" hook for handling auto publish of scheduled posts	
 * Added options to enable/disable "the_content", "the_excerpt", "the_title" filters on content to be auto-published
-* Inline edit of posts will work according to the value set for "Default selection of auto publish while editing posts/pages" 
+* Inline edit of posts will work according to the value set for "Default selection of auto publish while editing posts/pages/custom post types" 
 * Latest five auto publish logs are maintained
 
 = Twitter Auto Publish 1.2.1 =
@@ -204,4 +208,4 @@ Please read the FAQ first if you are having problems.
 
 = Feedback =
 
-We would like to receive your feedback and suggestions about Twitter Auto Publish plugin. You may submit them at our [support desk](http://xyzscripts.com/support/ "XYZScripts Support").
+We would like to receive your feedback and suggestions about Twitter Auto Publish plugin. You may submit them at our [support desk](https://xyzscripts.com/support/ "XYZScripts Support").

@@ -117,8 +117,7 @@ function xyz_twap_link_publish($post_ID) {
 	if ($postpp->post_status == 'publish')
 	{
 		$posttype=$postpp->post_type;
-		$ln_publish_status=array();
-		
+				
 		if ($posttype=="page")
 		{
 
@@ -141,7 +140,7 @@ function xyz_twap_link_publish($post_ID) {
 			$xyz_twap_include_categories=get_option('xyz_twap_include_categories');
 			if($xyz_twap_include_categories!="All")
 			{
-				$carr1=explode(',', $xyz_twap_include_categories);
+				$carr1=$xyz_twap_include_categories;
 					
 				$defaults = array('fields' => 'ids');
 				$carr2=wp_get_post_categories( $post_ID, $defaults );
@@ -311,19 +310,10 @@ function xyz_twap_link_publish($post_ID) {
 				$final_str='';
 				$len=0;
 				$tw_max_len=get_option('xyz_twap_tw_char_limit');
-				
-// 				if($image_found==1)
-// 					$tw_max_len=$tw_max_len-24;
-			
-			
+				if (function_exists('mb_strlen')) {
 				foreach ($matches as $key=>$val)
 				{
-			
-             //if(substr($val,0,5)=="https")
-						$url_max_len=23;//23 for https and 22 for http
-// 					else
-// 						$url_max_len=22;//23 for https and 22 for http
-			
+					$url_max_len=23;//23 for https and 22 for http
 					$messagepart=mb_substr($substring, 0, mb_strpos($substring, $val));
 			
 					if(mb_strlen($messagepart)>($tw_max_len-$len))
@@ -354,7 +344,6 @@ function xyz_twap_link_publish($post_ID) {
 						$final_str.=$val;
 						$len+=$cur_url_len;
 					}
-			
 				}
 			
 				if(mb_strlen($substring)>0 && $tw_max_len>$len)
@@ -369,6 +358,59 @@ function xyz_twap_link_publish($post_ID) {
 						$final_str.=$substring;
 					}
 				}
+				}
+				else {
+					foreach ($matches as $key=>$val)
+					{
+							
+						$url_max_len=23;
+							$messagepart=substr($substring, 0, strpos($substring, $val));
+								
+							if(strlen($messagepart)>($tw_max_len-$len))
+							{
+								$final_str.=substr($messagepart,0,$tw_max_len-$len-3)."...";
+								$len+=($tw_max_len-$len);
+								break;
+							}
+							else
+							{
+								$final_str.=$messagepart;
+								$len+=strlen($messagepart);
+							}
+								
+							$cur_url_len=strlen($val);
+							if(strlen($val)>$url_max_len)
+								$cur_url_len=$url_max_len;
+									
+								$substring=substr($substring, strpos($substring, $val)+strlen($val));
+								if($cur_url_len>($tw_max_len-$len))
+								{
+									$final_str.="...";
+									$len+=3;
+									break;
+								}
+								else
+								{
+									$final_str.=$val;
+									$len+=$cur_url_len;
+								}
+									
+					}
+						
+					if(strlen($substring)>0 && $tw_max_len>$len)
+					{
+							
+						if(strlen($substring)>($tw_max_len-$len))
+						{
+							$final_str.=substr($substring,0,$tw_max_len-$len-3)."...";
+						}
+						else
+						{
+							$final_str.=$substring;
+						}
+					}
+				}
+				
 			
 				$substring=$final_str;
 			}
@@ -378,7 +420,10 @@ function xyz_twap_link_publish($post_ID) {
 			if($image_found==1 && $post_twitter_image_permission==1)
 			{
 				$url = 'https://upload.twitter.com/1.1/media/upload.json';
-				$params=array('media_data' =>base64_encode(file_get_contents($attachmenturl)));
+				$img_response = wp_remote_get($attachmenturl,array('sslverify'=> (get_option('xyz_twap_peer_verification')=='1') ? true : false) );
+				if ( is_array( $img_response ) ) {
+					$img_body = $img_response['body'];
+					$params=array('media_data' =>base64_encode($img_body));
 				$code = $twobj->request('POST', $url, $params, true,true);
 				if ($code == 200)
 				{
@@ -400,6 +445,7 @@ function xyz_twap_link_publish($post_ID) {
 				{
 					$tw_publish_status="<span style=\"color:red\">statuses/update : ".$twobj->response['response']."</span>";
 				}
+				}
 			}
 			else
 			{
@@ -410,12 +456,12 @@ function xyz_twap_link_publish($post_ID) {
 				}
 				elseif($resultfrtw!=200){
 					if($twobj->response['response']!="")
-					$tw_publish_status=$twobj->response['response'];
+					$tw_publish_status="<span style=\"color:red\">".$twobj->response['response'].".</span>";
 					else
 						$tw_publish_status=$resultfrtw;
 				}
 				else if($img_status!="")
-					$tw_publish_status=$img_status;
+					$tw_publish_status="<span style=\"color:red\">".$img_status.".</span>";
 					
 			}
 			$tw_publish_status_insert=serialize($tw_publish_status);
@@ -427,7 +473,6 @@ function xyz_twap_link_publish($post_ID) {
 					'publishtime'	=>	$time,
 					'status'	=>	$tw_publish_status_insert
 			);
-			
 			$update_opt_array=array();
 			
 			$arr_retrive=(get_option('xyz_twap_post_logs'));

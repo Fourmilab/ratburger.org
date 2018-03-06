@@ -11,11 +11,20 @@ function xyz_twap_ajax_backlink_call() {
 		if (! isset( $_POST['_wpnonce'] )|| ! wp_verify_nonce( $_POST['_wpnonce'],'backlink' ))
 		 {
 					echo 1;die;
-					// wp_nonce_ays( 'backlink' );
-					//exit();
-		
+		 }
+		 if(current_user_can('administrator')){
+		 	global $wpdb;
+		 	if(isset($_POST)){
+		 		if(intval($_POST['enable'])==1){
+		 			update_option('xyz_credit_link','twap');
+		 			echo "twap";
 				}
-				update_option('xyz_credit_link','twap');
+		 		if(intval($_POST['enable'])==-1){
+		 			update_option('xyz_twap_credit_dismiss', "dis");
+		 			echo -1;
+		 		}
+		 	}
+		 }
 	}
 	die();
 }
