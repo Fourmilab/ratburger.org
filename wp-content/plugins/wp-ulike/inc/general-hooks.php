@@ -305,6 +305,7 @@ if( defined( 'BP_VERSION' ) ) {
 					$custom_text 	= __('You have a new like from', WP_ULIKE_SLUG ) . ' "' . $user_info->display_name . '"';
 				    */
 				    $custom_text = $user_info->display_name . " liked your ";
+				    $custom_class = '';
 				    /* END RATBURGER LOCAL CODE */
 					//checking the ulike types
 					if($type[1] == 'liked'){
@@ -312,7 +313,7 @@ if( defined( 'BP_VERSION' ) ) {
 					    /* RATBURGER LOCAL CODE
 					       Add title of post to post like notification */
 					    $custom_text .= 'post ' . '"' .
-                            get_post($item_id)->post_title . '"';
+					    get_post($item_id)->post_title . '"';
 					    /* END RATBURGER LOCAL CODE */
 					}
 					else if($type[1] == 'topicliked'){
@@ -322,7 +323,8 @@ if( defined( 'BP_VERSION' ) ) {
 					    $zzact = new BP_Activity_Activity($item_id);  // Activity for post
 					    $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
 					    $custom_text .= 'post in group ' . '"' .
-                            $zzgrp->name . '"';
+					    $custom_class = 'rb_notif_group_topic_like rb_notif_highlight';
+					    $zzgrp->name . '"';
 					    /* END RATBURGER LOCAL CODE */
 					}
 					else if($type[1] == 'commentliked'){
@@ -348,17 +350,28 @@ if( defined( 'BP_VERSION' ) ) {
 					    $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
 					    $custom_text .= $zztype . ' in group ' . '"' .
 					        $zzgrp->name . '"';
+					    $custom_class = 'rb_notif_group_' . $zztype . '_like rb_notif_highlight';
 				    /* Handle notifications for new comments. */
 				    } else if ($type[1] == 'commentadded') {
 					    $custom_link = get_comment_link( $item_id );
 					    $custom_text = $user_info->display_name . ' commented on ' . '"' .
                                                 get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+					    $custom_class = 'rb_notif_new_comment rb_notif_highlight';
 				    /* Handle notification for new posts in a group. */
 				    } else if ($type[1] == 'grouppost') {
 					    $grp = groups_get_group($secondary_item_id);
 					    $custom_link = bp_get_group_permalink($grp) . '#activity-' . $item_id;
                                             $custom_text = $user_info->display_name . ' posted an update in the ' .
 					        $grp->name . ' group';
+					    $custom_class = 'rb_notif_new_group_post rb_notif_highlight';
+				    /* Handle notification for new comments in a group. */
+				    } else if ($type[1] == 'groupcomment') {
+				        $custom_link = add_query_arg( 'nid', (int) $not_id, bp_activity_get_permalink( $item_id ) );
+				        $RB_grp = new BP_Groups_Group((new BP_Activity_Activity((new BP_Activity_Activity($item_id))->item_id))->item_id);
+				        $custom_text = sprintf( __( '%1$s commented on one of your updates in group %2$s', 'buddypress' ),
+					    get_userdata($secondary_item_id)->display_name,
+					    $RB_grp->name );
+					$custom_class = 'rb_notif_new_group_comment rb_notif_highlight';
 					    /* END RATBURGER LOCAL CODE */
 					}
 				    /* RATBURGER LOCAL CODE
@@ -381,10 +394,14 @@ if( defined( 'BP_VERSION' ) ) {
 						$return = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_text, $custom_link );
 					// Deprecated BuddyBar
 					} else {
+						$ctx = $custom_text;
+						if ($custom_class !== '') {
+							$ctx = '<span class="' . $custom_class . '">' . $custom_text . '</span>';
+						}
 						$return = apply_filters( 'wp_ulike_bp_notifications_template', array(
-							'text' => $custom_text,
+							'text' => $ctx,
 							'link' => $custom_link
-						), $custom_link, (int) $total_items, $custom_text, $custom_text );
+						), $custom_link, (int) $total_items, $ctx, $ctx );
 					}
 					// global wp_filter to call bbPress wrapper function
 					if (isset($wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications'])) {

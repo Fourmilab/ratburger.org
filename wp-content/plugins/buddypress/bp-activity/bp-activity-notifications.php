@@ -179,6 +179,8 @@ add_action( 'bp_activity_sent_mention_email', 'bp_activity_at_mention_add_notifi
  * @param int                  $commenter_id ID of the user who made the comment.
  */
 function bp_activity_update_reply_add_notification( $activity, $comment_id, $commenter_id ) {
+/* RATBURGER LOCAL CODE
+   Replace BuddyPress group comment notifications with our own.
 	bp_notifications_add_notification( array(
 		'user_id'           => $activity->user_id,
 		'item_id'           => $comment_id,
@@ -188,6 +190,17 @@ function bp_activity_update_reply_add_notification( $activity, $comment_id, $com
 		'date_notified'     => bp_core_current_time(),
 		'is_new'            => 1,
 	) );
+*/
+	bp_notifications_add_notification( array(
+		'user_id'           => $activity->user_id,
+		'item_id'           => $comment_id,
+		'secondary_item_id' => $commenter_id,
+		'component_name'    => 'wp_ulike',
+		'component_action'  => 'wp_ulike_groupcomment_action_'. buddypress()->activity->id,
+		'date_notified'     => bp_core_current_time(),
+		'is_new'            => 1,
+	) );
+/* END RATBURGER LOCAL CODE */
 }
 add_action( 'bp_activity_sent_reply_to_update_notification', 'bp_activity_update_reply_add_notification', 10, 3 );
 

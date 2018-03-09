@@ -49,6 +49,42 @@ This theme, like WordPress, is licensed under the GPL.
  * 15.0 - Print
  */
 
+/* RATBURGER LOCAL CODE
+
+    The following CSS supports features implemented in
+    Ratburger local code.  Each definitions describes the
+    local code which uses it. */
+
+/* We want to highlight different types of notifications
+   by colour.  The following definitions are invoked in
+   ~/plug/wp-ulike/inc/general-hooks.php to apply specific
+   styles to different kings of notificiations. */
+span.rb_notif_new_comment {
+    color: rgba(255, 255, 255, 1.0);
+}
+span.rb_notif_new_group_comment {
+    color: rgba(96, 192, 96, 1.0);
+}
+span.rb_notif_new_group_post {
+    color: rgba(128, 255, 128, 1.0);
+}
+span.rb_notif_group_topic_like {
+    color: rgba(80, 164, 80, 1.0);
+}
+span.rb_notif_group_post_like {
+    color: rgba(80, 164, 80, 1.0);
+}
+span.rb_notif_group_comment_like {
+    color: rgba(80, 164, 80, 1.0);
+}
+/* Common hover and focus behaviour for all rb_notif styles */
+.rb_notif_highlight:hover, rb_notif_highlight:focus {
+    color: #007acc;
+}
+
+
+/* END RATBURGER LOCAL CODE */
+
 
 /**
  * 1.0 - Normalize
