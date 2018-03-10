@@ -47,8 +47,19 @@
 					 */
 					do_action( 'twentysixteen_credits' );
 				?>
+				<?php /* RATBURGER LOCAL CODE
+                                         Add build number and date/time
 				<span class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></span>
 				<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'twentysixteen' ) ); ?>"><?php printf( __( 'Proudly powered by %s', 'twentysixteen' ), 'WordPress' ); ?></a>
+				*/
+				global $rb_build_number, $rb_build_time, $rb_build_commit;
+				if ($rb_build_number) {
+				    echo "<a href=\"https://github.com/Fourmilab/ratburger.org/commits/master\" target=\"_blank\">";
+				    echo "<span title=\"Commit $rb_build_commit\">Build $rb_build_number ($rb_build_time UTC)</span>";
+				    echo "</a>";
+				}
+				/* END RATBURGER LOCAL CODE */
+				?>
 			</div><!-- .site-info -->
 		</footer><!-- .site-footer -->
 	</div><!-- .site-inner -->

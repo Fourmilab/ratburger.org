@@ -699,4 +699,8 @@ function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activ
 	}
 }
 
+// Load build information.  We don't require this to exist.
+
+include get_template_directory() . '/ratburger/build.php';
+
 /* END RATBURGER LOCAL CODE */
