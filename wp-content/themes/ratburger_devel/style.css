@@ -371,7 +371,8 @@ i {
 	font-style: italic;
 }
 
-/*  Original behaviour for blockquotes.
+/*  RATBURGER LOCAL CODE
+    Original behaviour for blockquotes.
 blockquote {
 	border: 0 solid #1a1a1a;
 	border-left-width: 4px;
@@ -480,7 +481,7 @@ blockquote small:before {
 blockquote em,
 blockquote i,
 blockquote cite {
-	font-style: normal;
+	font-style: italic;
 }
 
 blockquote strong,
@@ -492,6 +493,7 @@ blockquote > :last-child {
 	margin-bottom: 0;
 }
 /* End new blockquote definition */
+/* END RATBURGER LOCAL CODE */
 
 address {
 	font-style: italic;
@@ -579,7 +581,11 @@ hr {
 ul,
 ol {
 	margin: 0 0 1.75em 1.25em;
+    /* RATBURGER LOCAL CODE
+    padding: 0;
+    */
 	padding-left: 1.75em;
+    /* END RATBURGER LOCAL CODE */
 }
 
 ul {
@@ -856,7 +862,8 @@ a:active {
 	outline: 0;
 }
 
-/*  We don't use the box shadow below links.
+/* RATBURGER LOCAL CODE
+   We don't use the box shadow below links.
 .entry-content a,
 .entry-summary a,
 .taxonomy-description a,
@@ -886,6 +893,7 @@ a:active {
 	box-shadow: none;
 }
 */
+/* END RATBURGER LOCAL CODE */
 
 
 /**
@@ -2522,8 +2530,12 @@ body.search-no-results .page-header {
 	font-size: 13px;
 	font-size: 0.8125rem;
 	line-height: 1.6153846154;
+    /* RATBURGER LOCAL CODE
+       Right-align build information in footer
+    */
 	width: 100%;
 	text-align: right;
+    /* END RATBURGER LOCAL CODE */
 }
 
 .site-info a {
