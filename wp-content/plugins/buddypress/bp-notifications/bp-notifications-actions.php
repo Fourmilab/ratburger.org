@@ -43,6 +43,17 @@ function bp_notifications_action_mark_read() {
 		return false;
 	}
 
+	/* RATBURGER LOCAL CODE
+	   Handle "all" as the ID to mark all read. */
+	if ($id === 'all') {
+	    if (bp_verify_nonce_request('bp_notification_mark_read_' . $id)) {
+	        rb_notif_mark_all_read();
+	    }
+	    bp_core_redirect( bp_displayed_user_domain() . bp_get_notifications_slug() . '/read/' );
+	    // Does not return
+	}
+	/* END RATBURGER LOCAL CODE */
+
 	// Check the nonce and mark the notification.
 	if ( bp_verify_nonce_request( 'bp_notification_mark_read_' . $id ) && bp_notifications_mark_notification( $id, false ) ) {
 		bp_core_add_message( __( 'Notification successfully marked read.',         'buddypress' )          );

@@ -77,6 +77,9 @@ span.rb_notif_group_post_like {
 span.rb_notif_group_comment_like {
     color: rgba(80, 164, 80, 1.0);
 }
+span.rb_notif_mark_all_read {
+    color: rgba(224, 224, 64, 1.0);
+}
 /* Common hover and focus behaviour for all rb_notif styles */
 .rb_notif_highlight:hover, rb_notif_highlight:focus {
     color: #007acc;

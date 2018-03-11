@@ -49,6 +49,20 @@ function bp_notifications_toolbar_menu() {
 				'href'   => $notification->href,
 			) );
 		}
+		/* RATBURGER LOCAL CODE
+		   Add menu item to mark all notifications read */
+		$custom_kink = bp_get_root_domain() . '/members/' .
+	            wp_get_current_user()->user_login .
+	            '/notifications/unread/' .
+	             wp_nonce_url('', 'bp_notification_mark_read_all') .
+	            '&action=read&notification_id=all';
+		$wp_admin_bar->add_menu(array(
+			'parent' => 'bp-notifications',
+			'id'     => 'notification-' . 'mark-all-read',
+			'title'  => '<span class="rb_notif_mark_all_read rb_notif_highlight">Mark all notifications read</span>',
+			'href'   => $custom_kink,
+		));
+		/* END RATBURGER LOCAL CODE */
 	} else {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'bp-notifications',

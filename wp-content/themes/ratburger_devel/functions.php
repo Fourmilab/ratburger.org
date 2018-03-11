@@ -674,7 +674,6 @@ function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activ
 		'exclude' => array($user_id)
 	    )
 	);
-//RB_dumpvar('Members', $members);
 
 	/*  Walk through the list of members sending notifications
 	    to each.  Note that we excluded the user who made the post
@@ -682,8 +681,6 @@ function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activ
 
 	foreach ($members['members'] as $memb) {
 	    $uid = $memb->user_id;
-//RB_dumpvar("Notify", $uid);
-//if ($uid == 1) {
 	    bp_notifications_add_notification(
                array(
                    'user_id' => $uid,
@@ -695,12 +692,26 @@ function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activ
                    'is_new' => 1
                 )
             );
-//}
 	}
 }
 
 // Load build information.  We don't require this to exist.
 
 include get_template_directory() . '/ratburger/build.php';
+
+    //  Mark all of a user's notifications read
+
+    function rb_notif_mark_all_read() {
+        if (bp_has_notifications(
+                array('is_new' => 1,
+                      'max' => false))) {
+            while (bp_the_notifications()) {
+		$notif = bp_the_notification();
+                $notif_id = bp_get_the_notification_id();
+		if (!bp_notifications_mark_notification($notif_id, false)) {
+		}
+            }
+        }
+    }
 
 /* END RATBURGER LOCAL CODE */
