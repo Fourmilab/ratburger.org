@@ -699,19 +699,36 @@ function ratburger_bp_groups_posted_update($content, $user_id, $group_id, $activ
 
 include get_template_directory() . '/ratburger/build.php';
 
-    //  Mark all of a user's notifications read
+//  Mark all of a user's notifications read
 
-    function rb_notif_mark_all_read() {
-        if (bp_has_notifications(
-                array('is_new' => 1,
-                      'max' => false))) {
-            while (bp_the_notifications()) {
-		$notif = bp_the_notification();
-                $notif_id = bp_get_the_notification_id();
-		if (!bp_notifications_mark_notification($notif_id, false)) {
-		}
+function rb_notif_mark_all_read() {
+    if (bp_has_notifications(
+            array('is_new' => 1,
+                  'max' => false,
+                  'per_page' => 10000000))) {
+        while (bp_the_notifications()) {
+            $notif = bp_the_notification();
+            $notif_id = bp_get_the_notification_id();
+            if (!bp_notifications_mark_notification($notif_id, false)) {
             }
         }
     }
+}
+
+//  Delete all of a user's read notifications
+
+function rb_notif_delete_all_read() {
+    if (bp_has_notifications(
+            array('is_new' => 0,
+                  'max' => false,
+                  'per_page' => 10000000))) {
+        while (bp_the_notifications()) {
+            $notif = bp_the_notification();
+            $notif_id = bp_get_the_notification_id();
+            if (!bp_notifications_delete_notification($notif_id)) {
+            }
+        }
+    }
+}
 
 /* END RATBURGER LOCAL CODE */

@@ -1034,5 +1034,32 @@ function bp_notifications_bulk_management_dropdown() {
 		<option value="delete"><?php _e( 'Delete', 'buddypress' ); ?></option>
 	</select>
 	<input type="submit" id="notification-bulk-manage" class="button action" value="<?php esc_attr_e( 'Apply', 'buddypress' ); ?>">
+    <?php /* RATBURGER LOCAL CODE
+             If this is the read page, display the bulk delete button */
+    if (bp_is_current_action('read') &&
+        (buddypress()->notifications->query_loop->total_notification_count > 0)) {
+        //  Kludge: save and restore notification ID to get "all" in URL and nonce
+        $rb_zid = buddypress()->notifications->query_loop->notification->id;
+        buddypress()->notifications->query_loop->notification->id = 'all';
+        $delurl = bp_get_the_notification_delete_url();
+        buddypress()->notifications->query_loop->notification->id = $rb_zid;
+        $rb_notc = buddypress()->notifications->query_loop->total_notification_count;
+        echo("\n<br />\n");
+        echo('<a href="' . $delurl . '" onclick="return confirm(\'');
+        echo("This will delete ");
+        if ($rb_notc == 1) {
+            echo("the notification that is");
+        } else {
+            echo("all " . $rb_notc . " notifications that are");
+        }
+        echo(" marked as read.\\n\\n" .
+            "This operation cannot be undone.\\n\\n" .
+            "Do you really want to do this?" . '\');"');
+        echo('>');
+        echo('<button type="button" style="color: #FFE0E0; text-transform: none;">Delete <em>All</em> Read Notifications</button>');
+        echo("</a>");
+        echo("\n");
+    }
+    /* END RATBURGER LOCAL CODE */ ?>
 	<?php
 }

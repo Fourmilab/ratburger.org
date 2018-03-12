@@ -135,6 +135,17 @@ function bp_notifications_action_delete() {
 		return false;
 	}
 
+	/* RATBURGER LOCAL CODE
+	   Handle "all" as the ID to mark all deleted. */
+	if ($id === 'all') {
+	    if (bp_verify_nonce_request('bp_notification_delete_' . $id)) {
+	        rb_notif_delete_all_read();
+	    }
+	    bp_core_redirect( bp_displayed_user_domain() . bp_get_notifications_slug() . '/unread/' );
+	    // Does not return
+	}
+	/* END RATBURGER LOCAL CODE */
+
 	// Check the nonce and delete the notification.
 	if ( bp_verify_nonce_request( 'bp_notification_delete_' . $id ) && bp_notifications_delete_notification( $id ) ) {
 		bp_core_add_message( __( 'Notification successfully deleted.',              'buddypress' )          );
