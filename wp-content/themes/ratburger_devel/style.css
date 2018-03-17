@@ -107,6 +107,11 @@ span.rb_notif_mark_all_read {
     #wp-toolbar > ul > li {
         display: block;
     }
+
+    /* Add spacing between root menu items. */
+    #wpadminbar ul#wp-admin-bar-root-default > li {
+        margin-right: 1em;
+    }
 }
 
 @media screen and (max-width: 600px) {
