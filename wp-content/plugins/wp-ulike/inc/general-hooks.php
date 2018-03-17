@@ -314,6 +314,7 @@ if( defined( 'BP_VERSION' ) ) {
 					       Add title of post to post like notification */
 					    $custom_text .= 'post ' . '"' .
 					    get_post($item_id)->post_title . '"';
+					    $custom_class = 'rb_notif_post_like rb_notif_highlight';
 					    /* END RATBURGER LOCAL CODE */
 					}
 					else if($type[1] == 'topicliked'){
@@ -334,6 +335,7 @@ if( defined( 'BP_VERSION' ) ) {
 					    */
 					    $custom_text .= 'comment on ' . '"' .
 					        get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+					    $custom_class = 'rb_notif_comment_like rb_notif_highlight';
 					    /* END RATBURGER LOCAL CODE */
 					}
 					else if($type[1] == 'activityliked'){

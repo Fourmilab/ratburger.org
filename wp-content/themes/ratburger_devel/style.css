@@ -58,9 +58,15 @@ This theme, like WordPress, is licensed under the GPL.
 /* We want to highlight different types of notifications
    by colour.  The following definitions are invoked in
    ~/plug/wp-ulike/inc/general-hooks.php to apply specific
-   styles to different kings of notificiations. */
+   styles to different kinds of notificiations. */
 span.rb_notif_new_comment {
     color: rgba(255, 255, 255, 1.0);
+}
+span.rb_notif_post_like {
+    color: rgba(240, 245, 250, 0.7);
+}
+span.rb_notif_comment_like {
+    color: rgba(240, 245, 250, 0.7);
 }
 span.rb_notif_new_group_comment {
     color: rgba(96, 192, 96, 1.0);
@@ -85,6 +91,36 @@ span.rb_notif_mark_all_read {
     color: #007acc;
 }
 
+/* The following definitions override eponymous styles
+   declared in wp-includes/css/admin-bar.css which take
+   effect for display windows with narrow screen widths
+   as are found on tablets and mobile phones.  They have
+   the effect of causing the notification bubble and
+   drop-down list to display on these devices and, for
+   those with very narrow screens, to right-align the
+   drop-down list under the bubble so it doesn't run
+   off the right of the screen. */
+
+@media screen and ( max-width: 782px ) {
+    /* Show notification bubble and drop-down list on
+       tablets and phones. */
+    #wp-toolbar > ul > li {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #wpadminbar .ab-top-menu > .menupop > .ab-sub-wrapper {
+        width: auto;
+        right: 0;
+        left: auto;
+    }
+
+    #wp-admin-bar-bp-notifications .ab-submenu,
+    #wpadminbar .quicklinks #wp-admin-bar-bp-notifications ul {
+        text-align: right;
+    }
+}
 
 /* END RATBURGER LOCAL CODE */
 
