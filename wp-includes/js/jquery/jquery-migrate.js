@@ -19,11 +19,13 @@ jQuery.migrateWarnings = [];
 // jQuery.migrateMute = false;
 
 // Show a message on the console so devs know we're active
+/* RATBURGER LOCAL CODE
 if ( window.console && window.console.log ) {
 	window.console.log( "JQMIGRATE: Migrate is installed" +
 		( jQuery.migrateMute ? "" : " with logging active" ) +
 		", version " + jQuery.migrateVersion );
 }
+   END RATBURGER LOCAL CODE */
 
 // Set to false to disable traces that appear with warnings
 if ( jQuery.migrateTrace === undefined ) {
