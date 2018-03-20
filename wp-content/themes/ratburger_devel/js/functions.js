@@ -198,3 +198,83 @@
 		belowEntryMetaClass( 'blockquote.alignleft, blockquote.alignright' );
 	} );
 } )( jQuery );
+
+
+    /* RATBURGER LOCAL CODE */
+
+    /*  The following implements the automatic update of
+        notifications in the administration toolbar.  If the
+        document contains our hidden "RB_notif_update" iframe,
+        whenever RB_updateNotifications() is invoked, the dummy
+        "/index.php/update-notifications" page (used only to
+        obtain the current notifications) is loaded into it, and
+        then its "wp-admin-bar-bp-notifications" HTML content
+        copied into that of the parent page.  The time is then
+        reset to call RB_updateNotifications() for the next
+        update.  */
+
+    var RB_notif_timer = null;          // Update notification timer
+    var RB_notif_interval = 300000;     // Update notification interval, ms
+
+    //  Test if we're running inside an iframe
+
+    function RB_inIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    function RB_updateNotifications() {
+//console.log("Tick...");
+        /*  If we're in an iframe or the user is not logged in (and
+            hence has no notifications), ignore the call.  */
+        if ((!RB_inIframe()) && document.getElementById("wp-admin-bar-bp-notifications")) {
+            var rnu = document.getElementById("RB_notif_update");
+            if (rnu) {
+               rnu.onload = function() {
+                    var ru = document.getElementById("RB_notif_update");
+                    //  Replace the notifications in the main page with those from the iframe
+                    if (ru && ru.contentWindow.document.
+                            getElementById("wp-admin-bar-bp-notifications")) {
+                        document.getElementById("wp-admin-bar-bp-notifications").innerHTML =
+                            document.getElementById("RB_notif_update").contentWindow.document.
+                                getElementById("wp-admin-bar-bp-notifications").innerHTML;
+//console.log("Updated notifications bubble");
+                    }
+                    //  Replace the notifications item in the avatar drop-down menu
+                    if (ru && ru.contentWindow.document.
+                            getElementById("wp-admin-bar-my-account-notifications") &&
+                        document.getElementById("wp-admin-bar-my-account-notifications")) {
+                        document.getElementById("wp-admin-bar-my-account-notifications").innerHTML =
+                            ru.contentWindow.document.
+                                getElementById("wp-admin-bar-my-account-notifications").innerHTML;
+//console.log("Updated notifications in avatar menu");
+                    }
+//else { console.log("No notifications to update"); }
+                    rnu.onload = null;          // Cancel onload for reset of iframe to empty
+                    rnu.src = "about:empty";    // Empty the iframe
+//console.log("Emptied iframe");
+               };
+               //  Load the update-notifications page into the update iframe
+               rnu.src = "/index.php/update-notifications";
+            }
+        }
+//else { console.log("In an iframe--ignoring"); }
+
+        // Wind the cat
+        RB_notif_timer = window.setTimeout(RB_updateNotifications, RB_notif_interval);
+    }
+
+    /*  If we're not inside the RB_notif_update iframe
+        schedule the first notification update.  This also
+        guarantees we'll have had plenty of time for the page
+        to load before we need to reference elements within it.  */
+
+    if (!RB_inIframe()) {
+        RB_notif_timer = window.setTimeout(RB_updateNotifications, RB_notif_interval);
+    }
+//else { console.log("In iframe--notification timer not started"); }
+
+    /* END RATBURGER LOCAL CODE */

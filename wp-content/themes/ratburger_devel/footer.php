@@ -65,6 +65,17 @@
 	</div><!-- .site-inner -->
 </div><!-- .site -->
 
+<?php /* RATBURGER LOCAL CODE
+         Include hidden iframe for notification update
+         retrieval.  */  ?>
+<div id="RB_notif_update_div">
+    <iframe id="RB_notif_update" src="about:blank"
+        style="display: none;"
+        width="600" height="300">
+    </iframe>
+</div>
+<?php /* END RATBURGER LOCAL CODE */ ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
