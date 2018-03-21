@@ -215,6 +215,8 @@
 
     var RB_notif_timer = null;          // Update notification timer
     var RB_notif_interval = 300000;     // Update notification interval, ms
+    var RB_notif_last_update = 0;       // Millisecond time of last update
+    var RB_notif_min_interval = 60000;  // Minimum time between updates
 
     //  Test if we're running inside an iframe
 
@@ -226,11 +228,31 @@
         }
     }
 
+    //  Test whether the current page is fully or partially visible
+
+    function RB_isPageVisible() {
+        if (document.visibilityState) {
+            //  W3C Page Visibility Level 2 supported
+            return document.visibilityState == "visible";
+        }
+        //  Hack for visibility test in older browsers
+        return !(document.hidden || document.msHidden ||
+                 document.webkitHidden || document.mozHidden);
+    }
+
+    //  Update the notification information in the admin bar
+
     function RB_updateNotifications() {
 //console.log("Tick...");
-        /*  If we're in an iframe or the user is not logged in (and
-            hence has no notifications), ignore the call.  */
-        if ((!RB_inIframe()) && document.getElementById("wp-admin-bar-bp-notifications")) {
+        /*  We update only if:
+                We're not in an iframe
+                The user is logged in and notifications are shown
+                The page is visible (see RB_isPageVisible() above)
+                More time than RB_notif_min_interval has elapsed
+                    since the last update.  */
+        if ((!RB_inIframe()) && RB_isPageVisible() &&
+            ((((new Date()).getTime()) - RB_notif_last_update) >= RB_notif_min_interval) &&
+            document.getElementById("wp-admin-bar-bp-notifications")) {
             var rnu = document.getElementById("RB_notif_update");
             if (rnu) {
                rnu.onload = function() {
@@ -256,9 +278,11 @@
                     rnu.onload = null;          // Cancel onload for reset of iframe to empty
                     rnu.src = "about:empty";    // Empty the iframe
 //console.log("Emptied iframe");
+                    //  Save time of last update
+                    RB_notif_last_update = (new Date()).getTime();
                };
                //  Load the update-notifications page into the update iframe
-               rnu.src = "/index.php/update-notifications";
+               rnu.src = "/index.php/update-notifications/";
             }
         }
 //else { console.log("In an iframe--ignoring"); }
@@ -274,6 +298,23 @@
 
     if (!RB_inIframe()) {
         RB_notif_timer = window.setTimeout(RB_updateNotifications, RB_notif_interval);
+        //  Set last update to initial page load time
+        RB_notif_last_update = (new Date()).getTime();
+
+        /*  When the window gets focus, cancel the timer if it
+            is running and force an immediate notification
+            update, which will restart the timer.  On every
+            browser I've tested, this does not fire when the page
+            is initially displayed, only once the page has lost
+            focus and subsequently regained it.  */
+
+        window.onfocus = function(e) {
+            if (RB_notif_timer !== null) {
+                window.clearTimeout(RB_notif_timer);
+                RB_notif_timer = null;
+            }
+            RB_updateNotifications();
+        }
     }
 //else { console.log("In iframe--notification timer not started"); }
 
