@@ -570,6 +570,24 @@ function ratburger_meta_widget_items() {
 add_action('wp_meta', 'ratburger_meta_widget_items');
 
 /*
+
+    Add our custom CSS to administration and main site pages
+
+    We can't just add the CSS to style.css in the theme
+    because that doesn't get loaded for administration
+    pages.
+
+*/
+
+function ratburger_register_admin_styles() {
+    wp_register_style('ratburger_css',
+        get_template_directory_uri() . '/ratburger/ratburger.css');
+    wp_enqueue_style('ratburger_css');
+}
+add_action('admin_enqueue_scripts', 'ratburger_register_admin_styles');
+add_action('wp_enqueue_scripts', 'ratburger_register_admin_styles');
+
+/*
 	Utility function to dump a variable with a label
 
 */
