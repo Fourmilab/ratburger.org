@@ -1,17 +1,17 @@
-﻿=== Twitter Auto Publish ===
+﻿=== WP Twitter Auto Publish ===
 Contributors: f1logic
 Donate link: https://xyzscripts.com/donate/
-Tags:  twitter, twitter auto publish, publish post to twitter, add link to twitter, twitter publishing, post to twitter, social media auto publish, social media publishing, social network auto publish, social media, social network
+Tags:  twitter, wp twitter auto publish, twitter auto publish, publish post to twitter, add link to twitter, twitter publishing, post to twitter, social media auto publish, social media publishing, social network auto publish, social media, social network
 Requires at least: 3.0
 Tested up to: 4.9.4
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 
 Publish posts automatically to Twitter.
 
 == Description ==
 
-A quick look into Twitter Auto Publish :
+A quick look into WP Twitter Auto Publish :
 
 	★ Publish simple text message to Twitter
 	★ Publish message to Twitter with image
@@ -21,11 +21,11 @@ A quick look into Twitter Auto Publish :
 	★ Customizable  message formats for Twitter
 
 
-= Twitter Auto Publish Features in Detail =
+= WP Twitter Auto Publish Features in Detail =
 
-The Twitter Auto Publish lets you publish posts automatically from your blog to Twitter. You can publish your posts to Twitter as simple text message or as text message with image. The plugin supports filtering posts based on  custom post-types as well as categories.
+The WP Twitter Auto Publish lets you publish posts automatically from your blog to Twitter. You can publish your posts to Twitter as simple text message or as text message with image. The plugin supports filtering posts based on  custom post-types as well as categories.
 
-The prominent features of  the Twitter Auto Publish plugin are highlighted below.
+The prominent features of  the WP Twitter Auto Publish plugin are highlighted below.
 
 = Supported Mechanisms =
 
@@ -58,31 +58,31 @@ The supported post elements which can be published are given below.
 
 = About =
 
-Twitter Auto Publish is developed and maintained by [XYZScripts](https://xyzscripts.com/ "xyzscripts.com"). For any support, you may [contact us](https://xyzscripts.com/support/ "XYZScripts Support").
+WP Twitter Auto Publish is developed and maintained by [XYZScripts](https://xyzscripts.com/ "xyzscripts.com"). For any support, you may [contact us](https://xyzscripts.com/support/ "XYZScripts Support").
 
-★ [Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/ "Twitter Auto Publish User Guide")
-★ [Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "Twitter Auto Publish FAQ")
+★ [WP Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/ "WP Twitter Auto Publish User Guide")
+★ [WP Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "WP Twitter Auto Publish FAQ")
 
 == Installation ==
 
-★ [Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/installation/ "Twitter Auto Publish User Guide")
-★ [Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "Twitter Auto Publish FAQ")
+★ [WP Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/installation/ "WP Twitter Auto Publish User Guide")
+★ [WP Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "WP Twitter Auto Publish FAQ")
 
 1. Extract `twitter-auto-publish.zip` to your `/wp-content/plugins/` directory.
-2. In the admin panel under plugins activate Twitter Auto Publish.
-3. You can configure the settings from Twitter Auto Publish menu. (Make sure to Authorize Twitter application after saving the settings.)
+2. In the admin panel under plugins activate WP Twitter Auto Publish.
+3. You can configure the settings from WP Twitter Auto Publish menu. (Make sure to Authorize Twitter application after saving the settings.)
 4. Once these are done, posts should get automatically published based on your filter settings.
 
 If you need any further help, you may contact our [support desk](https://xyzscripts.com/support/ "XYZScripts Support").
 
 == Frequently Asked Questions ==
 
-★ [Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/user-guide/ "Twitter Auto Publish User Guide")
-★ [Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "Twitter Auto Publish FAQ")
+★ [WP Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/user-guide/ "WP Twitter Auto Publish User Guide")
+★ [WP Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "WP Twitter Auto Publish FAQ")
 
-= 1. The Twitter Auto Publish is not working properly. =
+= 1. The WP Twitter Auto Publish is not working properly. =
 
-Please check the wordpress version you are using. Make sure it meets the minimum version recommended by us. Make sure all files of the `twitter auto publish` plugin are uploaded to the folder `wp-content/plugins/`
+Please check the wordpress version you are using. Make sure it meets the minimum version recommended by us. Make sure all files of the `wp twitter auto publish` plugin are uploaded to the folder `wp-content/plugins/`
 
 
 = 2. How do I restrict auto publish to certain categories ? =
@@ -116,6 +116,9 @@ SSL peer verification may not be functioning in your server. Please turn off SSL
 2. Publishing options while creating a post.
 
 == Changelog ==
+
+= WP Twitter Auto Publish 1.3.6 =
+* Plugin name changed,as per wordpress guidelines
 
 = Twitter Auto Publish 1.3.5 =
 * Twitter api updated with wp_remote_get
@@ -194,8 +197,8 @@ First official launch.
 
 == More Information ==
 
-★ [Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/ "Twitter Auto Publish User Guide")
-★ [Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "Twitter Auto Publish FAQ")
+★ [WP Twitter Auto Publish User Guide](http://help.xyzscripts.com/docs/twitter-auto-publish/ "WP Twitter Auto Publish User Guide")
+★ [WP Twitter Auto Publish FAQ](http://help.xyzscripts.com/docs/twitter-auto-publish/faq/ "WP Twitter Auto Publish FAQ")
 
 = Troubleshooting =
 
@@ -208,4 +211,4 @@ Please read the FAQ first if you are having problems.
 
 = Feedback =
 
-We would like to receive your feedback and suggestions about Twitter Auto Publish plugin. You may submit them at our [support desk](https://xyzscripts.com/support/ "XYZScripts Support").
+We would like to receive your feedback and suggestions about WP Twitter Auto Publish plugin. You may submit them at our [support desk](https://xyzscripts.com/support/ "XYZScripts Support").

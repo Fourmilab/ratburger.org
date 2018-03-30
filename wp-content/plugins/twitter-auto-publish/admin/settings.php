@@ -151,7 +151,7 @@ function dethide_twap(id)
 <div style="width: 100%">
 
 	<h2>
-		 <img	src="<?php echo plugins_url()?>/twitter-auto-publish/images/twitter-logo.png" height="16px"> Twitter Settings
+		 <img	src="<?php echo plugins_url()?>/twitter-auto-publish/images/twap.png" height="16px"> Twitter Settings
 	</h2>
 	
 <table class="widefat" style="width: 99%;background-color: #FFFBCC">
@@ -312,8 +312,10 @@ function dethide_twap(id)
 		if($_POST['xyz_twap_cat_all']=="All")
 			$twap_category_ids=$_POST['xyz_twap_cat_all'];//redio btn name
 		else
+		{
 			$twap_category_ids=$_POST['xyz_twap_catlist'];//dropdown
-
+			$twap_category_ids=implode(',', $twap_category_ids);
+		}
 		$xyz_customtypes="";
 		
         if(isset($_POST['post_types']))
@@ -370,6 +372,8 @@ function dethide_twap(id)
 	$xyz_twap_include_pages=get_option('xyz_twap_include_pages');
 	$xyz_twap_include_posts=get_option('xyz_twap_include_posts');
 	$xyz_twap_include_categories=get_option('xyz_twap_include_categories');
+	if ($xyz_twap_include_categories!='All')
+	$xyz_twap_include_categories=explode(',', $xyz_twap_include_categories);
 	$xyz_twap_include_customposttypes=get_option('xyz_twap_include_customposttypes');
 	$xyz_twap_apply_filters=get_option('xyz_twap_apply_filters');
 	$xyz_twap_peer_verification=esc_html(get_option('xyz_twap_peer_verification'));

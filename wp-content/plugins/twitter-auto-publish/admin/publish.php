@@ -140,8 +140,7 @@ function xyz_twap_link_publish($post_ID) {
 			$xyz_twap_include_categories=get_option('xyz_twap_include_categories');
 			if($xyz_twap_include_categories!="All")
 			{
-				$carr1=$xyz_twap_include_categories;
-					
+				$carr1=explode(',', $xyz_twap_include_categories);
 				$defaults = array('fields' => 'ids');
 				$carr2=wp_get_post_categories( $post_ID, $defaults );
 				$retflag=1;

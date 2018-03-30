@@ -66,6 +66,12 @@ function twap_install_free()
 	add_option('xyz_twap_default_selection_edit', '0');
 	add_option('xyz_twap_tw_char_limit',280);
 	add_option('xyz_twap_credit_dismiss','0');
+	$xyz_twap_include_categories=get_option('xyz_twap_include_categories');
+	if ( is_array($xyz_twap_include_categories) )
+	{
+	$xyz_twap_include_categories=implode(",",$xyz_twap_include_categories);
+	update_option('xyz_twap_include_categories', $xyz_twap_include_categories);
+	}
 }
 
 

@@ -56,15 +56,15 @@ if(isset($_GET['action']) && $_GET['action']=="edit" && !empty($_GET['post'])) /
 	}
 	
 	if(get_option('xyz_twap_twconsumer_id')!="" && get_option('xyz_twap_twconsumer_secret')!="" && get_option('xyz_twap_tw_id')!="" && get_option('xyz_twap_current_twappln_token')!="" && get_option('xyz_twap_twaccestok_secret')!="" && get_option('xyz_twap_twpost_permission')==1)
-	add_meta_box( "xyz_twap", '<strong>Twitter Auto Publish </strong>', 'xyz_twap_addpostmetatags') ;
+	add_meta_box( "xyz_twap", '<strong>WP Twitter Auto Publish </strong>', 'xyz_twap_addpostmetatags') ;
 }
 function xyz_twap_addpostmetatags()
 {
 	$imgpath= plugins_url()."/twitter-auto-publish/images/";
 	$heimg=$imgpath."support.png";
 	$xyz_twap_catlist=get_option('xyz_twap_include_categories');
-	if (is_array($xyz_twap_catlist))
-		$xyz_twap_catlist=implode(',', $xyz_twap_catlist);
+// 	if (is_array($xyz_twap_catlist))
+// 		$xyz_twap_catlist=implode(',', $xyz_twap_catlist);
 	?>
 <script>
 function displaycheck_twap()
@@ -219,8 +219,8 @@ function inArray(needle, haystack) {
 	
 	<tr valign="top" id="twmf_twap">
 		<td class="xyz_twap_pleft15">Message format for posting <img src="<?php echo $heimg?>"
-						onmouseover="detdisplay_twap('xyz_twap')" onmouseout="dethide_twap('xyz_twap')" style="width:13px;height:auto;">
-						<div id="xyz_twap" class="twap_informationdiv"
+						onmouseover="detdisplay_twap('xyz_twap_informationdiv')" onmouseout="dethide_twap('xyz_twap_informationdiv')" style="width:13px;height:auto;">
+						<div id="xyz_twap_informationdiv" class="twap_informationdiv"
 							style="display: none; font-weight: normal;">
 							{POST_TITLE} - Insert the title of your post.<br />{PERMALINK} -
 							Insert the URL where your post is displayed.<br />{POST_EXCERPT}

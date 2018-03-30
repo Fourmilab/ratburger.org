@@ -5,19 +5,19 @@ function wp_twap_admin_notice()
 	add_thickbox();
 	$sharelink_text_array_tw = array
 						(
-						"I Use Twitter Auto Publish  wordpress plugin from @xyzscripts and you should too",
-						"Twitter Auto Publish  wordpress Plugin from @xyzscripts is awesome",
+						"I Use WP Twitter Auto Publish  wordpress plugin from @xyzscripts and you should too",
+						"WP Twitter Auto Publish  wordpress Plugin from @xyzscripts is awesome",
 						"Thanks @xyzscripts for developing such a wonderful Twitter auto publishing wordpress plugin",
 						"I was looking for a Twitter publishing plugin like this. Thanks @xyzscripts",
-						"Its very easy to use Twitter Auto Publish  wordpress Plugin from @xyzscripts",
-						"I installed Twitter Auto Publish from @xyzscripts, it works flawlessly",
-						"The Twitter Auto Publish wordpress plugin that i use works terrific", 
-						"I am using Twittter Auto Publish wordpress plugin from @xyzscripts and I like it",
-						"The Twitter Auto Publish plugin from @xyzscripts is simple and works fine",
+						"Its very easy to use WP Twitter Auto Publish  wordpress Plugin from @xyzscripts",
+						"I installed WP Twitter Auto Publish from @xyzscripts, it works flawlessly",
+						"The WP Twitter Auto Publish wordpress plugin that i use works terrific", 
+						"I am using WP Twittter Auto Publish wordpress plugin from @xyzscripts and I like it",
+						"The WP Twitter Auto Publish plugin from @xyzscripts is simple and works fine",
 						"I've been using this Twitter plugin for a while now and it is really good",
-						"Twitter Auto Publish wordpress plugin is a fantastic plugin",
-						"Twitter Auto Publish wordpress plugin is easy to use and works great. Thank you!",
-						"Good and flexible  Twitter Auto publish plugin especially for beginners",
+						"WP Twitter Auto Publish wordpress plugin is a fantastic plugin",
+						"WP Twitter Auto Publish wordpress plugin is easy to use and works great. Thank you!",
+						"Good and flexible WP Twitter Auto publish plugin especially for beginners",
 						"The best Twittter auto publish wordpress plugin I have used ! THANKS @xyzscripts",
 						);
 $sharelink_text_tw = array_rand($sharelink_text_array_tw, 1);
@@ -33,7 +33,7 @@ $xyz_twap_notice = wp_nonce_url($xyz_twap_notice,'twap-shw');
 		}
 	</script>
 	<div id="twap_notice_td" class="error" style="color: #666666;margin-left: 2px; padding: 5px;line-height:16px;">
-	<p>Thank you for using <a href="https://wordpress.org/plugins/twitter-auto-publish/" target="_blank"> Twitter Auto Publish </a> plugin from <a href="https://xyzscripts.com/" target="_blank">xyzscripts.com</a>. Would you consider supporting us with the continued development of the plugin using any of the below methods?</p>
+	<p>Thank you for using <a href="https://wordpress.org/plugins/twitter-auto-publish/" target="_blank">WP Twitter Auto Publish </a> plugin from <a href="https://xyzscripts.com/" target="_blank">xyzscripts.com</a>. Would you consider supporting us with the continued development of the plugin using any of the below methods?</p>
 	<p>
 	<a href="https://wordpress.org/support/plugin/twitter-auto-publish/reviews" class="button xyz_rate_btn" target="_blank">Rate it 5★\'s on wordpress</a>';
 	if(get_option('xyz_credit_link')=="0")

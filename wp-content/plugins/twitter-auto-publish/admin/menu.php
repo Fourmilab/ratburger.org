@@ -16,7 +16,7 @@ add_action("admin_enqueue_scripts","xyz_twap_add_admin_scripts");
 
 function xyz_twap_menu()
 {
-	add_menu_page('Twitter Auto Publish - Manage settings', 'Twitter Auto Publish', 'manage_options', 'twitter-auto-publish-settings', 'xyz_twap_settings',plugin_dir_url( XYZ_TWAP_PLUGIN_FILE ) . 'images/twitter.png');
+	add_menu_page('Twitter Auto Publish - Manage settings', 'WP Twitter Auto Publish', 'manage_options', 'twitter-auto-publish-settings', 'xyz_twap_settings',plugin_dir_url( XYZ_TWAP_PLUGIN_FILE ) . 'images/twap.png');
 	$page=add_submenu_page('twitter-auto-publish-settings', 'Twitter Auto Publish - Manage settings', ' Settings', 'manage_options', 'twitter-auto-publish-settings' ,'xyz_twap_settings'); // 8 for admin
 	add_submenu_page('twitter-auto-publish-settings', 'Twitter Auto Publish - Logs', 'Logs', 'manage_options', 'twitter-auto-publish-log' ,'xyz_twap_logs');
 	add_submenu_page('twitter-auto-publish-settings', 'Twitter Auto Publish - About', 'About', 'manage_options', 'twitter-auto-publish-about' ,'xyz_twap_about'); // 8 for admin

@@ -130,7 +130,7 @@ type="text" placeholder="Email" value="<?php    echo $current_user->user_email; 
 
 <input id="xyz_twap_submit_twap" class="sbmt_btn" type="submit" value="Subscribe" name="Submit"  onclick="javascript: if(!verify_fields()) return false; " />
 
-<input type="hidden" name="listName" value="6,1,"/>
+<input type="hidden" name="listName" value="7,1,"/>
 </form>
 </div>   
 <div class="xyz_twap_inmotion">
@@ -145,9 +145,9 @@ type="text" placeholder="Email" value="<?php    echo $current_user->user_email; 
 <p class="xyz_plugin_head">Our Plugins : </p>
 
     <a target="_blank"  href="https://wordpress.org/plugins/social-media-auto-publish/"><span>1</span>Social Media Auto Publish</a>
-    <a target="_blank"  href="https://wordpress.org/plugins/facebook-auto-publish/"><span>2</span>Facebook Auto Publish</a>
-    <a target="_blank"  href="https://wordpress.org/plugins/twitter-auto-publish/"><span>3</span>Twitter Auto Publish</a>
-    <a target="_blank"  href="https://wordpress.org/plugins/linkedin-auto-publish/"><span>4</span>LinkedIn Auto Publish</a>
+    <a target="_blank"  href="https://wordpress.org/plugins/facebook-auto-publish/"><span>2</span>WP Facebook Auto Publish</a>
+    <a target="_blank"  href="https://wordpress.org/plugins/twitter-auto-publish/"><span>3</span>WP Twitter Auto Publish</a>
+    <a target="_blank"  href="https://wordpress.org/plugins/linkedin-auto-publish/"><span>4</span>WP LinkedIn Auto Publish</a>
     <a target="_blank"  href="https://wordpress.org/plugins/insert-html-snippet/"><span>5</span>Insert HTML Snippet</a>
     <a target="_blank"  href="https://wordpress.org/plugins/insert-php-code-snippet/"><span>6</span>Insert PHP Code Snippet</a>
     <a target="_blank"  href="https://wordpress.org/plugins/contact-form-manager/"><span>7</span>Contact Form Manager</a>

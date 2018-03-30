@@ -1,30 +1,12 @@
 <?php
 if( !defined('ABSPATH') ){ exit();}
 ?>
-<style>
-.buy-button {
-	display:block;
-	color:white;
-    padding:5px 21px;
-    background: #545454;
-    border: 0;
-    border-bottom: 2px solid #545454;
-    cursor: pointer;
-    -webkit-box-shadow: inset 0 -2px #545454;
-    box-shadow: inset 0 -2px #545454;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius:3px;
-}
-</style>
-
-<h1 style="visibility: visible;">Twitter Auto Publish (V <?php echo xyz_twap_plugin_get_version(); ?>)</h1>
+<h1 style="visibility: visible;">WP Twitter Auto Publish (V <?php echo xyz_twap_plugin_get_version(); ?>)</h1>
 
 <div style="width: 99%">
 <p style="text-align: justify">
-Twitter Auto Publish automatically publishes posts from your blog to your  Twitter pages. It allows you to filter posts based on post-types and categories.
- Twitter Auto Publish is developed and maintained by <a href="http://xyzscripts.com">xyzscripts</a>.</p>
+WP Twitter Auto Publish automatically publishes posts from your blog to your  Twitter pages. It allows you to filter posts based on post-types and categories.
+WP Twitter Auto Publish is developed and maintained by <a href="http://xyzscripts.com">xyzscripts</a>.</p>
 
 
 
@@ -467,7 +449,7 @@ Twitter Auto Publish automatically publishes posts from your blog to your  Twitt
 	<tr>
 		<td>Purchase</td>
 		<td></td>
-		<td style="padding: 2px" ><a target="_blank"href="https://xyzscripts.com/members/product/purchase/XYZWPSMPPRE"  class="buy-button">Buy Now</a>
+		<td style="padding: 2px" ><a target="_blank"href="https://xyzscripts.com/members/product/purchase/XYZWPSMPPRE"  class="xyz-twap-buy-button">Buy Now</a>
 		</td>
 	</tr>
 
@@ -475,6 +457,3 @@ Twitter Auto Publish automatically publishes posts from your blog to your  Twitt
 <br/>
 <div style="clear: both;"></div>
 <span style="color: #FF8000;font-size: 14px;font-weight: bold;"> * </span> Pinterest and Google Plus are added on experimental basis.
-<?php
-
-?>
