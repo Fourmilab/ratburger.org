@@ -216,7 +216,7 @@ class UpdraftPlus_Backup {
 		// Temporary file, to be able to detect actual completion (upon which, it is renamed)
 
 		// New (Jun-13) - be more aggressive in removing temporary files from earlier attempts - anything >=600 seconds old of this kind
-		$updraftplus->clean_temporary_files('_'.$updraftplus->nonce."-$whichone", 600);
+		$updraftplus->clean_temporary_files('_'.$updraftplus->file_nonce."-$whichone", 600);
 
 		// Firstly, make sure that the temporary file is not already being written to - which can happen if a resumption takes place whilst an old run is still active
 		$zip_name = $full_path.'.tmp';
@@ -231,7 +231,7 @@ class UpdraftPlus_Backup {
 		// Now, check for other forms of temporary file, which would indicate that some activity is going on (even if it hasn't made it into the main zip file yet)
 		// Note: this doesn't catch PclZip temporary files
 		$d = dir($this->updraft_dir);
-		$match = '_'.$updraftplus->nonce."-".$whichone;
+		$match = '_'.$updraftplus->file_nonce."-".$whichone;
 		while (false !== ($e = $d->read())) {
 			if ('.' == $e || '..' == $e || !is_file($this->updraft_dir.'/'.$e)) continue;
 			$ziparchive_match = preg_match("/$match([0-9]+)?\.zip\.tmp\.([A-Za-z0-9]){6}?$/i", $e);
@@ -297,11 +297,11 @@ class UpdraftPlus_Backup {
 			} else {
 				$updraftplus->log("Looked-for $whichone zip (".$this->index.") was not found (".basename($full_path).".tmp)", 'warning');
 			}
-			$updraftplus->clean_temporary_files('_'.$updraftplus->nonce."-$whichone", 0);
+			$updraftplus->clean_temporary_files('_'.$updraftplus->file_nonce."-$whichone", 0);
 		}
 
 		// Remove cache list files as well, if there are any
-		$updraftplus->clean_temporary_files('_'.$updraftplus->nonce."-$whichone", 0, true);
+		$updraftplus->clean_temporary_files('_'.$updraftplus->file_nonce."-$whichone", 0, true);
 
 		// Create the results array to send back (just the new ones, not any prior ones)
 		$files_existing = array();
@@ -552,7 +552,7 @@ class UpdraftPlus_Backup {
 		}
 
 		// If they turned off deletion on local backups, then there is nothing to do
-		if (0 == UpdraftPlus_Options::get_updraft_option('updraft_delete_local') && 1 == count($services) && array_key_exists('none', $services)) {
+		if (!UpdraftPlus_Options::get_updraft_option('updraft_delete_local', 1) && 1 == count($services) && array_key_exists('none', $services)) {
 			$updraftplus->log("Prune old backups from local store: nothing to do, since the user disabled local deletion and we are using local backups");
 			return;
 		}
@@ -1234,7 +1234,7 @@ class UpdraftPlus_Backup {
 	 */
 	private function get_backup_file_basename_from_time($use_time) {
 		global $updraftplus;
-		return 'backup_'.get_date_from_gmt(gmdate('Y-m-d H:i:s', $use_time), 'Y-m-d-Hi').'_'.$this->blog_name.'_'.$updraftplus->nonce;
+		return apply_filters('updraftplus_get_backup_file_basename_from_time', 'backup_'.get_date_from_gmt(gmdate('Y-m-d H:i:s', $use_time), 'Y-m-d-Hi').'_'.$this->blog_name.'_'.$updraftplus->file_nonce, $use_time, $this->blog_name);
 	}
 
 	private function find_existing_zips($dir, $match_nonce) {
@@ -1331,7 +1331,7 @@ class UpdraftPlus_Backup {
 		// $whichdir might be an array (if $youwhat is 'more')
 
 		// Returns an array (keyed off the entity) of ($timestamp, $filename) arrays
-		$existing_zips = $this->find_existing_zips($this->updraft_dir, $updraftplus->nonce);
+		$existing_zips = $this->find_existing_zips($this->updraft_dir, $updraftplus->file_nonce);
 
 		foreach ($possible_backups as $youwhat => $whichdir) {
 
@@ -2798,7 +2798,6 @@ class UpdraftPlus_Backup {
 		makezip_recursive_batchedbytes
 		zipfiles_skipped_notaltered
 		zipfiles_dirbatched
-		
 		Class variables that the result depends upon (other than the state of the filesystem):
 		makezip_if_altered_since
 		existing_files
@@ -3422,7 +3421,7 @@ class UpdraftPlus_Backup {
 		$this->zip_microtime_start = microtime(true);
 
 		// No need to add $itext here - we can just delete any temporary files for this zip
-		$updraftplus->clean_temporary_files('_'.$updraftplus->nonce."-".$youwhat, 600);
+		$updraftplus->clean_temporary_files('_'.$updraftplus->file_nonce."-".$youwhat, 600);
 
 		$this->index++;
 		$this->job_file_entities[$youwhat]['index'] = $this->index;

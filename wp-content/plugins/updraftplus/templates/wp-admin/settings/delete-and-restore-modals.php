@@ -80,6 +80,11 @@
 				?>
 				<div>
 					<input id="updraft_restore_db" type="checkbox" name="updraft_restore[]" value="db"> <label for="updraft_restore_db"><?php _e('Database', 'updraftplus'); ?></label>
+					<div id="updraft_restorer_dboptions" class="updraft-hidden" style="display:none;"><h4><?php echo sprintf(__('%s restoration options:', 'updraftplus'), __('Database', 'updraftplus')); ?></h4>
+						<?php
+						do_action("updraftplus_restore_form_db");
+						?>
+					</div>
 				</div>
 			</fieldset>
 		</form>

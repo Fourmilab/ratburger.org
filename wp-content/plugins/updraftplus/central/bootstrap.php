@@ -149,6 +149,12 @@ class UpdraftPlus_UpdraftCentral_Main {
 		update_site_option('updraftcentral_client_log', $udrpc_log);
 	}
 	
+	/**
+	 * Delete UpdraftCentral Key
+	 *
+	 * @param array $key_id key_id of UpdraftCentral
+	 * @return array which contains deleted flag and key table. If error, Returns array which contains fatal_error flag and fatal_error_message
+	 */
 	public function delete_key($key_id) {
 		$our_keys = UpdraftPlus_Options::get_updraft_option('updraft_central_localkeys');
 		if (!is_array($our_keys)) $our_keys = array();
@@ -159,6 +165,12 @@ class UpdraftPlus_UpdraftCentral_Main {
 		return array('deleted' => 1, 'keys_table' => $this->get_keys_table());
 	}
 	
+	/**
+	 * Get UpdraftCentral Log
+	 *
+	 * @param array $params which have action, subaction and nonce
+	 * @return array which contains log_contents. If error, Returns array which contains fatal_error flag and fatal_error_message
+	 */
 	public function get_log($params) {
 	
 		$udrpc_log = get_site_option('updraftcentral_client_log');

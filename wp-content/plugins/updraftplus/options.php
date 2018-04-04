@@ -59,10 +59,12 @@ class UpdraftPlus_Options {
 		add_submenu_page('options-general.php', 'UpdraftPlus', __('UpdraftPlus Backups', 'updraftplus'), apply_filters('option_page_capability_updraft-options-group', 'manage_options'), "updraftplus", array($updraftplus_admin, "settings_output"));
 	}
 
-	public static function options_form_begin($settings_fields = 'updraft-options-group', $allow_autocomplete = true, $get_params = array()) {
+	public static function options_form_begin($settings_fields = 'updraft-options-group', $allow_autocomplete = true, $get_params = array(), $classes = '') {
 		global $pagenow;
 		echo '<form method="post"';
-
+		
+		if ('' != $classes) echo ' class="'.$classes.'"';
+		
 		$page = '';
 		if ('options-general.php' == $pagenow) $page = "options.php";
 
@@ -148,6 +150,7 @@ class UpdraftPlus_Options {
 
 		register_setting('updraft-options-group', 'updraft_report_warningsonly', array($updraftplus_admin, 'return_array'));
 		register_setting('updraft-options-group', 'updraft_report_wholebackup', array($updraftplus_admin, 'return_array'));
+		register_setting('updraft-options-group', 'updraft_report_dbbackup', array($updraftplus_admin, 'return_array'));
 
 		register_setting('updraft-options-group', 'updraft_autobackup_default', 'absint');
 		register_setting('updraft-options-group', 'updraft_delete_local', 'absint');

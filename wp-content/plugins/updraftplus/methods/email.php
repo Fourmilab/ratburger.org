@@ -15,12 +15,12 @@ class UpdraftPlus_BackupModule_email extends UpdraftPlus_BackupModule {
 		$updraft_dir = trailingslashit($updraftplus->backups_dir_location());
 
 		$email = $updraftplus->just_one_email(UpdraftPlus_Options::get_updraft_option('updraft_email'), true);
-
-		if (!is_array($email)) $email = array($email);
-
+		
+		if (!is_array($email)) $email = array_filter(array($email));
+		
 		foreach ($backup_array as $type => $file) {
 
-			$descrip_type = (preg_match('/^(.*)\d+$/', $type, $matches)) ? $matches[1] : $type;
+			$descrip_type = preg_match('/^(.*)\d+$/', $type, $matches) ? $matches[1] : $type;
 
 			$fullpath = $updraft_dir.$file;
 
@@ -32,20 +32,27 @@ class UpdraftPlus_BackupModule_email extends UpdraftPlus_BackupModule {
 
 			$any_attempted = false;
 			$any_sent = false;
+			$any_skip = false;
 			foreach ($email as $ind => $addr) {
 
-				if (!apply_filters('updraftplus_email_wholebackup', true, $addr, $ind, $type)) continue;
-
-				foreach (explode(',', $addr) as $sendmail_addr) {
-
-					$send_short = (strlen($sendmail_addr)>5) ? substr($sendmail_addr, 0, 5).'...' : $sendmail_addr;
-					$updraftplus->log("$file: email to: $send_short");
-					$any_attempted = true;
-
-					$subject = __("WordPress Backup", 'updraftplus').': '.get_bloginfo('name').' (UpdraftPlus '.$updraftplus->version.') '.get_date_from_gmt(gmdate('Y-m-d H:i:s', $updraftplus->backup_time), 'Y-m-d H:i');
-
-					$sent = wp_mail(trim($sendmail_addr), $subject, sprintf(__("Backup is of: %s.", 'updraftplus'), site_url().' ('.$descrip_type.')'), null, array($fullpath));
-					if ($sent) $any_sent = true;
+				if (apply_filters('updraftplus_email_backup', true, $addr, $ind, $type)) {
+					foreach (explode(',', $addr) as $sendmail_addr) {
+	
+						$send_short = (strlen($sendmail_addr)>5) ? substr($sendmail_addr, 0, 5).'...' : $sendmail_addr;
+						$updraftplus->log("$file: email to: $send_short");
+						$any_attempted = true;
+	
+						$subject = __("WordPress Backup", 'updraftplus').': '.get_bloginfo('name').' (UpdraftPlus '.$updraftplus->version.') '.get_date_from_gmt(gmdate('Y-m-d H:i:s', $updraftplus->backup_time), 'Y-m-d H:i');
+	
+						$sent = wp_mail(trim($sendmail_addr), $subject, sprintf(__("Backup is of: %s.", 'updraftplus'), site_url().' ('.$descrip_type.')'), null, array($fullpath));
+						if ($sent) $any_sent = true;
+					}
+				} else {
+					$log_message = apply_filters('updraftplus_email_backup_skip_log_message', '', $addr, $ind, $descrip_type);
+					if (!empty($log_message)) {
+						$updraftplus->log($log_message);
+					}
+					$any_skip = true;
 				}
 			}
 			if ($any_sent) {
@@ -58,6 +65,8 @@ class UpdraftPlus_BackupModule_email extends UpdraftPlus_BackupModule {
 			} elseif ($any_attempted) {
 				$updraftplus->log('Mails were not sent successfully');
 				$updraftplus->log(__('The attempt to send the backup via email failed (probably the backup was too large for this method)', 'updraftplus'), 'error');
+			} elseif ($any_skip) {
+				$updraftplus->log('No email addresses were configured to send email to '.$descrip_type);
 			} else {
 				$updraftplus->log('No email addresses were configured to send to');
 			}

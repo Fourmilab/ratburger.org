@@ -184,6 +184,22 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 		</tr>
 		<tr>
 			<td>
+				<img src="<?php echo UPDRAFTPLUS_URL.'/images/addons-images/wp-cli.png';?>" alt="<?php esc_attr_e('WP CLI', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
+				<h4><?php _e('WP-CLI support', 'updraftplus');?></h4>
+				<p><?php _e('WP-CLI commands to take, list and delete backups.', 'updraftplus');?></p>
+			</td>
+			<td>
+				<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
+			</td>
+			<td>
+				<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
+			</td>
+			<td>
+				<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<img src="<?php echo UPDRAFTPLUS_URL.'/images/addons-images/moredatabase.png';?>" alt="<?php esc_attr_e('More database options', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
 				<h4><?php _e('More database options', 'updraftplus');?></h4>
 				<p><?php _e('Encrypt your sensitive databases (e.g. customer information or passwords); Backup external databases too.', 'updraftplus');?></p>

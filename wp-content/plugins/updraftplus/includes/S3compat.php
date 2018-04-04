@@ -234,10 +234,10 @@ class UpdraftPlus_S3_Compat {
 
 // $verify_peer = ($validate) ? true : false;
 // $verify_host = ($validate) ? 2 : 0;
-// 
+//
 // $this->config['scheme'] = 'https';
 // $this->client->setConfig($this->config);
-// 
+//
 // $this->client->setSslVerification($validate, $verify_peer, $verify_host);
 
 

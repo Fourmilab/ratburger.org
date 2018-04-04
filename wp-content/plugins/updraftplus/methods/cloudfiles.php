@@ -475,9 +475,8 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 			<tr class="updraftplusmethod cloudfiles">
 				<th><?php _e('Rackspace Storage Region','updraftplus');?>:</th>
 				<td>
-					
 				</td>
-			</tr> 
+			</tr>
 			*/
 		$template_str .= '
 		<tr class="'.$classes.'">

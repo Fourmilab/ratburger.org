@@ -1280,7 +1280,7 @@ ENDHERE;
 					jQuery.post(ajaxurl, backupinfo, function(response) {
 						console.log(response);
 						try {
-							var resp = jQuery.parseJSON(response);
+							var resp = JSON.parse(response);
 							console.log(resp);
 							// TODO: Do something
 						} catch (err) {

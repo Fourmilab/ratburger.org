@@ -32,6 +32,8 @@ class UpdraftPlus {
 
 	public $nonce;
 
+	public $file_nonce;
+
 	public $logfile_name = "";
 
 	public $logfile_handle = false;
@@ -756,6 +758,7 @@ class UpdraftPlus {
 		$this->job_time_ms = microtime(true);
 		$this->backup_time = time();
 		if (false === $nonce) $nonce = substr(md5(time().rand()), 20);
+		$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $nonce);
 		$this->nonce = $nonce;
 		return $nonce;
 	}
@@ -1178,7 +1181,6 @@ class UpdraftPlus {
 				*  (bool)log: (bool) - if absent, defaults to true
 				*  (int)new_chunk_size: advisory amount for the chunk size for future chunks
 				*  NOT IMPLEMENTED: (int)bytes_uploaded: Actual number of bytes uploaded (needs to be positive - o/w, should return an error instead)
-				*  
 				* N.B. Consumers should consult $fp and $upload_start to get data; they should not re-calculate from $chunk_index, which is not an indicator of file position.
 				*/
 				$uploaded = $caller->chunked_upload($file, $fp, $chunk_index, $upload_size, $upload_start, $upload_end, $orig_file_size);
@@ -2026,6 +2028,7 @@ class UpdraftPlus {
 
 		if ($resumption_no > 0) {
 
+			$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $bnonce);
 			$this->nonce = $bnonce;
 			$this->backup_time = $this->jobdata_get('backup_time');
 			$this->job_time_ms = $this->jobdata_get('job_time_ms');
@@ -3167,7 +3170,7 @@ class UpdraftPlus {
 
 	private function delete_local($file) {
 		$log = "Deleting local file: $file: ";
-		if (UpdraftPlus_Options::get_updraft_option('updraft_delete_local')) {
+		if (UpdraftPlus_Options::get_updraft_option('updraft_delete_local', 1)) {
 			$fullpath = $this->backups_dir_location().'/'.$file;
 
 			// check to make sure it exists before removing
@@ -4859,6 +4862,7 @@ class UpdraftPlus {
 			'updraft_dreamobjects',
 			'updraft_report_warningsonly',
 			'updraft_report_wholebackup',
+			'updraft_report_dbbackup',
 			'updraft_log_syslog',
 			'updraft_extradatabases',
 		);

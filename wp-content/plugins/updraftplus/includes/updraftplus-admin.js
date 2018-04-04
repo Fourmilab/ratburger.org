@@ -57,10 +57,24 @@ function updraft_send_command(action, data, callback, options) {
 				try {
 					var resp = ud_parse_json(response);
 				} catch (e) {
-					console.log(e);
-					console.log(response);
-					if (options.alert_on_error) { alert(updraftlion.unexpectedresponse+' '+response); }
-					return;
+					if ('function' == typeof options.error_callback) {
+						return options.error_callback(response, e, 502, resp);
+					} else {
+						console.log(e);
+						console.log(response);
+						if (options.alert_on_error) { alert(updraftlion.unexpectedresponse+' '+response); }
+						return;
+					}
+				}
+				if (resp.hasOwnProperty('fatal_error')) {
+					if ('function' == typeof options.error_callback) {
+						// 500 is internal server error code
+						return options.error_callback(response, status, 500, resp);
+					} else {
+						console.error(resp.fatal_error_message);
+						if (options.alert_on_error) { alert(resp.fatal_error_message); }
+						return false;
+					}
 				}
 				if ('function' == typeof callback) callback(resp, status, response);
 			} else {
@@ -274,7 +288,19 @@ function updraft_remote_storage_test(method, result_callback, instance_id) {
 				console.log(response.data);
 			}
 		}
-	});
+	}, { error_callback: function(response, status, error_code, resp) {
+				$the_button.html(updraftlion.test_settings.replace('%s', method_label));
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					alert(resp.fatal_error_message);
+				} else {
+					var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+					console.log(error_message);
+					alert(error_message);
+					console.log(response);
+				}
+			}
+		});
 }
 
 function backupnow_whichfiles_checked(onlythesefileentities){
@@ -379,10 +405,13 @@ function updraft_restore_setoptions(entities) {
 	});
 	var cryptmatch = entities.match(/dbcrypted=1/);
 	if (cryptmatch) {
+		jQuery('#updraft_restore_db').data('encrypted', 1);
 		jQuery('.updraft_restore_crypteddb').show();
 	} else {
+		jQuery('#updraft_restore_db').data('encrypted', 0);
 		jQuery('.updraft_restore_crypteddb').hide();
 	}
+	jQuery('#updraft_restore_db').trigger('change');
 	var dmatch = entities.match(/meta_foreign=([12])/);
 	if (dmatch) {
 		jQuery('#updraft_restore_meta_foreign').val(dmatch[1]);
@@ -417,8 +446,11 @@ function updraft_migrate_dialog_open() {
 	jQuery('#updraft_migrate_modal_alt').hide();
 	updraft_migrate_modal_default_buttons = {};
 	updraft_migrate_modal_default_buttons[updraftlion.close] = function() {
- jQuery(this).dialog("close"); };
+		jQuery(this).dialog("close");
+	};
 	jQuery("#updraft-migrate-modal").dialog("option", "buttons", updraft_migrate_modal_default_buttons);
+	// Check if the reset function exists and if it does call it before we open the model so that the view is correctly setup
+	if (typeof updraft_migrate_widget_reset === "function") updraft_migrate_widget_reset();
 	jQuery('#updraft-migrate-modal').dialog('open');
 	jQuery('#updraft_migrate_modal_main').show();
 }
@@ -506,7 +538,7 @@ function updraft_backupnow_inpage_go(success_callback, onlythisfileentity, extra
 	updraft_inpage_hasbegun = 0;
 	updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythisfileentity, extradata, label, '');
 }
-
+var updraftplus_activejobs_list_fatal_error_alert = true;
 function updraft_activejobs_update(force) {
 	var timenow = (new Date).getTime();
 	if (false == force && timenow < updraft_activejobs_nextupdate) { return; }
@@ -538,11 +570,10 @@ function updraft_activejobs_update(force) {
 		gdata.thisjobonly = updraft_backupnow_nonce;
 	}
 	
-	updraft_send_command('activejobs_list', gdata, function(response) {
+	updraft_send_command('activejobs_list', gdata, function(resp, status, response) {
 		
 		try {
-			resp = ud_parse_json(response);
-		
+			
 			// if (repeat) { setTimeout(function(){updraft_activejobs_update(true);}, nexttimer);}
 			if (resp.hasOwnProperty('l')) {
 				if (resp.l) {
@@ -636,8 +667,8 @@ function updraft_activejobs_update(force) {
 				}
 				if ('' == lastlog_jobs) {
 					setTimeout(function() {
-jQuery('#updraft_backup_started').slideUp();}, 3500);
-				}
+						jQuery('#updraft_backup_started').slideUp();}, 3500);
+					}
 			} else {
 				if (!jQuery('#updraft_activejobsrow').is(':hidden')) {
 					// Backup has now apparently finished - hide the row. If using this for detecting a finished job, be aware that it may never have shown in the first place - so you'll need more than this.
@@ -674,7 +705,21 @@ jQuery('#updraft_backup_started').slideUp();}, 3500);
 			console.log(updraftlion.unexpectedresponse+' '+response);
 			console.log(err);
 		}
-	}, { json_parse: false, type: 'GET' });
+	}, { type: 'GET', error_callback: function(response, status, error_code, resp) {
+			if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+				console.error(resp.fatal_error_message);
+				if (true === updraftplus_activejobs_list_fatal_error_alert) {
+					updraftplus_activejobs_list_fatal_error_alert = false;
+					alert(this.alert_done + ' ' +resp.fatal_error_message);
+				}
+			} else {
+				var msg = (status == error_code) ? error_code : error_code+" ("+status+")";
+				console.error(msg);
+				console.log(response);
+			}
+			return false;
+		}
+	});
 }
 
 /**
@@ -713,11 +758,17 @@ function updraft_popuplog(backup_nonce) {
 			
 			updraft_poplog_lastscroll = -1;
 			
-		}, { type: 'GET', timeout: 60000, error_callback: function(response, status, error_code) {
-			var msg = (status == error_code) ? error_code : error_code+" ("+status+")";
-			jQuery('#updraft-poplog-content').append(msg);
-			console.log(response);
-		}});
+		}, { type: 'GET', timeout: 60000, error_callback: function(response, status, error_code, resp) {
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					jQuery('#updraft-poplog-content').append(resp.fatal_error_message);
+				} else {
+					var msg = (status == error_code) ? error_code : error_code+" ("+status+")";
+					jQuery('#updraft-poplog-content').append(msg);
+					console.log(response);
+				}
+			}
+		});
 }
 
 function updraft_showlastbackup() {
@@ -999,6 +1050,19 @@ function zip_files_jstree(entity, timestamp, type, findex) {
 					} else {
 						callback.call(this, response.nodes);
 					}
+				}, { error_callback: function(response, status, error_code, resp) {
+						if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+							console.error(resp.fatal_error_message);
+							jQuery('#updraft_zip_files_jstree').html('<p style="color:red; margin: 5px;">'+resp.fatal_error_message+'</p>');
+							alert(resp.fatal_error_message);
+						} else {
+							var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+							jQuery('#updraft_zip_files_jstree').html('<p style="color:red; margin: 5px;">'+error_message+'</p>');
+							console.log(error_message);
+							alert(error_message);
+							console.log(response);
+						}
+					}
 				});
 			},
 			"error": function(error) {
@@ -1054,6 +1118,17 @@ function zip_files_jstree(entity, timestamp, type, findex) {
 			} else {
 				alert(updraftlion.download_timeout);
 			}
+		}, { error_callback: function(response, status, error_code, resp) {
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					alert(resp.fatal_error_message);
+				} else {
+					var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+					console.log(error_message);
+					alert(error_message);
+					console.log(response);
+				}
+			}
 		});
 	});
 }
@@ -1075,7 +1150,9 @@ function updraft_downloader(base, backup_timestamp, what, whicharea, set_content
 			jQuery(whicharea).append('<div style="clear:left; border: 1px solid; padding: 8px; margin-top: 4px; max-width:840px;" class="'+stid+' updraftplus_downloader"><button onclick="jQuery(this).parent().fadeOut().remove();" type="button" style="float:right; margin-bottom: 8px;">X</button><strong>'+updraftlion.download+' '+what+itext+' ('+prdate+')</strong>:<div class="raw">'+updraftlion.begunlooking+'</div><div class="file '+stid+'_st"><div class="dlfileprogress" style="width: 0;"></div></div></div>');
 			jQuery(stid_selector).data('downloaderfor', { base: base, nonce: backup_timestamp, what: what, index: set_contents[i] });
 			setTimeout(function() {
-updraft_activejobs_update(true);}, 1500);
+					updraft_activejobs_update(true);
+				},
+			1500);
 		}
 		jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
 		
@@ -1192,11 +1269,11 @@ function updraft_restorer_checkstage2(doalert) {
 	updraft_send_command('restore_alldownloaded', {
 		timestamp: jQuery('#updraft_restore_timestamp').val(),
 		restoreopts: jQuery('#updraft_restore_form').serialize()
-	}, function(data) {
+	}, function(resp, status, data) {
 		var info = null;
 		jQuery('#updraft_restorer_restore_options').val('');
 		try {
-			var resp = ud_parse_json(data);
+			// var resp = ud_parse_json(data);
 			if (null == resp) {
 				jQuery('#updraft-restore-modal-stage2a').html(updraftlion.emptyresponse);
 				return;
@@ -1242,7 +1319,20 @@ function updraft_restorer_checkstage2(doalert) {
 			console.log(err);
 			jQuery('#updraft-restore-modal-stage2a').text(updraftlion.jsonnotunderstood+' '+updraftlion.errordata+": "+data).html();
 		}
-	}, { json_parse: false });
+	}, { error_callback: function(response, status, error_code, resp) {
+			if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+				console.error(resp.fatal_error_message);
+				jQuery('#updraft-restore-modal-stage2a').html('<p style="color: red;">'+resp.fatal_error_message+'</p>');
+				alert(resp.fatal_error_message);
+			} else {
+				var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+				jQuery('#updraft-restore-modal-stage2a').html('<p style="color: red;">'+error_message+'</p>');
+				console.log(error_message);
+				alert(error_message);
+				console.log(response);
+			}
+		}
+	});
 }
 
 
@@ -1465,6 +1555,48 @@ jQuery(document).ready(function($) {
 			$('#ud_massactions').hide();
 		}
 	});
+
+	$('#updraft-navtab-addons-content .wrap').on('click', '.updraftplus_com_login #ud_connectsubmit', function (e) {
+		e.preventDefault();
+		var email = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_email').val();
+		var password = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_password').val();
+		var options = {
+			email: email,
+			password: password
+		};
+		updraftplus_com_login_submit(options);
+	});
+
+	$('#updraft-navtab-addons-content .wrap').on('keydown', '.updraftplus_com_login input', function (e) {
+		if (13 == e.which) {
+			e.preventDefault();
+			var email = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_email').val();
+			var password = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_password').val();
+			var options = {
+				email: email,
+				password: password
+			};
+			updraftplus_com_login_submit(options);
+		}
+	});
+
+	/**
+	 * This function will send an AJAX request to the backend to check the users credentials, then it will either inform the user of any errors or if there are none it will submit the form.
+	 *
+	 * @param {array} options - an array that includes the users email and password
+	 */
+	function updraftplus_com_login_submit(options) {
+		$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').html('').hide();
+		updraft_send_command('updraftplus_com_login_submit', {
+			data: options,
+		}, function (response) {
+			if (response.hasOwnProperty('success')) {
+				$('#updraft-navtab-addons-content .wrap .updraftplus_com_login').submit();
+			} else if (response.hasOwnProperty('error')) {
+				$('#updraft-navtab-addons-content .wrap .updraftplus_com_login_status').html(response.message).show();
+			}
+		});
+	}
 
 	$('#updraft-navtab-settings-content #remote-storage-holder').on('click', '.updraftplusmethod a.updraft_add_instance', function(e) {
 		e.preventDefault();
@@ -1690,6 +1822,18 @@ jQuery(document).ready(function($) {
 				} else {
 					console.response(resp);
 				}
+			}, { error_callback: function(response, status, error_code, resp) {
+					jQuery('#updraftcentral_view_log_container').unblock();
+					if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+						console.error(resp.fatal_error_message);
+						alert(resp.fatal_error_message);
+					} else {
+						var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+						console.log(error_message);
+						alert(error_message);
+						console.log(response);
+					}
+				}
 			});
 		} catch (err) {
 			jQuery('#updraft_central_key').html();
@@ -1749,10 +1893,9 @@ jQuery(document).ready(function($) {
 		jQuery('#updraftcentral_keys').block({ message: '<div style="margin: 8px; font-size:150%;"><img src="'+updraftlion.ud_url+'/images/udlogo-rotating.gif" height="80" width="80" style="padding-bottom:10px;"><br>'+updraftlion.creating_please_allow+'</div>'});
 
 		try {
-			updraft_send_command('updraftcentral_create_key', data, function(response) {
+			updraft_send_command('updraftcentral_create_key', data, function(resp) {
 				jQuery('#updraftcentral_keys').unblock();
 				try {
-					resp = ud_parse_json(response);
 					if (resp.hasOwnProperty('error')) {
 						alert(resp.error);
 						console.log(resp);
@@ -1777,7 +1920,19 @@ jQuery(document).ready(function($) {
 					alert(updraftlion.unexpectedresponse+' '+response);
 					console.log(err);
 				}
-			}, { json_parse: false });
+			}, { error_callback: function(response, status, error_code, resp) {
+					jQuery('#updraftcentral_keys').unblock();
+					if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+						console.error(resp.fatal_error_message);
+						alert(resp.fatal_error_message);
+					} else {
+						var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+						console.log(error_message);
+						alert(error_message);
+						console.log(response);
+					}
+				}
+			});
 		} catch (err) {
 			jQuery('#updraft_central_key').html();
 			console.log(err);
@@ -1798,6 +1953,18 @@ jQuery(document).ready(function($) {
 			jQuery('#updraftcentral_keys').unblock();
 			if (response.hasOwnProperty('keys_table')) {
 				jQuery('#updraftcentral_keys_content').html(response.keys_table);
+			}
+		}, { error_callback: function(response, status, error_code, resp) {
+				jQuery('#updraftcentral_keys').unblock();
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					alert(resp.fatal_error_message);
+				} else {
+					var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+					console.log(error_message);
+					alert(error_message);
+					console.log(response);
+				}
 			}
 		});
 	});
@@ -1832,7 +1999,7 @@ updraft_activejobs_update(false);}, 1250);
 jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	
 	jQuery('#updraft_restore_db').change(function() {
-		if (jQuery('#updraft_restore_db').is(':checked')) {
+		if (jQuery('#updraft_restore_db').is(':checked') && 1 == jQuery(this).data('encrypted')) {
 			jQuery('#updraft_restorer_dboptions').slideDown();
 		} else {
 			jQuery('#updraft_restorer_dboptions').slideUp();
@@ -1996,7 +2163,18 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 							}
 						}
 						
-					}, { alert_on_error: false });
+					}, { alert_on_error: false, error_callback: function(response, status, error_code, resp) {
+							if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+								console.error(resp.fatal_error_message);
+								jQuery('#updraft-restore-modal-stage2a').html('<p style="color:red;">'+resp.fatal_error_message+'</p>');
+							} else {
+								var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+								jQuery('#updraft-restore-modal-stage2a').html('<p style="color:red; margin: 5px;">'+error_message+'</p>');
+								console.log(error_message);
+								console.log(response);
+							}
+						}
+					});
 				} catch (err) {
 					console.log("UpdraftPlus: error (follows) when looking for items needing downloading");
 					console.log(err);
@@ -2571,6 +2749,18 @@ jQuery(document).ready(function($) {
 						}
 					}
 				}
+			}, { error_callback: function(response, status, error_code, resp) {
+					$(settings_css_prefix+'#updraftvault_recountquota').html(updraftlion.updatequotacount);
+					if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+						console.error(resp.fatal_error_message);
+						alert(resp.fatal_error_message);
+					} else {
+						var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+						console.log(error_message);
+						alert(error_message);
+						console.log(response);
+					}
+				}
 			});
 		} catch (err) {
 			$(settings_css_prefix+'#updraftvault_recountquota').html(updraftlion.updatequotacount);
@@ -2587,6 +2777,18 @@ jQuery(document).ready(function($) {
 				if (response.hasOwnProperty('html')) {
 					$(settings_css_prefix+'#updraftvault_settings_connected').html(response.html).slideUp();
 					$(settings_css_prefix+'#updraftvault_settings_default').slideDown();
+				}
+			}, { error_callback: function(response, status, error_code, resp) {
+					$(settings_css_prefix+'#updraftvault_disconnect').html(updraftlion.disconnect);
+					if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+						console.error(resp.fatal_error_message);
+						alert(resp.fatal_error_message);
+					} else {
+						var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+						console.log(error_message);
+						alert(error_message);
+						console.log(response);
+					}
 				}
 			});
 		} catch (err) {
@@ -2627,6 +2829,18 @@ jQuery(document).ready(function($) {
 			} else {
 				console.log(resp);
 				alert(updraftlion.unexpectedresponse+' '+response);
+			}
+		}, { error_callback: function(response, status, error_code, resp) {
+				$(settings_css_prefix+'#updraftvault_connect_go').html(updraftlion.connect);
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					alert(resp.fatal_error_message);
+				} else {
+					var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+					console.log(error_message);
+					alert(error_message);
+					console.log(response);
+				}
 			}
 		});
 		return false;
@@ -2807,9 +3021,9 @@ jQuery(document).ready(function($) {
 		updraft_send_command('savesettings', {
 			settings: form_data,
 			updraftplus_version: updraftlion.updraftplus_version
-		}, function(response) {
+		}, function(resp, status, response) {
 			// Add page updates etc based on response
-			updraft_handle_page_updates(response);
+			updraft_handle_page_updates(resp, response);
 			
 			$('#updraft-wrap .fade').delay(6000).fadeOut(2000);
 
@@ -2820,7 +3034,18 @@ jQuery(document).ready(function($) {
 			});
 
 			$.unblockUI();
-		}, { action: 'updraft_savesettings', nonce: updraftplus_settings_nonce, json_parse: false });
+		}, { action: 'updraft_savesettings', error_callback: function(response, status, error_code, resp) {
+				$.unblockUI();
+				if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+					console.error(resp.fatal_error_message);
+					alert(resp.fatal_error_message);
+				} else {
+					var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+					console.log(error_message);
+					alert(error_message);
+					console.log(response);
+				}
+			}, nonce: updraftplus_settings_nonce});
 	});
 
 	$('#updraftplus-settings-export').click(function() {
@@ -2887,8 +3112,8 @@ jQuery(document).ready(function($) {
 			updraft_send_command('importsettings', {
 				settings: stringified,
 				updraftplus_version: updraftlion.updraftplus_version,
-			}, function(response) {
-				var resp = updraft_handle_page_updates(response);
+			}, function(decoded_response, status, response) {
+				var resp = updraft_handle_page_updates(decoded_response);
 				if (!resp.hasOwnProperty('saved') || resp.saved) {
 					// Prevent the user being told they have unsaved settings
 					updraft_settings_form_changed = false;
@@ -2900,7 +3125,20 @@ jQuery(document).ready(function($) {
 						alert(resp.error_message);
 					}
 				}
-			}, { action: 'updraft_importsettings', nonce: updraftplus_settings_nonce, json_parse: false });
+			}, { action: 'updraft_importsettings', nonce: updraftplus_settings_nonce, error_callback: function(response, status, error_code, resp) {
+					$.unblockUI();
+					if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+						console.error(resp.fatal_error_message);
+						alert(resp.fatal_error_message);
+					} else {
+						var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+						console.log(error_message);
+						console.log(response);
+						alert(error_message);
+						
+					}
+				}
+			 });
 		} else {
 			$.unblockUI();
 		}
@@ -2944,15 +3182,14 @@ jQuery(document).ready(function($) {
 	/**
 	 * Method to parse the response from the backend and update the page with the returned content or display error messages if failed
 	 *
+	 * @param {array}  resp     - the JSON-decoded response containing information to update the settings page with
 	 * @param {string} response - the JSON-encoded response containing information to update the settings page with
 	 *
 	 * @return {object} - the decoded response (empty if decoding was not successful)
 	 */
-	function updraft_handle_page_updates(response) {
+	function updraft_handle_page_updates(resp, response) {
 					
 		try {
-			var resp = ud_parse_json(response);
-			
 			var messages = resp.messages;
 			// var debug = resp.changed.updraft_debug_mode;
 			

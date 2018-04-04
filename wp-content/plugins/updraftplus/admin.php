@@ -654,9 +654,10 @@ class UpdraftPlus_Admin {
 		$remote_storage_options_and_templates = $updraftplus->get_remote_storage_options_and_templates();
 		wp_localize_script('updraftplus-admin', 'updraftlion', array(
 			'sendonlyonwarnings' => __('Send a report only when there are warnings/errors', 'updraftplus'),
-			'wholebackup' => __('When the Email storage method is enabled, also send the entire backup', 'updraftplus'),
+			'wholebackup' => __('When the Email storage method is enabled, also send the backup', 'updraftplus'),
 			'emailsizelimits' => esc_attr(sprintf(__('Be aware that mail servers tend to have size limits; typically around %s Mb; backups larger than any limits will likely not arrive.', 'updraftplus'), '10-20')),
 			'rescanning' => __('Rescanning (looking for backups that you have uploaded manually into the internal backup store)...', 'updraftplus'),
+			'dbbackup' => __('Only email the database backup', 'updraftplus'),
 			'rescanningremote' => __('Rescanning remote and local storage for backup sets...', 'updraftplus'),
 			'enteremailhere' => esc_attr(__('To send to more than one address, separate each address with a comma.', 'updraftplus')),
 			'excludedeverything' => __('If you exclude both the database and the files, then you have excluded everything!', 'updraftplus'),
@@ -1066,21 +1067,36 @@ class UpdraftPlus_Admin {
 	 * Start a download of a backup. This method is called via the AJAX action updraft_download_backup. May die instead of returning depending upon the mode in which it is called.
 	 */
 	public function updraft_download_backup() {
-
-		if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'updraftplus_download')) die;
-
-		if (empty($_REQUEST['timestamp']) || !is_numeric($_REQUEST['timestamp']) || empty($_REQUEST['type'])) exit;
-
-		$findex = empty($_REQUEST['findex']) ? 0 : (int) $_REQUEST['findex'];
-		$stage = empty($_REQUEST['stage']) ? '' : $_REQUEST['stage'];
-		$file_path = empty($_REQUEST['filepath']) ? '' : $_REQUEST['filepath'];
-
-		// This call may not actually return, depending upon what mode it is called in
-		$result = $this->do_updraft_download_backup($findex, $_REQUEST['type'], $_REQUEST['timestamp'], $stage, false, $file_path);
-		
-		// In theory, if a response was already sent, then Connection: close has been issued, and a Content-Length. However, in https://updraftplus.com/forums/topic/pclzip_err_bad_format-10-invalid-archive-structure/ a browser ignores both of these, and then picks up the second output and complains.
-		if (empty($result['already_closed'])) echo json_encode($result);
-		
+		try {
+			if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'updraftplus_download')) die;
+	
+			if (empty($_REQUEST['timestamp']) || !is_numeric($_REQUEST['timestamp']) || empty($_REQUEST['type'])) exit;
+	
+			$findex = empty($_REQUEST['findex']) ? 0 : (int) $_REQUEST['findex'];
+			$stage = empty($_REQUEST['stage']) ? '' : $_REQUEST['stage'];
+			$file_path = empty($_REQUEST['filepath']) ? '' : $_REQUEST['filepath'];
+	
+			// This call may not actually return, depending upon what mode it is called in
+			$result = $this->do_updraft_download_backup($findex, $_REQUEST['type'], $_REQUEST['timestamp'], $stage, false, $file_path);
+			
+			// In theory, if a response was already sent, then Connection: close has been issued, and a Content-Length. However, in https://updraftplus.com/forums/topic/pclzip_err_bad_format-10-invalid-archive-structure/ a browser ignores both of these, and then picks up the second output and complains.
+			if (empty($result['already_closed'])) echo json_encode($result);
+		} catch (Exception $e) {
+			$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during download backup. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		// @codingStandardsIgnoreLine
+		} catch (Error $e) {
+			$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during download backup. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		}
 		die();
 	}
 	
@@ -1396,7 +1412,6 @@ class UpdraftPlus_Admin {
 		if (!wp_verify_nonce($nonce, 'updraftplus-credentialtest-nonce') || empty($_REQUEST['subaction'])) die('Security check');
 
 		$subaction = $_REQUEST['subaction'];
-
 		// Mitigation in case the nonce leaked to an unauthorised user
 		if ('dismissautobackup' == $subaction) {
 			if (!current_user_can('update_plugins') && !current_user_can('update_themes')) return;
@@ -1422,8 +1437,26 @@ class UpdraftPlus_Admin {
 			
 			// TODO: Once all commands come through here and through updraft_send_command(), the data should always come from this attribute (once updraft_send_command() is modified appropriately).
 			if (isset($data['action_data'])) $data = $data['action_data'];
-			$results = call_user_func(array($commands, $subaction), $data);
-			
+			try {
+				$results = call_user_func(array($commands, $subaction), $data);
+			} catch (Exception $e) {
+				$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during '.$subaction.' subaction. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+				die;
+			// @codingStandardsIgnoreLine
+			} catch (Error $e) {
+				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during '.$subaction.' subaction. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+				die;
+			}
 			if (is_wp_error($results)) {
 				$results = array(
 					'result' => false,
@@ -1440,27 +1473,77 @@ class UpdraftPlus_Admin {
 				echo json_encode($results);
 			}
 			die;
-		
 		}
 		
 		// Below are all the commands not ported over into class-commands.php or class-wpadmin-commands.php
 
 		if ('activejobs_list' == $subaction) {
-		
-			// N.B. Also called from autobackup.php
-			// TODO: This should go into UpdraftPlus_Commands, once the add-ons have been ported to use updraft_send_command()
-			echo json_encode($this->get_activejobs_list($updraftplus->wp_unslash($_GET)));
-
+			try {
+				// N.B. Also called from autobackup.php
+				// TODO: This should go into UpdraftPlus_Commands, once the add-ons have been ported to use updraft_send_command()
+				echo json_encode($this->get_activejobs_list($updraftplus->wp_unslash($_GET)));
+			} catch (Exception $e) {
+				$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during get active job list. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+			// @codingStandardsIgnoreLine
+			} catch (Error $e) {
+				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during get active job list. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+			}
+			
 		} elseif ('httpget' == $subaction) {
-		
-			// httpget
-			$curl = empty($_REQUEST['curl']) ? false : true;
-			 echo $this->http_get($updraftplus->wp_unslash($_REQUEST['uri']), $curl);
+			try {
+				// httpget
+				$curl = empty($_REQUEST['curl']) ? false : true;
+				echo $this->http_get($updraftplus->wp_unslash($_REQUEST['uri']), $curl);
+			// @codingStandardsIgnoreLine
+			} catch (Error $e) {
+				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during http get. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+			} catch (Exception $e) {
+				$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during http get. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+			}
 			 
 		} elseif ('doaction' == $subaction && !empty($_REQUEST['subsubaction']) && 'updraft_' == substr($_REQUEST['subsubaction'], 0, 8)) {
-		
-			// These generally echo and die - they will need further work to port to one of the command classes. Some may already have equivalents in UpdraftPlus_Commands, if they are used from UpdraftCentral.
-			do_action($updraftplus->wp_unslash($_REQUEST['subsubaction']));
+			$subsubaction = $_REQUEST['subsubaction'];
+			try {
+					// These generally echo and die - they will need further work to port to one of the command classes. Some may already have equivalents in UpdraftPlus_Commands, if they are used from UpdraftCentral.
+				do_action($updraftplus->wp_unslash($subsubaction));
+			} catch (Exception $e) {
+				$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during doaction subaction with '.$subsubaction.' subsubaction. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+				die;
+			// @codingStandardsIgnoreLine
+			} catch (Error $e) {
+				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during doaction subaction with '.$subsubaction.' subsubaction. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+				error_log($log_message);
+				echo json_encode(array(
+					'fatal_error' => true,
+					'fatal_error_message' => $log_message
+				));
+				die;
+			}
 		} else {
 			// These can be removed after a few releases
 			include(UPDRAFTPLUS_DIR.'/includes/deprecated-actions.php');
@@ -1881,7 +1964,6 @@ class UpdraftPlus_Admin {
 		} else {
 			$active_jobs = $this->print_active_jobs();
 		}
-
 		$logupdate_array = array();
 		if (!empty($request['log_fetch'])) {
 			if (isset($request['log_nonce'])) {
@@ -1890,7 +1972,6 @@ class UpdraftPlus_Admin {
 				$logupdate_array = $this->fetch_log($log_nonce, $log_pointer);
 			}
 		}
-
 		return array(
 			// We allow the front-end to decide what to do if there's nothing logged - we used to (up to 1.11.29) send a pre-defined message
 			'l' => htmlspecialchars(UpdraftPlus_Options::get_updraft_lastmessage()),
@@ -1898,7 +1979,6 @@ class UpdraftPlus_Admin {
 			'ds' => $download_status,
 			'u' => $logupdate_array
 		);
-	
 	}
 	
 	public function request_backupnow($request, $close_connection_callable = false) {
@@ -1912,7 +1992,7 @@ class UpdraftPlus_Admin {
 
 		$msg = array(
 			'nonce' => $nonce,
-			'm' => '<strong>'.__('Start backup', 'updraftplus').':</strong> '.htmlspecialchars(__('OK. You should soon see activity in the "Last log message" field below.', 'updraftplus'))
+			'm' => apply_filters('updraftplus_backupnow_start_message', '<strong>'.__('Start backup', 'updraftplus').':</strong> '.htmlspecialchars(__('OK. You should soon see activity in the "Last log message" field below.', 'updraftplus')), $nonce)
 		);
 		
 		if ($close_connection_callable && is_callable($close_connection_callable)) {
@@ -2623,6 +2703,81 @@ class UpdraftPlus_Admin {
 		</form><?php
 		echo "</div>";
 
+	}
+
+	/**
+	 * This method will build the UpdraftPlus.com login form and echo it to the page.
+	 *
+	 * @param string $option_page - the option page this form is being output to
+	 *
+	 * @return void
+	 */
+	public function build_credentials_form($option_page) {
+
+		$enter_credentials_begin = UpdraftPlus_Options::options_form_begin('', false, array(), 'updraftplus_com_login');
+
+		if (is_multisite()) $enter_credentials_begin .= '<input type="hidden" name="action" value="update">';
+
+		$interested = htmlspecialchars(__('Interested in knowing about your UpdraftPlus.Com password security? Read about it here.', 'updraftplus'));
+
+		$connect = htmlspecialchars(__('Connect', 'updraftplus'));
+
+		$enter_credentials_end = '<p style="margin-left: 258px;"><input id="ud_connectsubmit" type="submit" class="button-primary" value="'.$connect.'" /></p>';
+
+		$enter_credentials_end .= '<p style="margin-left: 258px; font-size: 70%"><em><a href="https://updraftplus.com/faqs/tell-me-about-my-updraftplus-com-account/">'.$interested.'</a></em></p>';
+
+		$enter_credentials_end .= '</form>';
+
+		$this->show_credentials_form($enter_credentials_begin, $enter_credentials_end, $option_page);
+	}
+
+	/**
+	 * This method will build the UpdraftPlus.com login form and echo it to the page.
+	 *
+	 * @param string $enter_credentials_begin - a string that contains the start of the form
+	 * @param string $enter_credentials_end   - a string that contains the end of the form
+	 * @param string $option_page             - the option page this form is being output to
+	 *
+	 * @return void
+	 */
+	private function show_credentials_form($enter_credentials_begin, $enter_credentials_end, $option_page) {
+
+		global $updraftplus;
+
+		echo $enter_credentials_begin;
+
+		// We have to duplicate settings_fields() in order to set our referer
+		// settings_fields(UDADDONS2_SLUG.'_options');
+
+		$option_group = $option_page.'_options';
+		echo "<input type='hidden' name='option_page' value='" . esc_attr($option_group) . "' />";
+		echo '<input type="hidden" name="action" value="update" />';
+
+		// wp_nonce_field("$option_group-options");
+
+		// This one is used on multisite
+		echo '<input type="hidden" name="tab" value="addons" />';
+
+		$name = "_wpnonce";
+		$action = esc_attr($option_group."-options");
+		$nonce_field = '<input type="hidden" name="' . $name . '" value="' . wp_create_nonce($action) . '" />';
+	
+		echo $nonce_field;
+
+		$referer = esc_attr($updraftplus->wp_unslash($_SERVER['REQUEST_URI']));
+
+		// This one is used on single site installs
+		if (false === strpos($referer, '?')) {
+			$referer .= '?tab=addons';
+		} else {
+			$referer .= '&tab=addons';
+		}
+
+		echo '<input type="hidden" name="_wp_http_referer" value="'.$referer.'" />';
+		// End of duplication of settings-fields()
+
+		do_settings_sections($option_page);
+		echo $enter_credentials_end;
 	}
 
 	/**
@@ -4157,7 +4312,7 @@ ENDHERE;
 		
 		}
 
-		$updraftplus_restorer->delete = UpdraftPlus_Options::get_updraft_option('updraft_delete_local') ? true : false;
+		$updraftplus_restorer->delete = UpdraftPlus_Options::get_updraft_option('updraft_delete_local', 1) ? true : false;
 		if ('none' === $service || 'email' === $service || empty($service) || (is_array($service) && 1 == count($service) && (in_array('none', $service) || in_array('', $service) || in_array('email', $service))) || !empty($updraftplus_restorer->ud_foreign)) {
 			if ($updraftplus_restorer->delete) $updraftplus->log_e('Will not delete any archives after unpacking them, because there was no cloud storage for this backup');
 			$updraftplus_restorer->delete = false;
@@ -4339,29 +4494,61 @@ ENDHERE;
 	}
 	
 	public function updraft_ajax_savesettings() {
-		global $updraftplus;
-		
-		if (empty($_POST) || empty($_POST['subaction']) || 'savesettings' != $_POST['subaction'] || !isset($_POST['nonce']) || !is_user_logged_in() || !UpdraftPlus_Options::user_can_manage() || !wp_verify_nonce($_POST['nonce'], 'updraftplus-settings-nonce')) die('Security check');
-
-		if (empty($_POST['settings']) || !is_string($_POST['settings'])) die('Invalid data');
-
-		parse_str(stripslashes($_POST['settings']), $posted_settings);
-		// We now have $posted_settings as an array
-		if (!empty($_POST['updraftplus_version'])) $posted_settings['updraftplus_version'] = $_POST['updraftplus_version'];
-		
-		echo json_encode($this->save_settings($posted_settings));
-
+		try {
+			global $updraftplus;
+			if (empty($_POST) || empty($_POST['subaction']) || 'savesettings' != $_POST['subaction'] || !isset($_POST['nonce']) || !is_user_logged_in() || !UpdraftPlus_Options::user_can_manage() || !wp_verify_nonce($_POST['nonce'], 'updraftplus-settings-nonce')) die('Security check');
+	
+			if (empty($_POST['settings']) || !is_string($_POST['settings'])) die('Invalid data');
+	
+			parse_str(stripslashes($_POST['settings']), $posted_settings);
+			// We now have $posted_settings as an array
+			if (!empty($_POST['updraftplus_version'])) $posted_settings['updraftplus_version'] = $_POST['updraftplus_version'];
+			
+			echo json_encode($this->save_settings($posted_settings));
+		} catch (Exception $e) {
+			$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during save settings. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		// @codingStandardsIgnoreLine
+		} catch (Error $e) {
+			$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during save settings. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		}
 		die;
 	}
 	
 	public function updraft_ajax_importsettings() {
-		global $updraftplus;
-		 
-		if (empty($_POST) || empty($_POST['subaction']) || 'importsettings' != $_POST['subaction'] || !isset($_POST['nonce']) || !is_user_logged_in() || !UpdraftPlus_Options::user_can_manage() || !wp_verify_nonce($_POST['nonce'], 'updraftplus-settings-nonce')) die('Security check');
-		 
-		if (empty($_POST['settings']) || !is_string($_POST['settings'])) die('Invalid data');
-
-		$this->import_settings($_POST);
+		try {
+			global $updraftplus;
+			 
+			if (empty($_POST) || empty($_POST['subaction']) || 'importsettings' != $_POST['subaction'] || !isset($_POST['nonce']) || !is_user_logged_in() || !UpdraftPlus_Options::user_can_manage() || !wp_verify_nonce($_POST['nonce'], 'updraftplus-settings-nonce')) die('Security check');
+			 
+			if (empty($_POST['settings']) || !is_string($_POST['settings'])) die('Invalid data');
+	
+			$this->import_settings($_POST);
+		} catch (Exception $e) {
+			$log_message = 'PHP Fatal Exception error ('.get_class($e).') has occurred during import settings. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		// @codingStandardsIgnoreLine 
+		} catch (Error $e) { 
+			$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during import settings. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
+			error_log($log_message);
+			echo json_encode(array(
+				'fatal_error' => true,
+				'fatal_error_message' => $log_message
+			));
+		}
 	}
 	
 	/**

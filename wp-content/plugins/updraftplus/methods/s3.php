@@ -229,6 +229,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			case 'us-east-2':
 			case 'us-west-2':
 			case 'eu-west-2':
+			case 'eu-west-3':
 			case 'ap-southeast-1':
 			case 'ap-southeast-2':
 			case 'ap-northeast-1':

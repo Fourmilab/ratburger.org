@@ -81,7 +81,14 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		return $this->root_id;
 	}
 
-	public function id_from_path($path, $retry = true) {
+	/**
+	 * Get folder id from path
+	 *
+	 * @param String  $path        folder path
+	 * @param Integer $retry_count how many times to retry upon a network failure
+	 * @return String|Integer internal id of the Google Drive folder
+	 */
+	public function id_from_path($path, $retry_count = 3) {
 		global $updraftplus;
 
 		$storage = $this->get_storage();
@@ -145,11 +152,17 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 				// Aug 2015: saw a case where the gzip-encoding was not removed from the result
 				// https://stackoverflow.com/questions/10975775/how-to-determine-if-a-string-was-compressed
 				// @codingStandardsIgnoreLine
-				$is_gzip = false !== mb_strpos($msg, "\x1f" . "\x8b" . "\x08");
+				$is_gzip = (false !== mb_strpos($msg, "\x1f\x8b\x08"));
 				if ($is_gzip) $updraftplus->log("Error: Response appears to be gzip-encoded still; something is broken in the client HTTP stack, and you should define UPDRAFTPLUS_GOOGLEDRIVE_DISABLEGZIP as true in your wp-config.php to overcome this.");
 			}
-			// One retry
-			return ($retry) ? $this->id_from_path($path, false) : false;
+			$retry_count--;
+			$updraftplus->log("Google Drive: id_from_path: retry ($retry_count)");
+			if ($retry_count > 0) {
+				$delay_in_seconds = defined('UPDRAFTPLUS_GOOGLE_DRIVE_GET_FOLDER_ID_SECOND_RETRY_DELAY') ? UPDRAFTPLUS_GOOGLE_DRIVE_GET_FOLDER_ID_SECOND_RETRY_DELAY : 5-$retry_count;
+				sleep($delay_in_seconds);
+				return $this->id_from_path($path, $retry_count);
+			}
+			return false;
 		}
 	}
 
@@ -389,6 +402,9 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		}
 	}
 
+	/***
+	 * Print the dashboard notice that follows a successful authentication
+	 */
 	public function show_authed_admin_success() {
 
 		global $updraftplus_admin;
@@ -414,6 +430,16 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 					$used_perc = round($quota_used*100/$quota_total, 1);
 					$message .= sprintf(__('Your %s quota usage: %s %% used, %s available', 'updraftplus'), 'Google Drive', $used_perc, round($available_quota/1048576, 1).' MB');
 				}
+			} elseif (is_wp_error($storage)) {
+				$message .= __('However, subsequent access attempts failed:', 'updraftplus');
+				$error_codes = $storage->get_error_codes();
+				$message .= '<ul style="list-style: disc inside;">';
+				foreach ($error_codes as $error_code) {
+					$message .= '<li>';
+					$message .= $storage->get_error_message($error_code).' ('.$error_code.')';
+					$message .= '</li>';
+				}
+				$message .= '</ul>';
 			}
 		} catch (Exception $e) {
 			if (is_a($e, 'Google_Service_Exception')) {
@@ -932,7 +958,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		$size = 0;
 		$request = $storage->files->insert($gdfile);
 
-		$chunk_bytes = 1048576;
+		$chunk_size = 1048576;
 
 		$hash = md5($file);
 		$transkey = 'resume_'.$hash;
@@ -981,7 +1007,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 			(('.zip' == substr($basename, -4, 4)) ? 'application/zip' : 'application/octet-stream'),
 			null,
 			true,
-			$chunk_bytes
+			$chunk_size
 		);
 		$media->setFileSize($local_size);
 
@@ -1010,8 +1036,12 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 
 		try {
 			while (!$status && !feof($handle)) {
-				$chunk = fread($handle, $chunk_bytes);
-				// Error handling??
+				$chunk = '';
+				// Google requires chunks of the previous indicated size. Short reads are thus problematic.
+				while (strlen($chunk) < $chunk_size && !feof($handle)) {
+					$chunk .= fread($handle, $chunk_size - strlen($chunk));
+				}
+				// Do we need any further error handling??
 				$pointer += strlen($chunk);
 				$status = $media->nextChunk($chunk);
 				$this->jobdata_set($transkey, array($media->updraftplus_getResumeUri(), $media->getProgress()));

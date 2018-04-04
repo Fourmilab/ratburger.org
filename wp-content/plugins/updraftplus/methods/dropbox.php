@@ -528,6 +528,8 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 
 		$ufile = apply_filters('updraftplus_dropbox_modpath', $file, $this);
 
+		$options = array();
+		
 		if (!empty($headers)) $options['headers'] = $headers;
 
 		try {
