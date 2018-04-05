@@ -14,7 +14,7 @@ if ( ! current_user_can( 'edit_posts' ) ) {
 if ( ! current_user_can( 'edit_others_posts' ) ) {
 /* END RATBURGER LOCAL CODE */
 	wp_die(
-		'<h1>' . __( 'Cheatin&#8217; uh?' ) . '</h1>' .
+		'<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
 		'<p>' . __( 'Sorry, you are not allowed to edit comments.' ) . '</p>',
 		403
 	);
