@@ -749,4 +749,22 @@ function rb_notif_delete_all_read() {
     }
 }
 
+/*  Change expiration date for "Remember Me" cookie from 14
+    to 180 days.  */
+
+add_filter('auth_cookie_expiration', 'rb_expiration_filter', 99, 3);
+function rb_expiration_filter($seconds, $user_id, $remember){
+
+    //  If "Remember Me" is checked;
+    if ($remember) {
+        //  WP defaults to 2 weeks
+        $expiration = 180 * DAY_IN_SECONDS;
+    } else {
+        //  WP defaults to 48 hrs/2 days
+        $expiration = 2 * DAY_IN_SECONDS;
+    }
+
+    return $expiration;
+}
+
 /* END RATBURGER LOCAL CODE */
