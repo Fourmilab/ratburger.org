@@ -5,7 +5,16 @@ class TMCECF_CommentController {
     private function __construct() {
         add_filter('comment_text', array(&$this, 'autoembed'), 8);
         add_filter('wp_kses_allowed_html', array(&$this, 'allow_images'), 10, 2);
+	/** RATBURGER LOCAL CODE **
+	    We allow users to insert images in comments with the standard
+	    "Add Media" button.  The "resize_image" method is intended to
+	    rewrite images inserted by users as text-mode HTML or via the
+	    down-market image button in TinyMCE "teeny" mode.  The
+	    resize_image process breaks alignment and links in these images
+	    and creates nested links which are invalid HTML.  We just
+	    disable the whole mess.
         add_filter('preprocess_comment', array(&$this, 'resize_images'), 99, 1);
+	 ** END RATBURGER LOCAL CODE **/
         add_action('comment_post', array(&$this, 'set_moderation'));
         add_filter('comments_template', array(&$this, 'shortcodes_whitelist'), 10);
         add_filter('dynamic_sidebar', array(&$this, 'reset_shortcodes'));
