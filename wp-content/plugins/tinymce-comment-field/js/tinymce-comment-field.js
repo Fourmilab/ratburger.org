@@ -25,8 +25,17 @@ jQuery(function ($) {
     });
 
     $("#commentform").tmcefBindFirst('submit', function () {
+	/* RATBURGER LOCAL CODE
+           If we're using the Quicktags HTML editor, don't
+           overwrite the comment textarea with the inactive
+           contents of the TinyMCE editor buffer. */
+	if (!tinymce.activeEditor.isHidden() {
+	/* END RATBURGER LOCAL CODE */
         if ($("#comment").length > 0) {
             $("#comment").val(tinymce.activeEditor.getContent());
         }
+	/* RATBURGER LOCAL CODE */
+	}
+	/* END RATBURGER LOCAL CODE */
     });
 });

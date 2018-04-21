@@ -48,13 +48,16 @@ class TMCECF_EditorController {
         ob_start();
         /* RATBURGER LOCAL CODE
            Enable Add Media in comment composition editor.
+           Enable the Quicktags HTML editor for comment composition.
         wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true, 'quicktags' => false,
                                        'media_buttons' => false,
                                        'tinymce' => array('height' => $height, 'directionality' => $text_direction,
                                                           'content_css' => $content_css)));
         */
-        wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true, 'quicktags' => false,
+        wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true,
+                                       'quicktags' => true,
                                        'media_buttons' => true,
+				       'default_editor' => 'tinymce',
                                        'tinymce' => array('height' => $height, 'directionality' => $text_direction,
                                                           'content_css' => $content_css)));
         /* END RATBURGER LOCAL CODE */        
