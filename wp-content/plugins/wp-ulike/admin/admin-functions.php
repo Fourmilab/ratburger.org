@@ -339,7 +339,7 @@ function wp_ulike_post_likes_logs(){
 			<?php echo $get_ulike_log->ip; ?> 
 			</td>
 			<td>
-			<button class="wp_ulike_delete button" type="button" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike"><i class="dashicons dashicons-trash"></i></button> 
+			<button class="wp_ulike_delete button" type="button" data-nonce="<?php echo wp_create_nonce( 'ulike' . $get_ulike_log->id ); ?>" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike"><i class="dashicons dashicons-trash"></i></button> 
 			</td>
 			<?php 
 			$alternate = !$alternate;
@@ -460,7 +460,7 @@ function wp_ulike_comment_likes_logs(){
 			<?php echo $get_ulike_log->ip; ?> 
 			</td>
 			<td>
-			<button class="wp_ulike_delete button" type="button" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_comments"><i class="dashicons dashicons-trash"></i></button> 
+			<button class="wp_ulike_delete button" type="button" data-nonce="<?php echo wp_create_nonce( 'ulike_comments' . $get_ulike_log->id ); ?>" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_comments"><i class="dashicons dashicons-trash"></i></button> 
 			</td>				
 			<?php 
 			$alternate = !$alternate;
@@ -585,7 +585,7 @@ function wp_ulike_buddypress_likes_logs(){
 				<?php echo $get_ulike_log->ip; ?> 
 				</td>
 				<td>
-				<button class="wp_ulike_delete button" type="button" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_activities"><i class="dashicons dashicons-trash"></i></button> 
+				<button class="wp_ulike_delete button" type="button" data-nonce="<?php echo wp_create_nonce( 'ulike_activities' . $get_ulike_log->id ); ?>" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_activities"><i class="dashicons dashicons-trash"></i></button> 
 				</td>					
 				<?php 
 				$alternate = !$alternate;
@@ -711,7 +711,7 @@ function wp_ulike_bbpress_likes_logs(){
 			<?php echo $get_ulike_log->ip; ?> 
 			</td>
 			<td>
-			<button class="wp_ulike_delete button" type="button" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_forums"><i class="dashicons dashicons-trash"></i></button> 
+			<button class="wp_ulike_delete button" type="button" data-nonce="<?php echo wp_create_nonce( 'ulike_forums' . $get_ulike_log->id ); ?>" data-id="<?php echo $get_ulike_log->id;?>" data-table="ulike_forums"><i class="dashicons dashicons-trash"></i></button> 
 			</td>
 			<?php 
 			$alternate = !$alternate;

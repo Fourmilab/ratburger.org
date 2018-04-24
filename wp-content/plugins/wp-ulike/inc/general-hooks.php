@@ -396,6 +396,17 @@ if( defined( 'BP_VERSION' ) ) {
 						$return = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_text, $custom_link );
 					// Deprecated BuddyBar
 					} else {
+                        /* RATBURGER LOCAL CODE
+                           Replace original notification construction with ours
+                           which includes $custom_class.
+						$return = apply_filters( 'wp_ulike_bp_notifications_template', array(
+							'text' => $custom_text,
+							'link' => $custom_link
+						), $custom_link, (int) $total_items, $custom_text, $custom_text );
+                           END RATBURGER LOCAL CODE */
+						/* RATBURGER LOCAL CODE
+						   If $custom_class specified, wrap around the $custom_text.
+						*/
 						$ctx = $custom_text;
 						if ($custom_class !== '') {
 							$ctx = '<span class="' . $custom_class . '">' . $custom_text . '</span>';
@@ -404,6 +415,7 @@ if( defined( 'BP_VERSION' ) ) {
 							'text' => $ctx,
 							'link' => $custom_link
 						), $custom_link, (int) $total_items, $ctx, $ctx );
+                        /* END RATBURGER LOCAL CODE */
 					}
 					// global wp_filter to call bbPress wrapper function
 					if (isset($wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications'])) {
