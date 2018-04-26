@@ -29,7 +29,7 @@ jQuery(function ($) {
            If we're using the Quicktags HTML editor, don't
            overwrite the comment textarea with the inactive
            contents of the TinyMCE editor buffer. */
-	if (!tinymce.activeEditor.isHidden() {
+	if (!tinymce.activeEditor.isHidden()) {
 	/* END RATBURGER LOCAL CODE */
         if ($("#comment").length > 0) {
             $("#comment").val(tinymce.activeEditor.getContent());
