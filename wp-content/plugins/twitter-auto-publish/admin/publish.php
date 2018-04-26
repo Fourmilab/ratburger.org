@@ -305,6 +305,8 @@ function xyz_twap_link_publish($post_ID) {
 			
 			if(is_array($matches) && isset($matches[0]))
 			{
+RB_dumpvar('TWAP substring', $substring);
+RB_dumpvar('TWAP matches', $matches);
 				$matches=$matches[0];
 				$final_str='';
 				$len=0;
@@ -313,6 +315,31 @@ function xyz_twap_link_publish($post_ID) {
 				foreach ($matches as $key=>$val)
 				{
 					$url_max_len=23;//23 for https and 22 for http
+                    /* RATBURGER LOCAL CODE
+                       Well, this time, just a local comment. If
+                       you find yourself here, looking at this
+                       code trying to figure out why it
+                       generates malformed URLs in Twitter posts
+                       (for example, "hthttp://..."), you'll
+                       notice that it only happens when the
+                       message part contains one or more
+                       multi-byte UTF-8 characters.  The default
+                       installation of PHP on AWS Linux AMI
+                       Apache does not include the
+                       "phpXX-mbstring" package, without which
+                       functions such as mb_strpos() simply
+                       silently return incorrect values.  Enable
+                       phpinfo.php in your Web home directory
+                       and see what it says for "Zend Multibyte
+                       Support". If it says "disabled", the
+                       following line will not correctly parse
+                       messages containing multi-byte
+                       characters. After installing the mbstring
+                       package, you'll need to restart HTTPD,
+                       after which it should say "provided by
+                       mbstring". That should correct the
+                       problem.
+                       END RATBURGER LOCAL CODE */
 					$messagepart=mb_substr($substring, 0, mb_strpos($substring, $val));
 			
 					if(mb_strlen($messagepart)>($tw_max_len-$len))
@@ -413,6 +440,7 @@ function xyz_twap_link_publish($post_ID) {
 			
 				$substring=$final_str;
 			}
+RB_dumpvar('TWAP final substring', $substring);
 
 			$twobj = new TWAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 			$tw_publish_status='';
