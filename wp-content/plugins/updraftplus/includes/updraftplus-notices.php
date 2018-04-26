@@ -248,7 +248,7 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			),
 			'spring' => array(
 				'prefix' => '',
-				'title' => __('Spring sale - 20% off UpdraftPlus Premium until April 31st', 'updraftplus'),
+				'title' => __('Spring sale - 20% off UpdraftPlus Premium until April 30th', 'updraftplus'),
 				'text' => __('To benefit, use this discount code:', 'updraftplus').' ',
 				'image' => 'notices/spring.png',
 				'button_link' => 'https://updraftplus.com/landing/updraftplus-premium',

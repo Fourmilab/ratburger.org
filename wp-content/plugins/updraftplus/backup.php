@@ -140,7 +140,7 @@ class UpdraftPlus_Backup {
 		// In tests, PclZip was found to be 25% slower than ZipArchive
 		if ('UpdraftPlus_PclZip' != $this->use_zip_object && empty($this->binzip) && ((defined('UPDRAFTPLUS_PREFERPCLZIP') && UPDRAFTPLUS_PREFERPCLZIP == true) || !class_exists('ZipArchive') || !class_exists('UpdraftPlus_ZipArchive') || (!extension_loaded('zip') && !method_exists('ZipArchive', 'AddFile')))) {
 			global $updraftplus;
-			$updraftplus->log("Zip engine: ZipArchive is not available or is disabled (will use PclZip if needed)");
+			$updraftplus->log("Zip engine: ZipArchive (a.k.a. php-zip) is not available or is disabled (will use PclZip (much slower) if needed)");
 			$this->use_zip_object = 'UpdraftPlus_PclZip';
 		}
 

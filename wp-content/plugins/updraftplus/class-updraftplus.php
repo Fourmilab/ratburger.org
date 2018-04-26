@@ -288,6 +288,7 @@ class UpdraftPlus {
 		if (!in_array($method_key, $settings_keys)) return new WP_Error('no_such_setting', 'Setting not found for this method', $method);
 	
 		$current_setting = UpdraftPlus_Options::get_updraft_option($method_key, array());
+		if ('' == $current_setting) $current_setting = array();
 		
 		if (!is_array($current_setting) && false !== $current_setting) return new WP_Error('format_unrecognised', 'Settings format not recognised', array('method' => $method, 'current_setting' => $current_setting));
 
@@ -754,10 +755,19 @@ class UpdraftPlus {
 		}
 	}
 
-	public function backup_time_nonce($nonce = false) {
+	/**
+	 * This function allows you to manually set the nonce and timestamp for the current backup job. If none are provided then it will create new ones.
+	 *
+	 * @param boolean|string $nonce     - the nonce you want to set
+	 * @param boolean|string $timestamp - the timestamp you want to set
+	 *
+	 * @return string                   - returns the backup nonce that has been set
+	 */
+	public function backup_time_nonce($nonce = false, $timestamp = false) {
 		$this->job_time_ms = microtime(true);
-		$this->backup_time = time();
+		if (false === $timestamp) $timestamp = time();
 		if (false === $nonce) $nonce = substr(md5(time().rand()), 20);
+		$this->backup_time = $timestamp;
 		$this->file_nonce = apply_filters('updraftplus_incremental_backup_file_nonce', $nonce);
 		$this->nonce = $nonce;
 		return $nonce;
@@ -2125,7 +2135,7 @@ class UpdraftPlus {
 		if ($resumption_no >= 1 && 'finished' == $this->jobdata_get('jobstatus')) {
 			$this->log('Terminate: This backup job is already finished (1).');
 			die;
-		} elseif ('backup' == $job_type && !empty($this->backup_is_already_complete)) {
+		} elseif ('clouduploading' != $this->jobdata_get('jobstatus') && 'backup' == $job_type && !empty($this->backup_is_already_complete)) {
 			$this->jobdata_set('jobstatus', 'finished');
 			$this->log('Terminate: This backup job is already finished (2).');
 			die;
@@ -2633,7 +2643,8 @@ class UpdraftPlus {
 		if (false === $restrict_files_to_override && isset($options['restrict_files_to_override'])) $restrict_files_to_override = $options['restrict_files_to_override'];
 		// Generate backup information
 		$use_nonce = (empty($options['use_nonce'])) ? false : $options['use_nonce'];
-		$this->backup_time_nonce($use_nonce);
+		$use_timestamp = (empty($options['use_timestamp'])) ? false : $options['use_timestamp'];
+		$this->backup_time_nonce($use_nonce, $use_timestamp);
 		// The current_resumption is consulted within logfile_open()
 		$this->current_resumption = 0;
 		$this->logfile_open($this->nonce);
@@ -2874,6 +2885,26 @@ class UpdraftPlus {
 
 	}
 
+	/**
+	 * The purpose of this function is to abstract away historical discrepancies in service lists, by returning in a single, logical form (in particular, no 'none' or '' entries, and always an array)
+	 *
+	 * @param Array|String|Boolean|Null $services - a list of services to canonicalize, or a string indicating a single service. If null is parsed, then the saved settings will be read.
+	 *
+	 * @return Array - an array of service names. All service names will be non-empty strings, and 'none' will not feature. If there are no services, then the array will be empty.
+	 */
+	public function get_canonical_service_list($services = null) {
+	
+		if (null === $services) $services = UpdraftPlus_Options::get_updraft_option('updraft_service');
+		
+		$services = (array) $services;
+		
+		foreach ($services as $key => $service) {
+			if ('' === $service || 'none' === $service || false === $service) unset($services[$key]);
+		}
+	
+		return $services;
+	}
+	
 	private function backup_finish($cancel_event, $do_cleanup, $allow_email, $resumption_no, $force_abort = false) {
 
 		if (!empty($this->semaphore)) $this->semaphore->unlock();
@@ -4206,6 +4237,8 @@ class UpdraftPlus {
 							$info['migration'] = true;
 							// && !class_exists('UpdraftPlus_Addons_Migrator')
 							if ($this->normalise_url($old_siteurl) == $this->normalise_url(site_url())) {
+								// Same site migration with only http/https difference
+								$info['same_url'] = false;
 								$old_siteurl_parsed = parse_url($old_siteurl);
 								$actual_siteurl_parsed = parse_url(site_url());
 								if ((stripos($old_siteurl_parsed['host'], 'www.') === 0 && stripos($actual_siteurl_parsed['host'], 'www.') !== 0) || (stripos($old_siteurl_parsed['host'], 'www.') !== 0 && stripos($actual_siteurl_parsed['host'], 'www.') === 0)) {
@@ -4225,20 +4258,21 @@ class UpdraftPlus {
 								}
 								$warn[] = $powarn;
 							} else {
+								// For completely different site migration
+								$info['same_url'] = false;
 								$warn[] = apply_filters('updraftplus_dbscan_urlchange', '<a href="https://updraftplus.com/shop/migrator/">'.__('This backup set is from a different site - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work.', 'updraftplus').'</a>', $old_siteurl, $res);
 							}
 							if (!class_exists('UpdraftPlus_Addons_Migrator')) {
 								$warn[] .= '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/tell-me-more-about-the-search-and-replace-site-location-in-the-database-option/").'">'.__('You can search and replace your database (for migrating a website to a new location/URL) with the Migrator add-on - follow this link for more information', 'updraftplus').'</a></strong>';
 							}
 						}
-						// Explicitly set it, allowing the consumer to detect when the result was unknown
-						$info['same_url'] = false;
 
 						if ($this->mod_rewrite_unavailable(false)) {
 							$warn[] = sprintf(__('You are using the %s webserver, but do not seem to have the %s module loaded.', 'updraftplus'), 'Apache', 'mod_rewrite').' '.sprintf(__('You should enable %s to make any pretty permalinks (e.g. %s) work', 'updraftplus'), 'mod_rewrite', 'http://example.com/my-page/');
 						}
 
 					} else {
+						// For exactly same URL site restoration
 						$info['same_url'] = true;
 					}
 				} elseif ('' == $old_home && preg_match('/^\# Home URL: (http(.*))$/', $buffer, $matches)) {

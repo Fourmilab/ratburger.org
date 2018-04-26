@@ -395,7 +395,7 @@ tr[class*="_updraft_remote_storage_border"] {
 	vertical-align: bottom;
 }
 
-#updraft_webdav_host_error {
+#updraft_webdav_host_error, .onedrive_folder_error {
 	color: red;
 }
 
@@ -1164,6 +1164,16 @@ tr.updraftplusmethod h3 {
 	margin-right: 6px;
 	float: left;
 	clear: none;
+}
+
+.updraftplus-upload {
+	margin-right: 6px;
+	float: left;
+	clear: none;
+}
+
+.updraft-upload-link {
+	font-size: 16px !important;
 }
 
 .updraftplus-remove {

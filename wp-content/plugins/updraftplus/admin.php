@@ -380,7 +380,19 @@ class UpdraftPlus_Admin {
 			// Moved out for use with Ajax saving
 			$this->setup_all_admin_notices_global($service);
 		}
+		
+		if (!class_exists('Updraft_Dashboard_News')) include_once(UPDRAFTPLUS_DIR.'/includes/class-updraft-dashboard-news.php');
 
+		$news_translations = array(
+			'product_title' => 'UpdraftPlus',
+			'item_prefix' => __('UpdraftPlus', 'updraftplus'),
+			'item_description' => __('UpdraftPlus News', 'updraftplus'),
+			'dismiss_tooltip' => __('Dismiss all UpdraftPlus news', 'updraftplus'),
+			'dismiss_confirm' => __('Are you sure you want to dismiss all UpdraftPlus news forever?', 'updraftplus'),
+		);
+		
+		$updraftplus_dashboard_news = new Updraft_Dashboard_News('https://feeds.feedburner.com/updraftplus/', 'https://updraftplus.com/news/', $news_translations);
+		
 		// Next, the actions that only come on the UpdraftPlus page
 		if (UpdraftPlus_Options::admin_page() != $pagenow || empty($_REQUEST['page']) || 'updraftplus' != $_REQUEST['page']) return;
 		$this->setup_all_admin_notices_udonly($service);
@@ -706,6 +718,7 @@ class UpdraftPlus_Admin {
 			'cancel' => __('Cancel', 'updraftplus'),
 			'deletebutton' => __('Delete', 'updraftplus'),
 			'createbutton' => __('Create', 'updraftplus'),
+			'uploadbutton' => __('Upload', 'updraftplus'),
 			'youdidnotselectany' => __('You did not select any components to restore. Please select at least one, and then try again.', 'updraftplus'),
 			'proceedwithupdate' => __('Proceed with update', 'updraftplus'),
 			'close' => __('Close', 'updraftplus'),
@@ -782,6 +795,10 @@ class UpdraftPlus_Admin {
 			'remote_storage_templates' => $remote_storage_options_and_templates['templates'],
 			'instance_enabled' => __('Currently enabled', 'updraftplus'),
 			'instance_disabled' => __('Currently disabled', 'updraftplus'),
+			'local_upload_started' => __('Local backup upload has started; please check the current status tab to see the upload progress', 'updraftplus'),
+			'local_upload_error' => __('You must select at least one remote storage destination to upload this backup set to.', 'updrafplus'),
+			'already_uploaded' => __('(already uploaded)', 'updraftplus'),
+			'onedrive_folder_url_warning' => __('Please specify the Microsoft OneDrive folder name, not the URL.', 'updraftplus')
 		));
 	}
 	
@@ -2633,6 +2650,7 @@ class UpdraftPlus_Admin {
 				$tmp_opts = array('include_opera_warning' => $is_opera);
 				$this->settings_downloading_and_restoring($backup_history, false, $tmp_opts);
 				$this->include_template('wp-admin/settings/delete-and-restore-modals.php');
+				$this->include_template('wp-admin/settings/upload-backups-modal.php');
 			?>
 		</div>
 
@@ -3979,6 +3997,89 @@ class UpdraftPlus_Admin {
 	}
 
 	/**
+	 * Get HTML for the 'Upload' button for a particular backup in the 'Existing Backups' tab
+	 *
+	 * @param Integer $backup_time - backup timestamp (epoch time)
+	 * @param String  $nonce       - backup nonce
+	 * @param Array   $backup      - backup information array
+	 *
+	 * @return String - the resulting HTML
+	 */
+	public function upload_button($backup_time, $nonce, $backup) {
+		global $updraftplus;
+
+		// Check the job is not still running.
+		$jobdata = $updraftplus->jobdata_getarray($nonce);
+		
+		if (!empty($jobdata) && 'finished' != $jobdata['jobstatus']) return '';
+
+		// Check that the user has remote storage setup.
+		$services = UpdraftPlus_Options::get_updraft_option('updraft_service');
+		$service = $updraftplus->just_one($services);
+		if (is_string($service)) $service = array($service);
+		if (!is_array($service)) $service = array('none');
+		if (empty($service) || array('none') == $service || array('') == $service || 'none' == $service) return '';
+
+		$show_upload = false;
+		$not_uploaded = array();
+
+		// Check that the backup has not already been sent to remote storage before.
+		if (empty($backup['service']) || array('none') == $backup['service'] || array('') == $backup['service'] || 'none' == $backup['service']) {
+			$show_upload = true;
+		// If it has been uploaded then check if there are any new remote storage options that it has not yet been sent to.
+		} elseif (!empty($backup['service']) && array('none') != $backup['service'] && array('') != $backup['service'] && 'none' != $backup['service']) {
+			
+			foreach ($services as $key => $value) {
+				if (in_array($value, $backup['service'])) unset($services[$key]);
+			}
+
+			if (!empty($services)) $show_upload = true;
+		}
+
+		if ($show_upload) {
+			
+			$missing_file = false;
+			$entities = $updraftplus->get_backupable_file_entities(true);
+			// Add the database to the entities array ready to loop over
+			$entities['db'] = '';
+			$updraft_dir = trailingslashit($updraftplus->backups_dir_location());
+
+			foreach ($entities as $type => $info) {
+
+				if (!isset($backup[$type])) continue;
+
+				// Cast this to an array so that a warning is not thrown when we encounter a Database.
+				foreach ((array) $backup[$type] as $value) {
+					if (!file_exists($updraft_dir . DIRECTORY_SEPARATOR . $value)) $missing_file = true;
+				}
+			}
+
+			if (!$missing_file) {
+				$service_list = '';
+				$service_list_display = '';
+				$is_first_service = true;
+				
+				foreach ($services as $key => $service) {
+					if (!$is_first_service) {
+						$service_list .= ',';
+						$service_list_display .= ', ';
+					}
+					$service_list .= $service;
+					$service_list_display .= $updraftplus->backup_methods[$service];
+
+					$is_first_service = false;
+				}
+
+				return '<div class="updraftplus-upload">
+				<button data-nonce="'.$nonce.'" data-key="'.$backup_time.'" data-services="'.$service_list.'" title="'.__('After pressing this button, you can select where to upload your backup from a list of your currently saved remote storage locations', 'updraftplus').' ('.$service_list_display.')." type="button" class="button-primary updraft-upload-link">'.__('Upload', 'updraftplus').'</button>
+				</div>';
+			}
+
+			return '';
+		}
+	}
+
+	/**
 	 * Get HTML for the 'Delete' button for a particular backup in the 'Existing Backups' tab
 	 *
 	 * @param Integer $backup_time - backup timestamp (epoch time)
@@ -4019,6 +4120,114 @@ class UpdraftPlus_Admin {
 ENDHERE;
 			return $ret;
 		}
+	}
+
+	/**
+	 * This function will set up the backup job data for when we are uploading a local backup to remote storage. It changes the initial jobdata so that UpdraftPlus knows about what files it's uploading and so that it skips directly to the upload stage.
+	 *
+	 * @param array $jobdata - the initial job data that we want to change
+	 * @param array $options - options sent from the front end includes backup timestamp and nonce
+	 *
+	 * @return array         - the modified jobdata
+	 */
+	public function upload_local_backup_jobdata($jobdata, $options) {
+		global $updraftplus;
+
+		if (!is_array($jobdata)) return $jobdata;
+		
+		$backup_history = UpdraftPlus_Backup_History::get_history();
+		$services = !empty($options['services']) ? $options['services'] : array();
+		$backup = $backup_history[$options['use_timestamp']];
+		$backupable_entities = $updraftplus->get_backupable_file_entities(true);
+
+		/*
+			The initial job data is not set up in a key value array instead it is set up so key "x" is the name of the key and then key "y" is the value.
+			e.g array[0] = 'backup_name' array[1] = 'my_backup'
+		*/
+		$jobstatus_key = array_search('jobstatus', $jobdata) + 1;
+		$backup_time_key = array_search('backup_time', $jobdata) + 1;
+		$backup_database_key = array_search('backup_database', $jobdata) + 1;
+		$backup_files_key = array_search('backup_files', $jobdata) + 1;
+		$service_key = array_search('service', $jobdata) + 1;
+
+		$db_backups = $jobdata[$backup_database_key];
+		$file_backups = array();
+
+		// We need to construct the expected files array here, this gets added to the jobdata much later in the backup process but we need this before we start
+		foreach ($backupable_entities as $entity => $path) {
+			if (isset($backup[$entity])) $file_backups[$entity] = $backup[$entity];
+			if (isset($backup[$entity.'-size'])) $file_backups[$entity.'-size'] = $backup[$entity.'-size'];
+		}
+
+		$blog_name = '';
+
+		/*
+			We need to tweak the database array here by setting each database entity to finished or encrypted if it's an encrypted archive.
+			I also grab the backups blog name here ready to be used later, just in case this backup set is from another site.
+		*/
+		foreach ($db_backups as $key => $db_info) {
+			$status = 'finished';
+			$db_index = ('wp' == $key) ? 0 : $key;
+
+			if (isset($backup['db'][$db_index])) {
+				$db_backup_name = $backup['db'][$db_index];
+				
+				if (preg_match('/^backup_([\-0-9]{15})_(.*)_([0-9a-f]{12})-[\-a-z]+([0-9]+)?+(\.(zip|gz|gz\.crypt))?$/i', $db_backup_name, $matches)) {
+					$blog_name = $matches[2];
+				}
+
+				if ($updraftplus->is_db_encrypted($db_backup_name)) $status = 'encrypted';
+
+				if (is_array($db_info) && isset($db_info['status'])) {
+					$db_backups[$key]['status'] = $status;
+				} else {
+					$db_backups[$key] = $status;
+				}
+			} else {
+				unset($db_backups[$key]);
+			}
+		}
+		
+		// Next we need to build the services array using the remote storage destinations the user has selected to upload this backup set to
+		$selected_services = array();
+		
+		foreach ($services as $key => $storage_info) {
+			$selected_services[] = $storage_info['value'];
+		}
+		
+		$jobdata[$jobstatus_key] = 'clouduploading';
+		$jobdata[$backup_time_key] = $options['use_timestamp'];
+		$jobdata[$backup_files_key] = 'finished';
+		$jobdata[] = 'backup_files_array';
+		$jobdata[] = $file_backups;
+		$jobdata[] = 'blog_name';
+		$jobdata[] = $blog_name;
+		$jobdata[$backup_database_key] = $db_backups;
+		if (!empty($selected_services)) $jobdata[$service_key] = $selected_services;
+		
+		
+		return $jobdata;
+	}
+
+	/**
+	 * This function allows us to change the backup name, this is needed when uploading a local database backup to remote storage when the backup has come from another site.
+	 *
+	 * @param string $backup_name - the current name of the backup file
+	 * @param string $use_time    - the current timestamp we are using
+	 * @param string $blog_name   - the blog name of the current site
+	 *
+	 * @return string             - the new filename or the original if the blog name from the job data is not set
+	 */
+	public function upload_local_backup_name($backup_name, $use_time, $blog_name) {
+		global $updraftplus;
+
+		$backup_blog_name = $updraftplus->jobdata_get('blog_name', '');
+
+		if ('' != $blog_name && '' != $backup_blog_name) {
+			return str_replace($blog_name, $backup_blog_name, $backup_name);
+		}
+
+		return $backup_name;
 	}
 
 	/**
@@ -4386,7 +4595,7 @@ ENDHERE;
 									$pdata = (is_string($data)) ? $data : serialize($data);
 									$updraftplus->log(__('Error data:', 'updraftplus').' '.$pdata, 'warning-restore');
 									if (false !== strpos($pdata, 'PCLZIP_ERR_BAD_FORMAT (-10)')) {
-										echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/").'"><strong>'.__('Please consult this FAQ for help on what to do about it.', 'updraftplus').'</strong></a><br>';
+										echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/").'"><strong>'.__('Follow this link for more information', 'updraftplus').'</strong></a><br>';
 									}
 								}
 							}

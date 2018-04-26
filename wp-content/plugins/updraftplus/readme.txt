@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 4.9
-Stable tag: 1.14.5
+Stable tag: 1.14.7
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -151,13 +151,34 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.14.4 of the free version correspond to changes made in 2.14.4.x of the paid version.
 
+= 1.14.7 - 25/Apr/2018 =
+
+* FIX: Fix incompatibility with loading the dashboard on WP 4.6 and older. If you have this problem, then you cannot visit /wp-admin/ - you will need to update via another tool (e.g. if you have a multiple site management tool), or via FTP (download the https://downloads.wordpress.org/plugin/updraftplus.1.14.7.zip , unzip it on your PC, log in to your site via FTP into the folder wp-content/plugins, remove the existing folder 'updraftplus' and then upload the unzipped 'updraftplus' folder). Many apologies!
+
+= 1.14.6 - 25/Apr/2018 =
+
+* FEATURE: Added the option to upload locally-available backups to remote storage
+* FEATURE: Add post management module for UpdraftCentral (client-side; UC-side still pending)
+* FEATURE: Added WP-CLI "rescan-storage" subcommand to the WP-CLI add-on rescan either remote storage or local storage
+* FEATURE: Compatibility of the (paid) OneDrive module with 'OneDrive for Business'
+* FIX: Multisite restoration did not display single site restoration option when URLs were different but clearly the same site (http/https difference)
+* FIX: WebDAV uploads could fail if the user defined the constant UPDRAFTPLUS_WEBDAV_NEVER_CHUNK
+* FIX: If UpdraftVault remote had failed, UpdraftVault couldn't recover without settings wipe
+* TWEAK: Handle a DreamObjects server that was not sending an application/xml content-type header
+* TWEAK: Handle a case where the root cause of an error from DreamObjects was not being clearly shown
+* TWEAK: Alert the user of their mistake if they try to enter a URL instead of a folder path in the OneDrive settings folder field
+* TWEAK: Adjust the PclZip log message to clarify the implications of using PclZip (i.e.: it's significantly slower)
+* TWEAK: Add support for the upcoming objects-us-east-1.dream.io DreamObjects endpoint
+* TWEAK: Prevent potential PHP notice in WP-CLI subcommand for existing backups
+* TWEAK: Add UpdraftPlus news in admin dashboard "WordPress Events & News" widget
+
 = 1.14.5 - 3/Apr/2018 =
 
 * FEATURE: Add a "Database only" option to the UpdraftPlus email backup options
 * FEATURE: An UpdraftPlus add-on (paid) to run the backup process through WP CLI
 * FIX: Restoration did not display the decryption passphrase input (but always used the saved one)
 * FIX: Browse content download file was not working in Windows hosting
-* FIX: The wrong default for the 'Delete local backup' setting was applied if you had never saved your settings  
+* FIX: The wrong default for the 'Delete local backup' setting was applied if you had never saved your settings
 * TWEAK: Prevent a PHP notice showing when testing S3 storage
 * TWEAK: Prevent a PHP notice when downloading from Dropbox
 * TWEAK: Improved the migrate UI
@@ -483,4 +504,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.14.5: New 'database only' feature for sending backups via email; new WP-CLI add-on (Premium); various small fixes and tweaks and internal improvements - recommended update for all
+* 1.14.7 : New feature to send locally-available backups to remote storage later; various other fixes, tweaks and improvements. A recommended update for all. 1.14.7 fixes an incompatibility with 1.14.6 on WP < 4.7

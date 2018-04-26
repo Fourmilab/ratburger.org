@@ -45,6 +45,8 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 
 			$delete_button = $updraftplus_admin->delete_button($key, $nonce, $backup);
 
+			$upload_button = $updraftplus_admin->upload_button($key, $nonce, $backup);
+
 			$date_label = $updraftplus_admin->date_label($pretty_date, $key, $backup, $jobdata, $nonce);
 
 			$log_button = $updraftplus_admin->log_button($backup);
@@ -122,6 +124,7 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 				<td class="before-restore-button">
 					<?php
 					echo $updraftplus_admin->restore_button($backup, $key, $pretty_date, $entities);
+					echo $upload_button;
 					echo $delete_button;
 					if (empty($backup['meta_foreign'])) echo $log_button;
 					?>

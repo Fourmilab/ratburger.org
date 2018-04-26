@@ -29,7 +29,8 @@ class UpdraftPlus_UpdraftCentral_Main {
 			'users' => 'UpdraftCentral_Users_Commands',
 			'comments' => 'UpdraftCentral_Comments_Commands',
 			'analytics' => 'UpdraftCentral_Analytics_Commands',
-			'plugin' => 'UpdraftCentral_Plugin_Commands'
+			'plugin' => 'UpdraftCentral_Plugin_Commands',
+			'posts' => 'UpdraftCentral_Posts_Commands'
 		));
 	
 		// If nothing was sent, then there is no incoming message, so no need to set up a listener (or CORS request, etc.). This avoids a DB SELECT query on the option below in the case where it didn't get autoloaded, which is the case when there are no keys.

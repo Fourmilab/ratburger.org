@@ -741,4 +741,38 @@ class UpdraftPlus_Commands {
 			);
 		}
 	}
+
+	/**
+	 * This function will add some needed filters in order to be able to send a local backup to remote storage it will then boot the backup process.
+	 *
+	 * @param array $data - data sent from the front end, it includes the backup timestamp and nonce
+	 *
+	 * @return array      - the response to be sent back to the front end
+	 */
+	public function upload_local_backup($data) {
+		if (false === ($updraftplus_admin = $this->_load_ud_admin()) || false === ($updraftplus = $this->_load_ud())) return new WP_Error('no_updraftplus');
+		
+		add_filter('updraftplus_initial_jobdata', array($updraftplus_admin, 'upload_local_backup_jobdata'), 10, 3);
+		add_filter('updraftplus_get_backup_file_basename_from_time', array($updraftplus_admin, 'upload_local_backup_name'), 10, 3);
+		
+		$background_operation_started_method_name = empty($data['background_operation_started_method_name']) ? '_updraftplus_background_operation_started' : $data['background_operation_started_method_name'];
+
+		$msg = array(
+			'nonce' => $data['use_nonce'],
+			'm' => apply_filters('updraftplus_backupnow_start_message', '<strong>'.__('Start backup', 'updraftplus').':</strong> '.htmlspecialchars(__('OK. You should soon see activity in the "Last log message" field below.', 'updraftplus')), $data['use_nonce'])
+		);
+
+		$close_connection_callable = array($this->_uc_helper, $background_operation_started_method_name);
+
+		if (is_callable($close_connection_callable)) {
+			call_user_func($close_connection_callable, $msg);
+		} else {
+			$updraftplus->close_browser_connection(json_encode($msg));
+		}
+
+		do_action('updraft_backupnow_backup_all', apply_filters('updraft_backupnow_options', $data, array()));
+
+		// Control returns when the backup finished; but, the browser connection should have been closed before
+		die;
+	}
 }

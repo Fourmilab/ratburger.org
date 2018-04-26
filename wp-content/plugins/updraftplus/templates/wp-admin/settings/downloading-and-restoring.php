@@ -24,7 +24,7 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing Backups', 'updr
 <div class="download-backups form-table">
 	<?php if (!empty($options['include_whitespace_warning'])) { ?>
 		<p class="ud-whitespace-warning updraft-hidden" style="display:none;">
-			<?php echo '<strong>'.__('Warning', 'updraftplus').':</strong> '.__('Your WordPress installation has a problem with outputting extra whitespace. This can corrupt backups that you download from here.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/problems-with-extra-white-space/").'">'.__('Please consult this FAQ for help on what to do about it.', 'updraftplus').'</a>';?>
+			<?php echo '<strong>'.__('Warning', 'updraftplus').':</strong> '.__('Your WordPress installation has a problem with outputting extra whitespace. This can corrupt backups that you download from here.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/problems-with-extra-white-space/").'">'.__('Follow this link for more information', 'updraftplus').'</a>';?>
 		</p>
 	<?php } ?>
 

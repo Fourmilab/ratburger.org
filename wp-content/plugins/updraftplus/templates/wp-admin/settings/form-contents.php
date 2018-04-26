@@ -49,7 +49,7 @@ foreach ($default_options as $k => $v) {
 		</td>
 	</tr>
 
-	<?php if (defined('UPDRAFTPLUS_EXPERIMENTAL') && UPDRAFTPLUS_EXPERIMENTAL) { ?>
+	<?php if (defined('UPDRAFTPLUS_INCREMENTAL_BACKUPS_ADDON') && UPDRAFTPLUS_INCREMENTAL_BACKUPS_ADDON) { ?>
 	<tr class="updraft_incremental_row">
 		<th><?php _e('Incremental file backup schedule', 'updraftplus'); ?>:</th>
 		<td>

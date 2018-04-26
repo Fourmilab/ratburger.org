@@ -1,5 +1,56 @@
 [
     {
+        "name": "symfony/process",
+        "version": "v3.4.8",
+        "version_normalized": "3.4.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/4b7d64e852886319e93ddfdecff0d744ab87658b",
+            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2018-04-03T05:22:50+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
+    },
+    {
         "name": "kriswallsmith/assetic",
         "version": "v1.4.0",
         "version_normalized": "1.4.0.0",
@@ -130,17 +181,17 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.37",
-        "version_normalized": "2.8.37.0",
+        "version": "v2.8.38",
+        "version_normalized": "2.8.38.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
-            "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c"
+            "reference": "9b69aad7d4c086dc94ebade2d5eb9145da5dac8c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
-            "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
+            "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9b69aad7d4c086dc94ebade2d5eb9145da5dac8c",
+            "reference": "9b69aad7d4c086dc94ebade2d5eb9145da5dac8c",
             "shasum": ""
         },
         "require": {
@@ -157,7 +208,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2018-02-11T16:53:59+00:00",
+        "time": "2018-04-06T07:35:03+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -491,17 +542,17 @@
     },
     {
         "name": "phpseclib/phpseclib",
-        "version": "1.0.10",
-        "version_normalized": "1.0.10.0",
+        "version": "1.0.11",
+        "version_normalized": "1.0.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "1468ef1a23f66b09b8e906f05ddfa6c3f5236202"
+            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/1468ef1a23f66b09b8e906f05ddfa6c3f5236202",
-            "reference": "1468ef1a23f66b09b8e906f05ddfa6c3f5236202",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/fd33675e483b887fc59834ab69e33ef7f2706425",
+            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425",
             "shasum": ""
         },
         "require": {
@@ -518,7 +569,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2018-02-08T03:22:54+00:00",
+        "time": "2018-04-15T16:51:35+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -705,56 +756,5 @@
             "rackspace",
             "swift"
         ]
-    },
-    {
-        "name": "symfony/process",
-        "version": "v3.4.7",
-        "version_normalized": "3.4.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/process.git",
-            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/4b7d64e852886319e93ddfdecff0d744ab87658b",
-            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8"
-        },
-        "time": "2018-04-03T05:22:50+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Process\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Process Component",
-        "homepage": "https://symfony.com"
     }
 ]

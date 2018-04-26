@@ -2675,6 +2675,83 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 		var show_data = get_parameter_by_name('showdata');
 		updraft_restore_setup(entities, backup_timestamp, show_data);
 	}
+
+	var updraft_upload_modal_buttons = {};
+
+	updraft_upload_modal_buttons[updraftlion.uploadbutton] = function () {
+		var key = jQuery('#updraft_upload_timestamp').val();
+		var nonce = jQuery('#updraft_upload_nonce').val();
+		var services = '';
+		var send_list = false;
+		
+		jQuery('.updraft_remote_storage_destination').each(function (index) {
+			if (jQuery(this).is(':checked')) { send_list = true; }
+		});
+
+		if (!send_list) {
+			jQuery('#updraft-upload-modal-error').html(updraftlion.local_upload_error);
+			return;
+		} else {
+			services = jQuery("input[name^='updraft_remote_storage_destination_']").serializeArray();
+		}
+
+		jQuery(this).dialog("close");
+		alert(updraftlion.local_upload_started);
+		jQuery('#updraft-navtab-backups-content').hide();
+		jQuery('#updraft-navtab-status-content').show();
+		jQuery('#updraft-navtab-backups').removeClass('nav-tab-active');
+		jQuery('#updraft-navtab-status').addClass('nav-tab-active');
+		updraft_send_command('upload_local_backup', {
+			use_nonce: nonce,
+			use_timestamp: key,
+			services: services
+		}, function (response) {});
+
+	};
+
+	updraft_upload_modal_buttons[updraftlion.cancel] = function () {
+		jQuery(this).dialog("close");
+	};
+
+	jQuery("#updraft-upload-modal").dialog({
+		autoOpen: false, height: 322, width: 430, modal: true,
+		buttons: updraft_upload_modal_buttons
+	});
+
+	jQuery('#updraft-navtab-backups-content .updraft_existing_backups').on('click', 'button.updraft-upload-link', function (e) {
+		e.preventDefault();
+		var nonce = jQuery(this).data('nonce').toString();
+		var key = jQuery(this).data('key').toString();
+		var services = jQuery(this).data('services').toString();
+		if (nonce) {
+			updraft_upload(key, nonce, services);
+		} else {
+			console.log("UpdraftPlus: A upload link was clicked, but the Job ID could not be found");
+		}
+	});
+
+	/**
+	 * Opens the dialog box for confirmation of where to upload the backup
+	 *
+	 * @param {string}  key        - The UNIX timestamp of the backup
+	 * @param {string}  nonce      - The backup job ID
+	 * @param {string}  services   - A list of services that have not been uploaded to yet
+	 */
+	function updraft_upload(key, nonce, services) {
+		jQuery('#updraft_upload_timestamp').val(key);
+		jQuery('#updraft_upload_nonce').val(nonce);
+		var services_array = services.split(",");
+		jQuery('.updraft_remote_storage_destination').each(function (index) {
+			var name = jQuery(this).val();
+			if (jQuery.inArray(name, services_array) == -1) {
+				jQuery(this).prop('checked', false);
+				jQuery(this).prop('disabled', true);
+				var label = $(this).prop("labels");
+				jQuery(label).append(' ' + updraftlion.already_uploaded);
+			}
+		});
+		jQuery('#updraft-upload-modal').dialog('open');
+	}
 	
 	jQuery('#updraft-navtab-backups-content .updraft_existing_backups').on('click', '.updraft-delete-link', function(e) {
 		e.preventDefault();
@@ -2807,6 +2884,20 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_settings_default').slideUp();
 		$(settings_css_prefix+'#updraftvault_settings_showoptions').slideDown();
+	});
+	
+	$('#remote-storage-holder').on('keyup', '.updraftplus_onedrive_folder_input', function(e) {
+		var folder = $(this).val();
+		var td_container = $(this).closest('td')
+		if (0 == folder.indexOf('https:') || 0 == folder.indexOf('http:')) {
+			if (!td_container.find('.onedrive_folder_error').length) {
+				td_container.append('<div class="onedrive_folder_error">'+updraftlion.onedrive_folder_url_warning+'</div>');
+			}
+		} else {
+			td_container.find('.onedrive_folder_error').slideUp('slow', function() {
+				td_container.find('.onedrive_folder_error').remove();
+			});
+		}
 	});
 	
 	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_connect_go', function(e) {
@@ -2993,6 +3084,8 @@ jQuery(document).ready(function($) {
 		$('#remote-storage-holder').append(html).ready(function () {
 			$('.updraftplusmethod').not('.none').hide();
 			updraft_remote_storage_tabs_setup();
+			// Displays warning to the user of their mistake if they try to enter a URL in the OneDrive settings and saved
+			$('#remote-storage-holder .updraftplus_onedrive_folder_input').trigger('keyup');
 		});
 	}
 
