@@ -767,4 +767,21 @@ function rb_expiration_filter($seconds, $user_id, $remember){
     return $expiration;
 }
 
+/*  Display user's "Party card number" and date joined.
+    This is invoked when displaying a user's profile,
+    just after the last activity line.  */
+
+add_action('bp_before_member_header_meta', 'rb_party_card');
+function rb_party_card() {
+    $dispid = bp_displayed_user_id();
+    $joined = preg_replace('/^(\d+\-\d+\-\d+).*$/', '$1',
+        get_user_by('id', bp_displayed_user_id())->user_registered, 1);
+    echo("<div id=\"rb-party-card\">\n");
+    echo("<span class=\"activity\">\n");
+    echo("Party card no. $dispid<br />\n");
+    echo("Joined $joined\n");
+    echo("</span>\n");
+    echo("</div>\n");
+}
+
 /* END RATBURGER LOCAL CODE */
