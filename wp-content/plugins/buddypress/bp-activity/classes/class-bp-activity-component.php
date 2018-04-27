@@ -198,6 +198,19 @@ class BP_Activity_Component extends BP_Component {
 			);
 		}
 
+        /* RATBURGER LOCAL CODE
+           Add an Activity/Comments menu item to show user's comments. */
+			$sub_nav[] = array(
+				'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
+				'slug'            => 'my-comments',
+				'parent_url'      => $activity_link,
+				'parent_slug'     => $slug,
+				'screen_function' => 'bp_activity_screen_rb_my_comments',
+				'position'        => 25,
+				'item_css_id'     => 'activity-my-comments'
+			);
+        /* END RATBURGER LOCAL CODE */
+
 		// Favorite activity items.
 		if ( bp_activity_can_favorite() ) {
 			$sub_nav[] = array(
@@ -300,6 +313,18 @@ class BP_Activity_Component extends BP_Component {
 					'position' => 20
 				);
 			}
+
+            /* RATBURGER LOCAL CODE
+               Add Activity/Comments item to admin bar drop-down menu.
+            */
+			$wp_admin_nav[] = array(
+				'parent'   => 'my-account-' . $this->id,
+				'id'       => 'my-account-' . $this->id . '-my-comments',
+				'title'    => _x( 'Comments', 'My Account Activity sub nav', 'buddypress' ),
+				'href'     => get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID),
+				'position' => 25
+			);
+            /* END RATBURGER LOCAL CODE */
 
 			// Favorite activity items.
 			if ( bp_activity_can_favorite() ) {
