@@ -319,7 +319,25 @@ class Walker_Comment extends Walker {
 			<article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
 				<footer class="comment-meta">
 					<div class="comment-author vcard">
+                        <?php /* RATBURGER LOCAL CODE
+                                 Wrap avatar with link to the user's profile page. */
+                            $rb_crwap = false;
+                            if ($comment->user_id) {
+                                $rb_cuser = get_userdata($comment->user_id);
+                                if ($rb_cuser) {
+                                    $rb_cwrap = true;
+                                    echo('<a href="/members/' .
+                                         $rb_cuser->user_nicename .
+                                         '/profile/" data-wpel-link="internal">');
+                                }
+                            }
+                        /* END RATBURGER LOCAL CODE */ ?>
 						<?php if ( 0 != $args['avatar_size'] ) echo get_avatar( $comment, $args['avatar_size'] ); ?>
+                        <?php /* RATBURGER LOCAL CODE */
+                            if ($rb_cwrap) {
+                                echo('</a>');
+                            }
+                        /* END RATBURGER LOCAL CODE */ ?>
 						<?php
 							/* translators: %s: comment author link */
 							printf( __( '%s <span class="says">says:</span>' ),
