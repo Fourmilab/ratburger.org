@@ -147,6 +147,18 @@ function add_quote_button_filter($output) {
 		if (preg_match("/[\+\-]\d\d:\d\d$/", $output)) {
 			return $output;
 		}
+
+        /* Determine on which page of paginated comments the quoted
+           comment appears.  We use this to assemble the link to the
+           quoted comment which will be wrapped around the author's
+           name in the quoted text.  This will, in turn, be passed
+           to the JavaScript quote() function, which will use it as
+           the link it embeds in the HTML when the comment is quoted. */
+        $rb_comment_page = get_page_of_comment(get_comment_ID(),
+                array(type => 'all', per_page => get_option('comments_per_page')));
+        $rb_comment_link = get_permalink(get_comment(get_comment_ID())->comment_post_ID) .
+                (($rb_comment_page > 1) ? ("comment-page-" . $rb_comment_page . "/") : "") .
+                '#comment-' . get_comment_ID();
 		/* END RATBURGER LOCAL CODE */
 
 		$commentID = get_comment_id();
@@ -162,7 +174,16 @@ function add_quote_button_filter($output) {
 		$button .= 'title="' . __('Click here or select text to quote comment', 'quote-comments'). '" ';
 		
 		if( get_option('quote_comments_author') == true ) {
+            /* RATBURGER LOCAL CODE
+               Pass link to comment in context including page for paginated comments.
 			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', document.getElementById(\'name'.get_comment_ID().'\').innerHTML, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
+            */
+			$button .= 'onclick="quote(\'' . get_comment_ID() . '\',
+                document.getElementById(\'name'.get_comment_ID().'\').innerHTML,
+                \'comment\',
+                \'div-comment-'. get_comment_ID() . '\'' . $mce .
+                ', \'' . $rb_comment_link . '\'' . ');';
+            /* END RATBURGER LOCAL CODE */
 		} else {
 			$button .= 'onclick="quote(\'' . get_comment_ID() .'\', null, \'comment\',\'div-comment-'. get_comment_ID() .'\''. $mce .');';
 		}

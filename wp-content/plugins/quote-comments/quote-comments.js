@@ -29,7 +29,14 @@ function jsEncode(str){
     in the quoted text which should not be pasted into the comment box, and
     placing the result into the comment composition box.  */
 
+/* RATBURGER LOCAL CODE
+   Add zzurl argument, which explicitly gives the URL, including
+   page number, for the comment being quoted.  If omitted, the
+   function behaves as before.
 function quote(postid, author, commentarea, commentID, mce) {
+*/
+function quote(postid, author, commentarea, commentID, mce, zzurl) {
+/* END RATBURGER LOCAL CODE */
 	try {
 		// If you don't want quotes begin with "<author>:", uncomment the next line
 		//author = null;
@@ -102,9 +109,18 @@ function quote(postid, author, commentarea, commentID, mce) {
 			
 			// prevent xss stuff
 			author = jsEncode(author);
-			
-			var quote='\n<blockquote cite="comment-'+postid+'">\n\n<strong><a href="#comment-'+postid+'">'+unescape(author) + "</a></strong>:<br /> " + posttext + '</blockquote>\n';
 
+            /* RATBURGER LOCAL CODE
+               If zzurl argument is specified, use if for the link to the
+               quoted comment.
+			var quote='\n<blockquote cite="comment-'+postid+'">\n\n<strong><a href="#comment-'+postid+'">'+unescape(author) + "</a></strong>:<br /> " + posttext + '</blockquote>\n';
+            */
+			var quote = '\n<blockquote cite="comment-' + postid +
+                '">\n\n<strong><a href="' +
+                ((typeof(zzurl) !== 'undefined') ? zzurl : ('#comment-' + postid)) +
+                '">' + unescape(author) + "</a></strong>:<br /> "
+                + posttext + '</blockquote>\n';
+            /* END RATBURGER LOCAL CODE */
 		} else {
 
 			var quote='\n<blockquote cite="comment-'+postid+'">\n\n'+posttext+'</blockquote>\n';
