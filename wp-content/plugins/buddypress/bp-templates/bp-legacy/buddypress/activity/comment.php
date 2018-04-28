@@ -18,7 +18,13 @@ do_action( 'bp_before_activity_comment' ); ?>
 
 <li id="acomment-<?php bp_activity_comment_id(); ?>">
 	<div class="acomment-avatar">
-		<a href="<?php bp_activity_comment_user_link(); ?>">
+                <a href="<?php bp_activity_comment_user_link();
+        /* RATBURGER LOCAL CODE
+           Link the activity commenter's avatar to their
+           profile page. */
+        echo("profile/");
+        /* END RATBURGER LOCAL CODE */
+         ?>">
 			<?php bp_activity_avatar( 'type=thumb&user_id=' . bp_get_activity_comment_user_id() ); ?>
 		</a>
 	</div>

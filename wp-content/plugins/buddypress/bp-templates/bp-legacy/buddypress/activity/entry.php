@@ -18,7 +18,13 @@ do_action( 'bp_before_activity_entry' ); ?>
 
 <li class="<?php bp_activity_css_class(); ?>" id="activity-<?php bp_activity_id(); ?>">
 	<div class="activity-avatar">
-		<a href="<?php bp_activity_user_link(); ?>">
+                <a href="<?php bp_activity_user_link();
+        /* RATBURGER LOCAL CODE
+           Link the activity's author's avatar to their
+           profile page. */
+        echo("profile/");
+        /* END RATBURGER LOCAL CODE */
+         ?>">
 
 			<?php bp_activity_avatar(); ?>
 
