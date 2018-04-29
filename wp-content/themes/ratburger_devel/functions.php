@@ -802,4 +802,20 @@ function rb_party_card() {
     echo("</div>\n");
 }
 
+/*  The following function is invoked to filter the list of
+    navigation menu items before they are output to the HTML
+    file.  It implements a simple macro facility which allows
+    expanding "%author%" to the nicename of the currently
+    logged-in user.  This is used by custom link menu items
+    which need to include the user's name in URLs.  */
+
+function rb_modify_nav_menu($items, $args) {
+    if ( is_user_logged_in() ) {
+        $items = preg_replace('/%author%/',
+            wp_get_current_user()->user_nicename, $items);
+    }
+    return $items;
+}
+add_filter('wp_nav_menu_items', 'rb_modify_nav_menu', 10, 2);
+
 /* END RATBURGER LOCAL CODE */
