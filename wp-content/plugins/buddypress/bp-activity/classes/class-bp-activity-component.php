@@ -199,16 +199,27 @@ class BP_Activity_Component extends BP_Component {
 		}
 
         /* RATBURGER LOCAL CODE
-           Add an Activity/Comments menu item to show user's comments. */
-			$sub_nav[] = array(
-				'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
-				'slug'            => 'my-comments',
-				'parent_url'      => $activity_link,
-				'parent_slug'     => $slug,
-				'screen_function' => 'bp_activity_screen_rb_my_comments',
-				'position'        => 25,
-				'item_css_id'     => 'activity-my-comments'
-			);
+           Add an Activity/Posts menu item to show user's posts. */
+        $sub_nav[] = array(
+                'name'            => _x( 'Posts', 'Profile activity screen sub nav', 'buddypress' ),
+                'slug'            => 'my-posts',
+                'parent_url'      => $activity_link,
+                'parent_slug'     => $slug,
+                'screen_function' => 'bp_activity_screen_rb_my_posts',
+                'position'        => 23,
+                'item_css_id'     => 'activity-my-posts'
+        );
+
+        /* Add an Activity/Comments menu item to show user's comments. */
+        $sub_nav[] = array(
+                'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
+                'slug'            => 'my-comments',
+                'parent_url'      => $activity_link,
+                'parent_slug'     => $slug,
+                'screen_function' => 'bp_activity_screen_rb_my_comments',
+                'position'        => 25,
+                'item_css_id'     => 'activity-my-comments'
+        );
         /* END RATBURGER LOCAL CODE */
 
 		// Favorite activity items.
@@ -315,15 +326,24 @@ class BP_Activity_Component extends BP_Component {
 			}
 
             /* RATBURGER LOCAL CODE
-               Add Activity/Comments item to admin bar drop-down menu.
+               Add Activity/Posts and Activity/Comments items to admin bar
+               drop-down menu.
             */
-			$wp_admin_nav[] = array(
-				'parent'   => 'my-account-' . $this->id,
-				'id'       => 'my-account-' . $this->id . '-my-comments',
-				'title'    => _x( 'Comments', 'My Account Activity sub nav', 'buddypress' ),
-				'href'     => get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID),
-				'position' => 25
-			);
+            $wp_admin_nav[] = array(
+                    'parent'   => 'my-account-' . $this->id,
+                    'id'       => 'my-account-' . $this->id . '-my-posts',
+                    'title'    => _x( 'Posts', 'My Account Activity sub nav', 'buddypress' ),
+                    'href'     => trailingslashit(get_author_posts_url(bp_loggedin_user_id())),
+                    'position' => 23
+            );
+
+            $wp_admin_nav[] = array(
+                    'parent'   => 'my-account-' . $this->id,
+                    'id'       => 'my-account-' . $this->id . '-my-comments',
+                    'title'    => _x( 'Comments', 'My Account Activity sub nav', 'buddypress' ),
+                    'href'     => get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID),
+                    'position' => 25
+            );
             /* END RATBURGER LOCAL CODE */
 
 			// Favorite activity items.
