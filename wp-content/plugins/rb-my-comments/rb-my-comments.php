@@ -367,7 +367,9 @@ function rb_my_comments_template($comment, $args, $depth) {
     $content_fixed_links = rb_my_adjust_quote_links($comment);
     ?>
     <li>
-        <div class="rb-my-avatar-custom"><?php echo(get_avatar($comment, $getAvatarSize)); ?></div>
+        <div class="rb-my-avatar-custom"><a href="/members/<?php
+            echo(get_user_by('id', $comment->user_id)->user_nicename . '/profile/">');
+            echo(get_avatar($comment, $getAvatarSize)); ?></a></div>
         <div class="rb-my-comment-wrap">
             <h4 class="rb-my-comment-meta">
                 <?php _e('From'); ?> <span class="rb-my-comment-author"><?php
