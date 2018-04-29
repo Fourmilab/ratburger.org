@@ -305,8 +305,8 @@ function xyz_twap_link_publish($post_ID) {
 			
 			if(is_array($matches) && isset($matches[0]))
 			{
-RB_dumpvar('TWAP substring', $substring);
-RB_dumpvar('TWAP matches', $matches);
+//RB_dumpvar('TWAP substring', $substring);
+//RB_dumpvar('TWAP matches', $matches);
 				$matches=$matches[0];
 				$final_str='';
 				$len=0;
@@ -440,7 +440,7 @@ RB_dumpvar('TWAP matches', $matches);
 			
 				$substring=$final_str;
 			}
-RB_dumpvar('TWAP final substring', $substring);
+//RB_dumpvar('TWAP final substring', $substring);
 
 			$twobj = new TWAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 			$tw_publish_status='';
