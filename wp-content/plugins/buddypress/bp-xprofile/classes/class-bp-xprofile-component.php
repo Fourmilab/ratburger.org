@@ -258,6 +258,50 @@ class BP_XProfile_Component extends BP_Component {
 			);
 		}
 
+        /* RATBURGER LOCAL CODE
+           Add a Profile/Posts menu item to show user's posts.
+
+           Note that virtually identical code appears in
+           bp-activity/classes/class-bp-activity-component.php
+           to include these items in the Activity sub-menu.  */
+        if (bp_displayed_user_domain()) {
+                $rb_duid = bp_displayed_user_id();
+        } else {
+                $rb_duid = bp_loggedin_user_id();
+        }
+        $rb_author_url = get_author_posts_url($rb_duid);
+        preg_match(':/(\w+)/$:', $rb_author_url, $rb_m);
+        $rb_author_url = preg_replace(':\w+/$:', '', $rb_author_url);
+        $sub_nav[] = array(
+                'name'            => _x( 'Posts', 'Profile header sub menu', 'buddypress' ),
+                'slug'            => $rb_m[1],
+                'parent_url'      => $rb_author_url,
+                'parent_slug'     => $slug,
+                'screen_function' => 'xprofile_screen_rb_my_posts',
+                'position'        => 45,
+                'item_css_id'     => 'profile-my-posts'
+        );
+
+        /* Add a Profile/Comments menu item to show user's comments.
+           We presently do this only when viewing the user's own profile,
+           as my_comments does not handle showing the comments of
+           others. */
+        if ($rb_duid == bp_loggedin_user_id()) {
+            $rb_comment_url = get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID);
+            preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
+            $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
+            $sub_nav[] = array(
+                    'name'            => _x( 'Comments', 'Profile header sub menu', 'buddypress' ),
+                    'slug'            => $rb_m[1],
+                    'parent_url'      => $rb_comment_url,
+                    'parent_slug'     => $slug,
+                    'screen_function' => 'xprofile_screen_rb_my_comments',
+                    'position'        => 47,
+                    'item_css_id'     => 'profile-my-comments'
+            );
+        }
+        /* END RATBURGER LOCAL CODE */
+
 		// The Settings > Profile nav item can only be set up after
 		// the Settings component has run its own nav routine.
 		add_action( 'bp_settings_setup_nav', array( $this, 'setup_settings_nav' ) );

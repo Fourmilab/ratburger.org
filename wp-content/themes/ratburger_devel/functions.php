@@ -597,6 +597,19 @@ function RB_dumpvar($label, $var) {
 }
 
 /*
+
+    Test whether we're running under my development
+    account (party card 2).  This is handy for diagnostic
+    code like:
+        if (RB_me()) { RB_dumpvar('furbish', $furbish); }
+
+*/
+
+function RB_me() {
+    return get_current_user_id() == 2;
+}
+
+/*
 	Add notifications when a comment is added
 
 */

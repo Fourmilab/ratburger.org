@@ -199,27 +199,47 @@ class BP_Activity_Component extends BP_Component {
 		}
 
         /* RATBURGER LOCAL CODE
-           Add an Activity/Posts menu item to show user's posts. */
+           Add an Activity/Posts menu item to show user's posts.
+
+           Note that virtually identical code appears in
+           bp-xprofile/classes/class-bp-xprofile-component.php
+           to include these items in the Profile sub-menu.  */
+        if (bp_displayed_user_domain()) {
+                $rb_duid = bp_displayed_user_id();
+        } else {
+                $rb_duid = bp_loggedin_user_id();
+        }
+        $rb_author_url = get_author_posts_url($rb_duid);
+        preg_match(':/(\w+)/$:', $rb_author_url, $rb_m);
+        $rb_author_url = preg_replace(':\w+/$:', '', $rb_author_url);
         $sub_nav[] = array(
                 'name'            => _x( 'Posts', 'Profile activity screen sub nav', 'buddypress' ),
-                'slug'            => 'my-posts',
-                'parent_url'      => $activity_link,
+                'slug'            => $rb_m[1],
+                'parent_url'      => $rb_author_url,
                 'parent_slug'     => $slug,
                 'screen_function' => 'bp_activity_screen_rb_my_posts',
                 'position'        => 23,
                 'item_css_id'     => 'activity-my-posts'
         );
 
-        /* Add an Activity/Comments menu item to show user's comments. */
-        $sub_nav[] = array(
-                'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
-                'slug'            => 'my-comments',
-                'parent_url'      => $activity_link,
-                'parent_slug'     => $slug,
-                'screen_function' => 'bp_activity_screen_rb_my_comments',
-                'position'        => 25,
-                'item_css_id'     => 'activity-my-comments'
-        );
+        /* Add an Activity/Comments menu item to show user's comments.
+           We presently do this only when viewing the user's own profile,
+           as my_comments does not handle showing the comments of
+           others. */
+        if ($rb_duid == bp_loggedin_user_id()) {
+            $rb_comment_url = get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID);
+            preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
+            $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
+            $sub_nav[] = array(
+                    'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
+                    'slug'            => $rb_m[1],
+                    'parent_url'      => $rb_comment_url,
+                    'parent_slug'     => $slug,
+                    'screen_function' => 'bp_activity_screen_rb_my_comments',
+                    'position'        => 25,
+                    'item_css_id'     => 'activity-my-comments'
+            );
+        }
         /* END RATBURGER LOCAL CODE */
 
 		// Favorite activity items.
