@@ -304,13 +304,24 @@ function wp_dashboard_right_now() {
        without this capability, and shows just the approved comment
        count. */
     } else {
-	if ( $num_comm && $num_comm->approved ) {
-		$text = sprintf( _n( '%s Comment', '%s Comments', $num_comm->approved ), number_format_i18n( $num_comm->approved ) );
-		?>
-		<li class="comment-count"><?php echo $text; ?></li>
-		<?php
+        if ( $num_comm && $num_comm->approved ) {
+            $text = sprintf( _n( '%s Comment', '%s Comments', $num_comm->approved ), number_format_i18n( $num_comm->approved ) );
+            ?>
+            <li class="comment-count"><?php echo $text; ?></li>
+            <?php
     }
     }
+
+    /* Show the number of members and administrators. */
+
+    $rb_nusers = count_users('time');
+    $text = sprintf(_n('%s Member', '%s Members',
+        $rb_nusers['avail_roles']['contributor']),
+        number_format_i18n( $rb_nusers['avail_roles']['contributor'])) .
+        ', ' . sprintf(_n('%s administrator', '%s administrators',
+        $rb_nusers['avail_roles']['contributor']),
+        number_format_i18n( $rb_nusers['avail_roles']['administrator']));
+    echo('<li class="member-count">' . $text . "</li>\n");
     /* END RATBURGER LOCAL CODE */
 
 	/**
