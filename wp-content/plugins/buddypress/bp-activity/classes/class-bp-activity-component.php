@@ -222,24 +222,19 @@ class BP_Activity_Component extends BP_Component {
                 'item_css_id'     => 'activity-my-posts'
         );
 
-        /* Add an Activity/Comments menu item to show user's comments.
-           We presently do this only when viewing the user's own profile,
-           as my_comments does not handle showing the comments of
-           others. */
-        if ($rb_duid == bp_loggedin_user_id()) {
-            $rb_comment_url = get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID);
-            preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
-            $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
-            $sub_nav[] = array(
-                    'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
-                    'slug'            => $rb_m[1],
-                    'parent_url'      => $rb_comment_url,
-                    'parent_slug'     => $slug,
-                    'screen_function' => 'bp_activity_screen_rb_my_comments',
-                    'position'        => 25,
-                    'item_css_id'     => 'activity-my-comments'
-            );
-        }
+        /* Add an Activity/Comments menu item to show user's comments. */
+        $rb_comment_url = get_page_link(get_page_by_title("Comments", OBJECT, 'page')->ID);
+        preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
+        $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
+        $sub_nav[] = array(
+                'name'            => _x( 'Comments', 'Profile activity screen sub nav', 'buddypress' ),
+                'slug'            => $rb_m[1] . "?rb_user=$rb_duid",
+                'parent_url'      => $rb_comment_url,
+                'parent_slug'     => $slug,
+                'screen_function' => 'bp_activity_screen_rb_my_comments',
+                'position'        => 25,
+                'item_css_id'     => 'activity-my-comments'
+        );
         /* END RATBURGER LOCAL CODE */
 
 		// Favorite activity items.
@@ -361,7 +356,7 @@ class BP_Activity_Component extends BP_Component {
                     'parent'   => 'my-account-' . $this->id,
                     'id'       => 'my-account-' . $this->id . '-my-comments',
                     'title'    => _x( 'Comments', 'My Account Activity sub nav', 'buddypress' ),
-                    'href'     => get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID),
+                    'href'     => get_page_link(get_page_by_title("Comments", OBJECT, 'page')->ID),
                     'position' => 25
             );
             /* END RATBURGER LOCAL CODE */

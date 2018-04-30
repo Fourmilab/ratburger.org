@@ -282,24 +282,19 @@ class BP_XProfile_Component extends BP_Component {
                 'item_css_id'     => 'profile-my-posts'
         );
 
-        /* Add a Profile/Comments menu item to show user's comments.
-           We presently do this only when viewing the user's own profile,
-           as my_comments does not handle showing the comments of
-           others. */
-        if ($rb_duid == bp_loggedin_user_id()) {
-            $rb_comment_url = get_page_link(get_page_by_title("My Comments", OBJECT, 'page')->ID);
-            preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
-            $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
-            $sub_nav[] = array(
-                    'name'            => _x( 'Comments', 'Profile header sub menu', 'buddypress' ),
-                    'slug'            => $rb_m[1],
-                    'parent_url'      => $rb_comment_url,
-                    'parent_slug'     => $slug,
-                    'screen_function' => 'xprofile_screen_rb_my_comments',
-                    'position'        => 47,
-                    'item_css_id'     => 'profile-my-comments'
-            );
-        }
+        /* Add a Profile/Comments menu item to show user's comments. */
+        $rb_comment_url = get_page_link(get_page_by_title("Comments", OBJECT, 'page')->ID);
+        preg_match(':/([\w\-]+)/$:', $rb_comment_url, $rb_m);
+        $rb_comment_url = preg_replace(':[\w\-]+/$:', '', $rb_comment_url);
+        $sub_nav[] = array(
+                'name'            => _x( 'Comments', 'Profile header sub menu', 'buddypress' ),
+                'slug'            => $rb_m[1] . "?rb_user=$rb_duid",
+                'parent_url'      => $rb_comment_url,
+                'parent_slug'     => $slug,
+                'screen_function' => 'xprofile_screen_rb_my_comments',
+                'position'        => 47,
+                'item_css_id'     => 'profile-my-comments'
+        );
         /* END RATBURGER LOCAL CODE */
 
 		// The Settings > Profile nav item can only be set up after

@@ -209,15 +209,49 @@ function rb_my_comments_settings_page() {
 /*  Add the shortcode, [rb_my_comments], which triggers display
     of the user's comments by the following function.  This is
     usually placed, by itself, on a Page named something like
-    "My Comments".  */
+    "Comments".  */
 
 add_shortcode('rb_my_comments', 'rb_my_comments');
+
+//  Register our custom query variable
+
+add_filter('query_vars', 'rb_my_query_vars');
+
+function rb_my_query_vars($vars) {
+    $vars[] = "rb_user";
+    return $vars;
+}
 
 /*  Generate the page containing the user's comments.
     The number of items shown per page and their order
     are controlled by the settings.  */
 
 function rb_my_comments($attr) {
+    $comments_user = get_current_user_id();
+
+    /* If the URL of the page which invoked us included
+       a query string containing "rb_user=N", display
+       comments for the user with that user ID.  The
+       user ID is checked for syntax (multiple IDs are
+       not permitted) and validity.  Because the code
+       which assembles URLs for menu items likes to append
+       trailing slashes, if the query contains one it
+       is ignored. */
+
+    $query_author = get_query_var('rb_user');
+    if ($query_author) {
+        $query_author = preg_replace(':/$:', '', $query_author, 1);
+        if (preg_match('/^\d+$/', $query_author) &&
+                ($query_author > 0) &&
+                get_user_by('id', $query_author)) {
+            $comments_user = $query_author;
+        } else {
+            return '<div class="rb-my-invalid-query">' .
+                __('Invalid rb_user: "') .
+                $query_author . '".' . "</div>\n";
+        }
+    }
+
     $content = "";
 
     // Process settings
@@ -250,7 +284,7 @@ function rb_my_comments($attr) {
     //  End processing of settings
 
     $defaults = array(
-        'user_id' => get_current_user_id(),
+        'user_id' => $comments_user,
         'orderby' => 'comment_date',
         'order' => $order,
         'status' => 'approve',
@@ -332,7 +366,7 @@ function rb_my_comments($attr) {
         $content .= '<div class="rb-my-not-found">' .
             ((get_current_user_id() == 0) ?
                 __('You must be logged in to display your comments.') :
-                __('You have made no comments.')) . '</div>';
+                __('You have made no comments.'));
     }
 
     wp_enqueue_style('rb-my-style');
