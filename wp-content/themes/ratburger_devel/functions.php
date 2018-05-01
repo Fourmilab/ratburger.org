@@ -831,4 +831,30 @@ function rb_modify_nav_menu($items, $args) {
 }
 add_filter('wp_nav_menu_items', 'rb_modify_nav_menu', 10, 2);
 
+/*  Remove trailing white space from post or comment text before
+    posting to the database.  */
+
+function rb_trim_trailing_space($text) {
+    $text = preg_replace('/(?:\s|&nbsp;)+$/', '', $text);
+    return $text;
+}
+
+/*  We need a special function when processing new
+    comments because the 'preprocess_comment' filter
+    gets the entire comment object as its argument, not
+    just the comment body text.  */
+
+function rb_trim_comment_trailing_space($comment) {
+    $comment['comment_content'] =
+        rb_trim_trailing_space($comment['comment_content']);
+    return $comment;
+}
+
+//  When adding a new comment
+add_filter('preprocess_comment', 'rb_trim_comment_trailing_space');
+//  When saving an edited comment
+add_filter('comment_save_pre', 'rb_trim_trailing_space');
+//  When saving a new or edited post
+add_filter('content_save_pre', 'rb_trim_trailing_space');
+
 /* END RATBURGER LOCAL CODE */
