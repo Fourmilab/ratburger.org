@@ -603,11 +603,19 @@ function RB_dumpvar($label, $var) {
     account (party card 2).  This is handy for diagnostic
     code like:
         if (RB_me()) { RB_dumpvar('furbish', $furbish); }
+    or: RB_mdumpvar('lousewort', lousewort);
 
 */
 
 function RB_me() {
     return get_current_user_id() == 2;
+}
+
+
+function RB_mdumpvar($label, $var) {
+    if (RB_me()) {
+        RB_dumpvar($label, $var);
+    }
 }
 
 /*
