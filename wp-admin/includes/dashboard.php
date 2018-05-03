@@ -316,8 +316,10 @@ function wp_dashboard_right_now() {
 
     $rb_nusers = count_users('time');
     $text = sprintf(_n('%s Member', '%s Members',
-        $rb_nusers['avail_roles']['contributor']),
-        number_format_i18n( $rb_nusers['avail_roles']['contributor'])) .
+        $rb_nusers['avail_roles']['contributor'] +
+        $rb_nusers['avail_roles']['editor']),
+        number_format_i18n($rb_nusers['avail_roles']['contributor'] +
+                           $rb_nusers['avail_roles']['editor'])) .
         ', ' . sprintf(_n('%s administrator', '%s administrators',
         $rb_nusers['avail_roles']['contributor']),
         number_format_i18n( $rb_nusers['avail_roles']['administrator']));
