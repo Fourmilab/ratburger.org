@@ -100,7 +100,15 @@ function get_comment_to_edit( $id ) {
 	$comment->comment_ID = (int) $comment->comment_ID;
 	$comment->comment_post_ID = (int) $comment->comment_post_ID;
 
-	$comment->comment_content = format_to_edit( $comment->comment_content );
+    /* RATBURGER LOCAL CODE
+       Enable editing comment content in rich text mode
+       with either TinyMCE or Quicktags.  Don't escape
+       HTML metacharacters in comment content.
+
+        $comment->comment_content = format_to_edit( $comment->comment_content );
+    */
+    $comment->comment_content = format_to_edit($comment->comment_content, true);
+    /* END RATBURGER LOCAL CODE */
 	/**
 	 * Filters the comment content before editing.
 	 *

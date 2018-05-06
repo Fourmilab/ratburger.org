@@ -76,7 +76,20 @@ echo ">\n";
 <?php
 	echo '<label for="content" class="screen-reader-text">' . __( 'Comment' ) . '</label>';
 	$quicktags_settings = array( 'buttons' => 'strong,em,link,block,del,ins,img,ul,ol,li,code,close' );
-	wp_editor( $comment->comment_content, 'content', array( 'media_buttons' => false, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
+    /* RATBURGER LOCAL CODE
+       Enable rich text editing of comments with either
+       TinyMCE or Quicktags.
+
+        wp_editor( $comment->comment_content, 'content', array( 'media_buttons' => false, 'tinymce' => false, 'quicktags' => $quicktags_settings ) );
+    */
+        wp_editor($comment->comment_content, 'content',
+        array('media_buttons' => true,
+        'textarea_rows' => 15,
+        'teeny' => true,
+        'default_editor' => 'tinymce',
+        'tinymce' => true,
+        'quicktags' => $quicktags_settings));
+    /* END RATBURGER LOCAL CODE */
 	wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); ?>
 </div>
 </div><!-- /post-body-content -->
