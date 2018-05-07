@@ -866,4 +866,33 @@ add_filter('comment_save_pre', 'rb_trim_trailing_space');
 //  When saving a new or edited post
 add_filter('content_save_pre', 'rb_trim_trailing_space');
 
+/*  When displaying the notification for a message or
+    multiple messages, wrap it with a <span> that
+    applies our local styles.  */
+
+function rb_filter_notification_message($return, $total_items,
+    $text, $item_id, $secondary_item_id) {
+    /* At the point this function gets invoked, the $return
+       argument can either be an array containing the text and
+       the URL link with which it should be wrapped or a string
+       containing the HTML ready to insert.  Of course, it does
+       not pass you the $format argument to tell you which to
+       expect.  So we cope with this by testing the type of the
+       argument here, and only wrap it with the classes if it's
+       of the array form, which means it came from the code that
+       build the notifications drop-down list, as opposed to the
+       notifications editing page, where we don't want to modify
+       the style. */
+    if (gettype($return) == 'array') {
+        $return['text'] = '<span class="rb_notif_new_message rb_notif_highlight">' .
+            $return['text'] . '</span>';
+    }
+    return $return;
+}
+
+add_filter('bp_messages_multiple_new_message_notification',
+    'rb_filter_notification_message', 10, 5);
+add_filter('bp_messages_single_new_message_notification',
+    'rb_filter_notification_message', 10, 5);
+
 /* END RATBURGER LOCAL CODE */

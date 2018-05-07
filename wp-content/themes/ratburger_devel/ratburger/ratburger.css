@@ -38,6 +38,12 @@ span.rb_notif_group_comment_like {
 span.rb_notif_mark_all_read {
     color: rgba(224, 224, 64, 1.0);
 }
+/* The following style is applied to notifications of new
+   messages by the filter function
+   rb_filter_notification_message() in ~/theme/functions.php. */
+span.rb_notif_new_message {
+    color: rgba(230, 138, 0, 1.0);
+}
 /* Common hover and focus behaviour for all rb_notif styles */
 .rb_notif_highlight:hover, rb_notif_highlight:focus {
     color: #007acc;
