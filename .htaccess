@@ -1,3 +1,6 @@
+#AuthUserFile "/server/passwords/Ratburger"
+#AuthName "Test site: changes are not preserved"
+#Require valid-user
 
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
