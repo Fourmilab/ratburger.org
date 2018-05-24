@@ -163,6 +163,32 @@ function bp_notifications_get_all_notifications_for_user( $user_id = 0 ) {
 }
 
 /**
+ * Get a user's unread notifications, grouped by component and action.
+ *
+ * This function returns a list of notifications collapsed by component + action.
+ * See BP_Notifications_Notification::get_grouped_notifications_for_user() for
+ * more details.
+ *
+ * @since 3.0.0
+ *
+ * @param int $user_id ID of the user whose notifications are being fetched.
+ * @return array $notifications
+ */
+function bp_notifications_get_grouped_notifications_for_user( $user_id = 0 ) {
+	if ( empty( $user_id ) ) {
+		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
+	}
+
+	$notifications = wp_cache_get( $user_id, 'bp_notifications_grouped_notifications' );
+	if ( false === $notifications ) {
+		$notifications = BP_Notifications_Notification::get_grouped_notifications_for_user( $user_id );
+		wp_cache_set( $user_id, $notifications, 'bp_notifications_grouped_notifications' );
+	}
+
+	return $notifications;
+}
+
+/**
  * Get notifications for a specific user.
  *
  * @since 1.9.0
@@ -172,6 +198,162 @@ function bp_notifications_get_all_notifications_for_user( $user_id = 0 ) {
  *                        while 'object' returns a structured object for parsing.
  * @return mixed Object or array on success, false on failure.
  */
+/* RATBURGER LOCAL CODE
+   Replace bp_notifications_get_all_notifications_for_user() with
+   our local version that doesn't aggregate.
+function bp_notifications_get_notifications_for_user( $user_id, $format = 'string' ) {
+*/
+function RB_OBSOLETE_bp_notifications_get_notifications_for_user( $user_id = 0 ) {
+/* END RATBURGER LOCAL CODE */
+	$bp = buddypress();
+
+	$notifications = bp_notifications_get_grouped_notifications_for_user( $user_id );
+
+	// Calculate a renderable output for each notification type.
+	foreach ( $notifications as $notification_item ) {
+
+		$component_name = $notification_item->component_name;
+		// We prefer that extended profile component-related notifications use
+		// the component_name of 'xprofile'. However, the extended profile child
+		// object in the $bp object is keyed as 'profile', which is where we need
+		// to look for the registered notification callback.
+		if ( 'xprofile' == $notification_item->component_name ) {
+			$component_name = 'profile';
+		}
+
+		// Callback function exists.
+		if ( isset( $bp->{$component_name}->notification_callback ) && is_callable( $bp->{$component_name}->notification_callback ) ) {
+
+			// Function should return an object.
+			if ( 'object' === $format ) {
+
+				// Retrieve the content of the notification using the callback.
+				$content = call_user_func( $bp->{$component_name}->notification_callback, $notification_item->component_action, $notification_item->item_id, $notification_item->secondary_item_id, $notification_item->total_count, 'array', $notification_item->id );
+
+				// Create the object to be returned.
+				$notification_object = $notification_item;
+
+				// Minimal backpat with non-compatible notification
+				// callback functions.
+				if ( is_string( $content ) ) {
+					$notification_object->content = $content;
+					$notification_object->href    = bp_loggedin_user_domain();
+				} else {
+					$notification_object->content = $content['text'];
+					$notification_object->href    = $content['link'];
+				}
+
+				$renderable[] = $notification_object;
+
+				// Return an array of content strings.
+			} else {
+				$content      = call_user_func( $bp->{$component_name}->notification_callback, $notification_item->component_action, $notification_item->item_id, $notification_item->secondary_item_id, $notification_item->total_count, 'string', $notification_item->id );
+				$renderable[] = $content;
+			}
+
+			// @deprecated format_notification_function - 1.5
+		} elseif ( isset( $bp->{$component_name}->format_notification_function ) && function_exists( $bp->{$component_name}->format_notification_function ) ) {
+			$renderable[] = call_user_func( $bp->{$component_name}->notification_callback, $notification_item->component_action, $notification_item->item_id, $notification_item->secondary_item_id, $notification_item->total_count );
+
+			// Allow non BuddyPress components to hook in.
+		} else {
+
+			// The array to reference with apply_filters_ref_array().
+			$ref_array = array(
+				$notification_item->component_action,
+				$notification_item->item_id,
+				$notification_item->secondary_item_id,
+				$notification_item->total_count,
+				$format,
+				$notification_item->component_action, // Duplicated so plugins can check the canonical action name.
+				$component_name,
+				$notification_item->id,
+			);
+
+			// Function should return an object.
+			if ( 'object' === $format ) {
+
+				/**
+				 * Filters the notification content for notifications created by plugins.
+				 * If your plugin extends the {@link BP_Component} class, you should use the
+				 * 'notification_callback' parameter in your extended
+				 * {@link BP_Component::setup_globals()} method instead.
+				 *
+				 * @since 1.9.0
+				 * @since 2.6.0 Added $component_action_name, $component_name, $id as parameters.
+				 *
+				 * @param string $content               Component action. Deprecated. Do not do checks against this! Use
+				 *                                      the 6th parameter instead - $component_action_name.
+				 * @param int    $item_id               Notification item ID.
+				 * @param int    $secondary_item_id     Notification secondary item ID.
+				 * @param int    $action_item_count     Number of notifications with the same action.
+				 * @param string $format                Format of return. Either 'string' or 'object'.
+				 * @param string $component_action_name Canonical notification action.
+				 * @param string $component_name        Notification component ID.
+				 * @param int    $id                    Notification ID.
+				 *
+				 * @return string|array If $format is 'string', return a string of the notification content.
+				 *                      If $format is 'object', return an array formatted like:
+				 *                      array( 'text' => 'CONTENT', 'link' => 'LINK' )
+				 */
+				$content = apply_filters_ref_array( 'bp_notifications_get_notifications_for_user', $ref_array );
+
+				// Create the object to be returned.
+				$notification_object = $notification_item;
+
+				// Minimal backpat with non-compatible notification
+				// callback functions.
+				if ( is_string( $content ) ) {
+					$notification_object->content = $content;
+					$notification_object->href    = bp_loggedin_user_domain();
+				} else {
+					$notification_object->content = $content['text'];
+					$notification_object->href    = $content['link'];
+				}
+
+				$renderable[] = $notification_object;
+
+				// Return an array of content strings.
+			} else {
+
+				/** This filters is documented in bp-notifications/bp-notifications-functions.php */
+				$renderable[] = apply_filters_ref_array( 'bp_notifications_get_notifications_for_user', $ref_array );
+			}
+		}
+	}
+
+	// If renderable is empty array, set to false.
+	if ( empty( $renderable ) ) {
+		$renderable = false;
+	}
+
+	/**
+	 * Filters the final array of notifications to be displayed for a user.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param array|bool $renderable Array of notifications to render or false if no notifications.
+	 * @param int        $user_id    ID of the user whose notifications are being displayed.
+	 * @param string     $format     Display format requested for the notifications.
+	 */
+	return apply_filters( 'bp_core_get_notifications_for_user', $renderable, $user_id, $format );
+}
+/* RATBURGER LOCAL CODE
+
+   This is a version of bp_notifications_get_notifications_for_user()
+   from BuddyPress 2.9.4 as modified for Ratburger.  In 3.0.0 this
+   function was rewritten (see the disabled code above) to aggregate
+   all notifications.  This is incompatible with our design which
+   allows users to click individual notifications to both mark the
+   notification read and view the item to which the notification
+   pertains in context.  Rather than hack the new code, which is
+   cross-purposes with our goal, we simply replace it with the old
+   code, which appears compatible.  Despite this function now being
+   entirely local code, the original modifications continue to be
+   marked as local code to distinguish them from the base code and
+   make it easier to identify the changes required if they are
+   eventually integrated into the new version of this function.
+*/
 function bp_notifications_get_notifications_for_user( $user_id, $format = 'string' ) {
 
 	// Setup local variables.
@@ -360,6 +542,7 @@ function bp_notifications_get_notifications_for_user( $user_id, $format = 'strin
 	 */
 	return apply_filters( 'bp_core_get_notifications_for_user', $renderable, $user_id, $format );
 }
+/* END RATBURGER LOCAL CODE */
 
 /** Delete ********************************************************************/
 
@@ -620,8 +803,18 @@ function bp_notifications_check_notification_access( $user_id, $notification_id 
  * @return int Unread notification count.
  */
 function bp_notifications_get_unread_notification_count( $user_id = 0 ) {
-	$notifications = bp_notifications_get_all_notifications_for_user( $user_id );
-	$count         = ! empty( $notifications ) ? count( $notifications ) : 0;
+	if ( empty( $user_id ) ) {
+		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
+	}
+
+	$count = wp_cache_get( $user_id, 'bp_notifications_unread_count' );
+	if ( false === $count ) {
+		$count = BP_Notifications_Notification::get_total_count( array(
+			'user_id' => $user_id,
+			'is_new'  => true,
+		) );
+		wp_cache_set( $user_id, $count, 'bp_notifications_unread_count' );
+	}
 
 	/**
 	 * Filters the count of unread notification items for a user.
@@ -678,6 +871,15 @@ function bp_notifications_get_registered_components() {
 	 */
 	return apply_filters( 'bp_notifications_get_registered_components', $component_names, $active_components );
 }
+
+/**
+ * Catch and route the 'settings' notifications screen.
+ *
+ * This is currently unused.
+ *
+ * @since 1.9.0
+ */
+function bp_notifications_screen_settings() {}
 
 /** Meta **********************************************************************/
 
