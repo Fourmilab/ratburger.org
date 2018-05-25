@@ -25,10 +25,12 @@ if ( ! class_exists( 'rsssl_multisite' ) ) {
     private $pro_url = "https://www.really-simple-ssl.com/pro-multisite";
 
   function __construct() {
+
     if ( isset( self::$_this ) )
         wp_die( sprintf( __( '%s is a singleton class and you cannot create a second instance.','really-simple-ssl' ), get_class( $this ) ) );
 
     self::$_this = $this;
+
 
     $this->load_options();
     register_activation_hook(  dirname( __FILE__ )."/".rsssl_plugin, array($this,'activate') );
@@ -50,12 +52,9 @@ if ( ! class_exists( 'rsssl_multisite' ) ) {
     }
 
     add_action('wp_ajax_dismiss_success_message_multisite', array($this,'dismiss_success_message_callback') );
-
     add_action('wp_ajax_rsssl_pro_dismiss_pro_option_notice', array($this,'dismiss_pro_option_notice') );
     add_action("network_admin_notices", array($this, 'show_pro_option_notice'));
-
     add_action("rsssl_show_network_tab_settings", array($this, 'settings_tab'));
-
     add_action( 'wpmu_new_blog', array($this, 'maybe_activate_ssl_in_new_blog'), 10, 6 );
 
   }
@@ -284,6 +283,7 @@ public function settings_tab(){
 
  public function show_notice_activate_networkwide(){
   //if no SSL was detected, don't activate it yet.
+
   if (!RSSSL()->really_simple_ssl->site_has_ssl) {
     global $wp;
     $current_url = "https://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]
@@ -418,13 +418,15 @@ public function settings_tab(){
   }
 
 
-
-
   //change deprecated function depending on version.
-
   public function get_sites_bw_compatible(){
     global $wp_version;
-    $sites = ($wp_version >= 4.6 ) ? get_sites() : wp_get_sites();
+
+    //make sure all blogs are returned, not only the first 100.
+    $args = array(
+            'number' => get_blog_count()
+    );
+    $sites = ($wp_version >= 4.6 ) ? get_sites($args) : wp_get_sites();
     return $sites;
   }
 
@@ -465,6 +467,7 @@ public function settings_tab(){
       RSSSL()->really_simple_ssl->deactivate_ssl();
       restore_current_blog(); //switches back to previous blog, not current, so we have to do it each loop
     }
+
 
 }
 
@@ -640,11 +643,24 @@ public function show_notices()
       <?php
     }
   }
+
+    if (!RSSSL()->really_simple_ssl->ssl_enabled && !$this->is_multisite_subfolder_install() && !RSSSL()->rsssl_certificate->is_wildcard() && !get_site_option("rsssl_wildcard_message_shown")) {
+        ?>
+        <div id="message" class="error fade notice is-dismissible">
+            <p>
+                <?php _e("You run a Multisite installation with subdomains, but your site doesn't have a wildcard certificate.",'really-simple-ssl');?>
+                <?php _e("This leads to issues when activating SSL networkwide since subdomains will be forced over SSL as well while they don't have a valid certificate.",'really-simple-ssl');?>
+                <?php _e("Activate SSL per site or install a wildcard certificate to fix this.",'really-simple-ssl');?>
+            </p>
+        </div>
+        <?php
+  }
+
 }
 
 
 /**
- * Insert some ajax script to dismis the SSL success message, and stop nagging about it
+ * Insert some ajax script to dismiss the SSL success message, and stop nagging about it
  *
  * @since  2.0
  *

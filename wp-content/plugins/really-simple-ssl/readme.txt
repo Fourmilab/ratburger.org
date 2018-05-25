@@ -4,8 +4,9 @@ Donate link: https://www.paypal.me/reallysimplessl
 Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, TLS, security, secure socket layers, HSTS
 Requires at least: 4.2
 License: GPL2
-Tested up to: 4.9
-Stable tag: 2.5.26
+Tested up to: 4.9.5
+Requires PHP: 5.4
+Stable tag: 3.0
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -78,6 +79,13 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 3.0 =
+* Added a built-in certificate check in the class-certificate.php file that checks if the domain is present in the common names and/or the alternative names section.
+* The .htaccess redirect now uses $1 instead of {REQUEST_URI}.
+* Added an option to deactivate the plugin while keeping SSL in the SSL settings.
+* Added a filter for the Javascript redirect.
+* Added a sidebar with recommended plugins.
+
 = 2.5.26 =
 * Fix: multisite menu not showing when main site is not SSL.
 * Fix: the admin_url and site_url filter get an empty blog_id when checking the URL for the current blog.
@@ -455,7 +463,8 @@ Always back up before any upgrade. Especially .htaccess, wp-config.php and the p
 
 == Screenshots ==
 1. After activation, if SSL was detected, you can enable SSL.
-2. View your configuration on the settings page
+2. View your configuration on the settings page.
+3. Mixed content scan.
 
 == Frequently asked questions ==
 * Really Simple SSL maintains an extensive knowledge-base at https://www.really-simple-ssl.com.
