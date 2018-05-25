@@ -92,13 +92,8 @@ class UpdraftPlus_Options {
 			wp_nonce_field("updraft-options-group-options", '_wpnonce', false);
 
 			$remove_query_args = array('state', 'action', 'oauth_verifier');
-
-			// wp_unslash() does not exist until after WP 3.5
-			if (function_exists('wp_unslash')) {
-				$referer = wp_unslash(remove_query_arg($remove_query_args, $_SERVER['REQUEST_URI']));
-			} else {
-				$referer = stripslashes_deep(remove_query_arg($remove_query_args, $_SERVER['REQUEST_URI']));
-			}
+			
+			$referer = UpdraftPlus_Manipulation_Functions::wp_unslash(remove_query_arg($remove_query_args, $_SERVER['REQUEST_URI']));
 
 			// Add back the page parameter if it looks like we were on the settings page via an OAuth callback that has now had all parameters removed. This is likely unnecessarily conservative, but there's nothing requiring more than this at the current time.
 			if (substr($referer, -19, 19) == 'options-general.php' && false !== strpos($_SERVER['REQUEST_URI'], '?')) $referer .= '?page=updraftplus';
@@ -124,9 +119,9 @@ class UpdraftPlus_Options {
 		global $updraftplus, $updraftplus_admin;
 		register_setting('updraft-options-group', 'updraft_interval', array($updraftplus, 'schedule_backup'));
 		register_setting('updraft-options-group', 'updraft_interval_database', array($updraftplus, 'schedule_backup_database'));
-		register_setting('updraft-options-group', 'updraft_interval_increments');
-		register_setting('updraft-options-group', 'updraft_retain', array($updraftplus, 'retain_range'));
-		register_setting('updraft-options-group', 'updraft_retain_db', array($updraftplus, 'retain_range'));
+		register_setting('updraft-options-group', 'updraft_interval_increments', array($updraftplus, 'schedule_backup_increments'));
+		register_setting('updraft-options-group', 'updraft_retain', array('UpdraftPlus_Manipulation_Functions', 'retain_range'));
+		register_setting('updraft-options-group', 'updraft_retain_db', array('UpdraftPlus_Manipulation_Functions', 'retain_range'));
 		register_setting('updraft-options-group', 'updraft_retain_extrarules');
 
 		register_setting('updraft-options-group', 'updraft_encryptionphrase');
@@ -146,7 +141,7 @@ class UpdraftPlus_Options {
 
 		register_setting('updraft-options-group', 'updraft_split_every', array($updraftplus_admin, 'optionfilter_split_every'));
 
-		register_setting('updraft-options-group', 'updraft_dir', array($updraftplus_admin, 'prune_updraft_dir_prefix'));
+		register_setting('updraft-options-group', 'updraft_dir', array('UpdraftPlus_Manipulation_Functions', 'prune_updraft_dir_prefix'));
 
 		register_setting('updraft-options-group', 'updraft_report_warningsonly', array($updraftplus_admin, 'return_array'));
 		register_setting('updraft-options-group', 'updraft_report_wholebackup', array($updraftplus_admin, 'return_array'));
@@ -163,11 +158,11 @@ class UpdraftPlus_Options {
 		register_setting('updraft-options-group', 'updraft_include_uploads', 'absint');
 		register_setting('updraft-options-group', 'updraft_include_others', 'absint');
 		register_setting('updraft-options-group', 'updraft_include_wpcore', 'absint');
-		register_setting('updraft-options-group', 'updraft_include_wpcore_exclude', array($updraftplus, 'strip_dirslash'));
+		register_setting('updraft-options-group', 'updraft_include_wpcore_exclude', array('UpdraftPlus_Manipulation_Functions', 'strip_dirslash'));
 		register_setting('updraft-options-group', 'updraft_include_more', 'absint');
-		register_setting('updraft-options-group', 'updraft_include_more_path', array($updraftplus, 'remove_empties'));
-		register_setting('updraft-options-group', 'updraft_include_uploads_exclude', array($updraftplus, 'strip_dirslash'));
-		register_setting('updraft-options-group', 'updraft_include_others_exclude', array($updraftplus, 'strip_dirslash'));
+		register_setting('updraft-options-group', 'updraft_include_more_path', array('UpdraftPlus_Manipulation_Functions', 'remove_empties'));
+		register_setting('updraft-options-group', 'updraft_include_uploads_exclude', array('UpdraftPlus_Manipulation_Functions', 'strip_dirslash'));
+		register_setting('updraft-options-group', 'updraft_include_others_exclude', array('UpdraftPlus_Manipulation_Functions', 'strip_dirslash'));
 
 		register_setting('updraft-options-group', 'updraft_starttime_files', array('UpdraftPlus_Options', 'hourminute'));
 		register_setting('updraft-options-group', 'updraft_starttime_db', array('UpdraftPlus_Options', 'hourminute'));

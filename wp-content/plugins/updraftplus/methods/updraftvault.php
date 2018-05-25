@@ -17,7 +17,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 	 * @return string
 	 */
 	private function get_url($which_page = false) {
-		$base = (defined('UPDRAFTPLUS_VAULT_SHOP_BASE')) ? UPDRAFTPLUS_VAULT_SHOP_BASE : 'https://updraftplus.com/shop/';
+		$base = defined('UPDRAFTPLUS_VAULT_SHOP_BASE') ? UPDRAFTPLUS_VAULT_SHOP_BASE : 'https://updraftplus.com/shop/';
 		switch ($which_page) {
 			case 'get_more_quota':
 				return apply_filters('updraftplus_com_link', $base.'product-category/updraftplus-vault/');
@@ -712,7 +712,7 @@ class UpdraftPlus_BackupModule_updraftvault extends UpdraftPlus_BackupModule_s3 
 			case 'authfailed':
 				if (!empty($response['authproblem'])) {
 					if ('invalidpassword' == $response['authproblem']) {
-						$authfail_error = new WP_Error('authfailed', __('Your email address was valid, but your password was not recognised by UpdraftPlus.Com.', 'updraftplus').' <a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/my-account/lost-password/").'">'.__('If you have forgotten your password, then go here to change your password on updraftplus.com.', 'updraftplus').'</a>');
+						$authfail_error = new WP_Error('authfailed', __('Your email address was valid, but your password was not recognised by UpdraftPlus.Com.', 'updraftplus').' <a href="'.esc_attr($this->get_url('vault_forgotten_credentials_links')).'">'.__('If you have forgotten your password, then go here to change your password on updraftplus.com.', 'updraftplus').'</a>');
 						return $authfail_error;
 					} elseif ('invaliduser' == $response['authproblem']) {
 						return new WP_Error('authfailed', __('You entered an email address that was not recognised by UpdraftPlus.Com', 'updraftplus'));

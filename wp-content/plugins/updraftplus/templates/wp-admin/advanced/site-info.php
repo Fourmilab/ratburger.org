@@ -35,6 +35,8 @@
 	$updraftplus_admin->settings_debugrow('WP_PLUGIN_DIR:', htmlspecialchars(WP_PLUGIN_DIR));
 	$updraftplus_admin->settings_debugrow('Table prefix:', htmlspecialchars($updraftplus->get_table_prefix()));
 
+	$updraftplus_admin->settings_debugrow(__('Web-server disk space in use by UpdraftPlus', 'updraftplus').':', '<span class="updraft_diskspaceused">'.$updraftplus_admin->get_disk_space_used('updraft').'</span> <a class="updraft_diskspaceused_update" href="#">'.__('refresh', 'updraftplus').'</a>');
+
 	$peak_memory_usage = memory_get_peak_usage(true)/1024/1024;
 	$memory_usage = memory_get_usage(true)/1024/1024;
 	$updraftplus_admin->settings_debugrow(__('Peak memory usage', 'updraftplus').':', $peak_memory_usage.' MB');

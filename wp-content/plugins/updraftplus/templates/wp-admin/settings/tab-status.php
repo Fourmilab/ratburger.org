@@ -1,6 +1,6 @@
 <?php if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed'); ?>
 
-<div id="updraft-navtab-status-content" class="<?php if (1 != $tabflag) echo 'updraft-hidden'; ?>" style="<?php if (1 != $tabflag) echo 'display:none;'; ?>">
+<div id="updraft-navtab-status-content" class="<?php if ('status' != $tabflag) echo 'updraft-hidden'; ?>" style="<?php if ('status' != $tabflag) echo 'display:none;'; ?>">
 
 	<div id="updraft-insert-admin-warning"></div>
 

@@ -31,6 +31,9 @@ class UpdraftPlus_PclZip {
 
 	public $last_error;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->addfiles = array();
 		$this->adddirs = array();
@@ -48,6 +51,13 @@ class UpdraftPlus_PclZip {
 		$this->include_mtime = true;
 	}
 
+	/**
+	 * Magic function for getting an otherwise-undefined class variable
+	 *
+	 * @param String $name
+	 *
+	 * @return Boolean|Null|Integer - the value, or null if an unknown variable, or false if something goes wrong
+	 */
 	public function __get($name) {
 		if ('numFiles' == $name || 'numAll' == $name) {
 
@@ -85,6 +95,13 @@ class UpdraftPlus_PclZip {
 
 	}
 
+	/**
+	 * Get stat info for a file
+	 *
+	 * @param Integer $i The index of the file
+	 *
+	 * @return Array - the stat info
+	 */
 	public function statIndex($i) {
 		if (empty($this->statindex[$i])) return array('name' => null, 'size' => 0);
 		$v = array('name' => $this->statindex[$i]['filename'], 'size' => $this->statindex[$i]['size']);
@@ -92,6 +109,14 @@ class UpdraftPlus_PclZip {
 		return $v;
 	}
 
+	/**
+	 * Open a zip file
+	 *
+	 * @param String  $path	 - the filesystem path to the zip file
+	 * @param Integer $flags - flags for the open operation (see ZipArchive::open() - N.B. may not all be implemented)
+	 *
+	 * @return Boolean - success or failure. Failure will set self::last_error
+	 */
 	public function open($path, $flags = 0) {
 	
 		if (!class_exists('PclZip')) include_once(ABSPATH.'/wp-admin/includes/class-pclzip.php');
@@ -206,6 +231,9 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 
 	private $binzip;
 
+	/**
+	 * Class constructor
+	 */
 	public function __construct() {
 		global $updraftplus_backup;
 		$this->binzip = $updraftplus_backup->binzip;
@@ -220,7 +248,7 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 
 		global $updraftplus;
 		// Get the directory that $add_as is relative to
-		$base = $updraftplus->str_lreplace($add_as, '', $file);
+		$base = UpdraftPlus_Manipulation_Functions::str_lreplace($add_as, '', $file);
 
 		if ($file == $base) {
 			// Shouldn't happen; but see: https://bugs.php.net/bug.php?id=62119
@@ -237,7 +265,7 @@ class UpdraftPlus_BinZip extends UpdraftPlus_PclZip {
 	 * The standard zip binary cannot list; so we use PclZip for that
 	 * Do the actual write-out - it is assumed that close() is where this is done. Needs to return true/false
 	 *
-	 * @return boolean - success or failure state
+	 * @return Boolean - success or failure state
 	 */
 	public function close() {
 

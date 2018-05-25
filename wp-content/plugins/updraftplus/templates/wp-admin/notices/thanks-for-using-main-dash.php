@@ -9,7 +9,7 @@
 		echo '<p>'.__('Super-charge and secure your WordPress site with our other top plugins:', 'updraftplus').'</p>';
 	?>
 	<p>
-		<?php echo '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'">'.__('UpdraftPlus Premium', 'updraftplus').'</a>: </strong>'.__('For personal support, the ability to copy sites, more storage destinations, encrypted backups for security, multiple backup destinations, better reporting, no adverts and plenty more, take a look at the premium version of UpdraftPlus - the world’s most popular backup plugin.', 'updraftplus');
+		<?php echo '<strong><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'">'.__('UpdraftPlus Premium', 'updraftplus').'</a>: </strong>'.__("For personal support, the ability to copy sites, more storage destinations, encrypted backups for security, multiple backup destinations, better reporting, no adverts and plenty more, take a look at the premium version of UpdraftPlus - the world's most popular backup plugin.", 'updraftplus');
 		echo ' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/comparison-updraftplus-free-updraftplus-premium/").'">'.__('Compare with the free version', 'updraftplus').'</a> / <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/updraftplus-premium/").'">'.__('Go to the shop.', 'updraftplus').'</a>';
 	?>
 	</p>

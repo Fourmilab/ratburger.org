@@ -582,6 +582,9 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 							$updraftplus_admin->curl_check('Dropbox', false, 'dropbox');
 						?>
 					</p>
+					<p>
+						<?php echo sprintf(__('Please read %s for use of our %s authorization app (none of your backup data is sent to us).', 'updraftplus'), '<a target="_blank" href="https://updraftplus.com/faqs/what-is-your-privacy-policy-for-the-use-of-your-dropbox-app/">'.__('this privacy policy', 'updraftplus').'</a>', 'Dropbox');?>
+					</p>
 				</td>
 			</tr>
 

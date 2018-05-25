@@ -250,7 +250,7 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 			<td>
 				<img src="<?php echo UPDRAFTPLUS_URL.'/images/addons-images/importer.png';?>" alt="<?php esc_attr_e('Importer', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
 				<h4><?php _e('Importer', 'updraftplus');?></h4>
-				<p><?php _e('Some backup plugins can’t restore a backup, so Premium allows you to restore backups from other plugins.', 'updraftplus');?></p>
+				<p><?php _e("Some backup plugins can't restore a backup, so Premium allows you to restore backups from other plugins.", 'updraftplus');?></p>
 			</td>
 			<td>
 				<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>

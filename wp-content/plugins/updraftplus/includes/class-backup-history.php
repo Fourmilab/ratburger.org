@@ -549,6 +549,41 @@ class UpdraftPlus_Backup_History {
 	}
 	
 	/**
+	 * This function will look through the backup history and return the latest full backups nonce.
+	 *
+	 * @return string - the backup nonce of a full backup or an empty string if none are found
+	 */
+	public static function get_latest_full_backup() {
+		
+		$backup_history = self::get_history();
+
+		global $updraftplus;
+		
+		$backupable_entities = $updraftplus->get_backupable_file_entities(true, true);
+
+		foreach ($backupable_entities as $key => $info) {
+			if (!UpdraftPlus_Options::get_updraft_option("updraft_include_$key", false)) {
+				unset($backupable_entities[$key]);
+			}
+		}
+		
+		foreach ($backup_history as $key => $backup) {
+			
+			$full_backup_found = true;
+			
+			foreach ($backupable_entities as $key => $info) {
+				if (!isset($backup[$key])) $full_backup_found = false;
+			}
+			
+			if ($full_backup_found) {
+				return $backup['nonce'];
+			}
+		}
+
+		return '';
+	}
+	
+	/**
 	 * Save a backup into the history
 	 *
 	 * @param Integer $backup_time  - the time of the backup

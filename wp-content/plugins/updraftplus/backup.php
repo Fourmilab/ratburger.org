@@ -1208,8 +1208,8 @@ class UpdraftPlus_Backup {
 		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions');
 
 		global $updraftplus;
-		$na = $updraftplus->str_replace_once($our_table_prefix, '', $a);
-		$nb = $updraftplus->str_replace_once($our_table_prefix, '', $b);
+		$na = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $a);
+		$nb = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $b);
 		if (in_array($na, $core_tables) && !in_array($nb, $core_tables)) return -1;
 		if (!in_array($na, $core_tables) && in_array($nb, $core_tables)) return 1;
 		return strcmp($a, $b);
@@ -1691,7 +1691,7 @@ class UpdraftPlus_Backup {
 						if (false === $opened) return false;
 
 						// Create the SQL statements
-						$this->stow("# " . sprintf('Table: %s', $updraftplus->backquote($table)) . "\n");
+						$this->stow("# " . sprintf('Table: %s', UpdraftPlus_Manipulation_Functions::backquote($table)) . "\n");
 						$updraftplus->jobdata_set('dbcreating_substatus', array('t' => $table, 'i' => $total_tables, 'a' => $how_many_tables));
 
 						$table_status = $this->wpdb_obj->get_row("SHOW TABLE STATUS WHERE Name='$table'");
@@ -1932,7 +1932,7 @@ class UpdraftPlus_Backup {
 		// Deal with Windows/old MySQL setups with erroneous table prefixes differing in case
 		$dump_as_table = (false == $this->duplicate_tables_exist && stripos($table, $this->table_prefix) === 0 && strpos($table, $this->table_prefix) !== 0) ? $this->table_prefix.substr($table, strlen($this->table_prefix)) : $table;
 
-		$table_structure = $this->wpdb_obj->get_results("DESCRIBE ".$updraftplus->backquote($table));
+		$table_structure = $this->wpdb_obj->get_results("DESCRIBE ".UpdraftPlus_Manipulation_Functions::backquote($table));
 		if (!$table_structure) {
 			// $updraftplus->log(__('Error getting table details','wp-db-backup') . ": $table", 'error');
 			return false;
@@ -1940,11 +1940,11 @@ class UpdraftPlus_Backup {
 	
 		if ('none' == $segment || 0 == $segment) {
 			// Add SQL statement to drop existing table
-			$this->stow("\n# Delete any existing table ".$updraftplus->backquote($table)."\n\n");
-			$this->stow("DROP TABLE IF EXISTS " . $updraftplus->backquote($dump_as_table) . ";\n");
+			$this->stow("\n# Delete any existing table ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
+			$this->stow("DROP TABLE IF EXISTS " . UpdraftPlus_Manipulation_Functions::backquote($dump_as_table) . ";\n");
 			
 			if ('VIEW' == $table_type) {
-				$this->stow("DROP VIEW IF EXISTS " . $updraftplus->backquote($dump_as_table) . ";\n");
+				$this->stow("DROP VIEW IF EXISTS " . UpdraftPlus_Manipulation_Functions::backquote($dump_as_table) . ";\n");
 			}
 			
 			// Table structure
@@ -1952,15 +1952,15 @@ class UpdraftPlus_Backup {
 			
 			$description = ('VIEW' == $table_type) ? 'view' : 'table';
 			
-			$this->stow("\n# Table structure of $description ".$updraftplus->backquote($table)."\n\n");
+			$this->stow("\n# Table structure of $description ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
 			
-			$create_table = $this->wpdb_obj->get_results("SHOW CREATE TABLE ".$updraftplus->backquote($table), ARRAY_N);
+			$create_table = $this->wpdb_obj->get_results("SHOW CREATE TABLE ".UpdraftPlus_Manipulation_Functions::backquote($table), ARRAY_N);
 			if (false === $create_table) {
 				$err_msg ='Error with SHOW CREATE TABLE for '.$table;
 				// $updraftplus->log($err_msg, 'error');
 				$this->stow("#\n# $err_msg\n#\n");
 			}
-			$create_line = $updraftplus->str_lreplace('TYPE=', 'ENGINE=', $create_table[0][1]);
+			$create_line = UpdraftPlus_Manipulation_Functions::str_lreplace('TYPE=', 'ENGINE=', $create_table[0][1]);
 
 			// Remove PAGE_CHECKSUM parameter from MyISAM - was internal, undocumented, later removed (so causes errors on import)
 			if (preg_match('/ENGINE=([^\s;]+)/', $create_line, $eng_match)) {
@@ -1970,7 +1970,7 @@ class UpdraftPlus_Backup {
 				}
 			}
 
-			if ($dump_as_table !== $table) $create_line = $updraftplus->str_replace_once($table, $dump_as_table, $create_line);
+			if ($dump_as_table !== $table) $create_line = UpdraftPlus_Manipulation_Functions::str_replace_once($table, $dump_as_table, $create_line);
 
 			$this->stow($create_line.' ;');
 			
@@ -1980,7 +1980,7 @@ class UpdraftPlus_Backup {
 			}
 		
 			// Comment in SQL-file
-			$this->stow("\n\n# ".sprintf("Data contents of $description %s", $updraftplus->backquote($table))."\n\n");
+			$this->stow("\n\n# ".sprintf("Data contents of $description %s", UpdraftPlus_Manipulation_Functions::backquote($table))."\n\n");
 
 		}
 
@@ -2032,8 +2032,8 @@ class UpdraftPlus_Backup {
 			do {
 				@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
 
-				$table_data = $this->wpdb_obj->get_results("SELECT * FROM ".$updraftplus->backquote($table)." $where LIMIT {$row_start}, {$row_inc}", ARRAY_A);
-				$entries = 'INSERT INTO '.$updraftplus->backquote($dump_as_table).' VALUES ';
+				$table_data = $this->wpdb_obj->get_results("SELECT * FROM ".UpdraftPlus_Manipulation_Functions::backquote($table)." $where LIMIT {$row_start}, {$row_inc}", ARRAY_A);
+				$entries = 'INSERT INTO '.UpdraftPlus_Manipulation_Functions::backquote($dump_as_table).' VALUES ';
 				// \x08\\x09, not required
 				if ($table_data) {
 					$thisentry = "";
@@ -2067,7 +2067,7 @@ class UpdraftPlus_Backup {
 		
 		if ('none' == $segment || $segment < 0) {
 			// Create footer/closing comment in SQL-file
-			$this->stow("\n# End of data contents of table ".$updraftplus->backquote($table)."\n\n");
+			$this->stow("\n# End of data contents of table ".UpdraftPlus_Manipulation_Functions::backquote($table)."\n\n");
 		}
 		 $updraftplus->log("Table $table: Total rows added: $total_rows in ".sprintf("%.02f", max(microtime(true)-$microtime, 0.00001))." seconds");
 
@@ -2164,13 +2164,14 @@ class UpdraftPlus_Backup {
 		return $ret;
 	}
 
+	/**
+	 * Stow the database backup header
+	 */
 	private function backup_db_header() {
 
-		global $wp_version, $updraftplus;
-		include(ABSPATH.WPINC.'/version.php');
-
+		global $updraftplus;
+		$wp_version = $updraftplus->get_wordpress_version();
 		$mysql_version = $this->wpdb_obj->db_version();
-		// (function_exists('mysql_get_server_info')) ? @mysql_get_server_info() : '?';
 
 		if ('wp' == $this->whichdb) {
 			$wp_upload_dir = wp_upload_dir();
@@ -2200,7 +2201,7 @@ class UpdraftPlus_Backup {
 
 		$this->stow("\n# Generated: ".date("l j. F Y H:i T")."\n");
 		$this->stow("# Hostname: ".$this->dbinfo['host']."\n");
-		$this->stow("# Database: ".$updraftplus->backquote($this->dbinfo['name'])."\n");
+		$this->stow("# Database: ".UpdraftPlus_Manipulation_Functions::backquote($this->dbinfo['name'])."\n");
 
 		if (!empty($this->skipped_tables)) {
 			if ('wp' == $this->whichdb) {

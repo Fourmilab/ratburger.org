@@ -26,10 +26,22 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing Backups', 'updr
 		<p class="ud-whitespace-warning updraft-hidden" style="display:none;">
 			<?php echo '<strong>'.__('Warning', 'updraftplus').':</strong> '.__('Your WordPress installation has a problem with outputting extra whitespace. This can corrupt backups that you download from here.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/problems-with-extra-white-space/").'">'.__('Follow this link for more information', 'updraftplus').'</a>';?>
 		</p>
-	<?php } ?>
-
+	<?php }
+	$bom_warning = $updraftplus_admin->get_bom_warning_text();
+	if (!empty($bom_warning)) {
+	?>
+		<p class="ud-bom-warning">
+			<?php
+			echo $bom_warning;
+			?>
+		</p>
+	<?php
+	}
+	?>
 	<ul class="updraft-disk-space-actions">
-		<li class="updraft-server-disk-space" title="<?php esc_attr_e('This is a count of the contents of your Updraft directory', 'updraftplus');?>"><strong><?php _e('Web-server disk space in use by UpdraftPlus', 'updraftplus');?>:</strong> <span class="updraft_diskspaceused"><em><?php echo empty($options['will_immediately_calculate_disk_space']) ? '' : __('calculating...', 'updraftplus'); ?></em></span> <a class="updraft_diskspaceused_update" href="#"><?php echo empty($options['will_immediately_calculate_disk_space']) ? __('calculate', 'updraftplus') : __('refresh', 'updraftplus');?></a></li>
+		<?php
+			echo $updraftplus_admin->web_server_disk_space($options['will_immediately_calculate_disk_space']);
+		?>
 
 		<li class="updraft-server-scan">
 			<strong><?php _e('More tasks:', 'updraftplus');?></strong>
@@ -56,8 +68,7 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing Backups', 'updr
 		<div id="updraft-plupload-modal" style="display:none;" title="<?php _e('UpdraftPlus - Upload backup files', 'updraftplus'); ?>">
 		<p class="upload"><em><?php _e("Upload files into UpdraftPlus.", 'updraftplus');?> <?php echo htmlspecialchars(__('Or, you can place them manually into your UpdraftPlus directory (usually wp-content/updraft), e.g. via FTP, and then use the "rescan" link above.', 'updraftplus'));?></em></p>
 		<?php
-		global $wp_version;
-		if (version_compare($wp_version, '3.3', '<')) {
+		if (version_compare($updraftplus->get_wordpress_version(), '3.3', '<')) {
 			echo '<em>'.sprintf(__('This feature requires %s version %s or later', 'updraftplus'), 'WordPress', '3.3').'</em>';
 		} else {
 			?>

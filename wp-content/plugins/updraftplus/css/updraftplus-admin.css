@@ -859,7 +859,7 @@ tr.updraftplusmethod h3 {
 	font-size: 16px;
 }
 
-.download-backups .ud-whitespace-warning {
+.download-backups .ud-whitespace-warning, .download-backups .ud-bom-warning {
 	background-color: pink;
 	padding: 8px;
 	margin: 4px;
@@ -974,6 +974,7 @@ tr.updraftplusmethod h3 {
 .updraft_debugrow th {
 	vertical-align: top;
 	padding-top: 6px;
+	max-width: 140px;
 }
 
 .expertmode p {
@@ -1797,6 +1798,79 @@ div#updraft-wrap a {
 	border-radius: 4px;
 	padding: 0 0 6px 6px;
 	margin-bottom: 8px;
+}
+
+.updraftcentral_cloud_connect {
+	border-radius: 4px;
+	border: 1px solid #000;
+	padding: 0 20px;
+	margin-top: 30px;
+	background-color: #FFF;
+}
+
+.updraftcentral_cloud_error {
+	border: 1px solid #000;
+	padding: 3px 10px;
+	border-left: 3px solid #F00;
+	background-color: #FFF;
+	margin-bottom: 10px;
+}
+
+.updraftcentral_cloud_info {
+	border: 1px solid #000;
+	padding: 3px 10px;
+	border-left: 3px solid #EF8F31;
+	background-color: #FFF;
+	margin-bottom: 10px;
+}
+
+.updraftcentral_cloud_spinner.spinner {
+	padding-left: 25px;
+	float: none;
+}
+
+.updraftcentral_cloud_spinner.spinner.visible {
+	visibility: visible;
+}
+
+.updraftcentral_cloud_notices .updraftcentral_cloud_spinner {
+	margin-top: -5px;
+}
+
+.updraftcentral-subheading {
+	font-size: 14px;
+	margin-top: -10px;
+	margin-bottom: 20px;
+}
+
+#updraftcentral_cloud_form input#email,
+#updraftcentral_cloud_form input#password {
+	min-width: 250px;
+}
+
+.updraftcentral-data-consent {
+	font-size: 13px;
+	margin-bottom: 10px;
+}
+
+.updraftcentral_cloud_wizard_image {
+	float: left;
+	min-width: 100px;
+	margin-right: 25px;
+}
+
+.updraftcentral_cloud_wizard {
+	float: left;
+}
+
+.updraftcentral_cloud_clear {
+	clear: both;
+}
+
+#updraft_migrate_createclone {
+	height: 30px;
+	font-size: 16px;
+	width: 115px;
 }
 
 @media only screen and (min-width: 768px) {

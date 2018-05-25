@@ -60,8 +60,8 @@ class UpdraftPlus_Database_Utility {
 		
 		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions');
 
-		$na = $updraftplus->str_replace_once($our_table_prefix, '', $a);
-		$nb = $updraftplus->str_replace_once($our_table_prefix, '', $b);
+		$na = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $a);
+		$nb = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $b);
 		if (in_array($na, $core_tables) && !in_array($nb, $core_tables)) return -1;
 		if (!in_array($na, $core_tables) && in_array($nb, $core_tables)) return 1;
 		return strcmp($a, $b);

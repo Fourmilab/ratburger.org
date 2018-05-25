@@ -1,23 +1,23 @@
 [
     {
         "name": "symfony/process",
-        "version": "v3.4.8",
-        "version_normalized": "3.4.8.0",
+        "version": "v3.4.10",
+        "version_normalized": "3.4.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
-            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b"
+            "reference": "4cbf2db9abcb01486a21b7a059e03a62fae63187"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/4b7d64e852886319e93ddfdecff0d744ab87658b",
-            "reference": "4b7d64e852886319e93ddfdecff0d744ab87658b",
+            "url": "https://api.github.com/repos/symfony/process/zipball/4cbf2db9abcb01486a21b7a059e03a62fae63187",
+            "reference": "4cbf2db9abcb01486a21b7a059e03a62fae63187",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2018-04-03T05:22:50+00:00",
+        "time": "2018-05-16T08:49:21+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -181,8 +181,8 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.38",
-        "version_normalized": "2.8.38.0",
+        "version": "v2.8.40",
+        "version_normalized": "2.8.40.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
