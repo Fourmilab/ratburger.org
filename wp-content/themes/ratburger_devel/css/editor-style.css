@@ -109,6 +109,8 @@ i {
 	font-style: italic;
 }
 
+/*  RATBURGER LOCAL CODE
+    Original behaviour for blockquotes.
 blockquote {
 	border-left: 4px solid #1a1a1a;
 	color: #686868;
@@ -168,6 +170,73 @@ blockquote.alignright {
 	width: -webkit-calc(50% - 14px);
 	width: calc(50% - 14px);
 }
+*/
+
+/* Our custom behaviour for blockquote */
+blockquote {
+	/* border-left: 4px solid #1a1a1a; */
+	color: #686868;
+	/* font-size: 19px; */
+	/* font-style: italic; */
+	line-height: 1.4736842105;
+	margin-bottom: 28px;
+	overflow: hidden;
+	/* padding: 0 0 0 24px; */
+	padding-left: 3em;
+	padding-right: 3em;
+}
+
+blockquote:not(.alignleft):not(.alignright) {
+	margin-left: -28px;
+}
+
+blockquote blockquote:not(.alignleft):not(.alignright) {
+	margin-left: 0;
+}
+
+blockquote:before,
+blockquote:after {
+	content: "";
+	display: table;
+}
+
+blockquote:after {
+	clear: both;
+}
+
+blockquote > :last-child {
+	margin-bottom: 0;
+}
+
+blockquote cite,
+blockquote small {
+	color: #1a1a1a;
+	font-size: 16px;
+	line-height: 1.75;
+}
+
+blockquote em,
+blockquote i,
+blockquote cite {
+	font-style: italic;
+}
+
+blockquote strong,
+blockquote b {
+	font-weight: 400;
+}
+
+blockquote.alignleft,
+blockquote.alignright {
+	border: 0 solid #1a1a1a;
+	border-top-width: 4px;
+	padding: 18px 0 0;
+	width: -webkit-calc(50% - 14px);
+	width: calc(50% - 14px);
+}
+/* End new blockquote definition */
+/* END RATBURGER LOCAL CODE */
+
 
 address {
 	font-style: italic;
