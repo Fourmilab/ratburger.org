@@ -41,14 +41,6 @@ function bp_notifications_toolbar_menu() {
 	) );
 
 	if ( ! empty( $notifications ) ) {
-		foreach ( (array) $notifications as $notification ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'bp-notifications',
-				'id'     => 'notification-' . $notification->id,
-				'title'  => $notification->content,
-				'href'   => $notification->href,
-			) );
-		}
 		/* RATBURGER LOCAL CODE
 		   Add menu item to mark all notifications read */
 		$custom_kink = bp_get_root_domain() . '/members/' .
@@ -63,6 +55,14 @@ function bp_notifications_toolbar_menu() {
 			'href'   => $custom_kink,
 		));
 		/* END RATBURGER LOCAL CODE */
+		foreach ( (array) $notifications as $notification ) {
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'bp-notifications',
+				'id'     => 'notification-' . $notification->id,
+				'title'  => $notification->content,
+				'href'   => $notification->href,
+			) );
+		}
 	} else {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'bp-notifications',
