@@ -169,6 +169,22 @@ function ss_init() {
 		}
 		$post = get_post_variables();
 		if ( ! empty( $post['email'] ) || ! empty( $post['author'] ) || ! empty( $post['comment'] ) ) { // must be a login or a comment which require minimum stuff 
+            /* RATBURGER LOCAL CODE
+               If the user is logged in, check how long they have been a
+               member (days since user_registered).  If the user has been
+               registered more than a week, we assume they're a member in
+               good standing and bypass all of the spam checking.  This
+               avoids irritating members who happen to post something that
+               looks like spam. */
+            if (is_user_logged_in() &&
+                (((date_timestamp_get(date_create()) -
+                   date_timestamp_get(date_create(
+                     wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7)) {
+//RB_dumpvar("Skip spam check: age", (date_timestamp_get(date_create()) -
+//  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
+                return;
+            }
+            /* END RATBURGER LOCAL CODE */
 // remove_filter( 'pre_user_login', ss_user_reg_filter, 1);
 // sfs_debug_msg('email or author '.print_r($post,true));
 			$reason = ss_check_white();
