@@ -8,8 +8,9 @@
  */
 
 if ( class_exists( 'myCRED_Hook' ) ) :
+
 	class wp_ulike_myCRED extends myCRED_Hook {
- 
+
 		/**
 		 * Construct
 		 */
@@ -39,41 +40,49 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 					)
 				)
 			), $hook_prefs, $type );
- 
+
 		}
- 
+
 		/**
 		 * Run Actions
 		 *
 		 * @since		2.3
 		 */
 		public function run() {
- 
-			if ( $this->prefs['add_like']['creds'] || $this->prefs['get_like']['creds'] ) {
-				add_action( 'wp_ulike_mycred_like'	, array( $this, 'like' )	, 10, 2 );
+			// Goto status function
+			add_action( 'wp_ulike_after_process', array( $this, 'status' )	, 10, 4 );
+		}
+
+		/**
+		 * Start functions by status
+		 *
+		 * @since		2.3
+		 */
+		public function status( $id , $key, $user_id, $status ) {
+
+			switch ( $status ) {
+				case 'like':
+					$this->like( $id , $key, $user_id );
+					break;
+
+				default:
+					$this->unlike( $id , $key, $user_id );
 			}
 
-			if ( $this->prefs['add_unlike']['creds'] || $this->prefs['get_unlike']['creds'] ) {
-				add_action( 'wp_ulike_mycred_unlike', array( $this, 'unlike' )	, 10, 2 );
-			}
- 
 		}
-		
-		
+
 		public function bp_get_auhtor_id($activity_id) {
 			$activity = bp_activity_get_specific( array( 'activity_ids' => $activity_id, 'display_comments'  => true ) );
 			return $activity['activities'][0]->user_id;
 		}
-		
+
 		/**
 		 * Add Like
 		 *
 		 * @since		2.3
 		 */
-		public function like( $id , $key, $author_id = 0 ) {
-			
-			$user_id 	= get_current_user_id();
-			
+		public function like( $id , $key, $user_id, $author_id = 0 ) {
+
 			// Check for exclusion
 			if ( $this->core->exclude_user( $user_id ) ) return;
 
@@ -83,15 +92,15 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 					$author_id 	= get_post_field( 'post_author', $id );
 					break;
 				case '_commentliked':
-					$comment_id = get_comment( $id ); 
-					$author_id 	= $comment_id->user_id;	
+					$comment_id = get_comment( $id );
+					$author_id 	= $comment_id->user_id;
 					break;
 				case '_activityliked':
 					$author_id 	= $this->bp_get_auhtor_id($id);
 					break;
 			}
-						
-			
+
+
 			if ( $user_id != $author_id ){
 
 				// Award the user liking
@@ -112,7 +121,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 							);
 						}
 					}
-				}		
+				}
 
 				// Award post author for being liked
 				if ( $this->prefs['get_like']['creds'] && $author_id ) {
@@ -133,7 +142,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 						}
 					}
 				}
-				
+
 			}
 
 		}
@@ -143,10 +152,8 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 		 *
 		 * @since		2.3
 		 */
-		public function unlike( $id , $key, $author_id 	= 0  ) {
-		
-			$user_id 	= get_current_user_id();		
-		
+		public function unlike( $id , $key, $user_id, $author_id = 0 ) {
+
 			// Check for exclusion
 			if ( $this->core->exclude_user( $user_id ) ) return;
 
@@ -156,15 +163,15 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 					$author_id 	= get_post_field( 'post_author', $id );
 					break;
 				case '_commentliked':
-					$comment_id = get_comment( $id ); 
-					$author_id 	= $comment_id->user_id;	
+					$comment_id = get_comment( $id );
+					$author_id 	= $comment_id->user_id;
 					break;
 				case '_activityliked':
 					$author_id 	= $this->bp_get_auhtor_id( $id );
 					break;
-			}			
-						
-			
+			}
+
+
 			if ( $user_id != $author_id ){
 
 				// Award the user liking
@@ -200,21 +207,21 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 						);
 					}
 				}
-				
+
 			}
 
 		}
-		
- 
+
+
 		/**
 		 * Preference for wp_ulike Hook
 		 *
 		 * @since		2.3
 		 */
 		public function preferences() {
- 
+
 			$prefs = $this->prefs;
- 
+
 		?>
 			<label class="subheader"><?php echo _e( 'Points for Liking content', WP_ULIKE_SLUG ); ?></label>
 			<ol>
@@ -225,7 +232,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 				<li>
 					<label for="<?php echo $this->field_id( array( 'add_like' => 'limit' ) ); ?>"><?php _e( 'Limit', WP_ULIKE_SLUG ); ?></label>
 					<?php echo $this->hook_limit_setting( $this->field_name( array( 'add_like' => 'limit' ) ), $this->field_id( array( 'add_like' => 'limit' ) ), $prefs['add_like']['limit'] ); ?>
-				</li>	
+				</li>
 				<li class="empty"></li>
 				<li>
 					<label for="<?php echo $this->field_id( array( 'add_like' => 'log' ) ); ?>"><?php _e( 'Log template', 'mycred' ); ?></label>
@@ -242,7 +249,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 				<li>
 					<label for="<?php echo $this->field_id( array( 'get_like' => 'limit' ) ); ?>"><?php _e( 'Limit', WP_ULIKE_SLUG ); ?></label>
 					<?php echo $this->hook_limit_setting( $this->field_name( array( 'get_like' => 'limit' ) ), $this->field_id( array( 'get_like' => 'limit' ) ), $prefs['get_like']['limit'] ); ?>
-				</li>		
+				</li>
 				<li class="empty"></li>
 				<li>
 					<label for="<?php echo $this->field_id( array( 'get_like' => 'log' ) ); ?>"><?php _e( 'Log template', 'mycred' ); ?></label>
@@ -276,7 +283,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 			</ol>
 		<?php
 		}
-		
+
 		/**
 		 * Sanitise Preferences
 		 *
@@ -302,4 +309,5 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 
 		}
 	}
+
 endif;

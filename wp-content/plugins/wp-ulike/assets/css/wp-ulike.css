@@ -186,6 +186,10 @@
   background: url(../img/bg/button-love.png) no-repeat center right;
   border-radius: 5px;
   padding: 3px;
+  /* RATBURGER LOCAL CODE
+     Specify width of like button and count */
+  width: 8em;
+  /* END RATBURGER LOCAL CODE */
 }
 .wpulike-heart .wp_ulike_btn {
   border: none;
@@ -386,7 +390,7 @@
   display: none !important;
 }
 .wpulike-robeen .wp_ulike_btn:checked + svg .heart {
-  transform: scale(0.2);
+  transform: scale(1.0);
   fill: #E2264D;
   animation: animateHeart .3s linear forwards .25s;
 }
@@ -645,6 +649,10 @@
     transform: translateY(0);
   }
 }
+/* RATBURGER LOCAL CODE
+   Disable this special handling for narrow screen
+   devices.  It resurrects the absurdly wide box for
+   the number of likes which we've fixed elsewhere.
 @media all and (max-width: 240px) {
   .wpulike-notification .wpulike-message {
     padding: 8px 8px 8px 55px;
@@ -663,6 +671,7 @@
     width: 25em;
   }
 }
+*/
 /*!>>>>>>>>>>>>>>>>>>>>>>> #RTL <<<<<<<<<<<<<<<<<<<<<<<<<<< */
 .rtl .wpulike-default .count-box {
   margin-right: .5em;

@@ -1,36 +1,44 @@
 <?php
-/*
-Plugin Name: WP ULike
-Plugin URI: https://wpulike.com/
-Description: WP ULike plugin allows to integrate a beautiful Ajax Like Button into your wordPress website to allow your visitors to like and unlike pages, posts, comments AND buddypress activities. Its very simple to use and supports many options.
-Version: 3.2
-Author: Ali Mirzaei
-Author URI: http://about.alimir.ir
-Text Domain: wp-ulike
-Domain Path: /lang/
-License: GPL2
+/**
+ * All wp-ulike functionalities starting from here...
+ *
+ * 
+ * @package    wp-ulike
+ * @author     Alimir 2018
+ * @link       https://wpulike.com
+ *
+ * Plugin Name:       WP ULike
+ * Plugin URI:        https://wpulike.com/
+ * Description:       WP ULike plugin allows to integrate a beautiful Ajax Like Button into your wordPress website to allow your visitors to like and unlike pages, posts, comments AND buddypress activities. Its very simple to use and supports many options.
+ * Version:           3.3.1
+ * Author:            Ali Mirzaei
+ * Author URI:        http://alimir.ir
+ * Text Domain:       wp-ulike
+ * License:           GPL2
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Domain Path:       /lang
+ * Tested up to: 	  4.9.6
 
-/------------------------------------------\
- _     __     _ _____      _  _  _   _ 
-| |   /  \   | | ___ \    | |(_)| | / /
-| |  / /\ \  | | |_/ /   _| || || |/ / ___
-| | / /  \ \ | |  __/ | | | || ||   | / _ \
-| |/ /    \ \| | |  | |_| | || || |\ \  __/
-\___/      \__/\_|   \__,_|_||_||_| \_\___|
+ /------------------------------------------\
+  _     __     _ _____      _  _  _   _
+ | |   /  \   | | ___ \    | |(_)| | / /
+ | |  / /\ \  | | |_/ /   _| || || |/ / ___
+ | | / /  \ \ | |  __/ | | | || ||   | / _ \
+ | |/ /    \ \| | |  | |_| | || || |\ \  __/
+ \___/      \__/\_|   \__,_|_||_||_| \_\___|
 
-\--> Alimir, 2018 <--/
+ \--> Alimir, 2018 <--/
 
-Thanks for using WP ULike plugin!
+ Thanks for using WP ULike plugin!
 
-\------------------------------------------/
-
+ \------------------------------------------/
 */
 
 // Do not change these values
 define( 'WP_ULIKE_PLUGIN_URI'   , 'https://wpulike.com/' 		);
-define( 'WP_ULIKE_VERSION'      , '3.2' 						);
+define( 'WP_ULIKE_VERSION'      , '3.3.1' 						);
 define( 'WP_ULIKE_SLUG'         , 'wp-ulike' 					);
-define( 'WP_ULIKE_DB_VERSION'   , '1.3' 						);
+define( 'WP_ULIKE_DB_VERSION'   , '1.4' 						);
 
 define( 'WP_ULIKE_DIR'          , plugin_dir_path( __FILE__ ) 	);
 define( 'WP_ULIKE_URL'          , plugins_url( '', __FILE__ ) 	);
@@ -68,20 +76,20 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	    *
 	    * @since     3.1
 	    */
-	    private function __construct() {    
+	    private function __construct() {
 
-	    	add_action( 'init', array( $this, 'init' ) );	
+	    	add_action( 'init', array( $this, 'init' ) );
 			// Include Files
 			$this->includes();
-			
+
 			// Activate plugin when new blog is added
 			add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
-			
+
 			add_action( 'activated_plugin', array( $this, 'after_activation' ) );
-			
+
 			$prefix = is_network_admin() ? 'network_admin_' : '';
-			add_filter( "{$prefix}plugin_action_links",  array( $this, 'add_links' ), 10, 5 );        
-			
+			add_filter( "{$prefix}plugin_action_links",  array( $this, 'add_links' ), 10, 5 );
+
 			// Loaded action
 			do_action( 'wp_ulike_loaded' );
 	    }
@@ -102,9 +110,9 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 				// Merge on actions array
 				$actions  = array_merge( $about, $actions );
 				$actions  = array_merge( $stats, $actions );
-				$actions  = array_merge( $settings, $actions );       
+				$actions  = array_merge( $settings, $actions );
 	        }
-				
+
 	        return $actions;
 	    }
 
@@ -143,7 +151,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 					'wp_ulike_bbpress'    => apply_filters( 'wp_ulike_bbpress_settings'		, wp_ulike_get_options_info('bbpress') 		),
 					'wp_ulike_customize'  => apply_filters( 'wp_ulike_customize_settings'	, wp_ulike_get_options_info('customizer') 	)
 				)
-			);		
+			);
 	    }
 
 
@@ -173,7 +181,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 
 	        }
 
-	    }    
+	    }
 
 
 	    /**
@@ -192,14 +200,14 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	        }
 	        spl_autoload_register( array( $this, 'autoload' ) );
 
-			// global variable of user IP
-			$wp_user_IP     = $this->get_ip();	        
-			
 			// load common functionalities
 			include_once( WP_ULIKE_INC_DIR . '/index.php' );
-			
+
+			// global variable of user IP
+			$wp_user_IP     = $this->get_ip();
+
 			// global wp_ulike_class
-			$wp_ulike_class = wp_ulike::get_instance();	        
+			$wp_ulike_class = wp_ulike::get_instance();
 
 	        // Dashboard and Administrative Functionality
 	        if ( is_admin() ) {
@@ -209,19 +217,19 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 					include( WP_ULIKE_ADMIN_DIR . '/admin-ajax.php'  );
 	            }
 		       	// Add Settings Page
-		        $this->settings();	
-		        
+		        $this->settings();
+
 				//include wp_ulike_stats class & geoIPloc functions
 				if( isset( $_GET["page"] ) && stripos( $_GET["page"], "wp-ulike-statistics" ) !== false ){
 					//include PHP GeoIPLocation Library
 					require_once( WP_ULIKE_ADMIN_DIR . '/includes/geoiploc.php');
 					// global variable
 					global $wp_ulike_stats;
-					$wp_ulike_stats = wp_ulike_stats::get_instance();			
-				};	
+					$wp_ulike_stats = wp_ulike_stats::get_instance();
+				};
 
 	            // Load admin spesific codes
-	            include( WP_ULIKE_ADMIN_DIR . '/index.php' );          
+	            include( WP_ULIKE_ADMIN_DIR . '/index.php' );
 	        }
 
 	    }
@@ -248,15 +256,36 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 			} else {
 				$ip = $_SERVER['REMOTE_ADDR'];
 			}
-			
+
 
 			if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+				// Return local ip address
 				return '127.0.0.1';
 			} else {
-				return $ip;
+
+				if ( wp_ulike_get_setting( 'wp_ulike_general', 'anonymise', '0' ) == '1' ) {
+					return $this->anonymise_ip( $ip );
+				} else {
+					return $ip;
+				}
 			}
 
-		}	    
+		}
+
+	    /**
+	     * Anonymise IP address
+	     *
+	     * @since    3.3
+	     *
+	     * @return   String
+	    */
+		public function anonymise_ip( $ip_address ) {
+			if ( strpos( $ip_address, "." ) == true ) {
+				return preg_replace('~[0-9]+$~', '000', $ip_address);
+			} else {
+				return preg_replace('~[0-9]*:[0-9]+$~', '0000:0000', $ip_address);
+			}
+		}
 
 	   /**
 	    * Init the plugin when WordPress Initialises.
@@ -272,7 +301,6 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	            $this->load_plugin_textdomain();
 	        }
 	    }
-
 
 	   /**
 	    * Return an instance of this class.
@@ -337,7 +365,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                exit( wp_redirect( admin_url( 'admin.php?page=wp-ulike-about' ) ) );
 	            }
 	        }
-	    }    
+	    }
 
 
 	  /**
@@ -395,15 +423,16 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `post_id` int(11) NOT NULL,
 	                        `date_time` datetime NOT NULL,
 	                        `ip` varchar(30) NOT NULL,
-	                        `user_id` int(11) UNSIGNED NOT NULL,
+	                        `user_id` bigint(20) UNSIGNED NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
 	                    );";
 
 	                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	                dbDelta( $sql );
-
-	                add_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );
+	            } else {
+	            	// Fix an old issue with user_id column
+	            	$wpdb->query( "ALTER TABLE $posts_table CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NOT NULL" );
 	            }
 
 	            $comments_table = $wpdb->prefix . "ulike_comments";
@@ -413,15 +442,16 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `comment_id` int(11) NOT NULL,
 	                        `date_time` datetime NOT NULL,
 	                        `ip` varchar(30) NOT NULL,
-	                        `user_id` int(11) UNSIGNED NOT NULL,
+	                        `user_id` bigint(20) UNSIGNED NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
 	                    );";
 
 	                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	                dbDelta( $sql );
-
-	                update_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );
+	            } else {
+	            	// Fix an old issue with user_id column
+	            	$wpdb->query( "ALTER TABLE $comments_table CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NOT NULL" );
 	            }
 
 	            $activities_table = $wpdb->prefix . "ulike_activities";
@@ -431,15 +461,16 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `activity_id` int(11) NOT NULL,
 	                        `date_time` datetime NOT NULL,
 	                        `ip` varchar(30) NOT NULL,
-	                        `user_id` int(11) UNSIGNED NOT NULL,
+	                        `user_id` bigint(20) UNSIGNED NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
 	                    );";
 
 	                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	                dbDelta( $sql );
-
-	                update_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );
+	            } else {
+	            	// Fix an old issue with user_id column
+	            	$wpdb->query( "ALTER TABLE $activities_table CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NOT NULL" );
 	            }
 
 	            $forums_table = $wpdb->prefix . "ulike_forums";
@@ -449,16 +480,19 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `topic_id` int(11) NOT NULL,
 	                        `date_time` datetime NOT NULL,
 	                        `ip` varchar(30) NOT NULL,
-	                        `user_id` int(11) UNSIGNED NOT NULL,
+	                        `user_id` bigint(20) UNSIGNED NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
 	                    );";
 
 	                require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	                dbDelta( $sql );
-
-	                update_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );
+	            } else {
+	            	// Fix an old issue with user_id column
+	            	$wpdb->query( "ALTER TABLE $forums_table CHANGE `user_id` `user_id` BIGINT(20) UNSIGNED NOT NULL" );
 	            }
+
+				update_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );
 
 	        }
 
@@ -532,8 +566,8 @@ if ( ! class_exists( 'WPULIKE' ) ) :
      *
      * @since    3.1
      */
-	function RUN_WPULIKE(){ 
-	    return WPULIKE::get_instance(); 
+	function RUN_WPULIKE(){
+	    return WPULIKE::get_instance();
 	}
 	RUN_WPULIKE();
 
@@ -541,14 +575,14 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	register_activation_hook  ( __FILE__, array( 'WPULIKE', 'activate'   ) );
 	register_deactivation_hook( __FILE__, array( 'WPULIKE', 'deactivate' ) );
 
-else : 
+else :
 
 	function wp_ulike_two_instances_error() {
 		$class   = 'notice notice-error';
 		$message = __( 'You are using two instances of WP ULike plugin at same time, please deactive one of them.', WP_ULIKE_SLUG );
-		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
+		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
-	add_action( 'admin_notices', 'wp_ulike_two_instances_error' );                
+	add_action( 'admin_notices', 'wp_ulike_two_instances_error' );
 
 endif;
 
