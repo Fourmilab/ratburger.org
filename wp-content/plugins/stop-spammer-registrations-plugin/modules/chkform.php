@@ -24,7 +24,6 @@ class chkform extends be_module {
                         return false;
                 }
 		/* END RATBURGER LOCAL CODE */
-
 // sfs_debug_msg("Allowed $uri $ip");
 		return "Post request not in wp-comments-post.php or wp-login.php - $uri";
 	}
