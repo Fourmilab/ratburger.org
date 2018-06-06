@@ -290,7 +290,6 @@ class BP_Activity_Component extends BP_Component {
                 'item_css_id'     => 'activity-my-comments'
         );
         /* END RATBURGER LOCAL CODE */
-
 		// Favorite activity items.
 		if ( bp_activity_can_favorite() ) {
 			$sub_nav[] = array(
@@ -393,7 +392,6 @@ class BP_Activity_Component extends BP_Component {
 					'position' => 20
 				);
 			}
-
             /* RATBURGER LOCAL CODE
                Add Activity/Posts and Activity/Comments items to admin bar
                drop-down menu.

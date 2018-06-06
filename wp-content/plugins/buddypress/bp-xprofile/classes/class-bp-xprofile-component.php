@@ -342,7 +342,6 @@ class BP_XProfile_Component extends BP_Component {
                 'item_css_id'     => 'profile-my-comments'
         );
         /* END RATBURGER LOCAL CODE */
-
 		// The Settings > Profile nav item can only be set up after
 		// the Settings component has run its own nav routine.
 		add_action( 'bp_settings_setup_nav', array( $this, 'setup_settings_nav' ) );
