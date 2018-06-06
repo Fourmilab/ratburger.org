@@ -1,6 +1,13 @@
+# For authentication by password
 #AuthUserFile "/server/passwords/Ratburger"
 #AuthName "Test site: changes are not preserved"
 #Require valid-user
+# For authentication by IP address range
+#<limit GET>
+#order allow,deny
+#allow from 193.8.230
+#satisfy any
+#</limit>
 
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
