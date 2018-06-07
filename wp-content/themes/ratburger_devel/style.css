@@ -401,12 +401,18 @@ blockquote {
 	/* font-size: 19px;
 	font-size: 1.1875rem; */
 	/* font-style: italic; */
+    font-size: 15px;
 	line-height: 1.4736842105;
 	margin: 0 0 1.4736842105em;
 	overflow: hidden;
 	/* padding: 0 0 0 1.263157895em; */
 	padding-left: 3em;
 	padding-right: 3em;
+}
+
+/* Don't pad further right for nested blockquotes. */
+blockquote blockquote {
+    padding-right: 0px;
 }
 
 blockquote,
@@ -429,8 +435,9 @@ blockquote cite,
 blockquote small {
 	color: #1a1a1a;
 	display: block;
-	font-size: 16px;
-	font-size: 1rem;
+/*      font-size: 16px;
+        font-size: 1rem; */
+    font-size: 15px;
 	line-height: 1.75;
 }
 
