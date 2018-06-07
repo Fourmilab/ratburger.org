@@ -519,17 +519,22 @@ add_filter('bp_activity_latest_update_content', 'ratburger_forums_filter_kses', 
 
 function ratburger_add_allowed_tags() {
 	global $allowedtags;
+    global $allowedposttags;
 
 	$allowedtags['pre'] = array('style'=>array());
 	$allowedtags['ol'] = array();
 	$allowedtags['ul'] = array();
 	$allowedtags['li'] = array();
 	$allowedtags['p'] = array();
-	$allowedtags['p'] ['style'] = array();
+	$allowedtags['p']['style'] = array();
 	$allowedtags['span'] = array();
-	$allowedtags['span'] ['style'] = array();
+	$allowedtags['span']['style'] = array();
     $allowedtags['sub'] = array();
     $allowedtags['sup'] = array();
+
+    // Add attributes to already allowed tags
+    $allowedposttags['blockquote']['class'] = true;
+    $allowedtags['blockquote']['class'] = true;
 }
 
 add_action('init', 'ratburger_add_allowed_tags', 10);

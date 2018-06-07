@@ -115,15 +115,19 @@ function quote(postid, author, commentarea, commentID, mce, zzurl) {
                quoted comment.
 			var quote='\n<blockquote cite="comment-'+postid+'">\n\n<strong><a href="#comment-'+postid+'">'+unescape(author) + "</a></strong>:<br /> " + posttext + '</blockquote>\n';
             */
-			var quote = '\n<blockquote cite="comment-' + postid +
+			var quote = '\n<blockquote  class="rb_quote_comment" cite="comment-' + postid +
                 '">\n\n<strong><a href="' +
                 ((typeof(zzurl) !== 'undefined') ? zzurl : ('#comment-' + postid)) +
                 '">' + unescape(author) + "</a></strong>:<br /> "
                 + posttext + '</blockquote>\n';
             /* END RATBURGER LOCAL CODE */
 		} else {
-
+            /* RATBURGER LOCAL CODE
+               Include class to identify material quoted from comment.
 			var quote='\n<blockquote cite="comment-'+postid+'">\n\n'+posttext+'</blockquote>\n';
+            */
+            var quote='\n<blockquote class="rb_quote_comment" cite="comment-'+postid+'">\n\n'+posttext+'</blockquote>\n';
+            /* END RATBURGER LOCAL CODE */
 
 		}
 
@@ -200,8 +204,8 @@ function qc_quote_post(postid, author, commentarea) {
 
                         // Quote entire post as HTML: Extract post from complete article
                         var posttext = document.getElementById('post-' + postid).innerHTML;
-			posttext = posttext.replace(/^[\s\S]*?<div\sclass="entry-content">/, '');
-			posttext = posttext.replace(/<div\sid="wp-ulike-post[\s\S]*$/, '');
+			            posttext = posttext.replace(/^[\s\S]*?<div\sclass="entry-content">/, '');
+			            posttext = posttext.replace(/<div\sid="wp-ulike-post[\s\S]*$/, '');
 
                         // remove nested divs
                         //var posttext = posttext.replace(/<div(.*?)>((.|\n)*?)(<\/div>)/ig, "");
@@ -242,11 +246,11 @@ function qc_quote_post(postid, author, commentarea) {
                         // prevent xss stuff
                         author = jsEncode(author);
 
-                        var quote='\n<blockquote cite="post-'+postid+'">\n\n<strong><a href="#post-'+postid+'">'+unescape(author) + "</a></strong>:<br /> " + posttext + '</blockquote>\n';
+                        var quote='\n<blockquote class="rb_quote_post" cite="post-'+postid+'">\n\n<strong><a href="#post-'+postid+'">'+unescape(author) + "</a></strong>:<br /> " + posttext + '</blockquote>\n';
 
                 } else {
 
-                        var quote='\n<blockquote cite="post-'+postid+'">\n\n'+posttext+'</blockquote>\n';
+                        var quote='\n<blockquote class="rb_quote_post" cite="post-'+postid+'">\n\n'+posttext+'</blockquote>\n';
 
                 }
 
