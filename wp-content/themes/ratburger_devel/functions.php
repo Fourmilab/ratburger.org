@@ -901,4 +901,14 @@ add_filter('bp_messages_multiple_new_message_notification',
 add_filter('bp_messages_single_new_message_notification',
     'rb_filter_notification_message', 10, 5);
 
+/*  Increase the length of excerpts shown for group posts
+    and comments.  */
+
+function rb_filter_bp_activity_excerpt_length($howlong) {
+    return 600;
+}
+
+add_filter('bp_activity_excerpt_length',
+    'rb_filter_bp_activity_excerpt_length');
+
 /* END RATBURGER LOCAL CODE */
