@@ -110,6 +110,12 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 			_prime_post_caches( $post_ids, strpos( get_option( 'permalink_structure' ), '%category%' ), false );
 
 			foreach ( (array) $comments as $comment ) {
+                /* RATBURGER LOCAL CODE
+                   Don't show comment in recent comments if it's
+                   a follow of a post.  */
+                global $Ratburger_follow_comment_pattern;
+                if (!preg_match($Ratburger_follow_comment_pattern, $comment->comment_content)) {
+                /* END RATBURGER LOCAL CODE */
 				$output .= '<li class="recentcomments">';
 				/* translators: comments widget: 1: comment author, 2: post link */
 				$output .= sprintf( _x( '%1$s on %2$s', 'widgets' ),
@@ -117,6 +123,9 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 					'<a href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a>'
 				);
 				$output .= '</li>';
+                /* RATBURGER LOCAL CODE */
+                }
+                /* END RATBURGER LOCAL CODE */
 			}
 		}
 		$output .= '</ul>';

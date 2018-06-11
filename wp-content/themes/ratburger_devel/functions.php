@@ -632,6 +632,21 @@ function RB_mdumpvar($label, $var) {
 add_filter('wp_insert_comment', 'ratburger_wp_insert_comment', 10, 2);
 
 function ratburger_wp_insert_comment($id, $comment) {
+
+    /* If the body of the comment consists exclusively of the
+       text "c4c" or "follow" (case-insensitive), possibly
+       preceded by various kinds of white space and followed by
+       white space and sentence-ending punctuation, this is
+       taken to be a comment made solely to follow the post.  In
+       this case, we don't perform notification of the comment
+       to either the author of the post or others who have
+       commented on the post. */
+    global $Ratburger_follow_comment_pattern;
+    if (preg_match($Ratburger_follow_comment_pattern,
+        $comment->comment_content)) {
+        return;
+    }
+
 	$post = get_post($comment->comment_post_ID, 'OBJECT', 'raw');
 
 	/* If the comment was made by a person other than the
@@ -910,5 +925,19 @@ function rb_filter_bp_activity_excerpt_length($howlong) {
 
 add_filter('bp_activity_excerpt_length',
     'rb_filter_bp_activity_excerpt_length');
+
+/*  Regular expression used to detect from the content of a
+    comment whether it is a comment made only to follow the post
+    on which it was made.
+
+    We test whether the body of the comment consists exclusively
+    of the text "c4c" or "follow" (case-insensitive), possibly
+    preceded by various kinds of white space and followed by
+    white space and sentence-ending punctuation.  */
+
+global $Ratburger_follow_comment_pattern;
+$Ratburger_follow_comment_pattern =
+    "/^(?:[\s\R]|&nbsp;)*(?:c4c|follow)([\s\R\.\!\?]|&nbsp;)*$/i";
+
 
 /* END RATBURGER LOCAL CODE */

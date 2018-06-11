@@ -314,6 +314,26 @@ class Walker_Comment extends Walker {
 	 */
 	protected function html5_comment( $comment, $depth, $args ) {
 		$tag = ( 'div' === $args['style'] ) ? 'div' : 'li';
+        /* RATBURGER LOCAL CODE
+           If the body of the comment consists exclusively of the
+           text "c4c" or "follow" (case-insensitive), possibly preceded
+           by various kinds of white space and followed by white space
+           and sentence-ending punctuation, this is taken to be a
+           comment made solely to follow the post.  If the current
+           user is the author of the comment, we display it, as that
+           allows the user to delete it should they wish to unfollow
+           the post.  Otherwise, the comment is hidden.  When hiding
+           the comment we must remember to increment the comment number
+           counter. */
+        global $Ratburger_follow_comment_pattern;
+        if (preg_match($Ratburger_follow_comment_pattern, $comment->comment_content)) {
+            global $Ratburger_post_comment_number;
+            if ($comment->user_id != get_current_user_id()) {
+                global $Ratburger_post_comment_number;
+                $Ratburger_post_comment_number++;
+                return;
+            }
+        }
 ?>
 		<<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
 			<article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
