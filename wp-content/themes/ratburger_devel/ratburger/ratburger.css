@@ -55,9 +55,10 @@ span.rb_notif_new_message {
    as are found on tablets and mobile phones.  They have
    the effect of causing the notification bubble and
    drop-down list to display on these devices and, for
-   those with very narrow screens, to right-align the
-   drop-down list under the bubble so it doesn't run
-   off the right of the screen. */
+   those with very narrow screens, to left-align the
+   drop-down list on the screen and allow it to extend
+   all the way to the right to provide the maximum room
+   for notifications. */
 
 @media screen and ( max-width: 782px ) {
     /* Show notification bubble and drop-down list on
@@ -70,19 +71,25 @@ span.rb_notif_new_message {
     #wpadminbar ul#wp-admin-bar-root-default > li {
         margin-right: 1em;
     }
-}
 
-@media screen and (max-width: 600px) {
-    #wpadminbar .ab-top-menu > .menupop > .ab-sub-wrapper {
-        width: auto;
-        right: 0;
-        left: auto;
+    /* Setting static position allows the drop-down
+       menus for notifications and the avatar to
+       extend to the right of the screen, not be
+       aligned with the item in the administration
+       bar, providing a little more room in them. */
+    #wpadminbar .ab-sub-wrapper,
+    #wpadminbar ul,
+    #wpadminbar ul li {
+        position: static;
     }
 
-    #wp-admin-bar-bp-notifications .ab-submenu,
-    #wpadminbar .quicklinks #wp-admin-bar-bp-notifications ul {
-        text-align: right;
+    /* On narrow screen devices, we left-align the
+       notifications drop-down menu, providing the
+       maximum room for notifications. */
+    #wp-admin-bar-bp-notifications-default {
+        left: 0px;
     }
+
 }
 
 /* END RATBURGER LOCAL CODE */

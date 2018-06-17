@@ -530,9 +530,9 @@ if( defined( 'BP_VERSION' ) ) {
 						/* RATBURGER LOCAL CODE
 						   If $custom_class specified, wrap around the $custom_text.
 						*/
-						$ctx = $custom_text;
+						$ctx = rb_trimtext($custom_text, 90);
 						if ($custom_class !== '') {
-							$ctx = '<span class="' . $custom_class . '">' . $custom_text . '</span>';
+							$ctx = '<span class="' . $custom_class . '">' . $ctx . '</span>';
 						}
 						$return = apply_filters( 'wp_ulike_bp_notifications_template', array(
 							'text' => $ctx,

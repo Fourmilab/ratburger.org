@@ -939,5 +939,40 @@ global $Ratburger_follow_comment_pattern;
 $Ratburger_follow_comment_pattern =
     "/^(?:[\s\R]|&nbsp;)*(?:c4c|follow)([\s\R\.\!\?]|&nbsp;)*$/i";
 
+    /*  Trim a text string to the specified length.  If the
+        string is already shorter or equal to the length, it is
+        returned unchanged.  Otherwise, the string is trimmed to
+        the specified length.  If the trim caused a word to be
+        broken, delete the fragment of the broken word from the
+        end of the trimmed string. Any trailing white space is
+        removed and a Unicode horizontal ellipsis is appended to
+        the string to indicate it has been trimmed.  */
+
+    function rb_trimtext($text, $length) {
+
+        //  If it's already shorter than $length, return unchanged
+        if (strlen($text) <= $length) {
+            return $text;
+        }
+
+        //  Extract desired length
+        $t = substr($text, 0, $length);
+
+        /*  If trimming the string broke a word, remove the
+            fragment of the broken word from the end of the
+            string.  */
+        if (preg_match("/\w/", substr($text, $length, 1)) &&
+            preg_match("/\w/", substr($t, -1, 1))) {
+            $t = preg_replace("/\s+\w+$/", "", $t, 1);
+        }
+
+        //  Trim any trailing white space from string
+        $t = preg_replace("/\s+$/", "", $t, 1);
+
+        //  Append horizontal ellipsis character
+        $t .= "\u{2026}";
+
+        return $t;
+    }
 
 /* END RATBURGER LOCAL CODE */
