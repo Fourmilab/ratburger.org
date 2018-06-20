@@ -2276,10 +2276,10 @@ class rsssl_admin extends rsssl_front_end
                            )
                         );
                       $this->get_banner_html(array(
-                              'img' => 'complianz-white.jpg',
+                              'img' => 'complianz.jpg',
                               'title' => 'ComplianZ',
-                              'description' => __("GDPR Ready with the Complianz WordPress Plugin. Always up-to-date documentation by one of the most prominent EU IT Law firms.", "really-simple-ssl"),
-                              'url' => 'https://complianz.io/en/pricing/',
+                              'description' => __("Do you have visitors from the European Union? Get GDPR ready in 30 minutes with Complianz GDPR. Always up-to-date legal documents by one of the most prominent EU IT Law firms.", "really-simple-ssl"),
+                              'url' => 'https://complianz.io/',
                               'pro' => true,
                            )
                         );
@@ -2289,7 +2289,7 @@ class rsssl_admin extends rsssl_front_end
                         if (!defined("um_tagging_version")) {
 
                             $this->get_banner_html(array(
-                                    'img' => 'um-tagging.jpg',
+                                    'img' => 'tagging.jpg',
                                     'title' => 'UM Tagging',
                                     'description' => __("UM Tagging allows you to @tag or @mention all users on your platform.", "really-simple-ssl"),
                                     'url' => 'https://really-simple-plugins.com/download/um-tagging/',
@@ -2300,7 +2300,7 @@ class rsssl_admin extends rsssl_front_end
                         if (!defined("um_most_visited_version")) {
 
                             $this->get_banner_html(array(
-                                    'img' => 'um-most-visited.jpg',
+                                    'img' => 'most-visited.jpg',
                                     'title' => 'UM Most Visited',
                                     'description' => __("Show the most visited users and add a 'last visited users' tab to each user profile.", "really-simple-ssl"),
                                     'url' => 'https://really-simple-plugins.com/download/most-visited-members/',
@@ -2310,7 +2310,7 @@ class rsssl_admin extends rsssl_front_end
 
                         if (!defined("um_tagging_version")) {
                             $this->get_banner_html(array(
-                                    'img' => 'um-mail-alerts.jpg',
+                                    'img' => 'mail-alerts.jpg',
                                     'title' => 'UM Mail Alerts',
                                     'description' => __("Automatically send a notification when a user's post on the activity feed is liked or commented on.", "really-simple-ssl"),
                                     'url' => 'https://really-simple-plugins.com/download/um-mail-alerts/',
