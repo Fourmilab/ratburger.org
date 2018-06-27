@@ -431,12 +431,13 @@ blockquote p {
 	margin-bottom: 1.4736842105em;
 }
 
+/*
 blockquote cite,
 blockquote small {
 	color: #1a1a1a;
 	display: block;
-/*      font-size: 16px;
-        font-size: 1rem; */
+    font-size: 16px;
+    font-size: 1rem;
     font-size: 15px;
 	line-height: 1.75;
 }
@@ -445,6 +446,7 @@ blockquote cite:before,
 blockquote small:before {
 	content: "\2014\00a0";
 }
+*/
 
 blockquote em,
 blockquote i,
