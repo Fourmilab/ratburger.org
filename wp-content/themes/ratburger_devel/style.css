@@ -137,6 +137,14 @@ img {
 	border: 0;
 }
 
+/* RATBURGER LOCAL CODE
+   Allow images to override block display property
+   by specifying class="rb_inline" */
+img.rb_inline {
+    display: inline !important;
+}
+/* END RATBURGER LOCAL CODE */
+
 svg:not(:root) {
 	overflow: hidden;
 }
