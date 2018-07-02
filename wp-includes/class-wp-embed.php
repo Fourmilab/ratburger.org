@@ -230,6 +230,20 @@ class WP_Embed {
 		}
 
 		$cached_recently = ( time() - $cache_time ) < $ttl;
+/* RATBURGER LOCAL CODE
+   Uncomment this debug code to disable caching of oEmbed
+   references for the RB_me() account.  This is essential
+   for debugging oEmbed handling (adding trusted sites,
+   filtering of output from untrusted sites, etc.).  See
+   the development log for 2018-07-02 for pointers to where
+   you want to go if you're getting involved with this. */
+/*
+if (RB_me()) {
+    $cached_recently = false;
+    $this->usecache = false;
+}
+*/
+/* END RATBURGER LOCAL CODE */
 
 		if ( $this->usecache || $cached_recently ) {
 			// Failures are cached. Serve one if we're using the cache.

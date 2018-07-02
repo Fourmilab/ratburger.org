@@ -975,4 +975,16 @@ $Ratburger_follow_comment_pattern =
         return $t;
     }
 
+/*  Register oEmbed providers we add to the white list.
+    These providers are not subjected to the filtering
+    that those not on the list suffer. */
+
+function rb_custom_oembed_providers() {
+        wp_oembed_add_provider(
+        'https://*.nytimes.com/*',
+        'https://www.nytimes.com/svc/oembed/json',
+        false);
+}
+add_action('init', 'rb_custom_oembed_providers');
+
 /* END RATBURGER LOCAL CODE */
