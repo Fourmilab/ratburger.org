@@ -3,7 +3,7 @@
 Plugin Name: Disable Emojis (GDPR friendly)
 Plugin URI: https://geek.hellyer.kiwi/plugins/disable-emojis/
 Description: Disable Emojis (GDPR friendly)
-Version: 1.7.1
+Version: 1.7.2
 Author: Ryan Hellyer
 Author URI: https://geek.hellyer.kiwi/
 License: GPL2
@@ -53,9 +53,9 @@ add_action( 'init', 'disable_emojis' );
 function disable_emojis_tinymce( $plugins ) {
 	if ( is_array( $plugins ) ) {
 		return array_diff( $plugins, array( 'wpemoji' ) );
-	} else {
-		return array();
 	}
+
+	return array();
 }
 
 /**
