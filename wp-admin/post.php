@@ -295,7 +295,6 @@ case 'draft':
         wp_redirect( add_query_arg('reverted', 1, $sendback) );
         exit();
 /* END RATBURGER LOCAL CODE */
-
 default:
 	/**
 	 * Fires for a given custom post action request.

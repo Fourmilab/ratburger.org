@@ -1295,7 +1295,6 @@ class WP_Posts_List_Table extends WP_List_Table {
 					__( 'View' )
 				);
 			}
-
 			/* RATBURGER LOCAL CODE */
 			/* If the post is published, allow it to be reverted to Draft status.  Only
 			   a user with the capability to publish a post can revert it to a draft. */

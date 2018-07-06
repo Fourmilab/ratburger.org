@@ -78,7 +78,6 @@ if ( current_user_can( 'edit_posts' ) ) {
 // Avoid the comment count query for users who cannot edit_others_posts.
 if ( current_user_can( 'edit_others_posts' ) ) {
 /* END RATBURGER LOCAL CODE */
-
 	$awaiting_mod = wp_count_comments();
 	$awaiting_mod = $awaiting_mod->moderated;
 	$menu[25] = array(

@@ -104,8 +104,7 @@ function get_comment_to_edit( $id ) {
        Enable editing comment content in rich text mode
        with either TinyMCE or Quicktags.  Don't escape
        HTML metacharacters in comment content.
-
-        $comment->comment_content = format_to_edit( $comment->comment_content );
+	$comment->comment_content = format_to_edit( $comment->comment_content );
     */
     $comment->comment_content = format_to_edit($comment->comment_content, true);
     /* END RATBURGER LOCAL CODE */
