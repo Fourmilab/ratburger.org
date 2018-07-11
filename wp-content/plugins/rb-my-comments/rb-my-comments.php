@@ -517,7 +517,7 @@ function rb_my_adjust_quote_links($comment) {
 function rb_my_comments_comment_URL($comment) {
     //  Naturally, defaults for get_page_of_comment() args don't work
     $comment_page = get_page_of_comment($comment->comment_ID,
-        array(type => 'all', per_page => get_option('comments_per_page')));
+        array('type' => 'all', 'per_page' => get_option('comments_per_page')));
     return get_permalink($comment->comment_post_ID) .
         (($comment_page > 1) ? ("comment-page-" . $comment_page . "/") : "") .
         '#comment-' . $comment->comment_ID;
