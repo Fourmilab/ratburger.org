@@ -9,6 +9,12 @@
 #satisfy any
 #</limit>
 
+# Block rogue user agents
+BrowserMatchNoCase 'Go-http-client' evilbots
+Order Allow,Deny
+Allow from ALL
+Deny from env=evilbots
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
