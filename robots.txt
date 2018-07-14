@@ -1,0 +1,8 @@
+# Twitterbot blasts in dozens of requests in seconds,
+# exhausting the PHP-fpm worker process pool.
+User-agent: Twitterbot
+Disallow: /
+
+# Allow everybody else
+User-agent: *
+Allow: /
