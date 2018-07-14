@@ -200,7 +200,12 @@ function ss_init() {
 					$reason  = be_load( $add, ss_get_ip(), $stats, $options );
 					if ( $reason !== false ) {
 // need to log a passed hit on post here
+/* RATBURGER LOCAL CODE
+   Fix unquoted function name in remove_filter
 						remove_filter( 'pre_user_login', ss_user_reg_filter, 1 );
+*/
+						remove_filter( 'pre_user_login', 'ss_user_reg_filter', 1 );
+/* END RATBURGER LOCAL CODE */
 						ss_log_bad( ss_get_ip(), $reason, $add[1], $add );
 
 						return;
@@ -673,7 +678,12 @@ function ss_user_reg_filter( $user_login ) {
 	$post['author'] = $user_login;
 	$post['addon']  = 'chkRegister'; // not really an add-on - but may be moved out when working
 	if ( $options['filterregistrations'] != 'Y' ) {
+/* RATBURGER LOCAL CODE
+   Fix quoting of function name in remove_filter
 		remove_filter( 'pre_user_login', ss_user_reg_filter, 1 );
+*/
+		remove_filter( 'pre_user_login', 'ss_user_reg_filter', 1 );
+/* END RATBURGER LOCAL CODE */
 		sfs_errorsonoff( 'off' );
 
 		return $user_login;
