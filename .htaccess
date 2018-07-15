@@ -11,6 +11,8 @@
 
 # Block rogue user agents
 BrowserMatchNoCase 'Go-http-client' evilbots
+BrowserMatchNoCase 'Twitterbot' evilbots
+BrowserMatchNoCase 'AhrefsBot' evilbots
 Order Allow,Deny
 Allow from ALL
 Deny from env=evilbots

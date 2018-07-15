@@ -3,6 +3,17 @@
 User-agent: Twitterbot
 Disallow: /
 
+# AhrefsBot generates lots of traffic and provides no
+# benefit to sites it scrapes.  It is also known for
+# ignoring robots.txt, so we also block it in .htaccess.
+User-agent: AhrefsBots
+Disallow: /
+
+# MJ12bot generates a lot of traffic to no benefit.
+# It claims to respect robots.txt.  Let's see.
+User-agent: MJ12bot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
