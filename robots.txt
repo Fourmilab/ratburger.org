@@ -14,6 +14,11 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
+# DotBot (Moz.com) crawls indiscriminately to no
+# benefit but their own.
+User-agent: DotBot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
