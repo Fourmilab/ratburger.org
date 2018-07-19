@@ -223,7 +223,7 @@ class UpdraftPlus_Manipulation_Functions {
 				// The flag is for whether non-numeric character passed after numeric character occurence in str1. For ex. str1 is utf8mb4, the flag wil be true when parsing m after utf8.
 				$numeric_char_pass_flag = false;
 				$char_position_in_str1 = 0;
-				while ($char_position_in_str1 <= $str1_str_length) {
+				while ($char_position_in_str1 < $str1_str_length) {
 					if ($numeric_char_pass_flag && !is_numeric($temp_str1_chars[$char_position_in_str1])) {
 						break;
 					}
@@ -348,5 +348,17 @@ class UpdraftPlus_Manipulation_Functions {
 			$normalised_descrip_url = untrailingslashit($url);
 		}
 		return $normalised_descrip_url;
+	}
+	
+	/**
+	 * Determine if a given string ends with a given substring.
+	 *
+	 * @param  string $haystack string
+	 * @param  string $needle   substring which should be checked at the end of the string
+	 * @return boolean Whether string ends with the substring or not
+	 */
+	public static function str_ends_with($haystack, $needle) {
+		if (substr($haystack, - strlen($needle)) == $needle) return true;
+		return false;
 	}
 }

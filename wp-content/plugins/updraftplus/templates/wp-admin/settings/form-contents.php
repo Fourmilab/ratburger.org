@@ -230,7 +230,7 @@ foreach ($default_options as $k => $v) {
 		if (!empty($moredbs_config)) {
 		?>
 			<tr>
-				<th><?php _e('Back up more databases', 'updraftplus');?>:</th>
+				<th><?php _e('Backup more databases', 'updraftplus');?>:</th>
 				<td><?php echo $moredbs_config; ?>
 				</td>
 			</tr>

@@ -1,9 +1,9 @@
-﻿=== UpdraftPlus WordPress Backup Plugin ===
+=== UpdraftPlus WordPress Backup Plugin ===
 Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snightingale, bcrodua
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 4.9
-Stable tag: 1.14.11
+Stable tag: 1.14.12
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -137,9 +137,9 @@ To find the backup log: there are links to download the logs on the UpdraftPlus 
 
 If you know how, please send your PHP error logs- just the few lines that appear when you run a backup, often the file called error_log, possibly in your wp-admin directory which you can check via FTP. And if you’re a programmer that can debug and send a patch, that’s even better.
 
-= UpdraftPlus runs out of time when it’s trying to back up, after I have left it for some time to give it a good chance. What can I do? =
+= UpdraftPlus runs out of time when it’s trying to backup, after I have left it for some time to give it a good chance. What can I do? =
 
-This problem is probably caused by your account being starved of resources by your (cheap) web host provider. This is far from ideal; although UpdraftPlus supports resuming backup runs right from the beginning to avoid everything having to be done at once, it has its limits. The best thing is to choose a more reputable web host. Failing this, try going into the “Expert settings” and reducing the size at which zip files are split. UpdraftPlus is known to successfully back up websites that run into the multiple-gigabytes on web servers that are not resource-starved.
+This problem is probably caused by your account being starved of resources by your (cheap) web host provider. This is far from ideal; although UpdraftPlus supports resuming backup runs right from the beginning to avoid everything having to be done at once, it has its limits. The best thing is to choose a more reputable web host. Failing this, try going into the “Expert settings” and reducing the size at which zip files are split. UpdraftPlus is known to successfully backup websites that run into the multiple-gigabytes on web servers that are not resource-starved.
 
 = If my site gets hacked and the backups don’t work, is there anything I can do? =
 
@@ -150,6 +150,39 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.14.9 of the free version correspond to changes made in 2.14.9.x of the paid version.
+
+= 1.14.12 - 17/July/2018 =
+
+* FEATURE: Added UpdraftCentral's theme management module handler
+* FEATURE: User can mark any backup as "do not delete", and it will then not be deleted even when retention limits are hit
+* FEATURE: WP-CLI - add a 'restore' command
+* FEATURE: WP-CLI - Add an option 'delete-during-restore' in the 'restore' command
+* FEATURE: Add optional 'fingerprint' configuration for sftp/scp remote storage, allowing the connection to be halted if the server's fingerprint does not match what was entered
+* FEATURE: Added the ability to take an incremental backup via WP-CLI (note: incremental backups are still considered an experimental/work-in-progress feature)
+* FIX: If a user gave the wrong key to decrypt an encrypted database, the "Decryption failed" message did not display
+* FIX: The Migration was not changing an unsupported database table engine with the MyISAM  engine automatically
+* FIX: Issue with the Dropbox account API call on some installs
+* FIX: The web server disk space refresh link of the existing backups is not working
+* FIX: The UpdraftPlus News couldn't print first time when the news cache was not made
+* FIX: Activating the "all addons" licence did not remove the corresponding 'activate on this account' link in the "Premium / Extensions" tab
+* FIX: When set names query character set hadn’t support by the current MySQL server, the restoration process wasn't gave replace the character set
+* TWEAK: Updated the plugin.php handler for UpdraftCentral's new plugin management module
+* TWEAK: Update posts handler to fix and update pagination in UpdraftCentral
+* TWEAK: Refresh UpdraftCentral keys upon successful login or registration using the UpdraftCentral Cloud wizard 
+* TWEAK: Correct admin page URL in WP-CLI 'restore' command when on multisite without multisite add-on
+* TWEAK: Prevent PHP notice when checking non-existent files in relation to an extraneous whitespace warning
+* TWEAK: Prevent PHP notices in add-ons with non-present settings
+* TWEAK: Add the "Migrate / Clone" tab in place of the "Migrate / Clone" dialog
+* TWEAK: Prevent call to the the wp_get_sites() deprecated function on WP 4.6 and newer
+* TWEAK: Prevent a potential PHP debugging notice when displaying the 'Connect with your UpdraftPlus.com' form
+* TWEAK: Do not show the confusing JetPack 'backup' notice on the 'Updates' page
+* TWEAK: Added clone notices and commands for when UpdraftPlus is running on a UpdraftClone
+* TWEAK: Move 'Log all messages to syslog (only server admins are likely to want this)' into the 'expert' settings section
+* TWEAK: Replace a missing class constant in the Dropbox SDK (only relevant to people upgrading from Dropbox API v1 tokens - indicates upgrading UpdraftPlus from a very old version that previously used Dropbox APIv1 but never v2)
+* TWEAK: It's "backup", not "back up"
+* TWEAK: Prevent potential PHP debugging notices in restoration step 2
+* TWEAK: Allow non-Super Admins to access UpdraftPlus Premium if they have 'manage_network_plugins' capability and the updraft_user_can_manage filter is used
+* TWEAK: Improved code in a way that prevents continuous polling in the themes page, thes plugins page and the updates page
 
 = 1.14.11 - 25/May/2018 =
 
@@ -538,4 +571,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.14.11 : UpdraftCloud easy sign-up wizard. App privacy policy links for GDPR compliance. Azure Germany support (Azure add-on). Many tweaks for convenience and small fixes. A recommended update for all. Also fixes a change in the short-lived 1.14.9 that could cause backups to not be sent to remote storage
+* 1.14.12 : Added the ability to mark backups as "do not delete", new WP-CLI restore command and improvements to the sftp/scp remote storage method. Many tweaks for convenience and small fixes. A recommended update for all.
+

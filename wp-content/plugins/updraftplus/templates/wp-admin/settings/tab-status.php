@@ -24,13 +24,13 @@
 					);
 				}
 			?>
-			<button id="updraft-backupnow-button" type="button" <?php echo $backup_disabled; ?> class="updraft-bigbutton button-primary" <?php if ($backup_disabled) echo 'title="'.esc_attr(__('This button is disabled because your backup directory is not writable (see the settings).', 'updraftplus')).'" ';?> onclick="updraft_backup_dialog_open();"><?php _e('Backup Now', 'updraftplus');?></button>
+			<button id="updraft-backupnow-button" type="button" <?php echo $backup_disabled; ?> class="updraft-bigbutton button-primary" <?php if ($backup_disabled) echo 'title="'.esc_attr(__('This button is disabled because your backup directory is not writable (see the settings).', 'updraftplus')).'" ';?> onclick="updraft_backup_dialog_open();"><?php echo str_ireplace('Back Up', 'Backup', __('Backup Now', 'updraftplus'));?></button>
 
 			<button type="button" class="updraft-bigbutton button-primary" onclick="updraft_openrestorepanel();">
 				<?php _e('Restore', 'updraftplus');?>
 			</button>
 
-			<button type="button" class="updraft-bigbutton button-primary" onclick="updraft_migrate_dialog_open();"><?php _e('Clone/Migrate', 'updraftplus');?></button>
+			<button type="button" class="updraft-bigbutton button-primary" onclick="jQuery('#updraft-navtab-migrate').trigger('click');"><?php _e('Clone/Migrate', 'updraftplus');?></button>
 
 			</td>
 		</tr>
@@ -61,16 +61,6 @@
 	<br style="clear:both;" />
 
 	<?php $updraftplus_admin->render_active_jobs_and_log_table(); ?>
-
-	<div id="updraft-migrate-modal" title="<?php _e('Migrate Site', 'updraftplus'); ?>" style="display:none;">
-		<?php
-			if (class_exists('UpdraftPlus_Addons_Migrator')) {
-				do_action('updraftplus_migrate_modal_output');
-			} else {
-				echo '<p id="updraft_migrate_modal_main">'.__('Do you want to migrate or clone/duplicate a site?', 'updraftplus').'</p><p>'.__('Then, try out our "Migrator" add-on which can perform a direct site-to-site migration. After using it once, you\'ll have saved the purchase price compared to the time needed to copy a site by hand.', 'updraftplus').'</p><p><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/migrator/").'">'.__('Get it here.', 'updraftplus').'</a></p>';
-			}
-		?>
-	</div>
 
 	<div id="updraft-iframe-modal">
 		<div id="updraft-iframe-modal-innards">

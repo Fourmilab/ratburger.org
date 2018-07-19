@@ -68,7 +68,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 						<input type="checkbox" name="i_consent" value="1"> <label><?php echo sprintf(__('I consent to %s', 'updraftplus'), '<a href="https://updraftplus.com/data-protection-and-privacy-centre/" target="_blank">'.__('UpdraftPlus.Com account terms and policies', 'updraftplus').'</a>');?></label>
 					</div>
 					<button id="updraftcentral_cloud_login" class="btn btn-primary button-primary"><?php _e('Connect to UpdraftCentral Cloud', 'updraftplus');?></button>
-					<span class="updraftcentral_cloud_spinner spinner"><?php _e('Processing', 'updraftplus');?>...</span>
+					<span class="updraftplus_spinner spinner"><?php _e('Processing', 'updraftplus');?>...</span>
 					<small><span class="updraftcentral_cloud_messages"></span></small>
 				</td>
 			</tr>

@@ -31,6 +31,25 @@ class UpdraftPlus_Backup_History {
 		
 		return isset($backup_history[$timestamp]) ? $backup_history[$timestamp] : array();
 	}
+	
+	/**
+	 * Get the backup history for an indicated nonce
+	 *
+	 * @param String $nonce - Backup nonce to get a particular backup job
+	 *
+	 * @return Array|Boolean - either the particular backup indicated, or false
+	 */
+	public static function get_backup_set_by_nonce($nonce) {
+		if (empty($nonce)) return false;
+		$backup_history = self::get_history();
+		foreach ($backup_history as $timestamp => $backup_info) {
+			if ($nonce == $backup_info['nonce']) {
+				$backup_info['timestamp'] = $timestamp;
+				return $backup_info;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * This function will scan the backup history and split the files up in to incremental sets, foreign backup sets will only have one incremental set.

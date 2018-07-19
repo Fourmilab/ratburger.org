@@ -59,8 +59,14 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 
 				<td class="updraft_existingbackup_date " data-rawbackup="<?php echo $rawbackup;?>">
 					<div class="backup_date_label">
-						<?php echo $date_label;?>
 						<?php
+							echo $date_label;
+							if (!empty($backup['always_keep'])) {
+								$image_url = $image_folder_url.'lock.png';
+								?>
+								<img class="stored_icon" src="<?php echo esc_attr($image_url);?>" title="<?php echo esc_attr(__('Only allow this backup to be deleted manually (i.e. keep it even if retention limits are hit).', 'updraftplus'));?>">
+								<?php
+							}
 							if (!isset($backup['service'])) $backup['service'] = array();
 							if (!is_array($backup['service'])) $backup['service'] = array($backup['service']);
 							foreach ($backup['service'] as $service) {

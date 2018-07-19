@@ -30,6 +30,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 			'comments' => 'UpdraftCentral_Comments_Commands',
 			'analytics' => 'UpdraftCentral_Analytics_Commands',
 			'plugin' => 'UpdraftCentral_Plugin_Commands',
+			'theme' => 'UpdraftCentral_Theme_Commands',
 			'posts' => 'UpdraftCentral_Posts_Commands'
 		));
 	

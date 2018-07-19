@@ -65,6 +65,23 @@ class UpdraftPlus_Encryption {
 			
 			$decrypted_data = $rijndael->decrypt($file_part);
 			
+			if (0 == $bytes_decrypted) {
+				if (UpdraftPlus_Manipulation_Functions::str_ends_with($fullpath, '.gz.crypt')) {
+					$first_two_chars = unpack('C*', substr($decrypted_data, 0, 2));
+					// The first two decrypted bytes of the .gz file should always be 1f 8b
+					if (31 != $first_two_chars[1] || 139 != $first_two_chars[2]) {
+						return false;
+					}
+				} elseif (UpdraftPlus_Manipulation_Functions::str_ends_with($fullpath, '.zip.crypt')) {
+					$first_four_chars = unpack('C*', substr($decrypted_data, 0, 2));
+					// The first four decrypted bytes of the .zip file should always be 50 4B 03 04 or 50 4B 05 06 or 50 4B 07 08
+					if (80 != $first_four_chars[1] || 75 != $first_four_chars[2] || !in_array($first_four_chars[3], array(3, 5, 7)) || !in_array($first_four_chars[3], array(4, 6, 8))) {
+						return false;
+					}
+					
+				}
+			}
+			
 			$is_last_block = ($bytes_decrypted + strlen($decrypted_data) >= $file_size);
 			
 			$write_bytes = min($file_size - $bytes_decrypted, strlen($decrypted_data));

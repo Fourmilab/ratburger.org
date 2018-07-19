@@ -32,7 +32,7 @@ This file contains changelog entries that are not contained in the main readme.t
 * FEATURE: Add UpdraftCentral (https://updraftcentral.com) UpdraftVault listener
 * FEATURE: Encryption and decryption is now chunked, meaning that large databases of any size can be encrypted without being prevented by memory limits
 * FIX: Fix a bug whereby if a backup set containing a manual "more files" element was imported via a remote scan, then an error would show concerning it when attempting to restore.
-* FIX: On certain combinations of changing the "more files to back up" settings, these changes might not be reflected in the "Backup Now" dialog without a page reload
+* FIX: On certain combinations of changing the "more files to backup" settings, these changes might not be reflected in the "Backup Now" dialog without a page reload
 * FIX: Remove a PHP 5.5+-only construction that crept into 1.12.31
 * TWEAK: Allow UpdraftCentral command classes to provide commands via the __call method
 * TWEAK: Move the existing backups table into the templating system
@@ -429,7 +429,7 @@ This file contains changelog entries that are not contained in the main readme.t
 
 * FEATURE: Google Cloud Storage support (UpdraftPlus Premium)
 * FIX: Automatic backups of WordPress core prior to WP core upgrade in recent versions were including non-WP core files
-* FIX: OwnCloud 8.1's WebDAV server responds differently, breaking UD's communications: restore the ability to back up to OwnCloud WebDAV
+* FIX: OwnCloud 8.1's WebDAV server responds differently, breaking UD's communications: restore the ability to backup to OwnCloud WebDAV
 * TWEAK: Allow use of the Meta key for selecting multiple backup sets (as well as Control)
 * TWEAK: When sending backup data directly site-to-site (when migrating), handle the (very rare) case where a remote server complains of the chunk size after accepting previous chunks of the same size
 * TWEAK: Add message to final log line when sending backup set directly to a remote site, reminding the user of what to do next.
@@ -663,7 +663,7 @@ This file contains changelog entries that are not contained in the main readme.t
 * TWEAK: Slight change to how the 'mothership' for updates is calculated, for more flexibility in our in-house testing
 * TWEAK: Log more informative error if user chooses 'FTP' for their remote storage, but adds no FTP settings
 * TWEAK: Change "any other directory" to "any other file/directory" in the "more files" add-on, to better reflect its capabilities
-* TWEAK: Make sure that "more files" will skip UD's temporary directory, if asked to back up a parent directory of it
+* TWEAK: Make sure that "more files" will skip UD's temporary directory, if asked to backup a parent directory of it
 * TWEAK: Default to https for updates checking, with fallback to http (only relevant to versions from updraftplus.com)
 * TWEAK: Prevent 'Strict Standards' PHP coding notice with WebDAV on PHP 5.5
 * TWEAK: Provide clickable link through to the admin email address in the reporting settings
@@ -957,7 +957,7 @@ errors, Y warnings".
 = 1.9.13 - 2014/05/19 =
 
 * FEATURE: Google Drive now works without the PHP curl module being needed
-* FEATURE: UpdraftPlus Premium can now back up non-WordPress tables and
+* FEATURE: UpdraftPlus Premium can now backup non-WordPress tables and
 external databases; database encryption is also now a Premium feature; see:
 https://updraftplus.com/backing-external-databases/
 * FIX: Work around conflicts with the Google Analyticator and Appointments+
@@ -1351,7 +1351,7 @@ install has its scheduler disabled (of course, enabling your scheduler would
 better).
 * FIX: Fix bug whereby clicking on 'rescan' lost track of backups sent to
 remote storage
-* FIX: Fix obscure bug that could cause WPMU installs to not back up all
+* FIX: Fix obscure bug that could cause WPMU installs to not backup all
 tables
 * FIX: Fix unwanted warning message if the uploads folder was empty
 * FIX: Show timestamps of available backup sets in local time zone
@@ -1565,7 +1565,7 @@ turn it off, then ask for support when they see lots of debugging notices)
 = 1.6.1 - 05/06/2013 =
 * FEATURE: New "Migrator" add-on for moving sites from one WordPress install
 to another (https://updraftplus.com/shop/)
-* FEATURE: The "More files" add-on can now back up any files from anywhere on
+* FEATURE: The "More files" add-on can now backup any files from anywhere on
 your filesystem (not just parts of WordPress)
 * FEATURE: The "More files" add-on can now exclude specified directories from
 the backup of WordPress core
@@ -1881,7 +1881,7 @@ opportunity to eventually succeed uploading
 * Moved screenshot into assets, reducing plugin download size
 
 = 0.8.50 - 10/13/2012 =
-* Important new feature: back up other directories found in the WP content
+* Important new feature: backup other directories found in the WP content
 (wp-content) directory (not just plugins/themes/uploads, as in original
 Updraft)
 

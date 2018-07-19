@@ -55,29 +55,51 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 	 */
 	public function get_requested_posts($params) {
 
+		if (empty($params['numberposts'])) return $this->_generic_error_response('numberposts_parameter_missing', $params);
+
 		// check paged parameter; if empty set to 1
-		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
-		
+		$paged = !empty($params['paged']) ? (int) $params['paged'] : 1;
+
+		$args = array(
+			'posts_per_page' => $params['numberposts'],
+			'paged' => $paged,
+			'post_type' => 'post',
+			'post_status' => !empty($params['post_status']) ? $params['post_status'] : 'any'
+		);
+
+		if (!empty($params['category'][0])) {
+			$term_id = (int) $params['category'][0];
+			$args['category__in'] = array($term_id);
+		}
 
 		// Using default function get_posts to fetch all posts object from passed parameters
 		// Count all fetch posts objects
 		// get total fetch posts and divide to number of posts for pagination
-		$query = new WP_Query($params);
+		$query = new WP_Query($args);
 		$result = $query->posts;
 
-		$count_posts = wp_count_posts();
+		$count_posts = $query->found_posts;
 		$page_count = 0;
 		$postdata = array();
 		
-		if ($count_posts->publish > 0) {
-			if (empty($params['numberposts'])) return $this->_generic_error_response('numberposts_parameter_missing', $params);
-			$page_count = absint($count_posts->publish / $params['numberposts']);
+		if ((int) $count_posts > 0) {
+			$page_count = absint((int) $count_posts / (int) $params['numberposts']);
+			$remainder = absint((int) $count_posts % (int) $params['numberposts']);
+
+			$page_count = ($remainder > 0) ? ++$page_count : $page_count;
 		}
 		
+		$info = array(
+			'page' => $paged,
+			'pages' => $page_count,
+			'results' => $count_posts
+		);
+
 		if (empty($result)) {
 			$error_data = array(
 				'count' => $page_count,
-				'paged' => $paged
+				'paged' => $paged,
+				'info' => $info
 			);
 			return $this->_generic_error_response('post_not_found_with_keyword', $error_data);
 		} else {
@@ -101,27 +123,22 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 				$data->category_name = $cat_array;
 				$data->post_title = $post->post_title;
 				$data->post_status = $post->post_status;
+				$data->ID = $post->ID;
 				$postdata[] = $data;
 			}
 
-			$cat_id = $params['category'][0];
-			if (0 != $cat_id) {
-				$count_category_posts = get_category($cat_id);
-				if (empty($params['numberposts'])) return $this->_generic_error_response('numberposts_parameter_missing', $params);
-				$page_count = absint($count_category_posts->category_count / $params['numberposts']);
-			}
-			
 			$response = array(
 				'posts' => $postdata,
 				'count' => $page_count,
 				'paged' => $paged,
 				'categories' => $this->get_requested_categories(array('parent' => 0, 'return_object' => true)),
-				'message' => "found_posts_count"
+				'message' => "found_posts_count",
+				'params' => $params,
+				'info' => $info
 			);
 		}
 
 		return $this->_response($response);
-
 	}
 
 	/**
@@ -297,7 +314,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 		// Check if result is false
 		if (is_wp_error($post_id)) {
 			$error_data = array(
-				'message' => 'Error inserting post',
+				'message' => __('Error inserting post')
 			);
 
 			return $this->_generic_error_response('post_insert_error', $error_data);
@@ -359,7 +376,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 		// Check if response is false
 		if (is_wp_error($response)) {
 			$error_data = array(
-				'message' => 'Error updating post',
+				'message' => __('Error updating post')
 			);
 
 			return $this->_generic_error_response('post_update_error', $error_data);
@@ -418,7 +435,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 		// Check if response if false
 		if (is_wp_error($response)) {
 			$error_data = array(
-				'message' => 'Error deleting post'
+				'message' => __('Error deleting post')
 			);
 			return $this->_generic_error_response('post_delete_error', $error_data);
 		}
@@ -481,7 +498,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 
 		if (is_wp_error($response)) {
 			$error_data = array(
-				'message' => 'Error inserting category'
+				'message' => __('Error inserting category')
 			);
 			return $this->_generic_error_response('category_insert_error', $error_data);
 		}
@@ -539,7 +556,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 		// Check if response is false
 		if (is_wp_error($response)) {
 			$error_data = array(
-				'message' => 'Error updating category'
+				'message' => __('Error updating category')
 			);
 			return $this->_generic_error_response('category_update_error', $error_data);
 		}
@@ -587,7 +604,7 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 
 		if (is_wp_error($response)) {
 			$error_data = array(
-				'message' => 'Error deleting category'
+				'message' => __('Error deleting category')
 			);
 			return $this->_generic_error_response('user_no_permission_to_delete_category', $error_data);
 		}
@@ -612,19 +629,40 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 	 */
 	public function find_post_by_title($params) {
 
+		$paged = !empty($params['paged']) ? (int) $params['paged'] : 1;
+
 		// Check if keyword is empty or null
 		if (empty($params['s'])) {
 			return $this->_generic_error_response('search_generated_no_result', array());
 		}
 
 		// Set an array with post_type to search only post
-		$query_string = array('s' => $params['s'], 'post_type' => 'post');
+		$query_string = array(
+			's' => $params['s'],
+			'post_type' => 'post',
+			'posts_per_page' => $params['numberposts'],
+			'paged' => $paged
+		);
 		$query = new WP_Query($query_string);
-		$published_posts = absint($query->post_count / 10);
 		$postdata = array();
 
-		$response = array();
+		$count_posts = $query->found_posts;
+		if ((int) $count_posts > 0) {
+			if (empty($params['numberposts'])) return $this->_generic_error_response('numberposts_parameter_missing', $params);
 
+			$page_count = absint((int) $count_posts / (int) $params['numberposts']);
+			$remainder = absint((int) $count_posts % (int) $params['numberposts']);
+
+			$page_count = ($remainder > 0) ? ++$page_count : $page_count;
+		}
+
+		$info = array(
+			'page' => $paged,
+			'pages' => $page_count,
+			'results' => $count_posts
+		);
+
+		$response = array();
 		if ($query->have_posts()) {
 			
 			foreach ($query->posts as $post) {
@@ -655,14 +693,16 @@ class UpdraftCentral_Posts_Commands extends UpdraftCentral_Commands {
 				'categories' => $this->get_requested_categories(array('parent' => 0, 'return_object' => true)),
 				'posts' => $postdata,
 				'n' => $arr,
-				'count' => $published_posts,
-				'paged' => 1,
-				'message' => "found_post"
+				'count' => $count_posts,
+				'paged' => $paged,
+				'message' => "found_post",
+				'info' => $info
 			);
 		} else {
 			$error_data = array(
-				'count' => $published_posts,
-				'paged' => 1
+				'count' => $count_posts,
+				'paged' => $paged,
+				'info' => $info
 			);
 			return $this->_generic_error_response('post_not_found_with_keyword', $error_data);
 		}

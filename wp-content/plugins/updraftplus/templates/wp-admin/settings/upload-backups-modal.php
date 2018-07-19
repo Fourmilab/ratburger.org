@@ -10,11 +10,10 @@
 			<?php
 				global $updraftplus;
 				
-				$service = $updraftplus->just_one(UpdraftPlus_Options::get_updraft_option('updraft_service'));
-				if (is_string($service)) $service = array($service);
-				if (!is_array($service)) $service = array();
+				$service = (array) $updraftplus->just_one($updraftplus->get_canonical_service_list());
 
-				foreach ($service as $key => $value) {
+				foreach ($service as $value) {
+					if ('' == $value) continue;
 					echo '<input class="updraft_remote_storage_destination" id="updraft_remote_'.$value.'" checked="checked" type="checkbox" name="updraft_remote_storage_destination_'. $value . '" value="'.$value.'"> <label for="updraft_remote_'.$value.'">'.$updraftplus->backup_methods[$value].'</label><br>';
 				}
 			?>

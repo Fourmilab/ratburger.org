@@ -126,6 +126,11 @@ select {
 	border-color: rgb(238, 169, 32);
 }
 
+#updraft_migrate_tab_main {
+	padding: 8px;
+	max-width: 760px;
+}
+
 .updraft_migrate_widget_module {
 	margin: 8px 4px;
 	padding: 5px 8px;
@@ -1824,16 +1829,16 @@ div#updraft-wrap a {
 	margin-bottom: 10px;
 }
 
-.updraftcentral_cloud_spinner.spinner {
+.updraftplus_spinner.spinner {
 	padding-left: 25px;
 	float: none;
 }
 
-.updraftcentral_cloud_spinner.spinner.visible {
+.updraftplus_spinner.spinner.visible {
 	visibility: visible;
 }
 
-.updraftcentral_cloud_notices .updraftcentral_cloud_spinner {
+.updraftcentral_cloud_notices .updraftplus_spinner {
 	margin-top: -5px;
 }
 

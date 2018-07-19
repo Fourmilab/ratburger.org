@@ -546,7 +546,7 @@ abstract class UpdraftPlus_BackupModule {
 			$text = sprintf(__("<strong>After</strong> you have saved your settings (by clicking 'Save Changes' below), then come back here once and click this link to complete authentication with %s.", 'updraftplus'), $description);
 		} else {
 			$instance_id = $this->get_instance_id();
-			$text = sprintf(__('Follow this link to authorize access to your %s account (you will not be able to back up to %s without it).', 'updraftplus'), $description, $description);
+			$text = sprintf(__('Follow this link to authorize access to your %s account (you will not be able to backup to %s without it).', 'updraftplus'), $description, $description);
 		}
 
 		echo $account_warning . ' <a class="updraft_authlink" href="'.UpdraftPlus_Options::admin_page_url().'?&action=updraftmethod-'.$id.'-auth&page=updraftplus&updraftplus_'.$id.'auth=doit&updraftplus_instance='.$instance_id.'" data-instance_id="'.$instance_id.'" data-remote_method="'.$id.'">'.$text.'</a>';

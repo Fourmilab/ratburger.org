@@ -182,7 +182,7 @@ class UpdraftPlus_Backup {
 				if (!function_exists('get_mu_plugins')) include_once(ABSPATH.'wp-admin/includes/plugin.php');
 				$mu_plugins = get_mu_plugins();
 				if (count($mu_plugins) == 0) {
-					$updraftplus->log("There appear to be no mu-plugins to back up. Will not raise an error.");
+					$updraftplus->log("There appear to be no mu-plugins to backup. Will not raise an error.");
 					$flag_error = false;
 				}
 			}
@@ -362,8 +362,8 @@ class UpdraftPlus_Backup {
 
 		// We need to make sure that the loop below actually runs
 		if (empty($services)) $services = array('none');
-
-		$storage_objects_and_ids = $updraftplus->get_storage_objects_and_ids($services);
+		
+		$storage_objects_and_ids = $updraftplus->get_enabled_storage_objects_and_ids($services);
 
 		$total_instances_count = 0;
 
@@ -589,7 +589,7 @@ class UpdraftPlus_Backup {
 		if (!empty($ignored_because_imported)) {
 			$updraftplus->log("These backup set(s) were imported from a remote location, so will not be counted or pruned. Skipping: ".implode(', ', $ignored_because_imported));
 		}
-
+		
 		$backupable_entities = $updraftplus->get_backupable_file_entities(true);
 
 		$database_backups_found = array();
@@ -627,10 +627,13 @@ class UpdraftPlus_Backup {
 				// $backup_to_examine is an array of file names, keyed on db/plugins/themes/uploads
 				// The new backup_history array is saved afterwards, so remember to unset the ones that are to be deleted
 				$this->log_with_db_occasionally(sprintf("Examining (for databases) backup set with group_id=$group_id, nonce=%s, datestamp=%s (%s)", $nonce, $backup_datestamp, gmdate('M d Y H:i:s', $backup_datestamp)));
-
+				
+				// "Always Keep" Backups should be counted in the count of how many have been retained for purposes of the "how many to retain" count... but if that count is already matched, it's not a problem
+				$is_always_keep = !empty($backup_to_examine['always_keep']);
+				
 				// Auto-backups are only counted or deleted once we have reached the retain limit - before that, they are skipped
 				$is_autobackup = !empty($backup_to_examine['autobackup']);
-
+				
 				$remote_sent = (!empty($backup_to_examine['service']) && ((is_array($backup_to_examine['service']) && in_array('remotesend', $backup_to_examine['service'])) || 'remotesend' === $backup_to_examine['service'])) ? true : false;
 
 				$any_deleted_via_filter_yet = false;
@@ -644,6 +647,16 @@ class UpdraftPlus_Backup {
 					if ($nonce == $updraftplus->nonce) {
 						$this->log_with_db_occasionally("This backup set is the backup set just made, so will not be deleted.");
 						$database_backups_found[$key]++;
+						continue;
+					}
+					
+					if ($is_always_keep) {
+						if ($database_backups_found[$entity] < $updraft_retain) {
+							$this->log_with_db_occasionally("This backup set ($backup_datestamp) was an 'Always Keep' backup, and we have not yet reached any retain limits, so it should be counted in the count of how many have been retained for purposes of the 'how many to retain' count. It will not be pruned. Skipping.");
+							$database_backups_found[$key]++;
+						} else {
+							$this->log_with_db_occasionally("This backup set ($backup_datestamp) was an 'Always Keep' backup, so it will not be pruned. Skipping.");
+						}
 						continue;
 					}
 					
@@ -761,6 +774,9 @@ class UpdraftPlus_Backup {
 				// The new backup_history array is saved afterwards, so remember to unset the ones that are to be deleted
 				$this->log_with_db_occasionally(sprintf("Examining (for files) backup set with nonce=%s, datestamp=%s (%s)", $nonce, $backup_datestamp, gmdate('M d Y H:i:s', $backup_datestamp)));
 
+				// "Always Keep" Backups should be counted in the count of how many have been retained for purposes of the "how many to retain" count... but if that count is already matched, it's not a problem
+				$is_always_keep = !empty($backup_to_examine['always_keep']);
+				
 				// Auto-backups are only counted or deleted once we have reached the retain limit - before that, they are skipped
 				$is_autobackup = !empty($backup_to_examine['autobackup']);
 
@@ -781,6 +797,16 @@ class UpdraftPlus_Backup {
 							continue;
 						}
 
+						if ($is_always_keep) {
+							if ($file_entities_backups_found[$entity] < $updraft_retain) {
+								$this->log_with_db_occasionally("This backup set ($backup_datestamp) was an 'Always Keep' backup, and we have not yet reached any retain limits, so it should be counted in the count of how many have been retained for purposes of the 'how many to retain' count. It will not be pruned. Skipping.");
+								$file_entities_backups_found[$entity]++;
+							} else {
+								$this->log_with_db_occasionally("This backup set ($backup_datestamp) was an 'Always Keep' backup, so it will not be pruned. Skipping.");
+							}
+							continue;
+						}
+						
 						if ($is_autobackup) {
 							if ($any_deleted_via_filter_yet) {
 								$this->log_with_db_occasionally("This backup set was an automatic backup, but we have previously deleted a backup due to a limit, so it will be pruned (but not counted towards numerical limits).");
@@ -1436,7 +1462,7 @@ class UpdraftPlus_Backup {
 							// Now, store the results
 							if (!is_string($created) && !is_array($created)) $updraftplus->log("$youwhat: create_zip returned an error");
 						} else {
-							$updraftplus->log("No backup of $youwhat: there was nothing found to back up");
+							$updraftplus->log("No backup of $youwhat: there was nothing found to backup");
 						}
 					}
 
@@ -1550,7 +1576,7 @@ class UpdraftPlus_Backup {
 
 		if ('wp' == $this->whichdb) {
 			$this->wpdb_obj = $wpdb;
-			// The table prefix after being filtered - i.e. what filters what we'll actually back up
+			// The table prefix after being filtered - i.e. what filters what we'll actually backup
 			$this->table_prefix = $updraftplus->get_table_prefix(true);
 			// The unfiltered table prefix - i.e. the real prefix that things are relative to
 			$this->table_prefix_raw = $updraftplus->get_table_prefix(false);

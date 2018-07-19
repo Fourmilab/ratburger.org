@@ -36,6 +36,13 @@ class Updraft_Dashboard_News {
 	private $slug;
 	
 	/**
+	 * Valid ajax callback pages
+	 *
+	 * @var Array
+	 */
+	private $valid_callback_pages;
+	
+	/**
 	 * constructor of class Updraft_Dashboard_News
 	 *
 	 * @param String $feed_url	   - dashboard news feed URL
@@ -58,6 +65,14 @@ class Updraft_Dashboard_News {
 		if ('index.php' == $GLOBALS['pagenow'] && !get_user_meta(get_current_user_id(), $this->slug.'_dismiss_dashboard_news', true)) {
 			add_action('admin_print_footer_scripts', array($this, 'admin_print_footer_scripts'));
 		}
+		add_action('wp_ajax_dashboard-widgets', array($this, 'wp_ajax_dashboard_widgets_low_priority'), 1);
+		add_action('wp_ajax_dashboard-widgets', array($this, 'wp_ajax_dashboard_widgets_high_priority'), 20);
+		
+		$this->valid_callback_pages = array(
+			'dashboard-user',
+			'dashboard-network',
+			'dashboard',
+		);
 	}
 	
 	/**
@@ -86,6 +101,52 @@ class Updraft_Dashboard_News {
 			$this->get_dashboard_news_html();
 		}
 		return $value;
+	}
+	
+	/**
+	 * wp_ajax_dashboard-widgets ajax action handler with low priority
+	 */
+	public function wp_ajax_dashboard_widgets_low_priority() {
+		
+		if (!$this->do_ajax_dashboard_news()) return;
+		
+		add_filter('wp_die_ajax_handler', array($this, 'wp_die_ajax_handler'));
+		
+	}
+	
+	/**
+	 * Dummy wp die handler
+	 *
+	 * @param String $callback_function Callable $function Callback function name
+	 * @return String callable $function Callback function name
+	 */
+	public function wp_die_ajax_handler($callback_function) {
+		// this condition is not required, but always better to double confirm
+		if (!$this->do_ajax_dashboard_news()) return $callback_function;
+		// Here, We can use __return_empty_string function name, but __return_empty_string is available since WP 3.7. Whereas __return_true function name available since WP 3.0
+		return '__return_true';
+	}
+	
+	/**
+	 * wp_ajax_dashboard-widgets ajax action handler with high priority
+	 */
+	public function wp_ajax_dashboard_widgets_high_priority() {
+		
+		if (!$this->do_ajax_dashboard_news()) return;
+		
+		remove_filter('wp_die_ajax_handler', array($this, 'wp_die_ajax_handler'));
+		echo $this->get_dashboard_news_html();
+		wp_die();
+	}
+	
+	/**
+	 * Check whether valid ajax for dashboard news or not
+	 *
+	 * @return Boolean True if an ajax for the WP dashboard news
+	 */
+	private function do_ajax_dashboard_news() {
+		$ajax_callback_page = !empty($_GET['pagenow']) ? $_GET['pagenow'] : '';
+		return (in_array($ajax_callback_page, $this->valid_callback_pages) && !empty($_GET['widget']) && 'dashboard_primary' == $_GET['widget']);
 	}
 	
 	/**
