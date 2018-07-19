@@ -987,4 +987,13 @@ function rb_custom_oembed_providers() {
 }
 add_action('init', 'rb_custom_oembed_providers');
 
+/*  Test whether current user is on probation.  We use
+    the "edit_posts" capability as a proxy for probation.
+    In our role architecture, the only users who do not
+    have this capability are those on probation.  */
+
+function rb_on_probation() {
+    return !bp_current_user_can('edit_posts');
+}
+
 /* END RATBURGER LOCAL CODE */
