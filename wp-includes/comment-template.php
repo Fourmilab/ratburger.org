@@ -2302,6 +2302,12 @@ function comment_form( $args = array(), $post_id = null ) {
 			 */
 			do_action( 'comment_form_must_log_in_after' );
 		else : ?>
+            <?php /* RATBURGER LOCAL CODE
+                     Only allow comments if user's account isn't on probation */
+            if ( get_option( 'comment_registration' ) && rb_on_probation() ) {
+                echo("<p>Your account must be approved before you can comment.</p>\n");
+            } else {
+            /* END RATBURGER LOCAL CODE */ ?>
 			<form action="<?php echo esc_url( $args['action'] ); ?>" method="post" id="<?php echo esc_attr( $args['id_form'] ); ?>" class="<?php echo esc_attr( $args['class_form'] ); ?>"<?php echo $html5 ? ' novalidate' : ''; ?>>
 				<?php
 				/**
@@ -2458,6 +2464,9 @@ function comment_form( $args = array(), $post_id = null ) {
 				do_action( 'comment_form', $post_id );
 				?>
 			</form>
+            <?php /* RATBURGER LOCAL CODE */
+            }
+            /* END RATBURGER LOCAL CODE */ ?>
 		<?php endif; ?>
 	</div><!-- #respond -->
 	<?php
