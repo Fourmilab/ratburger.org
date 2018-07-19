@@ -1,3 +1,8 @@
+<?php /* RATBURGER LOCAL CODE
+   Don't display message composition form if the
+   user is on probation. */
+if (!rb_on_probation()) {
+/* END RATBURGER LOCAL CODE */ ?>
 <form action="<?php bp_messages_form_action('compose'); ?>" method="post" id="send_message_form" class="standard-form" role="main" enctype="multipart/form-data">
 
 	<?php do_action( 'bp_before_messages_compose_content' ); ?>
@@ -35,3 +40,8 @@
 	document.getElementById("send-to-input").focus();
 </script>
 
+<?php /* RATBURGER LOCAL CODE */
+} else {
+    echo("<p>Your account must be approved before you can send messages.</p>\n");
+}
+/* END RATBURGER LOCAL CODE */  ?>

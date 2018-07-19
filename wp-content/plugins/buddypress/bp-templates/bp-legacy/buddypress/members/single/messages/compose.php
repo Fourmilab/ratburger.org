@@ -17,6 +17,12 @@
 
 	<?php
 
+    /* RATBURGER LOCAL CODE
+       Don't display message composition form if the
+       user is on probation. */
+    if (!rb_on_probation()) {
+    /* END RATBURGER LOCAL CODE */
+
 	/**
 	 * Fires before the display of message compose content.
 	 *
@@ -58,6 +64,12 @@
 	</div>
 
 	<?php wp_nonce_field( 'messages_send_message' ); ?>
+    <?php /* RATBURGER LOCAL CODE */
+    } else {
+        echo("<p>Your account must be approved before you can send messages.</p>\n");
+    }
+    /* END RATBURGER LOCAL CODE */  ?>
+
 </form>
 
 <script type="text/javascript">
