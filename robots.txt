@@ -19,6 +19,12 @@ Disallow: /
 User-agent: DotBot
 Disallow: /
 
+# MauiBot crawls indiscriminately and quickly, and
+# nobody knows what it is.  Comes from an AWS
+# address range.
+User-agent: MauiBot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
