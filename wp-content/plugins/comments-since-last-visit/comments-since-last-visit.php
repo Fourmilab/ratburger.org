@@ -144,6 +144,15 @@ class WP_CSLV
 			{
 				$latest_visit = json_decode( stripslashes( $_COOKIE['last_visit'] ), true );
 
+/* RATBURGER LOCAL CODE
+   Diagnose $latest_visit not being an array */
+if (gettype($latest_visit) != 'array') {
+    RB_dumpvar("CSLV: latest_visit", $latest_visit);
+    RB_dumpvar("CSLV: type", gettype($latest_visit));
+    RB_dumpvar("CSLV: cookie", $_COOKIE['last_visit']);
+}
+//RB_mdumpvar("CSLV: cookie", $_COOKIE['last_visit']);
+/* END RATBURGER LOCAL CODE */
 				// Keep only last 50
 				if ( count( $latest_visit ) >= 50 )
 				{
