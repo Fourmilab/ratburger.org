@@ -1,1 +1,65 @@
-/*    CSS style definitions for the RB My Comments plug-in*/.rb-my-comments {    list-style: outside none none;}.rb-my-comments .rb-my-avatar-custom {    float: left;    width: 15%;}.rb-my-comments .rb-my-comment-wrap {    float: left;    width: 85%;}.rb-my-comments li {    float: left;    width: 100%;    margin: 10px 0;}.rb-my-navigation {    float: left;    text-align: center;    width: 100%;}.rb-my-navigation .page-numbers {    padding: 10px;}.rb-my-comments h4 {    margin-top: 0 !important;}.rb-my-form .rb-my-control {    float: left;}.rb-my-form .rb-my-control select {    padding: 5px;    margin-right: 10px;}.rb-my-not-found {    float: left;    width: 100%;}.rb-my-comments .children {    list-style: none;    padding-left: 8%;}.rb-my-comment-link {    font-family: sans-serif;    font-size: smaller;}.rb-my-comments-content {    color: #000000;}
+/*
+    CSS style definitions for the RB My Comments plug-in
+*/
+
+.rb-my-comments {
+    list-style: outside none none;
+}
+
+.rb-my-comments .rb-my-avatar-custom {
+    float: left;
+    width: 15%;
+}
+
+.rb-my-comments .rb-my-comment-wrap {
+    float: left;
+    width: 85%;
+}
+
+ul.rb-my-comments > li {
+    float: left;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.rb-my-navigation {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+
+.rb-my-navigation .page-numbers {
+    padding: 10px;
+}
+
+.rb-my-comments h4 {
+    margin-top: 0 !important;
+}
+
+.rb-my-form .rb-my-control {
+    float: left;
+}
+
+.rb-my-form .rb-my-control select {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.rb-my-not-found {
+    float: left;
+    width: 100%;
+}
+
+.rb-my-comments .children {
+    list-style: none;
+    padding-left: 8%;
+}
+
+.rb-my-comment-link {
+    font-family: sans-serif;
+    font-size: smaller;
+}
+
+.rb-my-comments-content {
+    color: #000000;
+}

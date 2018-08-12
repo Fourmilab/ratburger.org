@@ -425,7 +425,9 @@ function rb_my_comments_template($comment, $args, $depth) {
 
             </h4>
             <blockquote class="rb-my-comments-content">
+            <div class="comment-content">
             <?php echo(apply_filters("comment_text", do_shortcode($content_fixed_links))); ?>
+            </div>
             </blockquote>
             <?php
 
