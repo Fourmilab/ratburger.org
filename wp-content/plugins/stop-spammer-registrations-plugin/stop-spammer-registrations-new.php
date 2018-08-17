@@ -193,7 +193,6 @@ function ss_init() {
             if (preg_match('/wp-login\.php/', $_SERVER['HTTP_REFERER'])) {
                 $rb_auth = wp_authenticate($post['author'], $post['pwd']);
                 if ($rb_auth instanceof WP_User) {
-                    RB_dumpvar("Auth", "valid");
                     if ((((date_timestamp_get(date_create()) -
                            date_timestamp_get(date_create(
                              $rb_auth->user_registered))) / DAY_IN_SECONDS) > 7)) {
