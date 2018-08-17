@@ -179,6 +179,31 @@ function ss_init() {
 				return;
 			}
 // sfs_debug_msg('past white ');
+            /* RATBURGER LOCAL CODE
+               If this is a login request (detected by a referer of
+               wp-login.php), perform a pre-check on the username/
+               E-mail and password.  If they are valid and the user
+               account was registered more than seven days ago, skip
+               further spam checking just as if the IP address were
+               on the whitelist.  This keeps registered users who
+               enter a valid username and password from seeing the
+               CAPTCHA purely because their ISP assigned them an IP
+               address which had previously been flagged for spam when
+               assigned to somebody else. */
+            if (preg_match('/wp-login\.php/', $_SERVER['HTTP_REFERER'])) {
+                $rb_auth = wp_authenticate($post['author'], $post['pwd']);
+                if ($rb_auth instanceof WP_User) {
+                    RB_dumpvar("Auth", "valid");
+                    if ((((date_timestamp_get(date_create()) -
+                           date_timestamp_get(date_create(
+                             $rb_auth->user_registered))) / DAY_IN_SECONDS) > 7)) {
+//RB_dumpvar("Skip login spam check: " . $rb_auth->user_login . " age", (date_timestamp_get(date_create()) -
+//  date_timestamp_get(date_create($rb_auth->user_registered))) / DAY_IN_SECONDS);
+                        return;
+                    }
+                }
+            }
+            /* END RATBURGER LOCAL CODE */
 			ss_check_post(); // on POST check if we need to stop comments or logins
 		} else {
 // sfs_debug_msg('no email or author '.print_r($post,true));
