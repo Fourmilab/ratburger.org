@@ -98,13 +98,14 @@ class UpdraftPlus_Temporary_Clone_Dash_Notice {
 
 	/**
 	 * This function will refresh the stored clones expire date by calling UpdraftPlus.com and getting the latest value.
-	 * Note this function needs two defines to work UPDRAFTPLUS_USER_ID and UPDRAFTPLUS_VPS_ID.
+	 * Note this function needs three defines to work UPDRAFTPLUS_USER_ID and UPDRAFTPLUS_VPS_ID and UPDRAFTPLUS_UNIQUE_TOKEN.
 	 *
-	 * @return void
+	 * @return array - that contains the updated expire data or error information
 	 */
 	public function refresh_connection() {
+		global $updraftplus;
 
-		if (!defined('UPDRAFTPLUS_USER_ID') || !is_integer(UPDRAFTPLUS_USER_ID) || !defined('UPDRAFTPLUS_VPS_ID') || !is_integer(UPDRAFTPLUS_VPS_ID)) {
+		if (!defined('UPDRAFTPLUS_USER_ID') || !is_numeric(UPDRAFTPLUS_USER_ID) || !defined('UPDRAFTPLUS_VPS_ID') || !is_numeric(UPDRAFTPLUS_VPS_ID)) {
 			return array('code' => 'error', 'data' => 'No user or VPS ID found');
 		}
 
@@ -114,26 +115,16 @@ class UpdraftPlus_Temporary_Clone_Dash_Notice {
 		$vps_id = UPDRAFTPLUS_VPS_ID;
 		$token = UPDRAFTPLUS_UNIQUE_TOKEN;
 
-		$args = array(
-			'user_id' => $user_id,
-			'vps_id' => $vps_id,
-			'token' => $token
-		);
+		$data = array('user_id' => $user_id, 'vps_id' => $vps_id, 'token' => $token);
+		$result = $updraftplus->get_updraftplus_clone()->clone_status($data);
 
-		$result = wp_remote_post('https://updraftplus.com/plugin-info/?udm_action=updraftplus_temporary_clone_vps_list', array(
-			'timeout' => 60,
-			'headers' => apply_filters('updraftplus_auth_headers', ''),
-			'body' => $args
-		));
+		$vps_info = $result['data'];
 
-		$data = json_decode(wp_remote_retrieve_body($result), true);
-		$data = $data['data'];
-
-		if (empty($data['scheduled_removal'])) return array('code' => 'error', 'data' => 'No scheduled removal date found');
+		if (empty($vps_info['scheduled_removal'])) return array('code' => 'error', 'data' => 'No scheduled removal date found');
 		
-		update_site_option('updraftplus_clone_scheduled_removal', $data['scheduled_removal']);
+		update_site_option('updraftplus_clone_scheduled_removal', $vps_info['scheduled_removal']);
 
-		return array('code' => 'success', 'data' => $data['scheduled_removal']);
+		return array('code' => 'success', 'data' => $vps_info['scheduled_removal']);
 	}
 }
 

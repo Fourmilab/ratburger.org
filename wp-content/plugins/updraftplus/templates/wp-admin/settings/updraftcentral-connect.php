@@ -17,7 +17,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 				<button id="btn_cloud_connect" class="btn btn-primary button-primary"><?php _e('Connect this site to UpdraftCentral Cloud', 'updraftplus');?></button>
 			</p>
 			<p>
-				<a href="https://wordpress.org/plugins/updraftcentral/" target="_blank"><?php _e('Or if you prefer to self-host, then you can get the self-hosted version here.', 'updraftplus');?></a> <a id="self_hosted_connect" href="#"><?php _e('Go here to connect it.', 'updraftplus');?></a>
+				<a href="https://wordpress.org/plugins/updraftcentral/" target="_blank"><?php _e('Or if you prefer to self-host, then you can get the self-hosted version here.', 'updraftplus');?></a> <a id="self_hosted_connect" href="<?php echo UpdraftPlus::get_current_clean_url();?>"><?php _e('Go here to connect it.', 'updraftplus');?></a>
 			</p>
 		</div>
 		<div class="updraftcentral_cloud_clear"></div>
@@ -43,13 +43,13 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 			<tr class="non_tfa_fields">
 				<td><?php _e('Email', 'updraftplus');?></td>
 				<td>
-					<input id="email" name="email" type="text" value="<?php echo $email;?>" placeholder="<?php esc_attr_e('Login or register with this email address', 'updraftplus'); ?>"></input>
+					<input id="email" name="email" type="text" value="<?php echo $email;?>" placeholder="<?php esc_attr_e('Login or register with this email address', 'updraftplus'); ?>">
 				</td>
 			</tr>
 			<tr class="non_tfa_fields">
 				<td><?php _e('Password', 'updraftplus');?></td>
 				<td>
-					<input id="password" name="password" type="password"></input>
+					<input id="password" name="password" type="password">
 				</td>
 			</tr>
 			<tr class="tfa_fields" style="display:none;">
@@ -57,7 +57,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 			</tr>
 			<tr class="tfa_fields" style="display:none;">
 				<td colspan="2">
-					<input id="two_factor_code" name="two_factor_code" type="text"></input>
+					<input id="two_factor_code" name="two_factor_code" type="text">
 				</td>
 			</tr>
 			<tr>

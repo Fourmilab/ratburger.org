@@ -14,4 +14,8 @@
 		<a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/landing/migrator/");?>"><?php _e('More information here.', 'updraftplus'); ?></a>
 	</p>
 
+	<div id="updraft_migrate_accordion">
+		<?php $updraftplus_admin->include_template('wp-admin/settings/temporary-clone.php'); ?>
+	</div>
+
 </div>

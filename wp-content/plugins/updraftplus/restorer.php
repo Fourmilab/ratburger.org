@@ -47,6 +47,8 @@ class Updraft_Restorer extends WP_Upgrader {
 	
 	private $use_wpdb = null;
 	
+	private $import_table_prefix = null;
+	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
 	const MOVEIN_OVERWRITE_NO_BACKUP = 0;
@@ -382,6 +384,9 @@ class Updraft_Restorer extends WP_Upgrader {
 			$updraftplus->jobdata_set('second_loop_entities', $second_loop);
 			$updraftplus->jobdata_set('backup_timestamp', $timestamp);
 		}
+		
+		// If the database was restored, then check active plugins and make sure they all exist otherwise the site may go down
+		if (null !== $this->import_table_prefix) $this->check_active_plugins($this->import_table_prefix);
 
 		return true;
 	}
@@ -1190,6 +1195,8 @@ class Updraft_Restorer extends WP_Upgrader {
 		// The filter allows you to restore to a completely different prefix - i.e. don't replace this site; possibly useful for testing the restore process (but not yet tested)
 		$import_table_prefix = apply_filters('updraftplus_restore_table_prefix', $updraftplus->get_table_prefix(false));
 
+		$this->import_table_prefix = $import_table_prefix;
+		
 		$now_done = apply_filters('updraftplus_pre_restore_move_in', false, $type, $working_dir, $info, $this->ud_backup_info, $this, $wp_filesystem_dir);
 		if (is_wp_error($now_done)) return $now_done;
 
@@ -2358,7 +2365,11 @@ ENDHERE;
 					$collate = $collate_match[1];
 					if (!isset($supported_collations[$collate])) {
 						$unsupported_collates_in_sql_line[] = $collate;
-						$sql_line = UpdraftPlus_Manipulation_Functions::str_lreplace("COLLATE=$collate", "COLLATE=".$updraft_restorer_collate, $sql_line, false);
+						if ('choose_a_default_for_each_table' == $updraft_restorer_collate) {
+							$sql_line = UpdraftPlus_Manipulation_Functions::str_lreplace("COLLATE=$collate", "", $sql_line, false);
+						} else {
+							$sql_line = UpdraftPlus_Manipulation_Functions::str_lreplace("COLLATE=$collate", "COLLATE=".$updraft_restorer_collate, $sql_line, false);
+						}
 					}
 				}
 				if (!empty($updraft_restorer_collate) && preg_match_all('/ COLLATE ([a-zA-Z0-9._-]+) /i', $sql_line, $collate_matches)) {
@@ -2366,7 +2377,11 @@ ENDHERE;
 					foreach ($collates as $collate) {
 						if (!isset($supported_collations[$collate])) {
 							$unsupported_collates_in_sql_line[] = $collate;
-							$sql_line = str_ireplace("COLLATE $collate ", "COLLATE ".$updraft_restorer_collate." ", $sql_line);
+							if ('choose_a_default_for_each_table' == $updraft_restorer_collate) {
+								$sql_line = str_ireplace("COLLATE $collate ", "", $sql_line);
+							} else {
+								$sql_line = str_ireplace("COLLATE $collate ", "COLLATE ".$updraft_restorer_collate." ", $sql_line);
+							}
 						}
 					}
 				}
@@ -2375,7 +2390,11 @@ ENDHERE;
 					foreach ($collates as $collate) {
 						if (!isset($supported_collations[$collate])) {
 							$unsupported_collates_in_sql_line[] = $collate;
-							$sql_line = str_ireplace("COLLATE $collate,", "COLLATE ".$updraft_restorer_collate.",", $sql_line);
+							if ('choose_a_default_for_each_table' == $updraft_restorer_collate) {
+								$sql_line = str_ireplace("COLLATE $collate,", ",", $sql_line);
+							} else {
+								$sql_line = str_ireplace("COLLATE $collate,", "COLLATE ".$updraft_restorer_collate.",", $sql_line);
+							}
 						}
 					}
 				}
@@ -2454,9 +2473,6 @@ ENDHERE;
 
 		if ($restoring_table) $this->restored_table($restoring_table, $import_table_prefix, $this->old_table_prefix);
 
-		// Check active plugins and make sure they all exist otherwise the site may go down
-		$this->check_active_plugins($import_table_prefix);
-		
 		$time_taken = microtime(true) - $this->start_time;
 		$updraftplus->log_e('Finished: lines processed: %d in %.2f seconds', $this->line, $time_taken);
 		if ($is_plain) {
@@ -2995,7 +3011,7 @@ ENDHERE;
 		
 		foreach ($plugins as $key => $path) {
 			if (!in_array($path, $installed_plugins)) {
-				$updraftplus->log_e("Plugin: ${path} not found deactivating.");
+				$updraftplus->log_e('Plugin path %s not found: de-activating.', $path);
 				unset($plugins[$key]);
 			}
 		}

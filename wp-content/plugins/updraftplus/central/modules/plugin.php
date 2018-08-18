@@ -234,7 +234,10 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			return $error;
 		}
 
-		$result = $this->_apply_plugin_action('activate', $query);
+		$action = 'activate';
+		if (!empty($query['multisite']) && (bool) $query['multisite']) $action = 'network_'.$action;
+
+		$result = $this->_apply_plugin_action($action, $query);
 		if (empty($result['activated'])) {
 			return $result;
 		}
@@ -255,7 +258,10 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			return $error;
 		}
 
-		$result = $this->_apply_plugin_action('deactivate', $query);
+		$action = 'deactivate';
+		if (!empty($query['multisite']) && (bool) $query['multisite']) $action = 'network_'.$action;
+
+		$result = $this->_apply_plugin_action($action, $query);
 		if (empty($result['deactivated'])) {
 			return $result;
 		}
@@ -280,7 +286,10 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 
 		$result = $this->_apply_plugin_action('install', $query);
 		if (!empty($result['installed']) && $result['installed']) {
-			$result = $this->_apply_plugin_action('activate', $query);
+			$action = 'activate';
+			if (!empty($query['multisite']) && (bool) $query['multisite']) $action = 'network_'.$action;
+
+			$result = $this->_apply_plugin_action($action, $query);
 			if (empty($result['activated'])) {
 				return $result;
 			}
@@ -452,6 +461,7 @@ class UpdraftCentral_Plugin_Commands extends UpdraftCentral_Commands {
 			$plugin->author = $value['Author'];
 			$plugin->status = is_plugin_active($key) ? 'active' : 'inactive';
 			$plugin->website = $website;
+			$plugin->multisite = is_multisite();
 
 			if (!empty($plugin_updates[$key])) {
 				$update_info = $plugin_updates[$key];

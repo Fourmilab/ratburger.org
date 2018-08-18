@@ -2,9 +2,9 @@
 
 <div id="ud_massactions" class="updraft-hidden" style="display:none;">
 	<strong><?php _e('Actions upon selected backups', 'updraftplus');?></strong> <br>
-	<div class="updraftplus-remove" style="float: left;"><a href="#" onclick="updraft_deleteallselected(); return false;"><?php _e('Delete', 'updraftplus');?></a></div>
-	<div class="updraft-viewlogdiv"><a href="#" onclick="jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').addClass('backuprowselected'); return false;"><?php _e('Select all', 'updraftplus');?></a></div>
-	<div class="updraft-viewlogdiv"><a href="#" onclick="jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').removeClass('backuprowselected'); jQuery('#ud_massactions').hide(); return false;"><?php _e('Deselect', 'updraftplus');?></a></div>
+	<a class="button button-remove" href="<?php echo UpdraftPlus::get_current_clean_url();?>" onclick="updraft_deleteallselected(); return false;"><?php _e('Delete', 'updraftplus');?></a>
+	<a class="button" href="<?php echo UpdraftPlus::get_current_clean_url();?>" onclick="jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').addClass('backuprowselected'); return false;"><?php _e('Select all', 'updraftplus');?></a>
+	<a class="button" href="<?php echo UpdraftPlus::get_current_clean_url();?>" onclick="jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row').removeClass('backuprowselected'); jQuery('#ud_massactions').hide(); return false;"><?php _e('Deselect', 'updraftplus');?></a>
 </div>
 
 <div id="updraft-message-modal" title="UpdraftPlus">

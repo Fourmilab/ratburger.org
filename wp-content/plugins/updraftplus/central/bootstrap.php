@@ -80,7 +80,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 			}
 		}
 		
-		echo '</p><p><a href="#" onclick="window.close();">'.__('Close...', 'updraftplus').'</a></p>';
+		echo '</p><p><a href="'.UpdraftPlus::get_current_clean_url().'" onclick="window.close();">'.__('Close...', 'updraftplus').'</a></p>';
 		die;
 	}
 	
@@ -460,7 +460,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 				$ret .= '<br>';
 			}
 			
-			$ret .= '<a href="#" data-key_id="'.esc_attr($i).'" class="updraftcentral_key_delete">'.__('Delete...', 'updraftplus').'</a></td></tr>';
+			$ret .= '<a href="'.UpdraftPlus::get_current_clean_url().'" data-key_id="'.esc_attr($i).'" class="updraftcentral_key_delete">'.__('Delete...', 'updraftplus').'</a></td></tr>';
 		}
 		
 		
@@ -468,7 +468,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 		?>
 		<div id="updraftcentral_keys_content" style="margin: 10px 0;">
 			<?php if (!empty($our_keys)) { ?>
-				<a href="#" class="updraftcentral_keys_show hidden-in-updraftcentral"><?php printf(__('Manage existing keys (%d)...', 'updraftplus'), count($our_keys)); ?></a>
+				<a href="<?php echo UpdraftPlus::get_current_clean_url(); ?>" class="updraftcentral_keys_show hidden-in-updraftcentral"><?php printf(__('Manage existing keys (%d)...', 'updraftplus'), count($our_keys)); ?></a>
 			<?php } ?>
 			<table id="updraftcentral_keys_table">
 				<thead>
@@ -490,6 +490,11 @@ class UpdraftPlus_UpdraftCentral_Main {
 		return ob_get_clean();
 	}
 
+	/**
+	 * Return HTML markup for the 'create key' section
+	 *
+	 * @return String - the HTML
+	 */
 	private function create_key_markup() {
 		ob_start();
 		?> 
@@ -546,9 +551,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 								<label>
 									<input id="updraftcentral_keycreate_mothership_firewalled" type="checkbox">
 									<?php _e('Use the alternative method for making a connection with the dashboard.', 'updraftplus'); ?>
-									<a href="#" id="updraftcentral_keycreate_altmethod_moreinfo_get"> 
-										<?php _e('More information...', 'updraftplus'); ?>
-									</a>
+									<a href="<?php echo UpdraftPlus::get_current_clean_url(); ?>" id="updraftcentral_keycreate_altmethod_moreinfo_get"><?php _e('More information...', 'updraftplus'); ?></a>
 									<p id="updraftcentral_keycreate_altmethod_moreinfo" style="display:none; border: 1px dotted; padding: 3px; margin: 2px 10px 2px 24px;">
 										<em><?php _e('This is useful if the dashboard webserver cannot be contacted with incoming traffic by this website (for example, this is the case if this website is hosted on the public Internet, but the UpdraftCentral dashboard is on localhost, or on an Intranet, or if this website has an outgoing firewall), or if the dashboard website does not have a SSL certificate.');?></em>
 									</p>
@@ -578,7 +581,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 		ob_start();
 		?>
 			<div id="updraftcentral_view_log_container" style="margin: 10px 0;">
-				<a href="#" id="updraftcentral_view_log"><?php _e('View recent UpdraftCentral log events', 'updraftplus'); ?>...</a><br>
+				<a href="<?php echo UpdraftPlus::get_current_clean_url(); ?>" id="updraftcentral_view_log"><?php _e('View recent UpdraftCentral log events', 'updraftplus'); ?>...</a><br>
 				<pre id="updraftcentral_view_log_contents" style="min-height: 110px; padding: 0 4px;">
 				</pre>
 			</div>

@@ -149,9 +149,24 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		}
 	}
 	
+	/**
+	 * WP filter udrpc_action
+	 *
+	 * @param Array	 $response			 - the unfiltered response that will be returned
+	 * @param String $command			 - the command being called
+	 * @param Array	 $data				 - the parameters to the command
+	 * @param String $key_name_indicator - the UC key that is in use
+	 * @param Object $ud_rpc			 - the UDRP object
+	 *
+	 * @return Array - filtered response
+	 */
 	public function udrpc_action($response, $command, $data, $key_name_indicator, $ud_rpc) {
 
 		if (empty($this->receivers[$key_name_indicator])) return $response;
+		
+		// This can be used to detect an UpdraftCentral context
+		if (!defined('UPDRAFTCENTRAL_COMMAND')) define('UPDRAFTCENTRAL_COMMAND', $command);
+		
 		$this->initialise_listener_error_handling($key_name_indicator);
 
 		$command_info = apply_filters('updraftcentral_get_command_info', false, $command);
@@ -183,9 +198,6 @@ class UpdraftPlus_UpdraftCentral_Listener {
 		
 		do_action('updraftcentral_listener_pre_udrpc_action', $command, $command_class, $data, $extra_info);
 		
-		global $updraftplus;
-		if (is_a($updraftplus, 'UpdraftPlus')) $updraftplus->register_wp_http_option_hooks();
-		
 		// Allow the command class to perform any boiler-plate actions.
 		if (is_callable(array($command_class, '_pre_action'))) call_user_func(array($command_class, '_pre_action'), $command, $data, $extra_info);
 		
@@ -194,8 +206,8 @@ class UpdraftPlus_UpdraftCentral_Listener {
 
 		if (is_callable(array($command_class, '_post_action'))) call_user_func(array($command_class, '_post_action'), $command, $data, $extra_info);
 
-		if (is_a($updraftplus, 'UpdraftPlus')) $updraftplus->register_wp_http_option_hooks(false);
-		
+		do_action('updraftcentral_listener_post_udrpc_action', $command, $command_class, $data, $extra_info);
+				
 		return $this->return_rpc_message($msg);
 	}
 	

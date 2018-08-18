@@ -191,7 +191,7 @@ class Updraft_Dashboard_News {
 		$original_formatted_news = ob_get_clean();
 		$formatted_news = preg_replace('/<a(.+?)>(.+?)<\/a>/i', "<a$1>".$this->translations['item_prefix'].": $2</a>", $original_formatted_news);
 		$formatted_news = str_replace('<li>', '<li class="'.$this->slug.'_dashboard_news_item">', $formatted_news);
-		$formatted_news = str_replace('</li>', '<a href="#" class="dashicons dashicons-no-alt" title="'.esc_attr($this->translations['dismiss_tooltip']).'" onClick="'.$this->slug.'_dismiss_dashboard_news(); return false;" style="float: right; box-shadow: none;"></li></a>', $formatted_news);
+		$formatted_news = str_replace('</li>', '<a href="'.UpdraftPlus::get_current_clean_url().'" class="dashicons dashicons-no-alt" title="'.esc_attr($this->translations['dismiss_tooltip']).'" onClick="'.$this->slug.'_dismiss_dashboard_news(); return false;" style="float: right; box-shadow: none;"></li></a>', $formatted_news);
 		set_transient($this->slug.'_dashboard_news', $formatted_news, 43200); // 12 hours
 
 		return $formatted_news;

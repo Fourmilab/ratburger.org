@@ -45,6 +45,7 @@ abstract class UpdraftPlus_RemoteSend {
 			}
 			add_filter('udrpc_command_send_chunk', array($this, 'udrpc_command_send_chunk'), 10, 3);
 			add_filter('udrpc_command_get_file_status', array($this, 'udrpc_command_get_file_status'), 10, 3);
+			add_filter('udrpc_command_upload_complete', array($this, 'udrpc_command_upload_complete'), 10, 3);
 		}
 	}
 
@@ -196,6 +197,28 @@ abstract class UpdraftPlus_RemoteSend {
 		return $this->return_rpc_message(array(
 			'response' => 'file_status',
 			'data' => $this->get_file_status($data)
+		));
+	}
+
+	/**
+	 * This function will return a response to the remote site to acknowledge that we have recieved the upload_complete message and if this is a clone it call the ready_for_restore action
+	 *
+	 * @param string $response       - a string response
+	 * @param array  $data           - an array of data
+	 * @param string $name_indicator - a string to identify the request
+	 *
+	 * @return array                 - the array response
+	 */
+	public function udrpc_command_upload_complete($response, $data, $name_indicator) {
+		if (!preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches)) return $response;
+		
+		if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
+			do_action('updraftplus_temporary_clone_ready_for_restore');
+		}
+
+		return $this->return_rpc_message(array(
+			'response' => 'file_status',
+			'data' => ''
 		));
 	}
 
@@ -516,7 +539,7 @@ abstract class UpdraftPlus_RemoteSend {
 				$ret .= '<p><strong>'.__('Existing keys', 'updraftplus').'</strong><br>';
 			}
 			$ret .= htmlspecialchars($key['name']);
-			$ret .= ' - <a href="#" onclick="updraft_migrate_local_key_delete(\''.esc_attr($k).'\'); return false;" class="updraft_migrate_local_key_delete" data-keyid="'.esc_attr($k).'">'.__('Delete', 'updraftplus').'</a>';
+			$ret .= ' - <a href="'.UpdraftPlus::get_current_clean_url().'" onclick="updraft_migrate_local_key_delete(\''.esc_attr($k).'\'); return false;" class="updraft_migrate_local_key_delete" data-keyid="'.esc_attr($k).'">'.__('Delete', 'updraftplus').'</a>';
 			$ret .= '<br>';
 		}
 

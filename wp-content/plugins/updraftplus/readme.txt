@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 4.9
-Stable tag: 1.14.12
+Stable tag: 1.14.13
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -151,6 +151,25 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.14.9 of the free version correspond to changes made in 2.14.9.x of the paid version.
 
+= 1.14.13 - 15/August/2018 =
+
+* FEATURE: WP-CLI - add a 'get_latest_full_backup' command
+* FIX: An issue when deleting multiple backups could result in a backup set not found error
+* FIX: Polling during a backup when called from outside UpdraftPlus
+* FIX: Plugin activation check was running at the wrong point in the restore process
+* FIX: The WP-CLI "restore" command returned an unnecessary error if the incremental shim was not present
+* TWEAK: Multisite tweaks for UpdraftCentral's plugin and theme module handlers
+* TWEAK: Prevent potential PHP notice on page load when no backup storage is selected
+* TWEAK: Add scoping to some CSS rules that were too general.
+* TWEAK: A new "Backup / Restore" tab, which consists of backup status and existing backup with rid the "Current Status" tab and the "Existing Backups" tab
+* TWEAK: Remove the possibility of a false-positive warning of a migration-rather-than-restoration if the WordPress home_url setting has legitimate oddities
+* TWEAK: Improve UI of more database delete button (Premium)
+* TWEAK: Removed Gold column and redesigned Premium page
+* TWEAK: Improve UC factoring and introduce a UPDRAFTCENTRAL_COMMAND constant to allow context detection
+* TWEAK: Tweaked downwards the minimum time in the future for rescheduling a resumption
+* TWEAK: Deal with a possible issue in automatic collation selection in restoration when all character sets are supported and a collation is not supported
+* TWEAK: Replace absolute URLs in place of relative URLs in anchor links
+
 = 1.14.12 - 17/July/2018 =
 
 * FEATURE: Added UpdraftCentral's theme management module handler
@@ -165,7 +184,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * FIX: The web server disk space refresh link of the existing backups is not working
 * FIX: The UpdraftPlus News couldn't print first time when the news cache was not made
 * FIX: Activating the "all addons" licence did not remove the corresponding 'activate on this account' link in the "Premium / Extensions" tab
-* FIX: When set names query character set hadn’t support by the current MySQL server, the restoration process wasn't gave replace the character set
+* FIX: When set names query character set hadn't support from the current MySQL server, the restoration process wasn't giving the option to replace the character set
 * TWEAK: Updated the plugin.php handler for UpdraftCentral's new plugin management module
 * TWEAK: Update posts handler to fix and update pagination in UpdraftCentral
 * TWEAK: Refresh UpdraftCentral keys upon successful login or registration using the UpdraftCentral Cloud wizard 
@@ -182,7 +201,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: It's "backup", not "back up"
 * TWEAK: Prevent potential PHP debugging notices in restoration step 2
 * TWEAK: Allow non-Super Admins to access UpdraftPlus Premium if they have 'manage_network_plugins' capability and the updraft_user_can_manage filter is used
-* TWEAK: Improved code in a way that prevents continuous polling in the themes page, thes plugins page and the updates page
+* TWEAK: Improved code in a way that prevents continuous polling in the themes page, the plugins page and the updates page
 
 = 1.14.11 - 25/May/2018 =
 
@@ -211,6 +230,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: When a Google Cloud token was invalid, a PHP Fatal could result instead of catching the error and informing/logging nicely
 * TWEAK: If php-xml (SimpleXMLElement) is not installed, then show an appropriate warning in the Azure configuration section
 * TWEAK: If the user tries to install another version of UpdraftPlus, then tweak the default error message that they are shown by WP, which is too obscure/cryptic for many users
+* TWEAK: If a fatal error occurred during uploading a backup, try to recover it and process the upload further
 
 = 1.14.8 - 12/May/2018 =
 
@@ -543,10 +563,9 @@ Older changes are found <a href="https://plugins.svn.wordpress.org/updraftplus/t
 
 2. Configuring your backups
 
-3. Restoring from a backup
+3. Take a backup
 
-4. Showing and downloading backup sets
-
+4. Restoring from a backup
 
 == License ==
 
@@ -571,5 +590,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.14.12 : Added the ability to mark backups as "do not delete", new WP-CLI restore command and improvements to the sftp/scp remote storage method. Many tweaks for convenience and small fixes. A recommended update for all.
+* 1.14.13 : A new "Backup / Restore" tab and a new WP-CLI get_latest_full_backup command. Many tweaks for convenience and small fixes. A recommended update for all.
 
