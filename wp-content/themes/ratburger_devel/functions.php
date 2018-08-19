@@ -568,6 +568,7 @@ add_filter('tiny_mce_before_init', 'ratburger_filter_tiny_mce_before_init');
 
 function ratburger_meta_widget_items() {
     echo '<li><a href="/index.php/frequently-asked-questions/">Frequently Asked Questions</a></li>';
+    echo '<li><a href="/index.php/category/knowledge-base/">Knowledge Base</a></li>';
     echo '<li><a href="/index.php/privacy/">Privacy</a></li>';
     echo '<li><a href="https://twitter.com/Ratburger_org" target="_blank">Twitter</a></li>';
     echo '<li><a href="/index.php/podcasts/">Podcasts</a></li>';
