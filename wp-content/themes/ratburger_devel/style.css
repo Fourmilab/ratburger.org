@@ -526,6 +526,14 @@ big {
 	font-size: 125%;
 }
 
+/* RATBURGER LOCAL CODE
+   Add "bcad" class for B.C. and A.D. */
+    span.bcad {
+        font-variant: small-caps;
+        text-transform: lowercase;
+    }
+/* END RATBURGER LOCAL CODE */
+
 
 /**
  * 4.0 - Elements
