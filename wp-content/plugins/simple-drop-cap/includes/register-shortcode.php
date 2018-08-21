@@ -1,14 +1,20 @@
 <?php
 
+/* RATBURGER LOCAL CODE
+   Unconditionally register shortcode so the TinyMCE
+   Comment Field configuration page can see it.
 // action for registering shortcode
 add_action( 'init', 'wpsdc_register_shortcode' );
 
 // function for registering shortcode
 function wpsdc_register_shortcode()
 {
-	// register shortcode [dropcap]word[/dropcap]
-	add_shortcode( 'dropcap', 'wpsdc_shortcode' );
+    // register shortcode [dropcap]word[/dropcap]
+    add_shortcode( 'dropcap', 'wpsdc_shortcode' );
 }
+*/
+add_shortcode('dropcap', 'wpsdc_shortcode');
+/* END RATBURGER LOCAL CODE */
 
 // main function for wpsdc shortcode
 function wpsdc_shortcode( $args, $content )
