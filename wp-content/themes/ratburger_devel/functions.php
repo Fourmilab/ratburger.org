@@ -606,6 +606,17 @@ function RB_dumpvar($label, $var) {
 
 /*
 
+    Print a stack trace on the error log
+
+*/
+
+function RB_stacktrace() {
+    $e = new Exception;
+    error_log(var_export($e->getTraceAsString(), true));
+}
+
+/*
+
     Test whether we're running under my development
     account (party card 2).  This is handy for diagnostic
     code like:
