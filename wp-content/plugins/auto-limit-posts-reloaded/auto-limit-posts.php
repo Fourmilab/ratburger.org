@@ -188,8 +188,12 @@ function alpr_replace_content($content)
 			
 			
 			if ($ismoretag2[0] != "more") {
-				echo $paragraphcut[0];
-				/* RATBURGER LOCAL CODE */
+                /* RATBURGER LOCAL CODE
+                   Output excerpt of two paragraphs, not just one.
+                   Expand shortcodes in paragraphs of the excerpt.
+                echo $paragraphcut[0];
+                */
+                echo do_shortcode($paragraphcut[0]);
 				/* Remove void paragraphs from the end of $paragraphcut */
 
 				while ((count($paragraphcut) > 0)
@@ -201,7 +205,7 @@ function alpr_replace_content($content)
 				/* Include first *two* paragraphs of content, if present. */
 				if (count($paragraphcut) > 1) {
 					echo "</p>";
-					echo $paragraphcut[1];
+					echo do_shortcode($paragraphcut[1]);
 				}
 				
 				// Only append continuation and link if we trimmed content
