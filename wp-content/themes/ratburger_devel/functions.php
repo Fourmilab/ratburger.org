@@ -528,6 +528,7 @@ function ratburger_add_allowed_tags() {
 	$allowedtags['p'] = array();
 	$allowedtags['p']['style'] = array();
 	$allowedtags['span'] = array();
+	$allowedtags['span']['class'] = array();
 	$allowedtags['span']['style'] = array();
     $allowedtags['sub'] = array();
     $allowedtags['sup'] = array();
