@@ -1,14 +1,14 @@
 <?php
-/*
+/**
 Plugin Name: Inline Spoilers
 Plugin URI: https://wordpress.org/plugins/inline-spoilers/
 Description: The plugin allows to create content spoilers with simple shortcode.
-Version: 1.3.1
+Version: 1.3.2
 Author: Sergey Kuzmich
 Author URI: http://kuzmi.ch
 Text Domain: inline-spoilers
 Domain Path: /languages/
-License: GPLv2
+License: GPLv3
 */
 
 /**
@@ -26,40 +26,48 @@ function is_load_textdomain() {
 
 add_shortcode( 'spoiler', 'is_spoiler_shortcode' );
 function is_spoiler_shortcode( $atts, $content ) {
-	$output = $head = $body = "";
+	$output = '';
+	$head   = '';
+	$body   = '';
 
-	extract( shortcode_atts( array(
+	$attributes = shortcode_atts( array(
 		'title'         => __( 'Spoiler', 'inline-spoilers' ),
-		'initial_state' => 'collapsed'
-	), $atts ) );
+		'initial_state' => 'collapsed',
+	), $atts, 'spoiler' );
+
+	$title         = $attributes['title'];
+	$initial_state = $attributes['initial_state'];
 
 	$title      = esc_attr( $title );
-	$head_class = ( esc_attr( $initial_state ) == 'collapsed' ) ? ' collapsed' : ' expanded';
+	$head_class = ( esc_attr( $initial_state ) === 'collapsed' )
+										? ' collapsed'
+										: ' expanded';
 
-	$body_atts = ( esc_attr( $initial_state ) == 'collapsed' ) ? 'style="display: none;"' : 'style="display: block;"';
+	$body_atts = ( esc_attr( $initial_state ) === 'collapsed' ) ? 'style="display: none;"' : 'style="display: block;"';
 
-	$head_hint = ( esc_attr( $initial_state ) == 'collapsed' )
-									? 'Expand' : 'Collapse';
+	$head_hint = ( esc_attr( $initial_state ) === 'collapsed' )
+									? __( 'Expand', 'inline-spoilers' )
+									: __( 'Collapse', 'inline-spoilers' );
 
-	$head .= "<div class=\"spoiler-head no-icon " . $head_class . "\" title=\"" . __( $head_hint, 'inline-spoilers' ) . "\">";
-		$head .= $title;
-	$head .= "</div>";
+	$head .= '<div class="spoiler-head no-icon ' . $head_class . '" title="' . $head_hint . '">';
+	$head .= $title;
+	$head .= '</div>';
 
-	$body .= "<div class=\"spoiler-body\" " . $body_atts . ">";
-  	$body .= balanceTags( do_shortcode( $content ), true );
-	$body .= "</div>";
+	$body .= '<div class="spoiler-body" ' . $body_atts . '>';
+	$body .= balanceTags( do_shortcode( $content ), true );
+	$body .= '</div>';
 
-	$extra .= "<div class=\"spoiler-body\">";
-  	$extra .= balanceTags( do_shortcode( $content ), true );
-	$extra .= "</div>";
+	$extra .= '<div class="spoiler-body">';
+	$extra .= balanceTags( do_shortcode( $content ), true );
+	$extra .= '</div>';
 
-	$output .= "<div class=\"spoiler-wrap\">";
-		$output .= $head;
-		$output .= $body;
-		$output .= "<noscript>";
-			$output .= ( esc_attr( $initial_state ) == 'collapsed' ) ? $extra : "";
-		$output .= "</noscript>";
-	$output .= "</div>";
+	$output .= '<div class="spoiler-wrap">';
+	$output .= $head;
+	$output .= $body;
+	$output .= '<noscript>';
+	$output .= ( esc_attr( $initial_state ) === 'collapsed' ) ? $extra : '';
+	$output .= '</noscript>';
+	$output .= '</div>';
 
 	return $output;
 }
@@ -80,7 +88,7 @@ function is_styles_scripts() {
 
 		$translation_array = array(
 			'expand'   => __( 'Expand', 'inline-spoilers' ),
-			'collapse' => __( 'Collapse', 'inline-spoilers' )
+			'collapse' => __( 'Collapse', 'inline-spoilers' ),
 		);
 
 		wp_localize_script( 'inline-spoilers_script', 'title', $translation_array );
