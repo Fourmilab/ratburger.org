@@ -286,8 +286,9 @@ case 'draft':
         if ( ! $post_type_object )
                 wp_die( __( 'Invalid post type.' ) );
 
-        if ( ! ($post->post_status == 'publish') )
-                wp_die( __( 'This post is not published; cannot revert to draft.' ) );
+        if ( ! (($post->post_status == 'publish') ||
+                ($post->post_status == 'private')) )
+                wp_die( __( 'This post is not published or private; cannot revert to draft.' ) );
 
 	$np = array('ID' => $post_id, 'post_status' => 'draft');
 	wp_update_post($np);
