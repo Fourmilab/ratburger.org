@@ -212,7 +212,7 @@ abstract class UpdraftPlus_RemoteSend {
 	public function udrpc_command_upload_complete($response, $data, $name_indicator) {
 		if (!preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches)) return $response;
 		
-		if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
+		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
 			do_action('updraftplus_temporary_clone_ready_for_restore');
 		}
 
@@ -508,15 +508,16 @@ abstract class UpdraftPlus_RemoteSend {
 		}
 
 		if (empty($remotesites)) {
-			return '<span id="updraft_migrate_receivingsites_nonemsg"><em>'.__('No receiving sites have yet been added.', 'updraftplus').'</em></span>';
+			return '<p id="updraft_migrate_receivingsites_nonemsg"><em>'.__('No receiving sites have yet been added.', 'updraftplus').'</em></p>';
 		} else {
-			$ret = '<div style="height:34px;"><div style="width:100px; float:left; padding-top:5px;"><strong>'.__('Send to site:', 'updraftplus').'</strong></div><select id="updraft_remotesites_selector" style="width:455px;float:left;">';
+			$ret = '<p class="updraftplus-remote-sites-selector"><label>'.__('Send to site:', 'updraftplus').'</label> <select id="updraft_remotesites_selector">';
 			foreach ($remotesites as $k => $rsite) {
 				if (!is_array($rsite) || empty($rsite['url'])) continue;
 				$ret .= '<option value="'.esc_attr($k).'">'.htmlspecialchars($rsite['url']).'</option>';
 			}
 			$ret .= '</select>';
-			$ret .= '<div style="float:left;"><button class="button-primary" style="height:30px; font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_send_backup();">'.__('Send', 'updraftplus').'</button></div></div>';
+			$ret .= ' <button class="button-primary" style="height:30px; font-size:16px; margin-left: 3px; width:85px;" id="updraft_migrate_send_button" onclick="updraft_migrate_send_backup();">'.__('Send', 'updraftplus').'</button>';
+			$ret .= '</p>';
 		}
 
 		return $ret;

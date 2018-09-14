@@ -629,4 +629,43 @@ abstract class UpdraftPlus_BackupModule {
 	public function output_account_warning() {
 		return false;
 	}
+
+	/**
+	 * This function is a wrapper and will call $updraftplus->log(), the backup modules should use this so we can add information to the log lines to do with the remote storage and instance settings.
+	 *
+	 * @param string  $line       - the log line
+	 * @param string  $level      - the log level: notice, warning, error. If suffixed with a hypen and a destination, then the default destination is changed too.
+	 * @param boolean $uniq_id    - each of these will only be logged once
+	 * @param boolean $skip_dblog - if true, then do not write to the database
+	 *
+	 * @return void
+	 */
+	public function log($line, $level = 'notice', $uniq_id = false, $skip_dblog = false) {
+		global $updraftplus;
+
+		$prefix = $this->get_storage_label();
+
+		$updraftplus->log("$prefix: $line", $level = 'notice', $uniq_id = false, $skip_dblog = false);
+	}
+
+	/**
+	 * This function will build and return the remote storage instance label
+	 *
+	 * @return string - the remote storage instance label
+	 */
+	private function get_storage_label() {
+		
+		$opts = $this->get_options();
+		$label = $opts['instance_label'];
+
+		$description = $this->get_description();
+
+		if (!empty($label)) {
+			$prefix = (false !== strpos($label, $description)) ? $label : "$description: $label";
+		} else {
+			$prefix = $description;
+		}
+
+		return $prefix;
+	}
 }

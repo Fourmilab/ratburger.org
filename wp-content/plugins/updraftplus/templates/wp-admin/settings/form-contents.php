@@ -20,7 +20,7 @@ foreach ($default_options as $k => $v) {
 <table class="form-table backup-schedule">
 	<tr>
 		<th><?php _e('Files backup schedule', 'updraftplus'); ?>:</th>
-		<td>
+		<td class="js-file-backup-schedule">
 			<div style="float:left; clear:both;">
 				<select class="updraft_interval" name="updraft_interval">
 				<?php
@@ -57,7 +57,7 @@ foreach ($default_options as $k => $v) {
 		<th>
 			<?php _e('Database backup schedule', 'updraftplus'); ?>:
 		</th>
-		<td>
+		<td class="js-database-backup-schedule">
 		<div style="float:left; clear:both;">
 			<select class="updraft_interval_database" name="updraft_interval_database">
 			<?php
@@ -139,7 +139,7 @@ foreach ($default_options as $k => $v) {
 
 <h2 class="updraft_settings_sectionheading"><?php _e('File Options', 'updraftplus');?></h2>
 
-<table class="form-table" >
+<table class="form-table js-tour-settings-more" >
 	<tr>
 		<th><?php _e('Include in files backup', 'updraftplus');?>:</th>
 		<td>

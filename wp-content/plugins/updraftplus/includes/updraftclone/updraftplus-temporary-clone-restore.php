@@ -25,6 +25,6 @@ class UpdraftPlus_Temporary_Clone_Restore {
 	}
 }
 
-if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
+if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
 	$updraftplus_temporary_clone_restore = new UpdraftPlus_Temporary_Clone_Restore();
 }

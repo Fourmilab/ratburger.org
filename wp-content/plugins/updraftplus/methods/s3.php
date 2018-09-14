@@ -817,7 +817,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	 * @return String - the template
 	 */
 	public function get_pre_configuration_template() {
-		$this->get_pre_configuration_template_engine('s3', 'S3', 'Amazon S3', 'AWS', 'https://aws.amazon.com/console/', '<img src="//awsmedia.s3.amazonaws.com/AWS_logo_poweredby_black_127px.png" alt="Amazon Web Services">');
+		$this->get_pre_configuration_template_engine('s3', 'S3', 'Amazon S3', 'AWS', 'https://aws.amazon.com/console/', '<img src="'. UPDRAFTPLUS_URL .'/images/aws_logo.png" alt="Amazon Web Services">');
 	}
 
 	/**
@@ -884,7 +884,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 	 */
 	public function get_configuration_template() {
 		// White: https://d36cz9buwru1tt.cloudfront.net/Powered-by-Amazon-Web-Services.jpg
-		return $this->get_configuration_template_engine('s3', 'S3', 'Amazon S3', 'AWS', 'https://aws.amazon.com/console/', '<img src="//awsmedia.s3.amazonaws.com/AWS_logo_poweredby_black_127px.png" alt="Amazon Web Services">');
+		// Black: https://awsmedia.s3.amazonaws.com/AWS_logo_poweredby_black_127px.png
+		return $this->get_configuration_template_engine('s3', 'S3', 'Amazon S3', 'AWS', 'https://aws.amazon.com/console/', '<img src="'. UPDRAFTPLUS_URL .'/images/aws_logo.png" alt="Amazon Web Services">');
 	}
 	
 	/**

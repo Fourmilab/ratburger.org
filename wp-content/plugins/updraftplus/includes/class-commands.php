@@ -87,6 +87,13 @@ class UpdraftPlus_Commands {
 		return $this->downloader($set_info);
 	}
 	
+	/**
+	 * Get backup progress (as HTML) for a particular backup
+	 *
+	 * @param Array $params - should have a key 'job_id' with corresponding value
+	 *
+	 * @return String - the HTML
+	 */
 	public function backup_progress($params) {
 	
 		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
@@ -862,15 +869,23 @@ class UpdraftPlus_Commands {
 
 		if (isset($response['status']) && 'authenticated' == $response['status']) {
 			$tokens = isset($response['tokens']) ? $response['tokens'] : 0;
-			$content = '<p>' . __("Available temporary clone tokens:", "updraftplus") . ' ' . esc_html($tokens) . '</p>';
-			$content .= '<p><a href="https://updraftplus.com/shop/">' . __("You can add more temporary clone tokens to your account here.", "updraftplus") .'</a></p>';
+			$content = '<div class="updraftclone-main-row">';
+			$content .= '<div class="updraftclone-tokens">';
+			$content .= '<p>' . __("Available temporary clone tokens:", "updraftplus") . ' <span class="tokens-number">' . esc_html($tokens) . '</span></p>';
+			$content .= '<p><a href="'.$updraftplus->get_url('buy-tokens').'">'.__('You can buy more temporary clone tokens here.', 'updraftplus').'</a></p>';
+			$content .= '</div>';
 			
 			if (0 != $response['tokens']) {
+				$content .= '<div class="updraftclone_action_box">';
 				$content .= $updraftplus_admin->updraftplus_clone_versions();
 				$content .= '<p class="updraftplus_clone_status"></p>';
-				$content .= '<button id="updraft_migrate_createclone" class="button button-primary" data-clone_id="'.$response['clone_info']['id'].'" data-secret_token="'.$response['clone_info']['secret_token'].'">'. __('Create clone', 'updraftplus') . '</button>';
+				$content .= '<button id="updraft_migrate_createclone" class="button button-primary button-hero" data-clone_id="'.$response['clone_info']['id'].'" data-secret_token="'.$response['clone_info']['secret_token'].'">'. __('Create clone', 'updraftplus') . '</button>';
 				$content .= '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span>';
+				$content .= '</div>';
 			}
+			$content .= '</div>'; // end .updraftclone-main-row
+
+			$content .= isset($response['clone_list']) ? '<div class="clone-list"><h3>'.__('Current clones', 'updraftplus').' - <a target="_blank" href="https://updraftplus.com/my-account/clones/">'.__('manage', 'updraftplus').'</a></h3>'.$response['clone_list'].'</div>' : '';
 
 			$response['html'] = $content;
 		}
@@ -894,19 +909,30 @@ class UpdraftPlus_Commands {
 
 		if (isset($response['data'])) {
 			$tokens = isset($response['data']['tokens']) ? $response['data']['tokens'] : 0;
-			$content = '<p>' . __('Your available temporary clone tokens:', 'updraftplus') . ' ' . esc_html($tokens) . '</p>';
-			$content .= '<p>' . __('Your temporary clone has started and will be available at the following URLs once the clone operation has finished.', 'updraftplus') . '</p>';
-			$content .= '<p>'. __('Your temporary clone URL:', 'updraftplus') . ' <a href="' . esc_html($response['data']['url']) . '">' . esc_html($response['data']['url']) . '</a></p>';
-			$content .= '<p>'. __('Your temporary clone admin URL:', 'updraftplus') . ' <a href="' . esc_html(trailingslashit($response['data']['url'])) . 'wp-admin">' . esc_html(trailingslashit($response['data']['url'])) . 'wp-admin</a></p>';
+
+			$content = '<div class="updraftclone-main-row">';
+
+			$content .= '<div class="updraftclone-tokens">';
+			$content .= '<p>' . __("Available temporary clone tokens:", "updraftplus") . ' <span class="tokens-number">' . esc_html($tokens) . '</span></p>';
+			$content .= '</div>';
+
+			$content .= '<div class="updraftclone_action_box">';
+			$content .= '<p>' . __('Your clone has started and will be available at the following URLs once it is ready.', 'updraftplus') . '</p>';
+			$content .= '<p><strong>'. __('Front page:', 'updraftplus') . '</strong> <a target="_blank" href="' . esc_html($response['data']['url']) . '">' . esc_html($response['data']['url']) . '</a></p>';
+			$content .= '<p><strong>'. __('Dashboard:', 'updraftplus') . '</strong> <a target="_blank" href="' . esc_html(trailingslashit($response['data']['url'])) . 'wp-admin">' . esc_html(trailingslashit($response['data']['url'])) . 'wp-admin</a></p>';
 			$content .= '<p><a target="_blank" href="'.$updraftplus->get_url('my-account').'">'.__('You can find your temporary clone information in your updraftplus.com account here.', 'updraftplus').'</a></p>';
-			$content .= '<p id="updraft_clone_progress">'. __('The creation of your backup data for creating the clone should now begin.', 'updraftplus') .'</p>';
+			$content .= '</div>';
+
+			$content .= '</div>'; // end .updraftclone-main-row
+
+			$content .= '<p id="updraft_clone_progress">'. __('The creation of your data for creating the clone should now begin. NB: if the clone fails to boot, your token will be refunded after an hour.', 'updraftplus') .'<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
 			$content .= '<div id="updraft_clone_activejobsrow" style="display:none;"></div>';
 
 			$response['html'] = $content;
 			$response['url'] = $response['data']['url'];
 			$response['key'] = '';
 		} else {
-			$content .= '<p id="updraft_clone_progress">'. __('The creation of your backup data for creating the clone should now begin:', 'updraftplus') .'</p>';
+			$content = '<p id="updraft_clone_progress">'. __('The creation of your data for creating the clone should now begin:', 'updraftplus') .'<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
 			$content .= '<div id="updraft_clone_activejobsrow" style="display:none;"></div>';
 
 			$response['html'] = $content;

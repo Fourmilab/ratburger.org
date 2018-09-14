@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
-if (!class_exists('UpdraftPlus_PclZip')) require_once(UPDRAFTPLUS_DIR.'/class-zip.php');
+if (!class_exists('UpdraftPlus_PclZip')) require_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
 
 /**
  * This file contains functions that are only needed/loaded when a backup is running (reduces memory usage on other pages)
@@ -661,7 +661,7 @@ class UpdraftPlus_Backup {
 					}
 					
 					if ($is_always_keep) {
-						if ($database_backups_found[$entity] < $updraft_retain) {
+						if ($database_backups_found[$key] < $updraft_retain) {
 							$this->log_with_db_occasionally("This backup set ($backup_datestamp) was an 'Always Keep' backup, and we have not yet reached any retain limits, so it should be counted in the count of how many have been retained for purposes of the 'how many to retain' count. It will not be pruned. Skipping.");
 							$database_backups_found[$key]++;
 						} else {

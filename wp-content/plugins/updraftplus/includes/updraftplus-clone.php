@@ -24,6 +24,35 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 	}
 
 	/**
+	 * This function will check the passed in response from the remote call and check for various errors and return the parsed response
+	 *
+	 * @param array $response - the response from the remote call
+	 *
+	 * @return array          - the parsed response
+	 */
+	private function parse_response($response) {
+		
+		if (is_wp_error($response)) {
+			$response = array('status' => 'error', 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
+		} else {
+			if (isset($response['status'])) {
+				if ('error' === $response['status']) {
+					$response = array(
+						'status' => 'error',
+						'code' => isset($response['code']) ? $response['code'] : -1,
+						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
+						'response' => $response,
+					);
+				}
+			} else {
+				$response = array('status' => 'error', 'message' => $this->translate_message('generic'));
+			}
+		}
+
+		return $response;
+	}
+
+	/**
 	 * Executes login or registration process. Connects and sends request to the UpdraftPlus clone
 	 * and returns the response coming from the server
 	 *
@@ -38,24 +67,8 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
 
 		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
 
-		return $response;
+		return $this->parse_response($response);
 	}
 
 	/**
@@ -95,63 +108,19 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		$subdirectory = parse_url(network_site_url(), PHP_URL_PATH);
 		if (empty($data['install_info']['subdirectory'])) $data['install_info']['subdirectory'] = !empty($subdirectory) ? $subdirectory : '/';
 		if (empty($data['install_info']['locale'])) $data['install_info']['locale'] = get_locale();
+		if (empty($data['install_info']['owner_id']) && empty($data['install_info']['owner_login'])) {
+			$user = wp_get_current_user();
+			$data['install_info']['owner_id'] = $user->ID;
+			$data['install_info']['owner_login'] = $user->user_login;
+		}
 		if (is_multisite()) {
 			$data['install_info']['multisite'] = true;
 			$data['install_info']['multisite_subdomain_install'] = is_subdomain_install();
 		}
 
 		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
-
-		return $response;
-	}
-
-	/**
-	 * Executes the clone restore complete process. Connects and sends request to the UpdraftPlus clone and returns the response coming from the server
-	 *
-	 * @internal
-	 * @param array $data - The submitted form data
-	 * @return array      - The response from the request
-	 */
-	public function clone_restore_complete($data) {
-
-		$action = 'updraftplus_clone_complete';
-		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
-
-		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
-
-		return $response;
+		
+		return $this->parse_response($response);
 	}
 
 	/**
@@ -167,24 +136,8 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
 
 		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
-
-		return $response;
+		
+		return $this->parse_response($response);
 	}
 
 	/**
@@ -200,24 +153,8 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
 
 		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
-
-		return $response;
+		
+		return $this->parse_response($response);
 	}
 
 	/**
@@ -233,23 +170,7 @@ class UpdraftPlus_Clone extends UpdraftPlus_Login {
 		if (empty($data['site_url'])) $data['site_url'] = trailingslashit(network_site_url());
 
 		$response = $this->send_remote_request($data, $action);
-		if (is_wp_error($response)) {
-			$response = array('error' => true, 'code' => $response->get_error_code(), 'message' => $response->get_error_message());
-		} else {
-			if (isset($response['status'])) {
-				if ('error' === $response['status']) {
-					$response = array(
-						'error' => true,
-						'code' => isset($response['code']) ? $response['code'] : -1,
-						'message' => isset($response['message']) ? $response['message'] : $this->translate_message('generic'),
-						'response' => $response
-					);
-				}
-			} else {
-				$response = array('error' => true, 'message' => $this->translate_message('generic'));
-			}
-		}
-
-		return $response;
+		
+		return $this->parse_response($response);
 	}
 }

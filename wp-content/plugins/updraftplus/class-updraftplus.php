@@ -83,13 +83,6 @@ class UpdraftPlus {
 			'UpdraftPlus_Encryption' => 'includes/class-updraftplus-encryption.php',
 			'UpdraftPlus_Manipulation_Functions' => 'includes/class-manipulation-functions.php'
 		);
-
-		if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
-			$load_classes['UpdraftPlus_Temporary_Clone_Dash_Notice'] = 'includes/updraftplus-temporary-clone-dash-notice.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_User_Notice'] = 'includes/updraftplus-temporary-clone-user-notice.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_Commands'] = 'includes/updraftplus-temporary-clone-commands.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_Restore'] = 'includes/updraftplus-temporary-clone-restore.php';
-		}
 		
 		foreach ($load_classes as $class => $relative_path) {
 			if (!class_exists($class)) include_once(UPDRAFTPLUS_DIR.'/'.$relative_path);
@@ -321,6 +314,7 @@ class UpdraftPlus {
 		// These two added - 19-Feb-15 - started being required on local dev machine, for unknown reason (probably some plugin that started an output buffer).
 		if (ob_get_level()) ob_end_flush();
 		flush();
+		if (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
 	}
 	
 	/**
@@ -723,6 +717,20 @@ class UpdraftPlus {
 
 		if (file_exists(UPDRAFTPLUS_DIR.'/central/bootstrap.php')) {
 			include_once(UPDRAFTPLUS_DIR.'/central/bootstrap.php');
+		}
+
+		$load_classes = array();
+
+		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
+			$load_classes['UpdraftPlus_Temporary_Clone_Dash_Notice'] = 'includes/updraftclone/updraftplus-temporary-clone-dash-notice.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_User_Notice'] = 'includes/updraftclone/updraftplus-temporary-clone-user-notice.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Restore'] = 'includes/updraftclone/updraftplus-temporary-clone-restore.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Auto_Login'] = 'includes/updraftclone/updraftplus-temporary-clone-auto-login.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Status'] = 'includes/updraftclone/updraftplus-temporary-clone-status.php';
+		}
+		
+		foreach ($load_classes as $class => $relative_path) {
+			if (!class_exists($class)) include_once(UPDRAFTPLUS_DIR.'/'.$relative_path);
 		}
 		
 	}
@@ -1814,53 +1822,85 @@ class UpdraftPlus {
 			$pfiles = "<h3>".$description." (".sprintf(__('files: %s', 'updraftplus'), $how_many).")</h3>\n\n";
 		}
 
-		$pfiles .= '<ul>';
-		$files = $history[$entity];
-		if (is_string($files)) $files = array($files);
+		$is_incremental = (!empty($jobdata) && !empty($jobdata['job_type']) && 'incremental' == $jobdata['job_type'] && 'db' != substr($entity, 0, 2)) ? true : false;
 
-		foreach ($files as $ind => $file) {
-
-			$op = htmlspecialchars($file)."\n";
-			$skey = $entity.((0 == $ind) ? '' : $ind).'-size';
-
-			$meta = '';
-			if ('db' == substr($entity, 0, 2) && 'db' != $entity) {
-				$dind = substr($entity, 2);
-				if (is_array($jobdata) && !empty($jobdata['backup_database']) && is_array($jobdata['backup_database']) && !empty($jobdata['backup_database'][$dind]) && is_array($jobdata['backup_database'][$dind]['dbinfo']) && !empty($jobdata['backup_database'][$dind]['dbinfo']['host'])) {
-					$dbinfo = $jobdata['backup_database'][$dind]['dbinfo'];
-					$meta .= sprintf(__('External database (%s)', 'updraftplus'), $dbinfo['user'].'@'.$dbinfo['host'].'/'.$dbinfo['name'])."<br>";
+		if ($is_incremental) {
+			$backup_timestamp = $jobdata['backup_time'];
+			$backup_history = UpdraftPlus_Backup_History::get_history($backup_timestamp);
+			$pfiles .= "<dl>";
+			foreach ($backup_history['incremental_sets'] as $timestamp => $backup) {
+				if (isset($backup[$entity])) {
+					$pfiles .= "<dt>".get_date_from_gmt(gmdate('Y-m-d H:i:s', (int) $timestamp), 'M d, Y G:i')."\n</dt>\n";
+					foreach ($backup[$entity] as $ind => $file) {
+						$pfiles .= "<dd>".$this->get_entity_row($file, $history, $entity, $checksums, $jobdata, $ind)."\n</dd>\n";
+					}
 				}
 			}
-			if (isset($history[$skey])) $meta .= sprintf(__('Size: %s MB', 'updraftplus'), round($history[$skey]/1048576, 1));
-			$ckey = $entity.$ind;
-			foreach ($checksums as $ck) {
-				$ck_plain = false;
-				if (isset($history['checksums'][$ck][$ckey])) {
-					$meta .= (($meta) ? ', ' : '').sprintf(__('%s checksum: %s', 'updraftplus'), strtoupper($ck), $history['checksums'][$ck][$ckey]);
-					$ck_plain = true;
-				}
-				if (isset($history['checksums'][$ck][$ckey.'.crypt'])) {
-					if ($ck_plain) $meta .= ' '.__('(when decrypted)');
-					$meta .= (($meta) ? ', ' : '').sprintf(__('%s checksum: %s', 'updraftplus'), strtoupper($ck), $history['checksums'][$ck][$ckey.'.crypt']);
-				}
-			}
+			$pfiles .= "</dl>\n";
+		} else {
+			
+			$pfiles .= "<ul>";
+			$files = $history[$entity];
+			if (is_string($files)) $files = array($files);
 
-			$fileinfo = apply_filters("updraftplus_fileinfo_$entity", array(), $ind);
-			if (is_array($fileinfo) && !empty($fileinfo)) {
-				if (isset($fileinfo['html'])) {
-					$meta .= $fileinfo['html'];
-				}
+			foreach ($files as $ind => $file) {
+				$pfiles .= "<li>".$this->get_entity_row($file, $history, $entity, $checksums, $jobdata, $ind)."\n</li>\n";
 			}
-
-			// if ($meta) $meta = " ($meta)";
-			if ($meta) $meta = "<br><em>$meta</em>";
-			$pfiles .= '<li>'.$op.$meta."\n</li>\n";
+			$pfiles .= "</ul>\n";
 		}
 
-		$pfiles .= "</ul>\n";
-
 		return $pfiles;
+	}
 
+	/**
+	 * This function will use the passed in information to prepare a pretty string describing the backup from the raw backup history
+	 *
+	 * @param String  $file      - the backup file
+	 * @param Array   $history   - the backup history
+	 * @param String  $entity    - the backup entity
+	 * @param Array   $checksums - checksums for the backup file
+	 * @param Array   $jobdata   - the jobdata for this backup
+	 * @param integer $ind       - the index of the file
+	 *
+	 * @return String            - returns the entity output string
+	 */
+	public function get_entity_row($file, $history, $entity, $checksums, $jobdata, $ind) {
+		$op = htmlspecialchars($file)."\n";
+		$skey = $entity.((0 == $ind) ? '' : $ind).'-size';
+
+		$meta = '';
+		if ('db' == substr($entity, 0, 2) && 'db' != $entity) {
+			$dind = substr($entity, 2);
+			if (is_array($jobdata) && !empty($jobdata['backup_database']) && is_array($jobdata['backup_database']) && !empty($jobdata['backup_database'][$dind]) && is_array($jobdata['backup_database'][$dind]['dbinfo']) && !empty($jobdata['backup_database'][$dind]['dbinfo']['host'])) {
+				$dbinfo = $jobdata['backup_database'][$dind]['dbinfo'];
+				$meta .= sprintf(__('External database (%s)', 'updraftplus'), $dbinfo['user'].'@'.$dbinfo['host'].'/'.$dbinfo['name'])."<br>";
+			}
+		}
+		if (isset($history[$skey])) $meta .= sprintf(__('Size: %s MB', 'updraftplus'), round($history[$skey]/1048576, 1));
+		$ckey = $entity.$ind;
+		foreach ($checksums as $ck) {
+			$ck_plain = false;
+			if (isset($history['checksums'][$ck][$ckey])) {
+				$meta .= (($meta) ? ', ' : '').sprintf(__('%s checksum: %s', 'updraftplus'), strtoupper($ck), $history['checksums'][$ck][$ckey]);
+				$ck_plain = true;
+			}
+			if (isset($history['checksums'][$ck][$ckey.'.crypt'])) {
+				if ($ck_plain) $meta .= ' '.__('(when decrypted)');
+				$meta .= (($meta) ? ', ' : '').sprintf(__('%s checksum: %s', 'updraftplus'), strtoupper($ck), $history['checksums'][$ck][$ckey.'.crypt']);
+			}
+		}
+
+		$fileinfo = apply_filters("updraftplus_fileinfo_$entity", array(), $ind);
+		if (is_array($fileinfo) && !empty($fileinfo)) {
+			if (isset($fileinfo['html'])) {
+				$meta .= $fileinfo['html'];
+			}
+		}
+
+		// if ($meta) $meta = " ($meta)";
+		if ($meta) $meta = "<br><em>$meta</em>";
+		
+		return $op.$meta;
 	}
 
 	/**
@@ -3129,7 +3169,7 @@ class UpdraftPlus {
 				}
 			}
 			if ($remote_sent && !$force_abort) {
-				$final_message .= '. '.__('To complete your migration/clone, you should now log in to the remote site and restore the backup set.', 'updraftplus');
+				$final_message .= empty($clone_job) ? '. '.__('To complete your migration/clone, you should now log in to the remote site and restore the backup set.', 'updraftplus') : '. '.__('Your clone will now deploy this data to re-create your site.', 'updraftplus');
 				do_action('updraftplus_remotesend_upload_complete');
 			}
 			if ($do_cleanup) $delete_jobdata = apply_filters('updraftplus_backup_complete', $delete_jobdata);
@@ -3568,42 +3608,44 @@ class UpdraftPlus {
 		} elseif ($handle = opendir($backup_from_inside_dir)) {
 			
 			while (false !== ($entry = readdir($handle))) {
+			
+				if ('.' == $entry || '..' == $entry) continue;
+				
 				// $candidate: full path; $entry = one-level
 				$candidate = $backup_from_inside_dir.'/'.$entry;
-				if ("." != $entry && ".." != $entry) {
-					if (isset($avoid_these_dirs[$candidate])) {
-						$this->log("finding files: $entry: skipping: this is the ".$avoid_these_dirs[$candidate]." directory");
-					} elseif ($candidate == $updraft_dir) {
-						$this->log("finding files: $entry: skipping: this is the updraft directory");
-					} elseif (isset($skip_these_dirs[$entry])) {
-						$this->log("finding files: $entry: skipping: excluded by options");
-					} else {
-						$add_to_list = true;
-						// Now deal with entries in $skip_these_dirs ending in * or starting with *
-						foreach ($skip_these_dirs as $skip => $sind) {
-							if ('*' == substr($skip, -1, 1) && '*' == substr($skip, 0, 1) && strlen($skip) > 2) {
-								if (strpos($entry, substr($skip, 1, strlen($skip-2))) !== false) {
-									$this->log("finding files: $entry: skipping: excluded by options (glob)");
-									$add_to_list = false;
-								}
-							} elseif ('*' == substr($skip, -1, 1) && strlen($skip) > 1) {
-								if (substr($entry, 0, strlen($skip)-1) == substr($skip, 0, strlen($skip)-1)) {
-									$this->log("finding files: $entry: skipping: excluded by options (glob)");
-									$add_to_list = false;
-								}
-							} elseif ('*' == substr($skip, 0, 1) && strlen($skip) > 1) {
-								if (strlen($entry) >= strlen($skip)-1 && substr($entry, (strlen($skip)-1)*-1) == substr($skip, 1)) {
-									$this->log("finding files: $entry: skipping: excluded by options (glob)");
-									$add_to_list = false;
-								}
+				
+				if (isset($avoid_these_dirs[$candidate])) {
+					$this->log("finding files: $entry: skipping: this is the ".$avoid_these_dirs[$candidate]." directory");
+				} elseif ($candidate == $updraft_dir) {
+					$this->log("finding files: $entry: skipping: this is the updraft directory");
+				} elseif (isset($skip_these_dirs[$entry])) {
+					$this->log("finding files: $entry: skipping: excluded by options");
+				} else {
+					$add_to_list = true;
+					// Now deal with entries in $skip_these_dirs ending in * or starting with *
+					foreach ($skip_these_dirs as $skip => $sind) {
+						if ('*' == substr($skip, -1, 1) && '*' == substr($skip, 0, 1) && strlen($skip) > 2) {
+							if (strpos($entry, substr($skip, 1, strlen($skip-2))) !== false) {
+								$this->log("finding files: $entry: skipping: excluded by options (glob)");
+								$add_to_list = false;
+							}
+						} elseif ('*' == substr($skip, -1, 1) && strlen($skip) > 1) {
+							if (substr($entry, 0, strlen($skip)-1) == substr($skip, 0, strlen($skip)-1)) {
+								$this->log("finding files: $entry: skipping: excluded by options (glob)");
+								$add_to_list = false;
+							}
+						} elseif ('*' == substr($skip, 0, 1) && strlen($skip) > 1) {
+							if (strlen($entry) >= strlen($skip)-1 && substr($entry, (strlen($skip)-1)*-1) == substr($skip, 1)) {
+								$this->log("finding files: $entry: skipping: excluded by options (glob)");
+								$add_to_list = false;
 							}
 						}
-						if ($add_to_list) {
-							array_push($dirlist, $candidate);
-							$added++;
-							$skip_dblog = (($added > 50 && 0 != $added % 100) || ($added > 2000 && 0 != $added % 500));
-							$this->log("finding files: $entry: adding to list ($added)", 'notice', false, $skip_dblog);
-						}
+					}
+					if ($add_to_list) {
+						array_push($dirlist, $candidate);
+						$added++;
+						$skip_dblog = (($added > 50 && 0 != $added % 100) || ($added > 2000 && 0 != $added % 500));
+						$this->log("finding files: $entry: adding to list ($added)", 'notice', false, $skip_dblog);
 					}
 				}
 			}
@@ -3692,6 +3734,12 @@ class UpdraftPlus {
 	
 		$storage_objects_and_ids = array();
 
+		// N.B. The $services can return any type of values (null, false, etc.) as mentioned from one of the comment found
+		// in the "save_backup_to_history" function above especially if upgrading from (very) old versions. Thus,
+		// here we're adding some check to make sure that we're receiving a non-empty array before iterating through
+		// all the backup services that the user has in store.
+		if (empty($services) || !is_array($services)) return $storage_objects_and_ids;
+
 		foreach ($services as $method) {
 
 			if ('none' === $method || '' == $method) continue;
@@ -3741,6 +3789,8 @@ class UpdraftPlus {
 							$storage_objects_and_ids[$method]['instance_settings'][$instance_id] = $storage_options;
 						}
 					}
+				} else {
+					if (!isset($storage_objects_and_ids[$method]['instance_settings'])) $storage_objects_and_ids[$method]['instance_settings'] = $remote_storage->get_default_options();
 				}
 
 			} else {
@@ -5030,6 +5080,8 @@ class UpdraftPlus {
 			'updraft_report_dbbackup',
 			'updraft_log_syslog',
 			'updraft_extradatabases',
+			'updraftplus_tour_cancelled_on',
+			'updraftplus_version',
 		);
 	}
 
@@ -5141,8 +5193,14 @@ class UpdraftPlus {
 			case 'my-account':
 				return apply_filters('updraftplus_com_myaccount', 'https://updraftplus.com/my-account/');
 				break;
+			case 'shop':
+				return apply_filters('updraftplus_com_shop', 'https://updraftplus.com/shop/');
+				break;
+			case 'buy-tokens':
+				return apply_filters('updraftplus_com_updraftclone_tokens', 'https://updraftplus.com/shop/updraftclone-tokens/');
+				break;
 			case 'lost-password':
-				return apply_filters('updraftplus_com_myaccount', 'https://updraftplus.com/my-account/lost-password/');
+				return apply_filters('updraftplus_com_myaccount_lostpassword', 'https://updraftplus.com/my-account/lost-password/');
 				break;
 			case 'mothership':
 				return apply_filters('updraftplus_com_mothership', 'https://updraftplus.com/plugin-info');

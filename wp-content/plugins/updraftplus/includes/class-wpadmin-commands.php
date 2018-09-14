@@ -495,7 +495,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 
 		$node_array = array();
 
-		include_once(UPDRAFTPLUS_DIR.'/class-zip.php');
+		include_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
 		
 		$zip_object = 'UpdraftPlus_ZipArchive';
 
@@ -703,5 +703,24 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 			$action_data['similar_type_collate'] = $similar_type_collate;
 		}
 		return $action_data;
+	}
+
+	/**
+	 * Set the Tour status
+	 *
+	 * @param array $params - the $_REQUEST. We're looking for 'current_step'
+	 * @return bool
+	 */
+	public function set_tour_status($params) {
+		return UpdraftPlus_Tour::get_instance()->set_tour_status($params);
+	}
+
+	/**
+	 * Resets the tour status
+	 *
+	 * @return bool
+	 */
+	public function reset_tour_status() {
+		return UpdraftPlus_Tour::get_instance()->reset_tour_status();
 	}
 }

@@ -11,6 +11,9 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 <table class="existing-backups-table wp-list-table widefat striped">
 	<thead>
 		<tr style="margin-bottom: 4px;">
+			<?php if (!defined('UPDRAFTCENTRAL_COMMAND')) : ?>
+			<th class="check-column"><label class="screen-reader-text" for="cb-select-all"><?php _e('Select All'); ?></label><input id="cb-select-all" type="checkbox"></th>
+			<?php endif; ?>
 			<th class="backup-date"><?php _e('Backup date', 'updraftplus');?></th>
 			<th class="backup-data"><?php _e('Backup data (click to download)', 'updraftplus');?></th>
 			<th class="updraft_backup_actions"><?php _e('Actions', 'updraftplus');?></th>
@@ -53,7 +56,11 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 
 			?>
 			<tr class="updraft_existing_backups_row updraft_existing_backups_row_<?php echo $key;?>" data-key="<?php echo $key;?>" data-nonce="<?php echo $nonce;?>">
-			
+				<?php if (!defined('UPDRAFTCENTRAL_COMMAND')) : ?>
+				<td class="backup-select">
+					<label class="screen-reader-text"><?php _e('Select All'); ?></label><input type="checkbox">
+				</td>
+				<?php endif; ?>
 				<td class="updraft_existingbackup_date " data-rawbackup="<?php echo $rawbackup;?>" data-label="<?php _e('Backup date', 'updraftplus');?>">
 					<div class="backup_date_label">
 						<?php
@@ -142,3 +149,12 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 
 	</tbody>
 </table>
+<?php if (!defined('UPDRAFTCENTRAL_COMMAND')) : ?>
+<div id="ud_massactions">
+	<strong><?php _e('Actions upon selected backups', 'updraftplus');?></strong>
+	<div class="updraftplus-remove"><button type="button" class="button button-remove js--delete-selected-backups"><?php _e('Delete', 'updraftplus');?></button></div>
+	<div class="updraft-viewlogdiv"><button type="button" class="button js--select-all-backups" href="#"><?php _e('Select all', 'updraftplus');?></button></div>
+	<div class="updraft-viewlogdiv"><button type="button" class="button js--deselect-all-backups" href="#"><?php _e('Deselect', 'updraftplus');?></button></div>
+	<small class="ud_massactions-tip"><?php _e('Use ctrl / cmd + press to select several items', 'updraftplus'); ?></small>
+</div>
+<?php endif;

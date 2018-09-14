@@ -16,8 +16,8 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 		// Put the default first
 		$this->dreamobjects_endpoints = array(
 			// Endpoint, then the label
-			'objects-us-west-1.dream.io' => 'objects-us-west-1.dream.io',
-			'objects-us-east-1.dream.io' => 'objects-us-east-1.dream.io ('.__('launching some time in 2018', 'updraftplus').')',
+			'objects-us-east-1.dream.io' => 'objects-us-east-1.dream.io',
+			'objects-us-west-1.dream.io' => 'objects-us-west-1.dream.io ('.__('Closing 1st October 2018', 'updraftplus').')',
 		);
 	}
 	
@@ -27,7 +27,20 @@ class UpdraftPlus_BackupModule_dreamobjects extends UpdraftPlus_BackupModule_s3 
 		$config = $this->get_config();
 		$endpoint = ('' != $region && 'n/a' != $region) ? $region : $config['endpoint'];
 		global $updraftplus;
-		if ($updraftplus->backup_time) $updraftplus->log("Set endpoint: $endpoint");
+		if ($updraftplus->backup_time) {
+			$updraftplus->log("Set endpoint: $endpoint");
+		
+			// Warning for objects-us-west-1 shutdown in Oct 2018
+			if ('objects-us-west-1.dream.io' == $endpoint) {
+				// Are we after the shutdown date?
+				if (time() >= 1538438400) {
+					$updraftplus->log("The objects-us-west-1.dream.io endpoint shut down on the 1st October 2018. The upload is expected to fail. Please see the following article for more information https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure", 'warning', 'dreamobjects_west_shutdown');
+				} else {
+					$updraftplus->log("The objects-us-west-1.dream.io endpoint is scheduled to shut down on the 1st October 2018. You will need to switch to a different end-point and migrate your data before that date. Please see the following article for more information https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure", 'warning', 'dreamobjects_west_shutdown');
+				}
+			}
+		}
+		
 		$obj->setEndpoint($endpoint);
 	}
 

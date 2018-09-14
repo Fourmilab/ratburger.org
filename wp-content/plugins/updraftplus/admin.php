@@ -17,7 +17,7 @@ class UpdraftPlus_Admin {
 
 	private $auth_instance_ids = array('dropbox' => array(), 'onedrive' => array(), 'googledrive' => array(), 'googlecloud' => array());
 
-	private $php_versions = array('5.4', '5.5', '5.6', '7.0', '7.1', '7.2');
+	private $php_versions = array('5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3');
 
 	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9');
 
@@ -273,6 +273,24 @@ class UpdraftPlus_Admin {
 		}
 
 		if (version_compare($updraftplus->get_wordpress_version(), '3.2', '<')) add_action('all_admin_notices', array($this, 'show_admin_warning_wordpressversion'));
+		
+		// DreamObjects west cluster shutdown warning
+		if ('dreamobjects' === $service || (is_array($service) && in_array('dreamobjects', $service))) {
+			$settings = $updraftplus->update_remote_storage_options_format('dreamobjects');
+			
+			if (is_wp_error($settings)) {
+				if (!isset($this->storage_module_option_errors)) $this->storage_module_option_errors = '';
+				$this->storage_module_option_errors .= "DreamObjects (".$settings->get_error_code()."): ".$settings->get_error_message();
+				add_action('all_admin_notices', array($this, 'show_admin_warning_multiple_storage_options'));
+				$updraftplus->log_wp_error($settings, true, true);
+			} elseif (!empty($settings['settings'])) {
+				foreach ($settings['settings'] as $instance_id => $storage_options) {
+					if ('objects-us-west-1.dream.io' == $storage_options['endpoint']) {
+						add_action('all_admin_notices', array($this, 'show_admin_warning_dreamobjects'));
+					}
+				}
+			}
+		}
 	}
 	
 	/**
@@ -480,11 +498,28 @@ class UpdraftPlus_Admin {
 		
 		$updraftplus_dashboard_news = new Updraft_Dashboard_News('https://feeds.feedburner.com/updraftplus/', 'https://updraftplus.com/news/', $news_translations);
 		
+		// New install admin Tour
+		if (file_exists(UPDRAFTPLUS_DIR.'/includes/updraftplus-tour.php')) {
+			include_once(UPDRAFTPLUS_DIR.'/includes/updraftplus-tour.php');
+		}
+
 		// Next, the actions that only come on the UpdraftPlus page
 		if (UpdraftPlus_Options::admin_page() != $pagenow || empty($_REQUEST['page']) || 'updraftplus' != $_REQUEST['page']) return;
 		$this->setup_all_admin_notices_udonly($service);
 		
 		add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'), 99999);
+
+		$udp_saved_version = UpdraftPlus_Options::get_updraft_option('updraftplus_version');
+		if (!$udp_saved_version || $udp_saved_version != $updraftplus->version) {
+			if (!$udp_saved_version) {
+				// udp was newly installed, or upgraded from an older version
+				do_action('updraftplus_newly_installed', $updraftplus->version);
+			} else {
+				// udp was updated or downgraded
+				do_action('updraftplus_version_changed', UpdraftPlus_Options::get_updraft_option('updraftplus_version'), $updraftplus->version);
+			}
+			UpdraftPlus_Options::update_updraft_option('updraftplus_version', $updraftplus->version);
+		}
 	}
 
 	/**
@@ -871,6 +906,7 @@ class UpdraftPlus_Admin {
 			'continue_import' => __('Do you want to carry out the import?', 'updraftplus'),
 			'complete' => __('Complete', 'updraftplus'),
 			'backup_complete' => __('The backup has finished running', 'updraftplus'),
+			'backup_aborted' => __('The backup was aborted', 'updraftplus'),
 			'remote_delete_limit' => defined('UPDRAFTPLUS_REMOTE_DELETE_LIMIT') ? UPDRAFTPLUS_REMOTE_DELETE_LIMIT : 15,
 			'remote_files_deleted' => __('remote files deleted', 'updraftplus'),
 			'http_code' => __('HTTP code:', 'updraftplus'),
@@ -907,8 +943,8 @@ class UpdraftPlus_Admin {
 			'control_udc_connections' => __('For future control of all your UpdraftCentral connections, go to the "Advanced Tools" tab.', 'updraftplus'),
 			'main_tabs_keys' => array_keys($main_tabs),
 			'clone_version_warning' => __('Warning: you have selected a lower version than your currently installed version. This may fail if you have components that are incompatible with earlier versions.', 'updraftplus'),
-			'clone_backup_complete' => __('The backup is complete. The restore operation should start shortly on the temporary clone. Once complete, you can login with your WordPress username and password.', 'updraftplus'),
-			'clone_backup_complete' => __('Backup complete the restore operation should start shortly on the temporary clone once complete you can login with your WordPress username and password.', 'updraftplus'),
+			'clone_backup_complete' => __('The clone has been provisioned, and its data has been sent to it. Once the clone has finished deploying it, you will receive an email.', 'updraftplus'),
+			'clone_backup_aborted' => __('The backup for the clone has been aborted.', 'updraftplus'),
 			'current_clean_url' => UpdraftPlus::get_current_clean_url(),
 		));
 	}
@@ -1020,7 +1056,16 @@ class UpdraftPlus_Admin {
 		<?php
 	}
 
+	/**
+	 * Check if available disk space is at least the specified number of bytes
+	 *
+	 * @param Integer $space - number of bytes
+	 *
+	 * @return Integer|Boolean - true or false to indicate if available; of -1 if the result is unknown
+	 */
 	private function disk_space_check($space) {
+		// Allow checking by some other means (user request)
+		if (null !== ($filtered_result = apply_filters('updraftplus_disk_space_check', null, $space))) return $filtered_result;
 		global $updraftplus;
 		$updraft_dir = $updraftplus->backups_dir_location();
 		$disk_free_space = @disk_free_space($updraft_dir);
@@ -1037,7 +1082,7 @@ class UpdraftPlus_Admin {
 	 */
 	public function plugin_action_links($links, $file) {
 		if (is_array($links) && 'updraftplus/updraftplus.php' == $file) {
-			$settings_link = '<a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus">'.__("Settings", "updraftplus").'</a>';
+			$settings_link = '<a href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus" class="js-updraftplus-settings">'.__("Settings", "updraftplus").'</a>';
 			array_unshift($links, $settings_link);
 			$settings_link = '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/").'">'.__("Add-Ons / Pro Support", "updraftplus").'</a>';
 			array_unshift($links, $settings_link);
@@ -1154,6 +1199,13 @@ class UpdraftPlus_Admin {
 	 */
 	public function show_admin_warning_googlecloud() {
 		$this->get_method_auth_link('googlecloud');
+	}
+	
+	/**
+	 * Show DreamObjects cluster migration warning
+	 */
+	public function show_admin_warning_dreamobjects() {
+		$this->show_admin_warning('<strong>'.__('UpdraftPlus notice:', 'updraftplus').'</strong> '.sprintf(__('The %s endpoint is scheduled to shut down on the 1st October 2018. You will need to switch to a different end-point and migrate your data before that date. %sPlease see this article for more information%s'), 'objects-us-west-1.dream.io', '<a href="https://help.dreamhost.com/hc/en-us/articles/360002135871-Cluster-migration-procedure" target="_blank">', '</a>'), 'updated');
 	}
 
 	/**
@@ -1992,21 +2044,24 @@ class UpdraftPlus_Admin {
 		return $download_status;
 	}
 	
+	/**
+	 * Get, as HTML output, a list of active jobs
+	 *
+	 * @param Array $request - details on the request being made (e.g. extra info to include)
+	 *
+	 * @return String
+	 */
 	public function get_activejobs_list($request) {
 	
 		global $updraftplus;
 		
 		$download_status = empty($request['downloaders']) ? array() : $this->get_download_statuses(explode(':', $request['downloaders']));
 
-		$clone_job = false;
-
 		if (!empty($request['oneshot'])) {
 			$job_id = get_site_option('updraft_oneshotnonce', false);
 			// print_active_job() for one-shot jobs that aren't in cron
 			$active_jobs = (false === $job_id) ? '' : $this->print_active_job($job_id, true);
 		} elseif (!empty($request['thisjobonly'])) {
-			$jobdata = $updraftplus->jobdata_getarray($request['thisjobonly']);
-			$clone_job = isset($jobdata['clone_job']) ? $jobdata['clone_job'] : false;
 			// print_active_jobs() is for resumable jobs where we want the cron info to be included in the output
 			$active_jobs = $this->print_active_jobs($request['thisjobonly']);
 		} else {
@@ -2025,11 +2080,16 @@ class UpdraftPlus_Admin {
 			'l' => htmlspecialchars(UpdraftPlus_Options::get_updraft_lastmessage()),
 			'j' => $active_jobs,
 			'ds' => $download_status,
-			'u' => $logupdate_array,
-			'c' => $clone_job
+			'u' => $logupdate_array
 		);
 	}
 	
+	/**
+	 * Start a new backup
+	 *
+	 * @param Array			   $request
+	 * @param Boolean|Callable $close_connection_callable
+	 */
 	public function request_backupnow($request, $close_connection_callable = false) {
 		global $updraftplus;
 		
@@ -2845,15 +2905,22 @@ class UpdraftPlus_Admin {
 	/**
 	 * This method will build the UpdraftPlus.com login form and echo it to the page.
 	 *
-	 * @param string  $option_page            - the option page this form is being output to
-	 * @param boolean $tfa                    - indicates if we want to add the tfa UI
-	 * @param boolean $include_form_container - indicates if we want the form container
+	 * @param String  $option_page			  - the option page this form is being output to
+	 * @param Boolean $tfa					  - indicates if we want to add the tfa UI
+	 * @param Boolean $include_form_container - indicates if we want the form container
+	 * @param Array	  $further_options		  - other options (see below for the possibilities + defaults)
 	 *
 	 * @return void
 	 */
-	public function build_credentials_form($option_page, $tfa = false, $include_form_container = true) {
+	public function build_credentials_form($option_page, $tfa = false, $include_form_container = true, $further_options = array()) {
+	
 		global $updraftplus;
 
+		$further_options = wp_parse_args($further_options, array(
+			'under_username' => __("Not yet got an account (it's free)? Go get one!", 'updraftplus'),
+			'under_username_link' => $updraftplus->get_url('my-account')
+		));
+		
 		if ($include_form_container) {
 			$enter_credentials_begin = UpdraftPlus_Options::options_form_begin('', false, array(), 'updraftplus_com_login');
 			if (is_multisite()) $enter_credentials_begin .= '<input type="hidden" name="action" value="update">';
@@ -2865,17 +2932,17 @@ class UpdraftPlus_Admin {
 
 		$connect = htmlspecialchars(__('Connect', 'updraftplus'));
 
-		$enter_credentials_end = '<p style="margin-left: 258px;">';
+		$enter_credentials_end = '<p class="updraft-after-form-table">';
 		
 		if ($include_form_container) {
-			$enter_credentials_end .= '<input type="submit" class="button-primary ud_connectsubmit" value="'.$connect.'" />';
+			$enter_credentials_end .= '<input type="submit" class="button-primary ud_connectsubmit" value="'.$connect.'" tabindex="1" />';
 		} else {
-			$enter_credentials_end .= '<button class="button-primary ud_connectsubmit">'.$connect.'</button>';
+			$enter_credentials_end .= '<button class="button-primary ud_connectsubmit" tabindex="1">'.$connect.'</button>';
 		}
 		
 		$enter_credentials_end .= '<span class="updraftplus_spinner spinner">' . __('Processing', 'updraftplus') . '...</span></p>';
 
-		$enter_credentials_end .= '<p style="margin-left: 258px; font-size: 70%"><em><a href="https://updraftplus.com/faqs/tell-me-about-my-updraftplus-com-account/">'.$interested.'</a></em></p>';
+		$enter_credentials_end .= '<p class="updraft-after-form-table" style="font-size: 70%"><em><a href="https://updraftplus.com/faqs/tell-me-about-my-updraftplus-com-account/">'.$interested.'</a></em></p>';
 
 		$enter_credentials_end .= $include_form_container ? '</form>' : '</div>';
 
@@ -2927,7 +2994,7 @@ class UpdraftPlus_Admin {
 						<label for="<?php echo $option_page; ?>_options_email">
 							<input id="<?php echo $option_page; ?>_options_email" type="text" size="36" name="<?php echo $option_page; ?>_options[email]" value="<?php echo htmlspecialchars($options['email']); ?>" tabindex="1" />
 							<br/>
-							<a href="https://updraftplus.com/my-account/"><?php _e("Not yet got an account (it's free)? Go get one!", 'updraftplus'); ?></a>
+							<a target="_blank" href="<?php echo $further_options['under_username_link']; ?>"><?php echo $further_options['under_username']; ?></a>
 						</label>
 					</td>
 				</tr>
@@ -2935,12 +3002,25 @@ class UpdraftPlus_Admin {
 					<th><?php _e('Password', 'updraftplus'); ?></th>
 					<td>
 						<label for="<?php echo $option_page; ?>_options_password">
-							<input id="<?php echo $option_page; ?>_options_password" type="password" size="36" name="<?php echo $option_page; ?>_options[password]" value="<?php echo empty($options['password']) ? '' : htmlspecialchars($options['password']); ?>" tabindex="2"/>
+							<input id="<?php echo $option_page; ?>_options_password" type="password" size="36" name="<?php echo $option_page; ?>_options[password]" value="<?php echo empty($options['password']) ? '' : htmlspecialchars($options['password']); ?>" tabindex="1" />
 							<br/>
-							<a href="https://updraftplus.com/my-account/?action=lostpassword"><?php _e('Forgotten your details?', 'updraftplus'); ?></a>
+							<a target="_blank" href="<?php echo $updraftplus->get_url('lost-password'); ?>"><?php _e('Forgotten your details?', 'updraftplus'); ?></a>
 						</label>
 					</td>
 				</tr>
+				<?php
+				if (isset($further_options['terms_and_conditions']) && isset($further_options['terms_and_conditions_link'])) {
+				?>
+					<tr class="non_tfa_fields">
+						<th></th>
+						<td>
+							<input type="checkbox" id="<?php echo $option_page; ?>_terms_and_conditions" name="<?php echo $option_page; ?>_terms_and_conditions" value="1" tabindex="1">
+							<a target="_blank" href="<?php echo $further_options['terms_and_conditions_link']; ?>"><?php echo $further_options['terms_and_conditions']; ?></a>
+						</td>
+					</tr>
+					<?php
+				}
+				?>
 				<?php if ($tfa) { ?>
 				<tr class="tfa_fields" style="display:none;">
 					<th><?php _e('One Time Password (check your OTP app to get this password)', 'updraftplus'); ?></th>
@@ -3169,7 +3249,6 @@ class UpdraftPlus_Admin {
 				}
 			}
 		}
-
 		// A value for $this_job_only implies that output is required
 		if (false !== $this_job_only && !$ret) {
 			$ret = $this->print_active_job($this_job_only);
@@ -3182,6 +3261,16 @@ class UpdraftPlus_Admin {
 		return $ret;
 	}
 
+	/**
+	 * Print the HTML for a particular job
+	 *
+	 * @param String		  $job_id		   - the job identifier/nonce
+	 * @param Boolean		  $is_oneshot	   - whether this backup should be 'one shot', i.e. no resumptions
+	 * @param Boolean|Integer $time
+	 * @param Integer		  $next_resumption
+	 *
+	 * @return String
+	 */
 	private function print_active_job($job_id, $is_oneshot = false, $time = false, $next_resumption = false) {
 
 		$ret = '';
@@ -3336,12 +3425,14 @@ class UpdraftPlus_Admin {
 
 		if (!empty($jobdata['is_autobackup'])) $ret .= ' isautobackup';
 
+		$is_clone = empty($jobdata['clone_job']) ? '0' : '1';
+		
 		$ret .= '" data-jobid="'.$job_id.'" data-lastactivity="'.(int) $last_checkin_ago.'" data-nextresumption="'.$next_resumption.'" data-nextresumptionafter="'.$next_res_after.'" title="'.esc_attr(sprintf(__('Job ID: %s', 'updraftplus'), $job_id)).$title_info.'">'.$began_at.
 		'</div></div>';
 
 		$ret .= '<div class="updraft_col updraft_progress_container">';
 			// Existence of the 'updraft-jobid-(id)' id is checked for in other places, so do not modify this
-			$ret .= '<div class="job-id" id="updraft-jobid-'.$job_id.'">';
+			$ret .= '<div class="job-id" data-isclone="'.$is_clone.'" id="updraft-jobid-'.$job_id.'">';
 	
 			$ret .= apply_filters('updraft_printjob_beforewarnings', '', $jobdata, $job_id);
 	
@@ -3366,7 +3457,7 @@ class UpdraftPlus_Admin {
 			$ret .= $show_inline_info;
 			if (!empty($show_inline_info)) $ret .= ' - ';
 			$ret .= '<a data-jobid="'.$job_id.'" href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&action=downloadlog&updraftplus_backup_nonce='.$job_id.'" class="updraft-log-link">'.__('show log', 'updraftplus').'</a>';
-				if (!$is_oneshot) $ret .=' - <a href="'.UpdraftPlus::get_current_clean_url().'" data-jobid="'.$job_id.'" title="'.esc_attr(__('Note: the progress bar below is based on stages, NOT time. Do not stop the backup simply because it seems to have remained in the same place for a while - that is normal.', 'updraftplus')).'" class="updraft_jobinfo_delete">'.__('stop', 'updraftplus').'</a>';
+				if (!$is_oneshot) $ret .=' - <a href="#" data-jobid="'.$job_id.'" title="'.esc_attr(__('Note: the progress bar below is based on stages, NOT time. Do not stop the backup simply because it seems to have remained in the same place for a while - that is normal.', 'updraftplus')).'" class="updraft_jobinfo_delete">'.__('stop', 'updraftplus').'</a>';
 			$ret .= '</div>';
 		
 		$ret .= '</div></div>';
@@ -3387,7 +3478,7 @@ class UpdraftPlus_Admin {
 	}
 
 	/**
-	 * deletes the -old directories that are created when a backup is restored.
+	 * Deletes the -old directories that are created when a backup is restored.
 	 *
 	 * @return String. Can also exit (something we ought to probably review)
 	 */
@@ -3948,6 +4039,8 @@ class UpdraftPlus_Admin {
 
 		$backup = $backup_history[$key];
 
+		$only_remote_sent = (!empty($backup['service']) && (array('remotesend') === $backup['service'] || 'remotesend' === $backup['service'])) ? true : false;
+
 		$pretty_date = get_date_from_gmt(gmdate('Y-m-d H:i:s', (int) $key), 'M d, Y G:i');
 
 		$rawbackup = "<h2 title=\"$key\">$pretty_date</h2>";
@@ -3960,8 +4053,11 @@ class UpdraftPlus_Admin {
 			$jd = array();
 		}
 		
-		$rawbackup .= '<hr>';
-		$rawbackup .= '<input type="checkbox" name="always_keep_this_backup" id="always_keep_this_backup" data-backup_key="'.$key.'" '.(empty($backup['always_keep']) ? '' : 'checked ').'><label for="always_keep_this_backup">'.__('Only allow this backup to be deleted manually (i.e. keep it even if retention limits are hit).', 'updraftplus').'</label>';
+		if (!$only_remote_sent) {
+			$rawbackup .= '<hr>';
+			$rawbackup .= '<input type="checkbox" name="always_keep_this_backup" id="always_keep_this_backup" data-backup_key="'.$key.'" '.(empty($backup['always_keep']) ? '' : 'checked ').'><label for="always_keep_this_backup">'.__('Only allow this backup to be deleted manually (i.e. keep it even if retention limits are hit).', 'updraftplus').'</label>';
+		}
+
 		$rawbackup .= '<hr><p>';
 
 		$backupable_entities = $updraftplus->get_backupable_file_entities(true, true);
@@ -4289,7 +4385,7 @@ class UpdraftPlus_Admin {
 	 * @return String - the resulting HTML
 	 */
 	public function delete_button($backup_time, $nonce, $backup) {
-		$sval = (!empty($backup['service']) && 'email' != $backup['service'] && 'none' != $backup['service'] && array('email') !== $backup['service'] && array('none') !== $backup['service']) ? '1' : '0';
+		$sval = (!empty($backup['service']) && 'email' != $backup['service'] && 'none' != $backup['service'] && array('email') !== $backup['service'] && array('none') !== $backup['service'] && array('remotesend') !== $backup['service']) ? '1' : '0';
 		return '<div class="updraftplus-remove" data-hasremote="'.$sval.'">
 			<a data-hasremote="'.$sval.'" data-nonce="'.$nonce.'" data-key="'.$backup_time.'" class="button button-remove no-decoration updraft-delete-link" href="'.UpdraftPlus::get_current_clean_url().'" title="'.esc_attr(__('Delete this backup set', 'updraftplus')).'">'.__('Delete', 'updraftplus').'</a>
 		</div>';
@@ -4611,18 +4707,14 @@ ENDHERE;
 					$pdata = is_string($data) ? $data : serialize($data);
 					$updraftplus->log(__('Error data:', 'updraftplus').' '.$pdata, 'warning-restore');
 					if (false !== strpos($pdata, 'PCLZIP_ERR_BAD_FORMAT (-10)')) {
-						echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/").'"><strong>'.__('Follow this link for more information', 'updraftplus').'</strong></a><br>';
+						echo '<a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/faqs/error-message-pclzip_err_bad_format-10-invalid-archive-structure-mean/').'"><strong>'.__('Follow this link for more information', 'updraftplus').'</strong></a><br>';
 					}
 				}
 				
 			}
 		}
 		
-		if (true === $restore_result) {
-			$this->post_restore_clean_up(true);
-		} else {
-			$this->post_restore_clean_up(false);
-		}
+		$this->post_restore_clean_up((true === $restore_result) ? true : false);
 		
 		return $restore_result;
 		
@@ -5387,12 +5479,18 @@ ENDHERE;
 	 * @return string - the UpdraftPlus tempoary clone version select widget
 	 */
 	public function updraftplus_clone_versions() {
-		$output = sprintf(__('%s version:', 'updraftplus'), 'PHP').' ';
+		$output = '<p class="updraftplus-option updraftplus-option-inline php-version">';
+		$output .= '<span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'PHP').'</span> ';
 		$output .= $this->output_select_data($this->php_versions, 'php');
-		$output .= ' '.sprintf(__('%s version:', 'updraftplus'), 'WordPress').' ';
+		$output .= '</p>';
+		$output .= '<p class="updraftplus-option updraftplus-option-inline wp-version">';
+		$output .= ' <span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'WordPress').'</span> ';
 		$output .= $this->output_select_data($this->get_wordpress_versions(), 'wp');
-		$output .= '<br><input type="checkbox" class="updraftplus_clone_admin_login_options" id="" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';
-		$output .= '<label for="updraftplus_clone_admin_login_options" class="updraftplus_clone_admin_login_options_label">'.__('Forbid logins from non-administrators on this clone', 'updraftplus').'</label><br>';
+		$output .= '</p>';
+		$output .= '<p class="updraftplus-option limit-to-admins">';
+		$output .= '<input type="checkbox" class="updraftplus_clone_admin_login_options" id="" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';
+		$output .= '<label for="updraftplus_clone_admin_login_options" class="updraftplus_clone_admin_login_options_label">'.__('Forbid non-administrators to login to WordPress on your clone', 'updraftplus').'</label>';
+		$output .= '</p>';
 
 		return $output;
 	}

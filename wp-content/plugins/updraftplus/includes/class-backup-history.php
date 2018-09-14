@@ -72,7 +72,7 @@ class UpdraftPlus_Backup_History {
 
 			foreach ($backupable_entities as $entity) {
 
-				if (!empty($bdata[$entity])) {
+				if (!empty($bdata[$entity]) && is_array($bdata[$entity])) {
 
 					foreach ($bdata[$entity] as $key => $filename) {
 

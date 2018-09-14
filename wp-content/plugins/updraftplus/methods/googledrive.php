@@ -1182,7 +1182,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 		?>
 			<tr class="<?php echo $classes . ' ' . 'googledrive_pre_config_container';?>">
 				<td colspan="2">
-					<img src="https://developers.google.com/drive/images/drive_logo.png" alt="<?php _e('Google Drive', 'updraftplus');?>">
+					<img src="<?php echo UPDRAFTPLUS_URL;?>/images/googledrive_logo.png" alt="<?php _e('Google Drive', 'updraftplus');?>">
 					{{#unless use_master}}
 					<br>
 					<?php

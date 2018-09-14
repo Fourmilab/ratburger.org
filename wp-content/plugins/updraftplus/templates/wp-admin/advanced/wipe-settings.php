@@ -8,4 +8,7 @@
 		<input type="hidden" name="action" value="updraft_wipesettings" />
 		<input type="submit" class="button-primary updraft_wipe_settings" value="<?php _e('Wipe settings', 'updraftplus'); ?>" onclick="var updraftplus_wipe_settings = confirm('<?php echo esc_js(__('This will delete all your UpdraftPlus settings - are you sure you want to do this?', 'updraftplus'));?>'); if (updraftplus_wipe_settings) { updraft_settings_form_changed = false; }; return updraftplus_wipe_settings;">
 	</form>
+	<h3><?php _e('UpdraftPlus Tour', 'updraftplus');?></h3>
+	<p><?php _e('Press this button to take a tour of the plugin.', 'updraftplus'); ?></p>
+	<a href="<?php echo UpdraftPlus_Options::admin_page_url(); ?>?page=updraftplus&updraftplus_tour=1" class="js-updraftplus-tour button button-primary"><?php _e("Reset tour", "updraftplus"); ?></a>
 </div>
