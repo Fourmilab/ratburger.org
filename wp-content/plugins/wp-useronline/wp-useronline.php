@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: WP-UserOnline
-Plugin URI: http://lesterchan.net/portfolio/programming/php/
+Plugin URI: https://lesterchan.net/portfolio/programming/php/
 Description: Enable you to display how many users are online on your Wordpress site
-Version: 2.87.1
+Version: 2.87.2
 Author: Lester 'GaMerZ' Chan
 Author URI: https://lesterchan.net
 Text Domain: wp-useronline
@@ -11,7 +11,7 @@ Text Domain: wp-useronline
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-@include dirname( __FILE__ ) . '/scb/load.php';
+include __DIR__ . '/scb/load.php';
 
 function _useronline_init() {
 	load_plugin_textdomain( 'wp-useronline' );
@@ -83,13 +83,13 @@ function _useronline_init() {
 	scbWidget::init( 'UserOnline_Widget', __FILE__, 'useronline' );
 
 	if ( is_admin() ) {
-		require_once dirname( __FILE__ ) . '/admin.php';
+		require_once __DIR__ . '/admin.php';
 		scbAdminPage::register( 'UserOnline_Admin_Integration', __FILE__ );
 		scbAdminPage::register( 'UserOnline_Options', __FILE__, UserOnline_Core::$options );
 	}
 
 	if ( function_exists( 'stats_page' ) )
-		require_once dirname( __FILE__ ) . '/wp-stats.php';
+		require_once __DIR__ . '/wp-stats.php';
 
 #	scbUtil::do_uninstall( __FILE__ );
 #	scbUtil::do_activation( __FILE__ );
