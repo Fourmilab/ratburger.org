@@ -364,7 +364,7 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	/**
 	 * Get disk space used
 	 *
-	 * @uses UpdraftPlus_Admin::get_disk_space_used()
+	 * @uses UpdraftPlus_Filesystem_Functions::get_disk_space_used()
 	 *
 	 * @param String $entity - the entity to count (e.g. 'plugins', 'themes')
 	 *
@@ -372,9 +372,9 @@ class UpdraftCentral_Core_Commands extends UpdraftCentral_Commands {
 	 */
 	public function count($entity) {
 	
-		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return $this->_generic_error_response('no_updraftplus');
+		if (!class_exists('UpdraftPlus_Filesystem_Functions')) return $this->_generic_error_response('no_updraftplus');
 
-		$response = $updraftplus_admin->get_disk_space_used($entity);
+		$response = UpdraftPlus_Filesystem_Functions::get_disk_space_used($entity);
 
 		return $this->_response($response);
 	}

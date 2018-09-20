@@ -81,7 +81,9 @@ class UpdraftPlus {
 		$load_classes = array(
 			'UpdraftPlus_Backup_History' => 'includes/class-backup-history.php',
 			'UpdraftPlus_Encryption' => 'includes/class-updraftplus-encryption.php',
-			'UpdraftPlus_Manipulation_Functions' => 'includes/class-manipulation-functions.php'
+			'UpdraftPlus_Manipulation_Functions' => 'includes/class-manipulation-functions.php',
+			'UpdraftPlus_Filesystem_Functions' => 'includes/class-filesystem-functions.php',
+			'UpdraftPlus_Storage_Methods_Interface' => 'includes/class-storage-methods-interface.php'
 		);
 		
 		foreach ($load_classes as $class => $relative_path) {
@@ -195,7 +197,7 @@ class UpdraftPlus {
 	 * @return Array - returns the saved options if an error is encountered.
 	 */
 	public function wp_loaded_vault_disconnect() {
-		$opts = $this->update_remote_storage_options_format('updraftvault');
+		$opts = UpdraftPlus_Storage_Methods_Interface::update_remote_storage_options_format('updraftvault');
 			
 		if (is_wp_error($opts)) {
 			if ('recursion' !== $opts->get_error_code()) {
@@ -305,110 +307,20 @@ class UpdraftPlus {
 
 	public function close_browser_connection($txt = '') {
 		// Close browser connection so that it can resume AJAX polling
-		header('Content-Length: '.((!empty($txt)) ? 4+strlen($txt) : '0'));
+		header('Content-Length: '.(empty($txt) ? '0' : 4+strlen($txt)));
 		header('Connection: close');
 		header('Content-Encoding: none');
 		if (session_id()) session_write_close();
 		echo "\r\n\r\n";
 		echo $txt;
 		// These two added - 19-Feb-15 - started being required on local dev machine, for unknown reason (probably some plugin that started an output buffer).
-		if (ob_get_level()) ob_end_flush();
+		$ob_level = ob_get_level();
+		while ($ob_level > 0) {
+			ob_end_flush();
+			$ob_level--;
+		}
 		flush();
 		if (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
-	}
-	
-	/**
-	 * This converts array-style options (i.e. late 2013-onwards) to
-	 * 2017-style multi-array-style options.
-	 *
-	 * N.B. Don't actually call this on any particular method's options
-	 * until the functions which read the options can cope!
-	 *
-	 * Don't call for settings that aren't array-style. You may lose
-	 * the settings if you do.
-	 *
-	 * It is safe to call this if you are not sure if the options are
-	 * already updated.
-	 *
-	 * @param String $method - the method identifier
-	 *
-	 * @returns Array|WP_Error - returns the new options, or a WP_Error if it failed
-	 */
-	public function update_remote_storage_options_format($method) {
-	
-		// Prevent recursion
-		static $already_active = false;
-		
-		if ($already_active) return new WP_Error('recursion', 'UpdraftPlus::update_remote_storage_options_format() was called in a loop. This is usually caused by an options filter failing to correctly process a "recursion" error code');
-	
-		if (!file_exists(UPDRAFTPLUS_DIR.'/methods/'.$method.'.php')) return new WP_Error('no_such_method', 'Remote storage method not found', $method);
-		
-		// Sanity/inconsistency check
-		$settings_keys = $this->get_settings_keys();
-		
-		$method_key = 'updraft_'.$method;
-		
-		if (!in_array($method_key, $settings_keys)) return new WP_Error('no_such_setting', 'Setting not found for this method', $method);
-	
-		$current_setting = UpdraftPlus_Options::get_updraft_option($method_key, array());
-		if ('' == $current_setting) $current_setting = array();
-		
-		if (!is_array($current_setting) && false !== $current_setting) return new WP_Error('format_unrecognised', 'Settings format not recognised', array('method' => $method, 'current_setting' => $current_setting));
-
-		// Already converted?
-		if (isset($current_setting['version'])) return $current_setting;
-		if (empty($current_setting)) {
-			$remote_storage = $this->get_storage_object($method);
-			$current_setting = $remote_storage->get_default_options();
-		}
-		$new_setting = $this->wrap_remote_storage_options($current_setting);
-		
-		$already_active = true;
-		$updated = UpdraftPlus_Options::update_updraft_option($method_key, $new_setting);
-		$already_active = false;
-		
-		if ($updated) {
-			return $new_setting;
-		} else {
-			return new WP_Error('save_failed', 'Saving the options in the new format failed', array('method' => $method, 'current_setting' => $new_setting));
-		}
-	
-	}
-
-	/**
-	 * This method will update the old style remote storage options to the new style (Apr 2017) if the user has imported a old style version of settings
-	 *
-	 * @param  Array $options - The remote storage options settings array
-	 * @return Array          - The updated remote storage options settings array
-	 */
-	public function wrap_remote_storage_options($options) {
-		// Already converted?
-		if (isset($options['version'])) return $options;
-		
-		// Generate an instance id
-		$uuid = $this->generate_instance_id();
-		
-		$new_setting = array(
-			'version' => 1,
-		);
-		
-		if (!is_array($options)) $options = array();
-
-		$new_setting['settings'] = array($uuid => $options);
-
-		return $new_setting;
-	}
-
-	/**
-	 * This method will return a random instance id string
-	 *
-	 * @return String - a random instance id
-	 */
-	public function generate_instance_id() {
-		// Cryptographic randomness not required. The prefix helps avoid potential for type-juggling issues.
-		$uuid = 's-'.md5(rand().uniqid().microtime(true));
-
-		return $uuid;
 	}
 
 	/**
@@ -562,7 +474,7 @@ class UpdraftPlus {
 				$_REQUEST['page'] = 'updraftplus';
 				$method = $matches[1];
 				$call_method = "action_".$matches[2];
-				$storage_objects_and_ids = $this->get_storage_objects_and_ids(array($method));
+				$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_storage_objects_and_ids(array($method));
 
 				$instance_id = isset($_GET['updraftplus_instance']) ? $_GET['updraftplus_instance'] : '';
 		
@@ -722,11 +634,11 @@ class UpdraftPlus {
 		$load_classes = array();
 
 		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
-			$load_classes['UpdraftPlus_Temporary_Clone_Dash_Notice'] = 'includes/updraftclone/updraftplus-temporary-clone-dash-notice.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_User_Notice'] = 'includes/updraftclone/updraftplus-temporary-clone-user-notice.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_Restore'] = 'includes/updraftclone/updraftplus-temporary-clone-restore.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_Auto_Login'] = 'includes/updraftclone/updraftplus-temporary-clone-auto-login.php';
-			$load_classes['UpdraftPlus_Temporary_Clone_Status'] = 'includes/updraftclone/updraftplus-temporary-clone-status.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Dash_Notice'] = 'includes/updraftclone/temporary-clone-dash-notice.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_User_Notice'] = 'includes/updraftclone/temporary-clone-user-notice.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Restore'] = 'includes/updraftclone/temporary-clone-restore.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Auto_Login'] = 'includes/updraftclone/temporary-clone-auto-login.php';
+			$load_classes['UpdraftPlus_Temporary_Clone_Status'] = 'includes/updraftclone/temporary-clone-status.php';
 		}
 		
 		foreach ($load_classes as $class => $relative_path) {
@@ -773,83 +685,6 @@ class UpdraftPlus {
 			include_once(UPDRAFTPLUS_DIR.'/includes/class-updraftcentral-updraftplus-commands.php');
 		} elseif ('UpdraftCentral_UpdraftVault_Commands' == $command_php_class) {
 			include_once(UPDRAFTPLUS_DIR.'/includes/updraftvault.php');
-		}
-	}
-	
-	/**
-	 * Cleans up temporary files found in the updraft directory (and some in the site root - pclzip)
-	 * Always cleans up temporary files over 12 hours old.
-	 * With parameters, also cleans up those.
-	 * Also cleans out old job data older than 12 hours old (immutable value)
-	 * include_cachelist also looks to match any files of cached file analysis data
-	 *
-	 * @param  String  $match			  - if specified, then a prefix to require
-	 * @param  Integer $older_than		  - in seconds
-	 * @param  Boolean $include_cachelist - include cachelist files in what can be purged
-	 * @return Void
-	 */
-	public function clean_temporary_files($match = '', $older_than = 43200, $include_cachelist = false) {
-		// Clean out old job data
-		if ($older_than > 10000) {
-			global $wpdb;
-
-			$all_jobs = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'updraft_jobdata_%'", ARRAY_A);
-			foreach ($all_jobs as $job) {
-				$val = maybe_unserialize($job['option_value']);
-				// TODO: Can simplify this after a while (now all jobs use job_time_ms) - 1 Jan 2014
-				$delete = false;
-				if (!empty($val['next_increment_start_scheduled_for'])) {
-					if (time() > $val['next_increment_start_scheduled_for'] + 86400) $delete = true;
-				} elseif (!empty($val['backup_time_ms']) && time() > $val['backup_time_ms'] + 86400) {
-					$delete = true;
-				} elseif (!empty($val['job_time_ms']) && time() > $val['job_time_ms'] + 86400) {
-					$delete = true;
-				} elseif (!empty($val['job_type']) && 'backup' != $val['job_type'] && empty($val['backup_time_ms']) && empty($val['job_time_ms'])) {
-					$delete = true;
-				}
-				if ($delete) delete_option($job['option_name']);
-			}
-		}
-		$updraft_dir = $this->backups_dir_location();
-		$now_time = time();
-		$files_deleted = 0;
-		if ($handle = opendir($updraft_dir)) {
-			while (false !== ($entry = readdir($handle))) {
-				$manifest_match = preg_match("/updraftplus-manifest.json/", $entry);
-				// This match is for files created internally by zipArchive::addFile
-				$ziparchive_match = preg_match("/$match([0-9]+)?\.zip\.tmp\.([A-Za-z0-9]){6}?$/i", $entry);
-				// zi followed by 6 characters is the pattern used by /usr/bin/zip on Linux systems. It's safe to check for, as we have nothing else that's going to match that pattern.
-				$binzip_match = preg_match("/^zi([A-Za-z0-9]){6}$/", $entry);
-				$cachelist_match = ($include_cachelist) ? preg_match("/$match-cachelist-.*.tmp$/i", $entry) : false;
-				$browserlog_match = preg_match('/^log\.[0-9a-f]+-browser\.txt$/', $entry);
-				// Temporary files from the database dump process - not needed, as is caught by the catch-all
-				// $table_match = preg_match("/${match}-table-(.*)\.table(\.tmp)?\.gz$/i", $entry);
-				// The gz goes in with the txt, because we *don't* want to reap the raw .txt files
-				if ((preg_match("/$match\.(tmp|table|txt\.gz)(\.gz)?$/i", $entry) || $cachelist_match || $ziparchive_match || $binzip_match || $manifest_match || $browserlog_match) && is_file($updraft_dir.'/'.$entry)) {
-					// We delete if a parameter was specified (and either it is a ZipArchive match or an order to delete of whatever age), or if over 12 hours old
-					if (($match && ($ziparchive_match || $binzip_match || $cachelist_match || $manifest_match || 0 == $older_than) && $now_time-filemtime($updraft_dir.'/'.$entry) >= $older_than) || $now_time-filemtime($updraft_dir.'/'.$entry)>43200) {
-						$skip_dblog = (0 == $files_deleted % 25) ? false : true;
-						$this->log("Deleting old temporary file: $entry", 'notice', false, $skip_dblog);
-						@unlink($updraft_dir.'/'.$entry);
-						$files_deleted++;
-					}
-				}
-			}
-			@closedir($handle);
-		}
-		// Depending on the PHP setup, the current working directory could be ABSPATH or wp-admin - scan both
-		// Since 1.9.32, we set them to go into $updraft_dir, so now we must check there too. Checking the old ones doesn't hurt, as other backup plugins might leave their temporary files around can cause issues with huge files.
-		foreach (array(ABSPATH, ABSPATH.'wp-admin/', $updraft_dir.'/') as $path) {
-			if ($handle = opendir($path)) {
-				while (false !== ($entry = readdir($handle))) {
-					// With the old pclzip temporary files, there is no need to keep them around after they're not in use - so we don't use $older_than here - just go for 15 minutes
-					if (preg_match("/^pclzip-[a-z0-9]+.tmp$/", $entry) && $now_time-filemtime($path.$entry) >= 900) {
-						$this->log("Deleting old PclZip temporary file: $entry");
-						@unlink($path.$entry);
-					}
-				}
-				@closedir($handle);
-			}
 		}
 	}
 
@@ -1136,18 +971,21 @@ class UpdraftPlus {
 	}
 
 	/**
-	 * Get the maximum packet size on the WPDB MySQL connection, in bytes, after attempting to raise it to 32MB if it appeared to be lower.
+	 * Get the maximum packet size on the WPDB MySQL connection, in bytes, after (optionally) attempting to raise it to 32MB if it appeared to be lower.
 	 * A default value equal to 1MB is returned if the true value could not be found - it has been found reasonable to assume that at least this is available.
+	 *
+	 * @param Boolean $first_raise
+	 * @param Boolean $log_it
 	 *
 	 * @return Integer
 	 */
-	public function get_max_packet_size() {
+	public function max_packet_size($first_raise = true, $log_it = true) {
 		global $wpdb;
 		$mp = (int) $wpdb->get_var("SELECT @@session.max_allowed_packet");
 		// Default to 1MB
 		$mp = (is_numeric($mp) && $mp > 0) ? $mp : 1048576;
 		// 32MB
-		if ($mp < 33554432) {
+		if ($first_raise && $mp < 33554432) {
 			$save = $wpdb->show_errors(false);
 			$req = @$wpdb->query("SET GLOBAL max_allowed_packet=33554432");
 			$wpdb->show_errors($save);
@@ -1156,7 +994,7 @@ class UpdraftPlus {
 			// Default to 1MB
 			$mp = (is_numeric($mp) && $mp > 0) ? $mp : 1048576;
 		}
-		$this->log("Max packet size: ".round($mp/1048576, 1)." MB");
+		if ($log_it) $this->log("Max packet size: ".round($mp/1048576, 1)." MB");
 		return $mp;
 	}
 
@@ -1494,7 +1332,7 @@ class UpdraftPlus {
 	 */
 	public function detect_safe_mode() {
 		// @codingStandardsIgnoreLine
-		return (@ini_get('safe_mode') && strtolower(@ini_get('safe_mode')) != "off") ? 1 : 0;
+		return (@ini_get('safe_mode') && 'off' != strtolower(@ini_get('safe_mode'))) ? 1 : 0;
 	}
 
 	public function find_working_sqldump($logit = true, $cacheit = true) {
@@ -1716,6 +1554,11 @@ class UpdraftPlus {
 		return false;
 	}
 
+	/**
+	 * Remove potentially existing test files after binzip testing
+	 *
+	 * @param String $updraft_dir - directory to find the files in
+	 */
 	private function remove_binzip_test_files($updraft_dir) {
 		@unlink($updraft_dir.'/binziptest/subdir1/subdir2/test.html');
 		@unlink($updraft_dir.'/binziptest/subdir1/subdir2/test2.html');
@@ -1727,8 +1570,6 @@ class UpdraftPlus {
 
 	/**
 	 * This function is purely for timing - we just want to know the maximum run-time; not whether we have achieved anything during it
-	 *
-	 * @return null
 	 */
 	public function record_still_alive() {
 		// Update the record of maximum detected runtime on each run
@@ -2171,7 +2012,7 @@ class UpdraftPlus {
 		if ($resumption_no >= $first_run + 8 && $resumption_no < $first_run + 15 && $resume_interval >= 300) {
 
 			// $time_passed is set earlier
-			list($max_time, $timings_string, $run_times_known) = $this->max_time_passed($time_passed, $resumption_no - 1, $first_run);
+			list($max_time, $timings_string, $run_times_known) = UpdraftPlus_Manipulation_Functions::max_time_passed($time_passed, $resumption_no - 1, $first_run);
 
 			// Do this on resumption 8, or the first time that we have 6 data points
 			if (($first_run + 8 == $resumption_no && $run_times_known >= 6) || (6 == $run_times_known && !empty($time_passed[$prev_resumption]))) {
@@ -2469,23 +2310,6 @@ class UpdraftPlus {
 		restore_error_handler();
 
 	}
-	
-	public function max_time_passed($time_passed, $upto, $first_run) {
-		$max_time = 0;
-		$timings_string = "";
-		$run_times_known=0;
-		for ($i=$first_run; $i<=$upto; $i++) {
-			$timings_string .= "$i:";
-			if (isset($time_passed[$i])) {
-				$timings_string .= round($time_passed[$i], 1).' ';
-				$run_times_known++;
-				if ($time_passed[$i] > $max_time) $max_time = round($time_passed[$i]);
-			} else {
-				$timings_string .= '? ';
-			}
-		}
-		return array($max_time, $timings_string, $run_times_known);
-	}
 
 	public function jobdata_getarray($non) {
 		return get_site_option("updraft_jobdata_".$non, array());
@@ -2610,8 +2434,14 @@ class UpdraftPlus {
 
 		if (!isset($options['clone_id']) && !isset($options['secret_token']) && !isset($options['clone_url']) && !isset($options['key'])) return $jobdata;
 
+		$option_cache_key = array_search('option_cache', $jobdata) + 1;
+		$option_cache = $jobdata[$option_cache_key];
+		$option_cache['updraft_encryptionphrase'] = '';
+		$jobdata[$option_cache_key] = $option_cache;
+
 		$service_key = array_search('service', $jobdata) + 1;
 		$jobdata[$service_key] = array('remotesend');
+		
 		$jobdata[] = 'clone_job';
 		$jobdata[] = true;
 		$jobdata[] = 'clone_id';
@@ -2675,38 +2505,6 @@ class UpdraftPlus {
 		return $backup_database_info;
 	}
 
-	private function ensure_semaphore_exists($semaphore) {
-		// Make sure the options for semaphores exist
-		global $wpdb;
-		$results = $wpdb->get_results("
-			SELECT option_id
-				FROM $wpdb->options
-				WHERE option_name IN ('updraftplus_locked_$semaphore', 'updraftplus_unlocked_$semaphore', 'updraftplus_last_lock_time_$semaphore', 'updraftplus_semaphore_$semaphore')
-		");
-
-		if (!is_array($results) || count($results) < 3) {
-		
-			if (is_array($results) && count($results) > 0) {
-				$this->log("Semaphore ($semaphore, ".$wpdb->options.") in an impossible/broken state - fixing (".count($results).")");
-			} else {
-				$this->log("Semaphore ($semaphore, ".$wpdb->options.") being initialised");
-			}
-			
-			$wpdb->query("
-				DELETE FROM $wpdb->options
-				WHERE option_name IN ('updraftplus_locked_$semaphore', 'updraftplus_unlocked_$semaphore', 'updraftplus_last_lock_time_$semaphore', 'updraftplus_semaphore_$semaphore')
-			");
-			
-			$wpdb->query($wpdb->prepare("
-				INSERT INTO $wpdb->options (option_name, option_value, autoload)
-				VALUES
-				('updraftplus_unlocked_$semaphore', '1', 'no'),
-				('updraftplus_last_lock_time_$semaphore', '%s', 'no'),
-				('updraftplus_semaphore_$semaphore', '0', 'no')
-			", current_time('mysql', 1)));
-		}
-	}
-
 	public function backup_files() {
 		// Note that the "false" for database gets over-ridden automatically if they turn out to have the same schedules
 		$this->boot_backup(true, false);
@@ -2742,8 +2540,11 @@ class UpdraftPlus {
 	 */
 	public function get_semaphore_lock($backup_files, $backup_database) {
 		
-		$semaphore = (($backup_files) ? 'f' : '') . (($backup_database) ? 'd' : '');
-		$this->ensure_semaphore_exists($semaphore);
+		$semaphore = ($backup_files ? 'f' : '') . ($backup_database ? 'd' : '');
+		
+		if (!class_exists('UpdraftPlus_Semaphore')) include_once(UPDRAFTPLUS_DIR.'/includes/class-semaphore.php');
+		
+		UpdraftPlus_Semaphore::ensure_semaphore_exists($semaphore);
 
 		// Are we doing an action called by the WP scheduler? If so, we want to check when that last happened; the point being that the dodgy WP scheduler, when overloaded, can call the event multiple times - and sometimes, it evades the semaphore because it calls a second run after the first has finished, or > 3 minutes (our semaphore lock time) later
 		// doing_action() was added in WP 3.9
@@ -2761,7 +2562,6 @@ class UpdraftPlus {
 
 		update_option("updraft_last_scheduled_$semaphore", time());
 		
-		include_once(UPDRAFTPLUS_DIR.'/includes/class-semaphore.php');
 		$this->semaphore = UpdraftPlus_Semaphore::factory();
 		$this->semaphore->lock_name = $semaphore;
 		
@@ -2862,7 +2662,7 @@ class UpdraftPlus {
 		}
 
 		// Some house-cleaning
-		$this->clean_temporary_files();
+		UpdraftPlus_Filesystem_Functions::clean_temporary_files();
 		
 		// Log some information that may be helpful
 		$this->log("Tasks: Backup files: $backup_files (schedule: ".UpdraftPlus_Options::get_updraft_option('updraft_interval', 'unset').") Backup DB: $backup_database (schedule: ".UpdraftPlus_Options::get_updraft_option('updraft_interval_database', 'unset').")");
@@ -2927,7 +2727,7 @@ class UpdraftPlus {
 		if (!is_string($service) && !is_array($service)) {
 			$all_services = UpdraftPlus_Options::get_updraft_option('updraft_service');
 			if (is_string($all_services))  $all_services = (array) $all_services;
-			$enabled_storage_objects_and_ids = $this->get_enabled_storage_objects_and_ids($all_services);
+			$enabled_storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($all_services);
 			$service = array_keys($enabled_storage_objects_and_ids);
 		}
 		$service = $this->just_one($service);
@@ -3523,19 +3323,6 @@ class UpdraftPlus {
 		return (empty($exclude) || !is_array($exclude)) ? array() : $exclude;
 	}
 
-	public function really_is_writable($dir) {
-		// Suppress warnings, since if the user is dumping warnings to screen, then invalid JavaScript results and the screen breaks.
-		if (!@is_writable($dir)) return false;
-		// Found a case - GoDaddy server, Windows, PHP 5.2.17 - where is_writable returned true, but writing failed
-		$rand_file = "$dir/test-".md5(rand().time()).".txt";
-		while (file_exists($rand_file)) {
-			$rand_file = "$dir/test-".md5(rand().time()).".txt";
-		}
-		$ret = @file_put_contents($rand_file, 'testing...');
-		@unlink($rand_file);
-		return ($ret > 0);
-	}
-
 	public function wp_upload_dir() {
 		if (is_multisite()) {
 			global $current_site;
@@ -3665,224 +3452,36 @@ class UpdraftPlus {
 	 * @param Array $backup_array - the backup history
 	 */
 	private function save_backup_to_history($backup_array) {
-		if (is_array($backup_array)) {
-		
-			$backup_array['nonce'] = $this->nonce;
-			$backup_array['service'] = $this->jobdata_get('service');
-			$backup_array['service_instance_ids'] = array();
-			$backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
-			$backup_array['files_enumerated_at'] = $this->jobdata_get('files_enumerated_at');
-			
-			// N.B. Though the saved 'service' option can have various forms (especially if upgrading from (very) old versions), in the jobdata, it is always an array.
-			$storage_objects_and_ids = $this->get_enabled_storage_objects_and_ids($backup_array['service']);
-			
-			// N.B. On PHP 5.5+, we'd use array_column()
-			foreach ($storage_objects_and_ids as $method => $method_information) {
-				if ('none' == $method || !$method || !$method_information['object']->supports_feature('multi_options')) continue;
-				$backup_array['service_instance_ids'][$method] = array_keys($method_information['instance_settings']);
-			}
-			
-			if ('' != ($label = $this->jobdata_get('label', ''))) $backup_array['label'] = $label;
-			$backup_array['created_by_version'] = $this->version;
-			$backup_array['is_multisite'] = is_multisite() ? true : false;
-			$remotesend_info = $this->jobdata_get('remotesend_info');
-			if (is_array($remotesend_info) && !empty($remotesend_info['url'])) $backup_array['remotesend_url'] = $remotesend_info['url'];
-			if (false != ($autobackup = $this->jobdata_get('is_autobackup', false))) $backup_array['autobackup'] = true;
-			
-			UpdraftPlus_Backup_History::save_backup(apply_filters('updraftplus_backup_timestamp', $this->backup_time), $backup_array);
-			
-		} else {
+	
+		if (!is_array($backup_array)) {
 			$this->log('Could not save backup history because we have no backup array. Backup probably failed.');
 			$this->log(__('Could not save backup history because we have no backup array. Backup probably failed.', 'updraftplus'), 'error');
+			return;
 		}
-	}
-	
-	/**
-	 * Instantiate a remote storage object. If one of the same type has previously been fetched, then it will be returned.
-	 *
-	 * @param String $method - the storage method (e.g. 'dropbox', 's3', etc.)
-	 *
-	 * @return Object|WP_Error - an instance of UpdraftPlus_BackupModule, or anerror
-	 */
-	public function get_storage_object($method) {
-	
-		static $objects = array();
-	
-		if (!empty($objects[$method])) return $objects[$method];
-	
-		$method_class = 'UpdraftPlus_BackupModule_'.$method;
 		
-		if (!class_exists($method_class)) include_once UPDRAFTPLUS_DIR.'/methods/'.$method.'.php';
+		$backup_array['nonce'] = $this->nonce;
+		$backup_array['service'] = $this->jobdata_get('service');
+		$backup_array['service_instance_ids'] = array();
+		$backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
+		$backup_array['files_enumerated_at'] = $this->jobdata_get('files_enumerated_at');
 		
-		if (!class_exists($method_class)) return new WP_Error('no_such_storage_class', "The specified storage method ($method) was not found");
+		// N.B. Though the saved 'service' option can have various forms (especially if upgrading from (very) old versions), in the jobdata, it is always an array.
+		$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_enabled_storage_objects_and_ids($backup_array['service']);
 		
-		$objects[$method] = new $method_class;
-		
-		return $objects[$method];
-	}
-	
-	/**
-	 * This method will return an array of remote storage objects and instance settings of the currently connected remote storage services.
-	 *
-	 * @param Array $services - an list of service identifiers (e.g. ['dropbox', 's3'])
-	 *
-	 * @uses self::get_storage_object()
-	 *
-	 * @return Array					- returns an array, with a key equal to each member of the $services list passed in. The corresponding value is then an array with keys 'object', 'instance_settings'. The value for 'object' is an UpdraftPlus_BackupModule instance. The value for 'instance_settings' is an array keyed by associated instance IDs, with the values being the associated settings for the instance ID.
-	 */
-	public function get_storage_objects_and_ids($services) {
-	
-		$storage_objects_and_ids = array();
-
-		// N.B. The $services can return any type of values (null, false, etc.) as mentioned from one of the comment found
-		// in the "save_backup_to_history" function above especially if upgrading from (very) old versions. Thus,
-		// here we're adding some check to make sure that we're receiving a non-empty array before iterating through
-		// all the backup services that the user has in store.
-		if (empty($services) || !is_array($services)) return $storage_objects_and_ids;
-
-		foreach ($services as $method) {
-
-			if ('none' === $method || '' == $method) continue;
-		
-			$remote_storage = $this->get_storage_object($method);
-		
-			if (is_a($remote_storage, 'UpdraftPlus_BackupModule')) {
-			
-				if (!empty($method_objects[$method])) $storage_objects_and_ids[$method] = array();
-				
-				$storage_objects_and_ids[$method]['object'] = $remote_storage;
-				
-				if ($remote_storage->supports_feature('multi_options')) {
-				
-					$settings_from_db = UpdraftPlus_Options::get_updraft_option('updraft_'.$method);
-					
-					$settings = is_array($settings_from_db) ? $settings_from_db : array();
-				
-					if (!isset($settings['version'])) $settings = $this->update_remote_storage_options_format($method);
-					
-					if (is_wp_error($settings)) {
-						if (!empty($settings_from_db)) error_log("UpdraftPlus: failed to convert storage options format: $method");
-						$settings = array('settings' => array());
-					}
-
-					if (empty($settings['settings'])) {
-					
-						// Try to recover by getting a default set of options for display
-						if (is_callable(array($remote_storage, 'get_default_options'))) {
-							$uuid = 's-'.md5(rand().uniqid().microtime(true));
-							$settings['settings'] = array($uuid => $remote_storage->get_default_options());
-						}
-						
-						// See: https://wordpress.org/support/topic/cannot-setup-connectionauthenticate-with-dropbox/
-						if (empty($settings['settings'])) {
-							// This can get sent to the browser, and break the page, if the user has configured that. However, it should now (1.13.6+) be impossible for this condition to occur, now that we only log it after getting some default options.
-							error_log("UpdraftPlus: Warning: settings for $method are empty. A dummy field is usually needed so that something is saved.");
-						}
-						
-					}
-
-					if (!empty($settings['settings'])) {
-						
-						if (!isset($storage_objects_and_ids[$method]['instance_settings'])) $storage_objects_and_ids[$method]['instance_settings'] = array();
-						
-						foreach ($settings['settings'] as $instance_id => $storage_options) {
-							$storage_objects_and_ids[$method]['instance_settings'][$instance_id] = $storage_options;
-						}
-					}
-				} else {
-					if (!isset($storage_objects_and_ids[$method]['instance_settings'])) $storage_objects_and_ids[$method]['instance_settings'] = $remote_storage->get_default_options();
-				}
-
-			} else {
-				error_log("UpdraftPlus: storage method not found: $method");
-			}
-		}
-
-		return $storage_objects_and_ids;
-		
-	}
-	
-	/**
-	 * This method will return an array of enabled remote storage objects and instance settings of the currently connected remote storage services.
-	 *
-	 * @param Array $services - an list of service identifiers (e.g. ['dropbox', 's3'])
-	 *
-	 * @uses self::get_enabled_storage_objects_and_ids()
-	 *
-	 * @return Array					- returns an array, with a key equal to only enabled service member of the $services list passed in. The corresponding value is then an array with keys 'object', 'instance_settings'. The value for 'object' is an UpdraftPlus_BackupModule instance. The value for 'instance_settings' is an array keyed by associated enabled instance IDs, with the values being the associated settings for the enabled instance ID.
-	 */
-	public function get_enabled_storage_objects_and_ids($services) {
-		
-		$storage_objects_and_ids = $this->get_storage_objects_and_ids($services);
-		
+		// N.B. On PHP 5.5+, we'd use array_column()
 		foreach ($storage_objects_and_ids as $method => $method_information) {
-
-			if (!$method_information['object']->supports_feature('multi_options')) continue;
-			
-			foreach ($method_information['instance_settings'] as $instance_id => $instance_information) {
-				if (!isset($instance_information['instance_enabled'])) $instance_information['instance_enabled'] = 1;
-				if (empty($instance_information['instance_enabled'])) {
-					unset($storage_objects_and_ids[$method]['instance_settings'][$instance_id]);
-				}
-			}
-			
-			if (empty($storage_objects_and_ids[$method]['instance_settings'])) unset($storage_objects_and_ids[$method]);
+			if ('none' == $method || !$method || !$method_information['object']->supports_feature('multi_options')) continue;
+			$backup_array['service_instance_ids'][$method] = array_keys($method_information['instance_settings']);
 		}
 		
-		return $storage_objects_and_ids;
-	}
-	
-	/**
-	 * This method will return an array of remote storage options and storage_templates.
-	 *
-	 * @return Array - returns an array which consists of storage options and storage_templates multidimensional array
-	 */
-	public function get_remote_storage_options_and_templates() {
-
-		$storage_objects_and_ids = $this->get_storage_objects_and_ids(array_keys($this->backup_methods));
-		$options = array();
-		$templates = array();
-
-		foreach ($storage_objects_and_ids as $method => $method_info) {
-
-			$object = $method_info['object'];
-
-			if (!$object->supports_feature('multi_options')) {
-				ob_start();
-				do_action('updraftplus_config_print_before_storage', $method, null);
-				$object->config_print();
-				$templates[$method] = ob_get_clean();
-			} else {
-				$templates[$method] = $object->get_template();
-			}
-
-			if (isset($method_info['instance_settings'])) {
-				// Add the methods default settings so that we can add new instances
-				$method_info['instance_settings']['default'] = $object->get_default_options();
-
-				foreach ($method_info['instance_settings'] as $instance_id => $instance_options) {
-
-					$opts_without_transform = $instance_options;
-
-					if ($object->supports_feature('multi_options')) {
-						$opts_without_transform['instance_id'] = $instance_id;
-					}
-
-					$opts = $object->transform_options_for_template($opts_without_transform);
-
-					foreach ($object->filter_frontend_settings_keys() as $filter_frontend_settings_key) {
-						unset($opts[$filter_frontend_settings_key]);
-					}
-
-					$options[$method][$instance_id] = $opts;
-				}
-			}
-		}
-
-		return array(
-			'options' => $options,
-			'templates' => $templates,
-		);
+		if ('' != ($label = $this->jobdata_get('label', ''))) $backup_array['label'] = $label;
+		$backup_array['created_by_version'] = $this->version;
+		$backup_array['is_multisite'] = is_multisite() ? true : false;
+		$remotesend_info = $this->jobdata_get('remotesend_info');
+		if (is_array($remotesend_info) && !empty($remotesend_info['url'])) $backup_array['remotesend_url'] = $remotesend_info['url'];
+		if (false != $this->jobdata_get('is_autobackup', false)) $backup_array['autobackup'] = true;
+		
+		UpdraftPlus_Backup_History::save_backup(apply_filters('updraftplus_backup_timestamp', $this->backup_time), $backup_array);
 	}
 	
 	public function terminate_due_to_activity($file, $time_now, $time_mod, $increase_resumption = true) {
@@ -4032,152 +3631,11 @@ class UpdraftPlus {
 		if ('updraft_' !== substr($option_name, 0, 8)) return $options;
 		$method = substr($option_name, 8);
 		
-		$storage = $this->get_storage_object($method);
+		$storage = UpdraftPlus_Storage_Methods_Interface::get_storage_object($method);
 		
 		if (!is_a($storage, 'UpdraftPlus_BackupModule') || !is_callable(array($storage, 'options_filter'))) return $options;
 
 		return call_user_func(array($storage, 'options_filter'), $options);
-	}
-	
-	public function remove_local_directory($dir, $contents_only = false) {
-		// PHP 5.3+ only
-		// foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-		// $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
-		// }
-		// return rmdir($dir);
-
-		if ($handle = @opendir($dir)) {
-			while (false !== ($entry = readdir($handle))) {
-				if ('.' !== $entry && '..' !== $entry) {
-					if (is_dir($dir.'/'.$entry)) {
-						$this->remove_local_directory($dir.'/'.$entry, false);
-					} else {
-						@unlink($dir.'/'.$entry);
-					}
-				}
-			}
-			@closedir($handle);
-		}
-
-		return $contents_only ? true : rmdir($dir);
-	}
-	
-	/**
-	 * This method gets the remote storage information and objects and loops over each of them until we get a successful download of the passed in file.
-	 *
-	 * @param  Array   $services  - a list of connected service identifiers (e.g. 'dropbox', 's3', etc.)
-	 * @param  String  $file      - the name of the file
-	 * @param  Integer $timestamp - the backup timestamp
-	 * @param  Boolean $restore   - a boolean to indicate if the caller of this method is a restore or not; if so, different messages are logged
-	 */
-	public function get_remote_file($services, $file, $timestamp, $restore = false) {
-		
-		$fullpath = $this->backups_dir_location().'/'.$file;
-
-		$storage_objects_and_ids = $this->get_storage_objects_and_ids($services);
-
-		$is_downloaded = false;
-
-		$this->register_wp_http_option_hooks();
-
-		foreach ($services as $service) {
-
-			if (empty($service) || 'none' == $service || $is_downloaded) continue;
-
-			if ($restore) {
-				$service_description = empty($this->backup_methods[$service]) ? $service : $this->backup_methods[$service];
-				$this->log(__("File is not locally present - needs retrieving from remote storage", 'updraftplus')." ($service_description)", 'notice-restore');
-			}
-
-			$object = $storage_objects_and_ids[$service]['object'];
-
-			if (!$object->supports_feature('multi_options')) {
-				error_log("UpdraftPlus::get_remote_file(): Multi-options not supported by: ".$service);
-				continue;
-			}
-			
-			$instance_ids = $storage_objects_and_ids[$service]['instance_settings'];
-			$backups_instance_ids = isset($backup_history[$timestamp]['service_instance_ids'][$service]) ? $backup_history[$timestamp]['service_instance_ids'][$service] : array(false);
-
-			foreach ($backups_instance_ids as $instance_id) {
-
-				if (isset($instance_ids[$instance_id])) {
-					$options = $instance_ids[$instance_id];
-				} else {
-					// If we didn't find a instance id match, it could be a new UpdraftPlus upgrade or a wipe settings with the same details entered so try the default options saved.
-					$options = $object->get_options();
-				}
-
-				$object->set_options($options, false, $instance_id);
-
-				$download = $this->download_file($file, $object);
-
-				if (is_readable($fullpath) && false !== $download) {
-					if ($restore) {
-						$this->log(__('OK', 'updraftplus'), 'notice-restore');
-					} else {
-						clearstatcache();
-						$this->log('Remote fetch was successful (file size: '.round(filesize($fullpath)/1024, 1).' KB)');
-						$is_downloaded = true;
-					}
-					break 2;
-				} else {
-					if ($restore) {
-						$this->log(__('Error', 'updraftplus'), 'notice-restore');
-					} else {
-						clearstatcache();
-						if (0 === @filesize($fullpath)) @unlink($fullpath);
-						$this->log('Remote fetch failed');
-					}
-				}
-			}
-		}
-		$this->register_wp_http_option_hooks(false);
-	}
-
-	/**
-	 * Downloads a specified file into UD's directory
-	 *
-	 * @param String $file   The name of the file
-	 * @param array  $object The object of the service to use to download with. UpdraftPlus_BackupModule.
-	 * @return Boolean - Whether the operation succeeded. Inherited from the storage module's download() method. N.B. At the time of writing it looks like not all modules necessarily return true upon success; but false can be relied upon for detecting failure.
-	 */
-	private function download_file($file, $object) {
-
-		@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
-
-		$service = $object->get_id();
-		
-		$this->log("Requested file from remote service: $service: $file");
-
-		if (method_exists($object, 'download')) {
-		
-			try {
-				return $object->download($file);
-			} catch (Exception $e) {
-				$log_message = 'Exception ('.get_class($e).') occurred during download: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
-				error_log($log_message);
-				// @codingStandardsIgnoreLine
-				if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
-				$this->log($log_message);
-				$this->log(sprintf(__('A PHP exception (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage()), 'error');
-				return false;
-			// @codingStandardsIgnoreLine
-			} catch (Error $e) {
-				$log_message = 'PHP Fatal error ('.get_class($e).') has occurred during download. Error Message: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
-				error_log($log_message);
-				// @codingStandardsIgnoreLine
-				if (function_exists('wp_debug_backtrace_summary')) $log_message .= ' Backtrace: '.wp_debug_backtrace_summary();
-				$this->log($log_message);
-				$this->log(sprintf(__('A PHP fatal error (%s) has occurred: %s', 'updraftplus'), get_class($e), $e->getMessage()), 'error');
-				return false;
-			}
-		} else {
-			$this->log("Automatic backup restoration is not available with the method: $service.");
-			$this->log("$file: ".sprintf(__("The backup archive for this file could not be found. The remote storage method in use (%s) does not allow us to retrieve files. To perform any restoration using UpdraftPlus, you will need to obtain a copy of this file and place it inside UpdraftPlus's working folder", 'updraftplus'), $service)." (".UpdraftPlus_Manipulation_Functions::prune_updraft_dir_prefix($this->backups_dir_location()).")", 'error');
-			return false;
-		}
-
 	}
 	
 	/**
@@ -4325,6 +3783,9 @@ class UpdraftPlus {
 		return apply_filters('updraftplus_'.$filter, $rinput, $oinput);
 	}
 
+	/**
+	 * Enqueue the JavaScript and CSS for the select2 library
+	 */
 	public function enqueue_select2() {
 		// De-register to defeat any plugins that may have registered incompatible versions (e.g. WooCommerce 2.5 beta1 still has the Select 2 3.5 series)
 		wp_deregister_script('select2');
@@ -4368,25 +3829,28 @@ class UpdraftPlus {
 		return ($memory_limit >= $memory) ? true : false;
 	}
 
-	private function url_start($html_allowed, $url, $https = false) {
-		$proto = ($https) ? 'https' : 'http';
-		if (strpos($url, 'updraftplus.com') !== false) {
-			return $html_allowed ? "<a href=".apply_filters('updraftplus_com_link', $proto.'://'.$url).">" : "";
-		} else {
-			return $html_allowed ? "<a href=\"$proto://$url\">" : "";
-		}
-	}
-
-	private function url_end($html_allowed, $url, $https = false) {
-		$proto = ($https) ? 'https' : 'http';
-		return $html_allowed ? '</a>' : " ($proto://$url)";
-	}
-
+	/**
+	 * Get the UpdraftPlus RSS feed
+	 *
+	 * @uses fetch_feed()
+	 *
+	 * @return WP_Error|SimplePie WP_Error object on failure or SimplePie object on success
+	 */
 	public function get_updraftplus_rssfeed() {
 		if (!function_exists('fetch_feed')) include(ABSPATH.WPINC.'/feed.php');
 		return fetch_feed('http://feeds.feedburner.com/updraftplus/');
 	}
 
+	/**
+	 * Analyse a database file and return information about it
+	 *
+	 * @param Integer		 $timestamp	  - the database time in the backup history
+	 * @param Array			 $res		  - accompanying data. The key 'updraft_encryptionphrase' will be used for decryption if relevant.
+	 * @param Boolean|String $db_file	  - the path to the file to analyse; if not specified (false), then it will be obtained from the backup history
+	 * @param Boolean		 $header_only - whether or not to stop analysis once the header ends
+	 *
+	 * @return Array - containing arrays for the resulting messages, warnings, errors and meta information
+	 */
 	public function analyse_db_file($timestamp, $res, $db_file = false, $header_only = false) {
 
 		$mess = array();
@@ -4400,12 +3864,12 @@ class UpdraftPlus {
 
 		if (false === $db_file) {
 			// This attempts to raise the maximum packet size. This can't be done within the session, only globally. Therefore, it has to be done before the session starts; in our case, during the pre-analysis.
-			$this->get_max_packet_size();
+			$this->max_packet_size();
 
 			$backup = UpdraftPlus_Backup_History::get_history($timestamp);
 			if (!isset($backup['nonce']) || !isset($backup['db'])) return array($mess, $warn, $err, $info);
 
-			$db_file = (is_string($backup['db'])) ? $updraft_dir.'/'.$backup['db'] : $updraft_dir.'/'.$backup['db'][0];
+			$db_file = is_string($backup['db']) ? $updraft_dir.'/'.$backup['db'] : $updraft_dir.'/'.$backup['db'][0];
 		}
 
 		if (!is_readable($db_file)) return array($mess, $warn, $err, $info);
@@ -4442,7 +3906,7 @@ class UpdraftPlus {
 
 		$is_plain = ('.gz' == substr($db_file, -3, 3)) ? false : true;
 
-		$dbhandle = ($is_plain) ? fopen($db_file, 'r') : $this->gzopen_for_read($db_file, $warn, $err);
+		$dbhandle = $is_plain ? fopen($db_file, 'r') : UpdraftPlus_Filesystem_Functions::gzopen_for_read($db_file, $warn, $err);
 		if (!is_resource($dbhandle)) {
 			$err[] = __('Failed to open database file.', 'updraftplus');
 			return array($mess, $warn, $err, $info);
@@ -4912,73 +4376,6 @@ class UpdraftPlus {
 		$remove_query_args = array('state', 'action', 'oauth_verifier', 'nonce', 'updraftplus_instance', 'access_token', 'user_id', 'updraftplus_googledriveauth');
 		
 		return UpdraftPlus_Manipulation_Functions::wp_unslash(remove_query_arg($remove_query_args, $current_url));
-	}
-	
-	private function gzopen_for_read($file, &$warn, &$err) {
-		if (!function_exists('gzopen') || !function_exists('gzread')) {
-			$missing = '';
-			if (!function_exists('gzopen')) $missing .= 'gzopen';
-			if (!function_exists('gzread')) $missing .= ($missing) ? ', gzread' : 'gzread';
-			$err[] = sprintf(__("Your web server's PHP installation has these functions disabled: %s.", 'updraftplus'), $missing).' '.sprintf(__('Your hosting company must enable these functions before %s can work.', 'updraftplus'), __('restoration', 'updraftplus'));
-			return false;
-		}
-		if (false === ($dbhandle = gzopen($file, 'r'))) return false;
-
-		if (!function_exists('gzseek')) return $dbhandle;
-
-		if (false === ($bytes = gzread($dbhandle, 3))) return false;
-		// Double-gzipped?
-		if ('H4sI' != base64_encode($bytes)) {
-			if (0 === gzseek($dbhandle, 0)) {
-				return $dbhandle;
-			} else {
-				@gzclose($dbhandle);
-				return gzopen($file, 'r');
-			}
-		}
-		// Yes, it's double-gzipped
-
-		$what_to_return = false;
-		$mess = __('The database file appears to have been compressed twice - probably the website you downloaded it from had a mis-configured webserver.', 'updraftplus');
-		$messkey = 'doublecompress';
-		$err_msg = '';
-
-		if (false === ($fnew = fopen($file.".tmp", 'w')) || !is_resource($fnew)) {
-
-			@gzclose($dbhandle);
-			$err_msg = __('The attempt to undo the double-compression failed.', 'updraftplus');
-
-		} else {
-
-			@fwrite($fnew, $bytes);
-			$emptimes = 0;
-			while (!gzeof($dbhandle)) {
-				$bytes = @gzread($dbhandle, 262144);
-				if (empty($bytes)) {
-					$emptimes++;
-					$this->log("Got empty gzread ($emptimes times)");
-					if ($emptimes>2) break;
-				} else {
-					@fwrite($fnew, $bytes);
-				}
-			}
-
-			gzclose($dbhandle);
-			fclose($fnew);
-			// On some systems (all Windows?) you can't rename a gz file whilst it's gzopened
-			if (!rename($file.".tmp", $file)) {
-				$err_msg = __('The attempt to undo the double-compression failed.', 'updraftplus');
-			} else {
-				$mess .= ' '.__('The attempt to undo the double-compression succeeded.', 'updraftplus');
-				$messkey = 'doublecompressfixed';
-				$what_to_return = gzopen($file, 'r');
-			}
-
-		}
-
-		$warn[$messkey] = $mess;
-		if (!empty($err_msg)) $err[] = $err_msg;
-		return $what_to_return;
 	}
 
 	/**

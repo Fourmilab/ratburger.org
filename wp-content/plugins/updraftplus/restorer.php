@@ -6,6 +6,7 @@ if (!class_exists('Updraft_Restorer_Skin')) require_once(UPDRAFTPLUS_DIR.'/inclu
 
 class Updraft_Restorer {
 
+	// This just stores the result of is_multisite()
 	private $is_multisite;
 
 	// This is just used so far for detecting whether we're on the second run for an entity or not.
@@ -208,7 +209,7 @@ class Updraft_Restorer {
 					continue;
 				}
 
-				if (!is_readable($fullpath) || 0 == filesize($fullpath)) $updraftplus->get_remote_file($services, $file, $timestamp, true);
+				if (!is_readable($fullpath) || 0 == filesize($fullpath)) UpdraftPlus_Storage_Methods_Interface::get_remote_file($services, $file, $timestamp, true);
 
 				$index = (0 == $ind) ? '' : $ind;
 				// If a file size is stored in the backup data, then verify correctness of the local file
@@ -592,12 +593,12 @@ class Updraft_Restorer {
 				$extract_dir = $working_dir;
 			} else {
 				$updraft_dir = $updraftplus->backups_dir_location();
-				if (!$updraftplus->really_is_writable($updraft_dir)) {
+				if (!UpdraftPlus_Filesystem_Functions::really_is_writable($updraft_dir)) {
 					$updraftplus->log_e("Backup directory (%s) is not writable, or does not exist.", $updraft_dir);
 					$result = new WP_Error('unpack_failed', $this->strings['unpack_failed'], $tar->extract);
 				} else {
 					$extract_dir = $updraft_dir.'/'.basename($working_dir).'-old';
-					if (file_exists($extract_dir)) $updraftplus->remove_local_directory($extract_dir);
+					if (file_exists($extract_dir)) UpdraftPlus_Filesystem_Functions::remove_local_directory($extract_dir);
 					$updraftplus->log("Using a temporary folder to extract before moving over WPFS: $extract_dir");
 				}
 			}
@@ -612,7 +613,7 @@ class Updraft_Restorer {
 				add_filter('updraftplus_tar_wrote', array($this, 'tar_wrote'), 10, 2);
 				$tar = new UpdraftPlus_Archive_Tar($package, $p_compress);
 				$result = $tar->extract($extract_dir, false);
-				if (!is_a($wp_filesystem, 'WP_Filesystem_Direct')) $updraftplus->remove_local_directory($extract_dir);
+				if (!is_a($wp_filesystem, 'WP_Filesystem_Direct')) UpdraftPlus_Filesystem_Functions::remove_local_directory($extract_dir);
 				if (true != $result) {
 					$result = new WP_Error('unpack_failed', $this->strings['unpack_failed'], $result);
 				} else {
@@ -1531,7 +1532,7 @@ class Updraft_Restorer {
 		$old_dir = $updraft_dir.'/'.$type.'-old';
 		if (is_dir($old_dir)) {
 			$updraftplus->log_e('%s: This directory already exists, and will be replaced', $old_dir);
-			$updraftplus->remove_local_directory($old_dir);
+			UpdraftPlus_Filesystem_Functions::remove_local_directory($old_dir);
 		}
 
 		$move_old_destination = apply_filters('updraftplus_restore_move_old_mode', 0, $type, $this->restore_options);
@@ -2122,7 +2123,7 @@ ENDHERE;
 
 		$restoring_table = '';
 
-		$this->max_allowed_packet = $updraftplus->get_max_packet_size();
+		$this->max_allowed_packet = $updraftplus->max_packet_size();
 
 		$updraftplus->log("Entering maintenance mode");
 		$this->wp_upgrader->maintenance_mode(true);
@@ -2594,6 +2595,11 @@ ENDHERE;
 		}
 	}
 
+	/**
+	 * Log the information that a particular SQL commandment is too long
+	 *
+	 * @param String $sql_line - the SQL
+	 */
 	private function log_oversized_packet($sql_line) {
 		global $updraftplus;
 		$logit = substr($sql_line, 0, 100);
@@ -3034,8 +3040,10 @@ ENDHERE;
 		$plugins = maybe_unserialize($plugins);
 		
 		foreach ($plugins as $key => $path) {
-			if (!in_array($path, $installed_plugins)) {
-				$updraftplus->log_e('Plugin path %s not found: de-activating.', $path);
+			// Single site and multisite have a different array structure, in single site the path is the array value, in multisite the path is the array key.
+			if (!in_array($key, $installed_plugins) && !in_array($path, $installed_plugins)) {
+				$log_path = $this->is_multisite ? $key : $path;
+				$updraftplus->log_e('Plugin path %s not found: de-activating.', $log_path);
 				unset($plugins[$key]);
 			}
 		}

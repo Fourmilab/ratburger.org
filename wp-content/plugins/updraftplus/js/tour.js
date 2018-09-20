@@ -473,14 +473,28 @@
 			var data = {
 				current_step: this.getCurrentStep().id
 			};
-			updraft_send_command(
-				'set_tour_status',
-				data,
-				function(response) {
-					console.log('Successfully deactivated tour');
-				},
-				{ alert_on_error: false }
-			);
+
+			if ('function' === typeof updraft_send_command) {
+				updraft_send_command(
+					'set_tour_status',
+					data,
+					function(response) {
+						console.log('Successfully deactivated tour');
+					},
+					{ alert_on_error: false }
+				);
+			} else {
+				jQuery.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'updraft_ajax',
+						subaction: 'set_tour_status',
+						nonce: updraftplus_tour_i18n.nonce,
+						current_step: this.getCurrentStep().id
+					}
+				});
+			}
 		};
 
 		// If $('#updraft-backupnow-button'), start tour

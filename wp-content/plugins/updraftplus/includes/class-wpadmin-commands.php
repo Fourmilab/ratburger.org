@@ -712,7 +712,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	 * @return bool
 	 */
 	public function set_tour_status($params) {
-		return UpdraftPlus_Tour::get_instance()->set_tour_status($params);
+		return class_exists('UpdraftPlus_Tour') ? UpdraftPlus_Tour::get_instance()->set_tour_status($params) : false;
 	}
 
 	/**
@@ -721,6 +721,6 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	 * @return bool
 	 */
 	public function reset_tour_status() {
-		return UpdraftPlus_Tour::get_instance()->reset_tour_status();
+		return class_exists('UpdraftPlus_Tour') ? UpdraftPlus_Tour::get_instance()->reset_tour_status() : false;
 	}
 }

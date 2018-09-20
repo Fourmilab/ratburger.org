@@ -105,7 +105,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 		global $updraftplus;
 	
 		// Get the current options (and possibly update them to the new format)
-		$opts = $updraftplus->update_remote_storage_options_format('dropbox');
+		$opts = UpdraftPlus_Storage_Methods_Interface::update_remote_storage_options_format('dropbox');
 		
 		if (is_wp_error($opts)) {
 			if ('recursion' !== $opts->get_error_code()) {

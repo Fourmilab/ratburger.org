@@ -37,8 +37,9 @@ class UpdraftPlus_Temporary_Clone_Dash_Notice {
 		<div id="updraftplus_temporary_clone-dashnotice" class="updated">
 			<div style="float:right;"><a href="#" onclick="jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', {action: 'updraftplus_dash_notice_ajax', subaction: 'refresh_connection', nonce: '<?php echo wp_create_nonce('updraftplus_refresh_connection');?>' }, function() { location.reload(); });"><?php _e('Refresh connection', 'updraftplus'); ?></a></div>
 			<h1><?php _e('Welcome to your UpdraftClone (temporary clone)', 'updraftplus'); ?></h1>
-			<p><?php echo __('Your clone will renew on:', 'updraftplus') . ' ' . $pretty_date; ?></p>
-			<p><?php _e('You can shut this clone down using the following link. Each time your clone renews it costs 1 token, which lasts for 1 week.', 'updraftplus'); ?> <a target="_blank" href="https://updraftplus.com/my-account/clones/"><?php _e('Manage your clones', 'updraftplus'); ?></p></a>
+			<p>
+				<?php echo __('Your clone will renew on:', 'updraftplus') . ' ' . $pretty_date; ?>.
+				<?php _e('Each time your clone renews it costs 1 token, which lasts for 1 week. You can shut this clone down at the following link:', 'updraftplus'); ?> <a target="_blank" href="https://updraftplus.com/my-account/clones/"><?php _e('Manage your clones', 'updraftplus'); ?></p></a>
 		</div>
 		<?php
 	}

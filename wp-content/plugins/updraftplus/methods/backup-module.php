@@ -48,7 +48,7 @@ abstract class UpdraftPlus_BackupModule {
 		
 		global $updraftplus;
 		
-		$current_db_options = $updraftplus->update_remote_storage_options_format($this->get_id());
+		$current_db_options = UpdraftPlus_Storage_Methods_Interface::update_remote_storage_options_format($this->get_id());
 
 		if (is_wp_error($current_db_options)) {
 			throw new Exception('save_options(): options fetch/update failed ('.$current_db_options->get_error_code().': '.$current_db_options->get_error_message().')');
@@ -411,7 +411,7 @@ abstract class UpdraftPlus_BackupModule {
 			if ($supports_multi_options) {
 
 				if (!isset($options['version'])) {
-					$options_full = $updraftplus->update_remote_storage_options_format($this->get_id());
+					$options_full = UpdraftPlus_Storage_Methods_Interface::update_remote_storage_options_format($this->get_id());
 					
 					if (is_wp_error($options_full)) {
 						$updraftplus->log("Options retrieval failure: ".$options_full->get_error_code().": ".$options_full->get_error_message()." (".json_encode($options_full->get_error_data()).")");

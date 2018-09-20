@@ -1021,7 +1021,19 @@ updraft_updatehistory(0, 0);}, 30000);
 	}
 }
 
-function updraft_updatehistory(rescan, remotescan) {
+/**
+ * Update the HTML for the 'existing backups' table; optionally, after local/remote re-scanning.
+ * Nothing is returned; any update necessary is performed directly on the DOM.
+ *
+ * @param {Integer} rescan	   - first, re-scan the local storage (0 or 1)
+ * @param {Integer} remotescan - first, re-scan the remote storage (you must also set rescan to 1 to use this)
+ * @param {Integer} debug	   - if 1, then also request debugging information and log it to the console
+ */
+function updraft_updatehistory(rescan, remotescan, debug) {
+	
+	if ('undefined' === typeof debug) {
+		debug = jQuery('#updraft_debug_mode').is(':checked') ? 1 : 0;
+	}
 	
 	var unixtime = Math.round(new Date().getTime() / 1000);
 	
@@ -1046,7 +1058,12 @@ function updraft_updatehistory(rescan, remotescan) {
 	
 	var what_op = remotescan ? 'remotescan' : (rescan ? 'rescan' : false);
 	
-	updraft_send_command('rescan', what_op, function(resp) {
+	var data = {
+		operation: what_op,
+		debug: debug
+	}
+	
+	updraft_send_command('rescan', data, function(resp) {
 		if (resp.hasOwnProperty('logs_exist') && resp.logs_exist) {
 			// Show the "most recently modified log" link, in case it was previously hidden (if there were no logs until now)
 			jQuery('#updraft_lastlogmessagerow .updraft-log-link').show();
@@ -2262,6 +2279,11 @@ jQuery(document).ready(function($) {
 	$('#updraft-navtab-backups-content a.updraft_rescan_remote').click(function(e) {
 		e.preventDefault();
 		updraft_updatehistory(1, 1);
+	});
+	
+	$('#updraftplus-remote-rescan-debug').click(function(e) {
+		e.preventDefault();
+		updraft_updatehistory(1, 1, 1);
 	});
 
 	function updraftcentral_keys_setupform(on_page_load) {

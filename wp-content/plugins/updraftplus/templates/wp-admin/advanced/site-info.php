@@ -35,7 +35,7 @@
 	$updraftplus_admin->settings_debugrow('WP_PLUGIN_DIR:', htmlspecialchars(WP_PLUGIN_DIR));
 	$updraftplus_admin->settings_debugrow('Table prefix:', htmlspecialchars($updraftplus->get_table_prefix()));
 
-	$updraftplus_admin->settings_debugrow(__('Web-server disk space in use by UpdraftPlus', 'updraftplus').':', '<span class="updraft_diskspaceused">'.$updraftplus_admin->get_disk_space_used('updraft').'</span> <a class="updraft_diskspaceused_update" href="'.UpdraftPlus::get_current_clean_url().'">'.__('refresh', 'updraftplus').'</a>');
+	$updraftplus_admin->settings_debugrow(__('Web-server disk space in use by UpdraftPlus', 'updraftplus').':', '<span class="updraft_diskspaceused">'.UpdraftPlus_Filesystem_Functions::get_disk_space_used('updraft').'</span> <a class="updraft_diskspaceused_update" href="'.UpdraftPlus::get_current_clean_url().'">'.__('refresh', 'updraftplus').'</a>');
 
 	$peak_memory_usage = memory_get_peak_usage(true)/1024/1024;
 	$memory_usage = memory_get_usage(true)/1024/1024;
@@ -96,7 +96,7 @@
 
 	$updraftplus_admin->settings_debugrow('Site ID:', '(used to identify any Vault connections) <span id="updraft_show_sid">'.htmlspecialchars($updraftplus->siteid()).'</span> - <a href="'.UpdraftPlus::get_current_clean_url().'" id="updraft_reset_sid">'.__('reset', 'updraftplus')."</a>");
 	
-	$updraftplus_admin->settings_debugrow('', '<a href="admin-ajax.php?page=updraftplus&amp;action=updraft_ajax&amp;subaction=backuphistoryraw&amp;nonce='.wp_create_nonce('updraftplus-credentialtest-nonce').'" id="updraftplus-rawbackuphistory">'.__('Show raw backup and file list', 'updraftplus').'</a>');
+	$updraftplus_admin->settings_debugrow('', '<a href="admin-ajax.php?page=updraftplus&amp;action=updraft_ajax&amp;subaction=backuphistoryraw&amp;nonce='.wp_create_nonce('updraftplus-credentialtest-nonce').'" id="updraftplus-rawbackuphistory">'.__('Show raw backup and file list', 'updraftplus').'</a><br><span class="hidden-in-updraftcentral"><a id="updraftplus-remote-rescan-debug" href="#">'.__('Rescan remote storage', 'updraftplus').' - '.__('log results to console', 'updraftplus').'</a></span>');
 	
 	?>
 	</table>

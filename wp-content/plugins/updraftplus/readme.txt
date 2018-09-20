@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 4.9
-Stable tag: 1.15.0
+Stable tag: 1.15.2
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -82,7 +82,7 @@ To create a temporary clone you need: 1) credit in your account and 2) to connec
 
 Are you able to translate UpdraftPlus into another language? Are you ready to help speakers of your language? UpdraftPlus Backup/Restore itself is ready and waiting - the only work needed is the translating. The translation process is easy, and web-based - go here for instructions: <a href="https://updraftplus.com/translate/">https://updraftplus.com/translate/</a>. (Or if you're an expert WordPress translator already, then just pick out the .pot file from the wp-content/plugins/updraftplus/languages/ directory - if you scan for translatable strings manually, then you need to get these functions: _x(), __(), _e(), _ex(), log_e()).
 
-Many thanks to the existing translators - listed at: https://updraftplus.com/translate/
+Many thanks to the existing translators - listed at: <a href="https://updraftplus.com/translate/">https://updraftplus.com/translate/</a>
 
 = More premium plugins =
 
@@ -163,7 +163,19 @@ The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the b
 
 N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.0.x of the free version correspond to changes made in 1.15.0.x of the paid version.
 
-= 1.15.0 - 12/Sep/2018
+= 1.15.2 - 19/Sep/2018 =
+
+* FIX: Asking the tour to cancel on the plugins page did not work
+* FIX: an issue where some jobdata did not get set which resulted in the backup email not being sent
+* FIX: a regression whereby network-activated plugins could get deactivated on multisites when restoring
+* FIX: When database encryption was active, UpdraftClone would fail
+* TWEAK: There is now a 'Rescan remote storage - log results to console' link in 'Advanced Tools' to aid with debugging
+* TWEAK: Fixes Migrate / clone tab contents showing on the Advanced tools tab
+* TWEAK: Attempt to catch, work-around and log when the backup history cannot be saved due to too long a history relative to the MySQL server's maximum packet size
+* TWEAK: Re-factor and introduce the UpdraftPlus_Storage_Methods_Interface class
+* TWEAK: Introduce the UPDRAFTPLUS_ENABLE_TOUR constant for power users; set it to false as part of your automated WP installation process (or manually) if you wish to disable all tour functionality.
+
+= 1.15.0 - 12/Sep/2018 =
 
 * FEATURE: Introducing UpdraftClone. Create a live copy of your site with a button press. Great for testing changes, testing updates (e.g. WordPress core, plugins, PHP versions) and anything else you can think of. More information: https://updraftplus.com/updraftclone/
 * FIX: Fix the logic for claiming and activating licences/add-ons.
@@ -622,5 +634,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.15.0: Introducing UpdraftClone. Create a live copy of your site with a button press. Great for testing changes, testing updates (e.g. WordPress core, plugins, PHP versions) and anything else you can think of. More information: https://updraftplus.com/updraftclone/ . Plus other tweaks and fixes; a recommended update for all.
+* 1.15.2: A few fixes/tweaks to the 1.15.0 release, which introduced UpdraftClone. Create a live copy of your site with a button press. Great for testing changes, testing updates (e.g. WordPress core, plugins, PHP versions) and anything else you can think of. More information: https://updraftplus.com/updraftclone/ . A recommended update for all.
 

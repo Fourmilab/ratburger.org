@@ -40,7 +40,7 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing Backups', 'updr
 	?>
 	<ul class="updraft-disk-space-actions">
 		<?php
-			echo $updraftplus_admin->web_server_disk_space($options['will_immediately_calculate_disk_space']);
+			echo UpdraftPlus_Filesystem_Functions::web_server_disk_space($options['will_immediately_calculate_disk_space']);
 		?>
 
 		<li class="updraft-server-scan">
@@ -91,7 +91,7 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing Backups', 'updr
 
 	<div class="ud_downloadstatus"></div>
 	<div class="updraft_existing_backups">
-		<?php echo $updraftplus_admin->existing_backup_table($backup_history); ?>
+		<?php echo UpdraftPlus_Backup_History::existing_backup_table($backup_history); ?>
 	</div>
 
 </div>

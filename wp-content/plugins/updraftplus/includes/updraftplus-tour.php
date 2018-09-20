@@ -80,7 +80,7 @@ class UpdraftPlus_Tour {
 		wp_enqueue_style('updraftplus-tour-css', trailingslashit(UPDRAFTPLUS_URL).'css/updraftplus-tour'.$script_suffix.'.css', false, $updraftplus->version);
 		wp_register_script('updraftplus-tour-js', trailingslashit(UPDRAFTPLUS_URL).'js/tour.js', array('updraftplus-tether-js'), $updraftplus->version, true);
 		$tour_data = array(
-			'nonce' => wp_create_nonce('updraftplus_tour_nonce'),
+			'nonce' => wp_create_nonce('updraftplus-credentialtest-nonce'),
 			'show_tab_on_load' => '#updraft-navtab-status',
 			'next' => __('Next', 'updraftplus'),
 			'back' => __('Back', 'updraftplus'),

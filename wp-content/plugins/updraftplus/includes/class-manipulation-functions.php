@@ -351,6 +351,32 @@ class UpdraftPlus_Manipulation_Functions {
 	}
 	
 	/**
+	 * Given a set of times, find details about the maximum
+	 *
+	 * @param Array	  $time_passed
+	 * @param Integer $upto
+	 * @param Integer $first_run
+	 *
+	 * @return Array
+	 */
+	public static function max_time_passed($time_passed, $upto, $first_run) {
+		$max_time = 0;
+		$timings_string = "";
+		$run_times_known=0;
+		for ($i=$first_run; $i<=$upto; $i++) {
+			$timings_string .= "$i:";
+			if (isset($time_passed[$i])) {
+				$timings_string .= round($time_passed[$i], 1).' ';
+				$run_times_known++;
+				if ($time_passed[$i] > $max_time) $max_time = round($time_passed[$i]);
+			} else {
+				$timings_string .= '? ';
+			}
+		}
+		return array($max_time, $timings_string, $run_times_known);
+	}
+	
+	/**
 	 * Determine if a given string ends with a given substring.
 	 *
 	 * @param  string $haystack string

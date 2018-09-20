@@ -209,19 +209,29 @@ class UpdraftPlus_Commands {
 	/**
 	 * Slightly misnamed - this doesn't always rescan, but it does always return the history status (possibly after a rescan)
 	 *
-	 * @param  string $what speific string to scan
-	 * @return array retuns an array of history statuses
+	 * @param  Array|String $data - with keys 'operation' and 'debug'; or, if a string (backwards compatibility), just the value of the 'operation' key (with debug assumed as 0)
+	 *
+	 * @return Array - returns an array of history statuses
 	 */
-	public function rescan($what) {
+	public function rescan($data) {
 
 		if (false === ($updraftplus_admin = $this->_load_ud_admin())) return new WP_Error('no_updraftplus');
 		
 		if (!UpdraftPlus_Options::user_can_manage()) return new WP_Error('updraftplus_permission_denied');
 		
-		$remotescan = ('remotescan' == $what);
-		$rescan = ($remotescan || 'rescan' == $what);
+		if (is_array($data)) {
+			$operation = empty($data['operation']) ? '' : $data['operation'];
+			$debug = !empty($data['debug']);
+		} else {
+			$operation = $data;
+			$debug = false;
+		}
+	
+		$remotescan = ('remotescan' == $operation);
+		$rescan = ($remotescan || 'rescan' == $operation);
 		
-		$history_status = $updraftplus_admin->get_history_status($rescan, $remotescan);
+		
+		$history_status = $updraftplus_admin->get_history_status($rescan, $remotescan, $debug);
 
 		return $history_status;
 		
@@ -238,7 +248,8 @@ class UpdraftPlus_Commands {
 		$output = ob_get_contents();
 		ob_end_clean();
 		
-		$remote_storage_options_and_templates = $updraftplus->get_remote_storage_options_and_templates();
+		$remote_storage_options_and_templates = UpdraftPlus_Storage_Methods_Interface::get_remote_storage_options_and_templates();
+		
 		return array(
 			'settings' => $output,
 			'remote_storage_options' => $remote_storage_options_and_templates['options'],
@@ -447,7 +458,7 @@ class UpdraftPlus_Commands {
 			
 			case 'backupnow_modal_contents':
 				$updraft_dir = $updraftplus->backups_dir_location();
-				if (!$updraftplus->really_is_writable($updraft_dir)) {
+				if (!UpdraftPlus_Filesystem_Functions::really_is_writable($updraft_dir)) {
 						$output = array('error' => true, 'html' => __("The 'Backup Now' button is disabled as your backup directory is not writable (go to the 'Settings' tab and find the relevant option).", 'updraftplus'));
 				} else {
 									$output = array('html' => $updraftplus_admin->backupnow_modal_contents());
@@ -460,7 +471,7 @@ class UpdraftPlus_Commands {
 				break;
 			
 			case 'disk_usage':
-				$output = $updraftplus_admin->get_disk_space_used($data);
+				$output = UpdraftPlus_Filesystem_Functions::get_disk_space_used($data);
 				break;
 			default:
 				// We just return a code - translation is done on the other side

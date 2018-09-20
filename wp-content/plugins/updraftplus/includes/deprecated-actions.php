@@ -39,7 +39,7 @@ if (isset($_POST['subaction']) && 'credentials_test' === $_POST['subaction']) {
 } elseif ('diskspaceused' == $subaction && isset($_GET['entity'])) {
 	$entity = $_GET['entity'];
 	// This can count either the size of the Updraft directory, or of the data to be backed up
-	echo $updraftplus_admin->get_disk_space_used($entity);
+	echo UpdraftPlus_Filesystem_Functions::get_disk_space_used($entity);
 } elseif ('callwpaction' == $subaction) {
 	$updraftplus_admin->call_wp_action(UpdraftPlus_Manipulation_Functions::wp_unslash($_REQUEST), true);
 } elseif ('lastbackup' == $subaction) {

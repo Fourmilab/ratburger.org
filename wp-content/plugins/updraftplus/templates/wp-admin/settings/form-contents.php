@@ -3,7 +3,7 @@
 if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 
 $updraft_dir = $updraftplus->backups_dir_location();
-$really_is_writable = $updraftplus->really_is_writable($updraft_dir);
+$really_is_writable = UpdraftPlus_Filesystem_Functions::really_is_writable($updraft_dir);
 
 // $options is passed through
 $default_options = array(
@@ -272,7 +272,7 @@ foreach ($default_options as $k => $v) {
 <script type="text/javascript">
 /* <![CDATA[ */
 <?php
-	$storage_objects_and_ids = $updraftplus->get_storage_objects_and_ids(array_keys($updraftplus->backup_methods));
+	$storage_objects_and_ids = UpdraftPlus_Storage_Methods_Interface::get_storage_objects_and_ids(array_keys($updraftplus->backup_methods));
 	// In PHP 5.5+, there's array_column() for this
 	$method_objects = array();
 	foreach ($storage_objects_and_ids as $method => $method_information) {
