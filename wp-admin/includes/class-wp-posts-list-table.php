@@ -1299,7 +1299,8 @@ class WP_Posts_List_Table extends WP_List_Table {
 			/* If the post is published, allow it to be reverted to Draft status.  Only
 			   a user with the capability to publish a post can revert it to a draft. */
 		        if (('post' === $post->post_type) &&
-                    (($post->post_status === 'publish') || ($post->post_status === 'private')) &&
+                    (($post->post_status === 'publish') || ($post->post_status === 'private') ||
+                     ($post->post_status === 'future')) &&
                     current_user_can( 'publish_post', $post->ID ) &&
 			        (current_user_can( 'edit_others_posts' ) || ($post->post_author == get_current_user_id()))) {
         			$post_type_object = get_post_type_object( $post->post_type );
