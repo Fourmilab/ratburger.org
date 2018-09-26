@@ -204,12 +204,12 @@ class Akismet {
            good standing and ignore the results of the spam checking.  This
            avoids irritating members who happen to post something that
            looks like spam. */
-        if ($commentdata['akismet_result'] == 'true') {
+        if ($response[1] == 'true') {
+RB_dumpvar("Akismet flagged comment as spam", $comment);
             if (($comment['user_ID'] != 0) &&
                 (((date_timestamp_get(date_create()) -
                    date_timestamp_get(date_create(
                      wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7)) {
-RB_dumpvar("Akismet flagged comment as spam", $comment);
 RB_dumpvar("Skip Akismet spam check: age", (date_timestamp_get(date_create()) -
   date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
                 $response[1] = 'false';
