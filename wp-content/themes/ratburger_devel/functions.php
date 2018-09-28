@@ -1009,4 +1009,22 @@ function rb_on_probation() {
     return !bp_current_user_can('edit_posts');
 }
 
+/*  Add override to query string used to obtain list of
+    posts for the "Recent Posts" widget to use our date
+    criterion rather than a fixed number of posts.  */
+
+function rb_select_recent_posts($a) {
+    return array(
+        'date_query'          => array(
+                                'column' => 'post_date_gmt',
+                                'after' => '36 hours ago'
+                             ),
+        'posts_per_page'      => -1,
+        'no_found_rows'       => true,
+        'post_status'         => 'publish',
+        'ignore_sticky_posts' => true
+                );
+}
+add_filter('widget_posts_args', 'rb_select_recent_posts', 10, 1);
+
 /* END RATBURGER LOCAL CODE */
