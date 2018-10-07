@@ -17,6 +17,13 @@ Order Allow,Deny
 Allow from ALL
 Deny from env=evilbots
 
+# Block attempts to access security vulnerabilities
+<Files xmlrpc.php>
+Order Deny,Allow
+Deny from all
+Allow from 193.8.230.0/24
+</Files>
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
