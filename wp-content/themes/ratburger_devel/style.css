@@ -1373,6 +1373,19 @@ a:active {
 	padding: 0 0.538461538em;
 }
 
+/* RATBURGER LOCAL CODE */
+
+/* Clock in toolbar */
+
+#wp-admin-bar-rb-toolbar-clock {
+    margin-right: 1em !important;
+    display: none !important;
+}
+
+#rb_toolbar_clock {
+    color: #B0B0B0;
+}
+/* END RATBURGER LOCAL CODE */
 
 /**
  * 7.0 - Accessibility
@@ -3056,6 +3069,14 @@ p > video {
 	body:not(.search-results) .entry-summary blockquote > ol {
 		margin-left: 1.473684211em;
 	}
+
+/* RATBURGER LOCAL CODE */
+    /* Only display clock in administration toolbar if the
+       screen is wide enough so it fits. */
+    #wp-admin-bar-rb-toolbar-clock {
+        display: block !important;
+    }
+/* END RATBURGER LOCAL CODE */
 }
 
 

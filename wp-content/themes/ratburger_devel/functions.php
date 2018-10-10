@@ -1027,4 +1027,21 @@ function rb_select_recent_posts($a) {
 }
 add_filter('widget_posts_args', 'rb_select_recent_posts', 10, 1);
 
+/*  Add a clock to the administration toolbar.  The code below
+    includes the placeholder for the clock and invokes the
+    JavaScript which updates it.  If the JavaScript is not
+    loaded (which is the case for the administration toolbar),
+    the clock remains blank.  */
+
+function rb_add_clock_toolbar_menu() {
+    global $wp_admin_bar;
+
+    $wp_admin_bar->add_menu(array(
+        'parent' => 'top-secondary',
+        'id' => 'rb-toolbar-clock',
+        'title' => '<span id="rb_toolbar_clock"></span>'));
+}
+
+add_action('admin_bar_menu', 'rb_add_clock_toolbar_menu', 95);
+
 /* END RATBURGER LOCAL CODE */
