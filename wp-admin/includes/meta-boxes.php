@@ -421,9 +421,20 @@ function post_format_meta_box( $post, $box ) {
 		<fieldset>
 			<legend class="screen-reader-text"><?php _e( 'Post Formats' ); ?></legend>
 			<input type="radio" name="post_format" class="post-format" id="post-format-0" value="0" <?php checked( $post_format, '0' ); ?> /> <label for="post-format-0" class="post-format-icon post-format-standard"><?php echo get_post_format_string( 'standard' ); ?></label>
-			<?php foreach ( $post_formats[0] as $format ) : ?>
+            <?php
+                /* RATBURGER LOCAL CODE
+                   Only users who are allowed to edit others' posts
+                   (Editors and Administrators) are permitted to set
+                   the post format to anything other than Standard. */
+                if (current_user_can('edit_others_posts')) {
+                /* END RATBURGER LOCAL CODE */
+                foreach ( $post_formats[0] as $format ) : ?>
 			<br /><input type="radio" name="post_format" class="post-format" id="post-format-<?php echo esc_attr( $format ); ?>" value="<?php echo esc_attr( $format ); ?>" <?php checked( $post_format, $format ); ?> /> <label for="post-format-<?php echo esc_attr( $format ); ?>" class="post-format-icon post-format-<?php echo esc_attr( $format ); ?>"><?php echo esc_html( get_post_format_string( $format ) ); ?></label>
-			<?php endforeach; ?>
+            <?php endforeach;
+                /* RATBURGER LOCAL CODE */
+                }
+                /* END RATBURGER LOCAL CODE */
+            ?>
 		</fieldset>
 	</div>
 	<?php endif; endif;
