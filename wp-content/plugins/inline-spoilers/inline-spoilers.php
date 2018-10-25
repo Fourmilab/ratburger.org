@@ -3,7 +3,7 @@
 Plugin Name: Inline Spoilers
 Plugin URI: https://wordpress.org/plugins/inline-spoilers/
 Description: The plugin allows to create content spoilers with simple shortcode.
-Version: 1.3.2
+Version: 1.3.3
 Author: Sergey Kuzmich
 Author URI: http://kuzmi.ch
 Text Domain: inline-spoilers
@@ -29,11 +29,16 @@ function is_spoiler_shortcode( $atts, $content ) {
 	$output = '';
 	$head   = '';
 	$body   = '';
+	$extra  = '';
 
-	$attributes = shortcode_atts( array(
-		'title'         => __( 'Spoiler', 'inline-spoilers' ),
-		'initial_state' => 'collapsed',
-	), $atts, 'spoiler' );
+	$attributes = shortcode_atts(
+		array(
+			'title'         => __( 'Spoiler', 'inline-spoilers' ),
+			'initial_state' => 'collapsed',
+		),
+		$atts,
+		'spoiler'
+	);
 
 	$title         = $attributes['title'];
 	$initial_state = $attributes['initial_state'];
