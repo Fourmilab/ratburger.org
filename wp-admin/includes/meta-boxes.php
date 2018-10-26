@@ -163,10 +163,22 @@ echo esc_html( $visibility_trans ); ?></span>
 <?php if ( $post_type == 'post' && current_user_can( 'edit_others_posts' ) ) : ?>
 <span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky" <?php checked( is_sticky( $post->ID ) ); ?> /> <label for="sticky" class="selectit"><?php _e( 'Stick this post to the front page' ); ?></label><br /></span>
 <?php endif; ?>
+<?php  /* RATBURGER LOCAL CODE
+          Hide password protection option unless user has the
+          edit_others_posts capability. */
+if (!current_user_can('edit_others_posts')) {
+    echo("<div style='display: none;'>\n");
+}
+/* END RATBURGER LOCAL CODE */ ?>
 <input type="radio" name="visibility" id="visibility-radio-password" value="password" <?php checked( $visibility, 'password' ); ?> /> <label for="visibility-radio-password" class="selectit"><?php _e('Password protected'); ?></label><br />
 <span id="password-span"><label for="post_password"><?php _e('Password:'); ?></label> <input type="text" name="post_password" id="post_password" value="<?php echo esc_attr($post->post_password); ?>"  maxlength="255" /><br /></span>
+<?php  /* RATBURGER LOCAL CODE
+          Close div that hides password protection. */
+if (!current_user_can('edit_others_posts')) {
+    echo("</div>\n");
+}
+/* END RATBURGER LOCAL CODE */ ?>
 <input type="radio" name="visibility" id="visibility-radio-private" value="private" <?php checked( $visibility, 'private' ); ?> /> <label for="visibility-radio-private" class="selectit"><?php _e('Private'); ?></label><br />
-
 <p>
  <a href="#visibility" class="save-post-visibility hide-if-no-js button"><?php _e('OK'); ?></a>
  <a href="#visibility" class="cancel-post-visibility hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>
