@@ -9,6 +9,7 @@ class UpdraftPlus_Temporary_Clone_Restore {
 	 */
 	public function __construct() {
 		add_action('updraftplus_temporary_clone_ready_for_restore', array($this, 'clone_ready_for_restore'));
+		add_action('updraftplus_restored_db', array($this, 'remove_maintenance_file'));
 	}
 
 	/**
@@ -17,14 +18,49 @@ class UpdraftPlus_Temporary_Clone_Restore {
 	 * @return void
 	 */
 	public function clone_ready_for_restore() {
-		global $updraftplus;
-		
+		global $updraftplus, $wp_filesystem;
+
 		$updraft_dir = trailingslashit($updraftplus->backups_dir_location());
 
 		touch($updraft_dir . 'ready_for_restore');
+
+		if (!function_exists('WP_Filesystem')) require_once ABSPATH.'wp-admin/includes/file.php';
+		WP_Filesystem();
+
+		// Create maintenance file with current clone status contents
+		if (!$wp_filesystem->exists(trailingslashit(WP_CONTENT_DIR).'maintenance.php')) {
+			ob_start();
+			if (!class_exists('UpdraftPlus_Temporary_Clone_Status')) {
+				include_once trailingslashit(plugin_dir_path(__FILE__)).'temporary-clone-status.php';
+			}
+			$updraftplus_temporary_clone_status = new UpdraftPlus_Temporary_Clone_Status();
+			$updraftplus_temporary_clone_status->output_status_page(false);
+			$contents = ob_get_clean();
+			$wp_filesystem->put_contents(
+				trailingslashit(WP_CONTENT_DIR).'maintenance.php',
+				$contents,
+				FS_CHMOD_FILE
+			);
+		}
+	}
+
+	/**
+	 * Remove maintenance file created before the DB restoration.
+	 */
+	public function remove_maintenance_file() {
+		global $updraftplus, $wp_filesystem;
+
+		$updraft_dir = trailingslashit($updraftplus->backups_dir_location());
+
+		if (!file_exists($updraft_dir . 'ready_for_restore')) return;
+
+		if (!function_exists('WP_Filesystem')) require_once ABSPATH.'wp-admin/includes/file.php';
+		WP_Filesystem();
+
+		$wp_filesystem->delete(trailingslashit(WP_CONTENT_DIR).'maintenance.php');
 	}
 }
 
-if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
+if (defined('UPDRAFTPLUS_THIS_IS_CLONE') && UPDRAFTPLUS_THIS_IS_CLONE) {
 	$updraftplus_temporary_clone_restore = new UpdraftPlus_Temporary_Clone_Restore();
 }

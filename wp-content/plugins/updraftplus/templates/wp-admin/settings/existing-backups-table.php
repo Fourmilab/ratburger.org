@@ -157,4 +157,8 @@ $image_folder_url = UPDRAFTPLUS_URL.'/images/icons/';
 	<div class="updraft-viewlogdiv"><button type="button" class="button js--deselect-all-backups" href="#"><?php _e('Deselect', 'updraftplus');?></button></div>
 	<small class="ud_massactions-tip"><?php _e('Use ctrl / cmd + press to select several items', 'updraftplus'); ?></small>
 </div>
+<div id="updraft-delete-waitwarning" class="updraft-hidden" style="display:none;">
+	<span class="spinner"></span> <em><?php _e('Deleting...', 'updraftplus');?> <span class="updraft-deleting-remote"><?php _e('Please allow time for the communications with the remote storage to complete.', 'updraftplus');?><span></em>
+	<p id="updraft-deleted-files-total"></p>
+</div>
 <?php endif;

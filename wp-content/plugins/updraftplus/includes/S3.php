@@ -93,7 +93,9 @@ class UpdraftPlus_S3 {
 		if (null !== $accessKey && null !== $secretKey) {
 			$this->setAuth($accessKey, $secretKey, $session_token);
 		}
-		$this->useSSL = $useSSL;
+
+		$this->setSSL($useSSL, !empty($sslCACert));
+
 		$this->sslCACert = $sslCACert;
 		if (!empty($endpoint)) {
 			$this->endpoint = $endpoint;
@@ -2196,7 +2198,7 @@ final class UpdraftPlus_S3Request {
 
 			if (null !== $this->s3->sslKey) curl_setopt($curl, CURLOPT_SSLKEY, $this->s3->sslKey);
 			if (null !== $this->s3->sslCert) curl_setopt($curl, CURLOPT_SSLCERT, $this->s3->sslCert);
-			if (null !== $this->s3->sslCACert) curl_setopt($curl, CURLOPT_CAINFO, $this->s3->sslCACert);
+			if (null !== $this->s3->sslCACert && file_exists($this->s3->sslCACert)) curl_setopt($curl, CURLOPT_CAINFO, $this->s3->sslCACert);
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);

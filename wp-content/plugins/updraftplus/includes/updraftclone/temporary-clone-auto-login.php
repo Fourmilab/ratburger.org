@@ -25,6 +25,7 @@ class UpdraftPlus_Temporary_Clone_Auto_Login {
 		try {
 			// WooCommerce (3.4.4) dies here. We catch and carry on to avoid confusing the user about something that nothing can be done about / is a one-time issue.
 			do_action('wp_login', $user->user_login);
+			if (wp_redirect(admin_url())) exit;
 		} catch (Exception $e) {
 			$log_message = 'Exception ('.get_class($e).') occurred during the wp_login action call: '.$e->getMessage().' (Code: '.$e->getCode().', line '.$e->getLine().' in '.$e->getFile().')';
 			error_log($log_message);

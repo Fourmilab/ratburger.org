@@ -161,9 +161,12 @@ function updraft_remote_storage_tabs_setup() {
 			updraft_remote_storage_tab_activation(ser);
 		}
 	});
-
+	
 	if (anychecked > 0) {
 		jQuery('.updraftplusmethod.none').hide();
+		jQuery('#remote_storage_tabs').show();
+	} else {
+		jQuery('#remote_storage_tabs').hide();
 	}
 	
 	// To allow labelauty remote storage buttons to be used with keyboard
@@ -200,8 +203,10 @@ function updraft_remote_storage_tabs_setup() {
 
 		if (anychecked <= 0) {
 			jQuery('.updraftplusmethod.none').fadeIn();
+			jQuery('#remote_storage_tabs').hide();
 		} else {
 			jQuery('.updraftplusmethod.none').hide();
+			jQuery('#remote_storage_tabs').show();
 		}
 	});
 	
@@ -343,7 +348,7 @@ function updraft_deleteallselected() {
 	var remote_exists = 0;
 	var key_all = '';
 	var nonce_all = '';
-	var remote_all = '';
+	var remote_all = 0;
 	jQuery('#updraft-navtab-backups-content .updraft_existing_backups .updraft_existing_backups_row.backuprowselected').each(function(index) {
 		howmany++;
 		var nonce = jQuery(this).data('nonce');
@@ -353,8 +358,7 @@ function updraft_deleteallselected() {
 		if (key_all) { key_all += ','; }
 		key_all += key;
 		var has_remote = jQuery(this).find('.updraftplus-remove').data('hasremote');
-		if (remote_all) { remote_all += ','; }
-		remote_all += has_remote;
+		if (has_remote) remote_all++;
 	});
 	updraft_delete(key_all, nonce_all, remote_all);
 }
@@ -507,6 +511,7 @@ var updraft_activejobslist_backupnownonce_only = 0;
 var updraft_inpage_hasbegun = 0;
 var updraft_activejobs_update_timer;
 var updraft_aborted_jobs = [];
+var updraft_clone_jobs = [];
 
 // Manage backups table selection
 var updraft_backups_selection = {};
@@ -711,8 +716,8 @@ function updraft_activejobs_update(force) {
 			}
 
 			// Parse response to add classes before inserting it, to avoid unwanted artifacts
-			var list_prepare = $(resp.j);
-			list_prepare.find('.updraft_jobtimings').each(function(ind, element) {
+			var $list_prepare = $(resp.j);
+			$list_prepare.find('.updraft_jobtimings').each(function(ind, element) {
 				var $el = $(element);
 				if ($el.data('jobid')) {
 					var jobid = $el.data('jobid');
@@ -725,12 +730,28 @@ function updraft_activejobs_update(force) {
 
 			
 			
-			$('#updraft_activejobsrow').html(list_prepare);
-			
-			var $clone_jobs = $('#updraft_activejobsrow .job-id[data-isclone="1"]');
+			$('#updraft_activejobsrow').html($list_prepare);
+
+			var $clone_jobs = $list_prepare.find('.job-id[data-isclone="1"]');
 			
 			if ($clone_jobs.length > 0) {
-				$('#updraft_clone_activejobsrow').html($clone_jobs);
+				if ($('.updraftclone_action_box .updraftclone_network_info').length == 0 && $('#updraft_activejobsrow .job-id .updraft_clone_url').length > 0) {
+					var clone_url = $('#updraft_activejobsrow .job-id .updraft_clone_url').data('clone_url');
+					
+					updraft_send_command('get_clone_network_info', { clone_url: clone_url }, function(response) {
+						if (response.hasOwnProperty('html')) {
+							$('.updraftclone_action_box').html(response.html);
+						}
+					});
+				}
+
+				$('#updraft_clone_activejobsrow').empty();
+				$clone_jobs.each(function(ind, element) {
+					var $el = $(element);
+					$el.closest('.updraft_row')
+						// .clone() // Clone allows to have the job on both tabs
+						.appendTo($('#updraft_clone_activejobsrow'));
+				});
 			}
 
 			$('#updraft_activejobs .updraft_jobtimings').each(function(ind, element) {
@@ -821,7 +842,6 @@ function updraft_activejobs_update(force) {
 
 				// detect manual backup
 				if (gdata.hasOwnProperty('thisjobonly') && updraft_backupnow_nonce && gdata.thisjobonly === updraft_backupnow_nonce) {
-					
 					$('.updraft_requeststart').remove();
 
 					var thisjob = $('#updraft-jobid-'+updraft_backupnow_nonce);
@@ -829,14 +849,24 @@ function updraft_activejobs_update(force) {
 					if (thisjob.is('.updraft_finished')) {
 						// reset current job vars
 						updraft_activejobslist_backupnownonce_only = 0;
+						// Aborted jobs
 						if (updraft_aborted_jobs[updraft_backupnow_nonce]) {
 							// remove deleted job from deleted jobs list
-							updraft_aborted_jobs = updraft_aborted_jobs.filter(function(val) {
-								val != updraft_backupnow_nonce;
+							updraft_aborted_jobs = updraft_aborted_jobs.filter(function(val, index) {
+								return val != updraft_backupnow_nonce;
 							});
 						} else {
-							// Show success popup
-							updraft_show_success_modal(updraftlion.backup_complete);
+
+							if (updraft_active_job_is_clone(updraft_backupnow_nonce)) {
+								// A clone job is complete
+								updraft_show_success_modal(updraftlion.clone_backup_complete);
+								updraft_clone_jobs = updraft_clone_jobs.filter(function(val) {
+									return val != updraft_backupnow_nonce;
+								});
+							} else {
+								// A normal manual backup is complete
+								updraft_show_success_modal(updraftlion.backup_complete);
+							}
 						}
 						updraft_backupnow_nonce = '';
 						// Force fetch active jobs
@@ -856,11 +886,7 @@ function updraft_activejobs_update(force) {
 			
 			// Download status
 			if (resp.ds != null && resp.ds != '') {
-				$(resp.ds).each(function(x, dstatus) {
-					if (dstatus.base != '') {
-						updraft_downloader_status_update(dstatus.base, dstatus.timestamp, dstatus.what, dstatus.findex, dstatus, response);
-					}
-				});
+				updraft_downloader_status_update(resp.ds, response);
 			}
 
 			if (resp.u != null && resp.u != '' && $("#updraft-poplog").dialog("isOpen")) {
@@ -1113,6 +1139,43 @@ function updraft_updatehistory(rescan, remotescan, debug) {
 	});
 }
 
+/**
+ * Exclude entities hidden input field update
+ *
+ * @param {string} include_entity_name - backup entity name
+ */
+function updraft_exclude_entity_update(include_entity_name) {
+	var exclude_entities = [];
+	jQuery('#updraft_include_'+include_entity_name+'_exclude_container .updraft_exclude_entity_wrapper .updraft_exclude_entity_field').each(function() {
+		var data_val = jQuery.trim(jQuery(this).data('val'));
+		if ('' != data_val) {
+			exclude_entities.push(data_val);
+		}
+	});
+	jQuery('#updraft_include_'+include_entity_name+'_exclude').val(exclude_entities.join(','));
+}
+
+/**
+ * Check uniqueness of exclude rule in include_backup_file
+ *
+ * @param {string} exclude_rule - exclude rule
+ * @param {string} include_backup_file - the backup file type on which the exclude_rule will be applied
+ *
+ * @return {boolean} true if exclude_rule is unique otherwise false
+ */
+function updraft_is_unique_exclude_rule(exclude_rule, include_backup_file) {
+	existing_exclude_rules_str = jQuery('#updraft_include_'+include_backup_file+'_exclude').val();
+	existing_exclude_rules = existing_exclude_rules_str.split(',');
+	
+	if (jQuery.inArray(exclude_rule, existing_exclude_rules) > -1) {
+		alert(updraftlion.duplicate_exclude_rule_error_msg)
+		return false;
+	} else {
+		return true;
+	}
+}
+
+
 var updraft_interval_week_val = false;
 var updraft_interval_month_val = false;
 
@@ -1219,8 +1282,12 @@ function updraft_activejobs_delete(jobid) {
 		if (resp.ok == 'Y') {
 			jQuery('#updraft-jobid-'+jobid).html(resp.m);
 			job_row.remove();
+
+			// inpage backup - Close modal if canceling backup
+			if (jQuery('#updraft-backupnow-inpage-modal').dialog('isOpen')) jQuery('#updraft-backupnow-inpage-modal').dialog('close');
+
 			updraft_show_success_modal({
-				message: updraftlion.backup_aborted,
+				message: updraft_active_job_is_clone(jobid) ? updraftlion.clone_backup_aborted : updraftlion.backup_aborted,
 				icon: 'no-alt',
 				classes: 'warning'
 			});
@@ -1240,6 +1307,19 @@ function updraftplus_diskspace_entity(key) {
 	updraft_send_command('get_fragment', { fragment: 'disk_usage', data: key }, function(response) {
 		jQuery('#updraft_diskspaceused_'+key).html(response.output);
 	}, { type: 'GET' });
+}
+
+/**
+ * Checks if the specified job is a clone
+ *
+ * @param {string} job_id The job ID
+ *
+ * @return {int}
+ */
+function updraft_active_job_is_clone(job_id) {
+	return updraft_clone_jobs.filter(function(val) {
+		return val == job_id;
+	}).length;
 }
 
 /**
@@ -1288,7 +1368,7 @@ function updraftplus_downloadstage2(timestamp, type, findex) {
 }
 
 function updraftplus_show_contents(timestamp, type, findex) {
-	var modal_content = '<div id="updraft_zip_files_container" class="hidden-in-updraftcentral" style="clear:left;"><div id="updraft_zip_info_container"><p><span id="updraft_zip_path_text">' + updraftlion.zip_file_contents_info + '</span> - <span id="updraft_zip_size_text"></span></p>'+updraftlion.browse_download_link+'</div><div id="updraft_zip_files_jstree_container"><input type="search" id="zip_files_jstree_search" name="zip_files_jstree_search" placeholder="' + updraftlion.search + '"><div id="updraft_zip_files_jstree"></div></div></div>';
+	var modal_content = '<div id="updraft_zip_files_container" class="hidden-in-updraftcentral" style="clear:left;"><div id="updraft_zip_info_container" class="updraft_jstree_info_container"><p><span id="updraft_zip_path_text">' + updraftlion.zip_file_contents_info + '</span> - <span id="updraft_zip_size_text"></span></p>'+updraftlion.browse_download_link+'</div><div id="updraft_zip_files_jstree_container"><input type="search" id="zip_files_jstree_search" name="zip_files_jstree_search" placeholder="' + updraftlion.search + '"><div id="updraft_zip_files_jstree" class="updraft_jstree"></div></div></div>';
 
 	updraft_html_modal(modal_content, updraftlion.zip_file_contents, 780, 500);
 
@@ -1398,21 +1478,52 @@ function zip_files_jstree(entity, timestamp, type, findex) {
 	});
 }
 
+/**
+ * This function will clean up the updraft downloader UI
+ *
+ * @param {object} item - the object pressed in the UI
+ * @param {string} what - the file entity
+ */
+function remove_updraft_downloader(item, what) {
+	jQuery(item).parent().fadeOut().remove();
+	if (0 == jQuery('.updraftplus_downloader_container_'+what+' .updraftplus_downloader').length) jQuery('.updraftplus_downloader_container_'+what).remove();
+}
+
+/**
+ * This function will prepare the downloader UI and kick of the request to download the file entities.
+ *
+ * @param {string}  base             - the base string for the id
+ * @param {integer} backup_timestamp - the backup timestamp
+ * @param {string}  what             - the file entity
+ * @param {string}  whicharea        - the area we want to append the downloader
+ * @param {string}  set_contents     - the contents we want to download
+ * @param {string}  prettydate       - the pretty backup date
+ * @param {boolean} async            - boolean to indicate if this is a async request or not
+ */
 function updraft_downloader(base, backup_timestamp, what, whicharea, set_contents, prettydate, async) {
 	
 	if (typeof set_contents !== "string") set_contents = set_contents.toString();
 
-	var set_contents = set_contents.split(',');
+	jQuery('.ud_downloadstatus').show();
 
-	for (var i=0; i<set_contents.length; i++) {
+	var set_contents = set_contents.split(',');
+	var prdate = (prettydate) ? prettydate : backup_timestamp;
+
+	// Old-style, from when it was a form
+	// var data = jQuery('#updraft-navtab-backups-content .uddownloadform_'+what+'_'+backup_timestamp+'_'+set_contents[i]).serialize();
+	var nonce = jQuery('#updraft-navtab-backups-content .uddownloadform_'+what+'_'+backup_timestamp+'_'+set_contents[0]).data('wp_nonce').toString();
+	
+	jQuery(whicharea).append('<div class="updraftplus_downloader_container_'+what+' postbox"></div>');
+	jQuery('.updraftplus_downloader_container_'+what).append('<strong style="clear:left; padding: 8px; margin-top: 4px;">'+updraftlion.download+' '+what+' ('+prdate+'):</strong>');
+
+	for (var i = 0; i < set_contents.length; i++) {
 		// Create somewhere for the status to be found
 		var stid = base+backup_timestamp+'_'+what+'_'+set_contents[i];
 		var stid_selector = '.'+stid;
 		var show_index = parseInt(set_contents[i]); show_index++;
 		var itext = (0 == set_contents[i]) ? '' : ' ('+show_index+')';
 		if (!jQuery(stid_selector).length) {
-			var prdate = (prettydate) ? prettydate : backup_timestamp;
-			jQuery(whicharea).append('<div style="clear:left; padding: 8px; margin-top: 4px;" class="'+stid+' updraftplus_downloader postbox"><button onclick="jQuery(this).parent().fadeOut().remove();" type="button" style="float:right; margin-bottom: 8px;" class="ud_downloadstatus__close" aria-label="Close"><span class="dashicons dashicons-no-alt"></span></button><strong>'+updraftlion.download+' '+what+itext+' ('+prdate+')</strong>:<div class="raw">'+updraftlion.begunlooking+'</div><div class="file '+stid+'_st"><div class="dlfileprogress" style="width: 0;"></div></div></div>');
+			jQuery('.updraftplus_downloader_container_'+what).append('<div style="clear:left; padding: 8px; margin-top: 4px;" class="'+stid+' updraftplus_downloader"><button onclick="remove_updraft_downloader(this, \''+what+'\');" type="button" style="float:right; margin-bottom: 8px;" class="ud_downloadstatus__close" aria-label="Close"><span class="dashicons dashicons-no-alt"></span></button><strong>'+what+itext+'</strong>:<div class="raw">'+updraftlion.begunlooking+'</div><div class="file '+stid+'_st"><div class="dlfileprogress" style="width: 0;"></div></div></div>');
 			jQuery(stid_selector).data('downloaderfor', { base: base, nonce: backup_timestamp, what: what, index: set_contents[i] });
 			setTimeout(function() {
 					updraft_activejobs_update(true);
@@ -1420,32 +1531,27 @@ function updraft_downloader(base, backup_timestamp, what, whicharea, set_content
 			1500);
 		}
 		jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
-		
-		// Now send the actual request to kick it all off
-		async = async ? true : false;
-		
-		// Old-style, from when it was a form
-		 // var data = jQuery('#updraft-navtab-backups-content .uddownloadform_'+what+'_'+backup_timestamp+'_'+set_contents[i]).serialize();
-		
-		var nonce = jQuery('#updraft-navtab-backups-content .uddownloadform_'+what+'_'+backup_timestamp+'_'+set_contents[i]).data('wp_nonce').toString()
-		
-		var data = {
-			type: what,
-			timestamp: backup_timestamp,
-			findex: set_contents[i]
-		};
-		
-		var options = {
-			action: 'updraft_download_backup',
-			nonce_key: '_wpnonce',
-			nonce: nonce,
-			timeout: 10000,
-			async: async
-		}
-		
-		updraft_send_command('updraft_download_backup', data, function(response) {}, options);
-		
 	}
+
+	// Now send the actual request to kick it all off
+	async = async ? true : false;
+
+	var data = {
+		type: what,
+		timestamp: backup_timestamp,
+		findex: set_contents
+	};
+
+	var options = {
+		action: 'updraft_download_backup',
+		nonce_key: '_wpnonce',
+		nonce: nonce,
+		timeout: 10000,
+		async: async
+	}
+
+	updraft_send_command('updraft_download_backup', data, function (response) {}, options);
+
 	// We don't want the form to submit as that replaces the document
 	return false;
 }
@@ -1606,75 +1712,86 @@ function updraft_downloader_status(base, nonce, what, findex) {
 	return;
 }
 
-function updraft_downloader_status_update(base, backup_timestamp, what, findex, resp, response) {
-	var stid = base+backup_timestamp+'_'+what+'_'+findex;
-	var stid_selector = '.'+stid;
+function updraft_downloader_status_update(download_status, response) {
+	
 	var cancel_repeat = 0;
-	if (resp.e != null) {
-		jQuery(stid_selector+' .raw').html('<strong>'+updraftlion.error+'</strong> '+resp.e);
-		console.log(resp);
-	} else if (resp.p != null) {
-		jQuery(stid_selector+'_st .dlfileprogress').width(resp.p+'%');
-		// jQuery(stid_selector+'_st .dlsofar').html(Math.round(resp.s/1024));
-		// jQuery(stid_selector+'_st .dlsize').html(Math.round(resp.t/1024));
+
+	jQuery(download_status).each(function (x, dstatus) {
+		if (dstatus.base == '') return;
 		
-		// Is a restart appropriate?
-		// resp.a, if set, indicates that a) the download is incomplete and b) the value is the number of seconds since the file was last modified...
-		if (resp.a != null && resp.a > 0) {
-			var timenow = (new Date).getTime();
-			var lasttimebegan = jQuery(stid_selector).data('lasttimebegan');
-			// Remember that this is in milliseconds
-			var sincelastrestart = timenow - lasttimebegan;
-			if (resp.a > 90 && sincelastrestart > 60000) {
-				console.log(backup_timestamp+" "+what+" "+findex+": restarting download: file_age="+resp.a+", sincelastrestart_ms="+sincelastrestart);
-				jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
-				
-				var $original_button = jQuery('#updraft-navtab-backups-content .uddownloadform_'+what+'_'+backup_timestamp+'_'+findex);
-				
-				var data = {
-					type: what,
-					timestamp: backup_timestamp,
-					findex: findex
-				};
-				
-				var options = {
-					action: 'updraft_download_backup',
-					nonce_key: '_wpnonce',
-					nonce: $original_button.data('wp_nonce').toString(),
-					timeout: 10000
-				};
-				
-				updraft_send_command('updraft_download_backup', data, function(response) {}, options);
-				
-				jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
-			}
-		}
+		var stid = dstatus.base + dstatus.timestamp + '_' + dstatus.what + '_' + dstatus.findex;
+		var stid_selector = '.' + stid;
+		
+		if (dstatus.e != null) {
+			jQuery(stid_selector + ' .raw').html('<strong>' + updraftlion.error + '</strong> ' + dstatus.e);
+			console.log(dstatus);
+		} else if (dstatus.p != null) {
+			jQuery(stid_selector + '_st .dlfileprogress').width(dstatus.p + '%');
+			// jQuery(stid_selector+'_st .dlsofar').html(Math.round(dstatus.s/1024));
+			// jQuery(stid_selector+'_st .dlsize').html(Math.round(dstatus.t/1024));
 
-		if (resp.m != null) {
-			if (resp.p >= 100 && 'udrestoredlstatus_' == base) {
-				jQuery(stid_selector+' .raw').html(resp.m);
-				jQuery(stid_selector).fadeOut('slow', function() {
- jQuery(this).remove(); updraft_restorer_checkstage2(0);});
-			} else if (resp.p < 100 || base != 'uddlstatus_') {
-				jQuery(stid_selector+' .raw').html(resp.m);
-			} else {
-				var file_ready_actions = updraftlion.fileready+' '+ updraftlion.actions+': \
-				<button class="button" type="button" onclick="updraftplus_downloadstage2(\''+backup_timestamp+'\', \''+what+'\', \''+findex+'\')\">'+updraftlion.downloadtocomputer+'</button> \
-				<button class="button" id="uddownloaddelete_'+backup_timestamp+'_'+what+'" type="button" onclick="updraftplus_deletefromserver(\''+backup_timestamp+'\', \''+what+'\', \''+findex+'\')\">'+updraftlion.deletefromserver+'</button>';
+			// Is a restart appropriate?
+			// dstatus.a, if set, indicates that a) the download is incomplete and b) the value is the number of seconds since the file was last modified...
+			if (dstatus.a != null && dstatus.a > 0) {
+				var timenow = (new Date).getTime();
+				var lasttimebegan = jQuery(stid_selector).data('lasttimebegan');
+				// Remember that this is in milliseconds
+				var sincelastrestart = timenow - lasttimebegan;
+				if (dstatus.a > 90 && sincelastrestart > 60000) {
+					console.log(dstatus.timestamp + " " + dstatus.what + " " + dstatus.findex + ": restarting download: file_age=" + dstatus.a + ", sincelastrestart_ms=" + sincelastrestart);
+					jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
 
-				if (resp.hasOwnProperty('can_show_contents') && resp.can_show_contents) {
-					file_ready_actions += ' <button class="button" type="button" onclick="updraftplus_show_contents(\''+backup_timestamp+'\', \''+what+'\', \''+findex+'\')\">'+updraftlion.browse_contents+'</button>';
+					var $original_button = jQuery('#updraft-navtab-backups-content .uddownloadform_' + dstatus.what + '_' + dstatus.timestamp + '_' + dstatus.findex);
+
+					var data = {
+						type: dstatus.what,
+						timestamp: dstatus.timestamp,
+						findex: dstatus.findex
+					};
+
+					var options = {
+						action: 'updraft_download_backup',
+						nonce_key: '_wpnonce',
+						nonce: $original_button.data('wp_nonce').toString(),
+						timeout: 10000
+					};
+
+					updraft_send_command('updraft_download_backup', data, function (response) {}, options);
+
+					jQuery(stid_selector).data('lasttimebegan', (new Date).getTime());
 				}
-				jQuery(stid_selector+' .raw').html(file_ready_actions);
 			}
+
+			if (dstatus.m != null) {
+				if (dstatus.p >= 100 && 'udrestoredlstatus_' == dstatus.base) {
+					jQuery(stid_selector + ' .raw').html(dstatus.m);
+					jQuery(stid_selector).fadeOut('slow', function () {
+						remove_updraft_downloader(this, dstatus.what);
+						updraft_restorer_checkstage2(0);
+					});
+				} else if (dstatus.p < 100 || dstatus.base != 'uddlstatus_') {
+					jQuery(stid_selector + ' .raw').html(dstatus.m);
+				} else {
+					var file_ready_actions = updraftlion.fileready + ' ' + updraftlion.actions + ': \
+				<button class="button" type="button" onclick="updraftplus_downloadstage2(\''+ dstatus.timestamp + '\', \'' + dstatus.what + '\', \'' + dstatus.findex + '\')\">' + updraftlion.downloadtocomputer + '</button> \
+				<button class="button" id="uddownloaddelete_'+ dstatus.timestamp + '_' + dstatus.what + '" type="button" onclick="updraftplus_deletefromserver(\'' + dstatus.timestamp + '\', \'' + dstatus.what + '\', \'' + dstatus.findex + '\')\">' + updraftlion.deletefromserver + '</button>';
+
+					if (dstatus.hasOwnProperty('can_show_contents') && dstatus.can_show_contents) {
+						file_ready_actions += ' <button class="button" type="button" onclick="updraftplus_show_contents(\'' + dstatus.timestamp + '\', \'' + dstatus.what + '\', \'' + dstatus.findex + '\')\">' + updraftlion.browse_contents + '</button>';
+					}
+					jQuery(stid_selector + ' .raw').html(file_ready_actions);
+					jQuery(stid_selector + '_st').remove();
+				}
+			}
+		// dlstatus_lastlog = response;
+		} else if (dstatus.m != null) {
+			jQuery(stid_selector + ' .raw').html(dstatus.m);
+		} else {
+			jQuery(stid_selector + ' .raw').html(updraftlion.jsonnotunderstood + ' (' + response + ')');
+			cancel_repeat = 1;
 		}
-// dlstatus_lastlog = response;
-	} else if (resp.m != null) {
-			jQuery(stid_selector+' .raw').html(resp.m);
-	} else {
-		jQuery(stid_selector+' .raw').html(updraftlion.jsonnotunderstood+' ('+response+')');
-		cancel_repeat = 1;
-	}
+	});
+
 	return cancel_repeat;
 }
 
@@ -1710,6 +1827,25 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 	params.always_keep = (typeof extradata.always_keep !== 'undefined') ? extradata.always_keep : 0;
 	delete extradata.always_keep;
 
+	// Display Request start message
+	if (!jQuery('.updraft_requeststart').length) {
+		var requeststart_el = jQuery('<div class="updraft_requeststart" />').html('<span class="spinner"></span>'+updraftlion.requeststart);
+		requeststart_el.data('remove', false);
+		setTimeout(
+			function() {
+				requeststart_el.data('remove', true);
+			},
+			3000
+		);
+		setTimeout(
+			function() {
+				requeststart_el.remove();
+			},
+			75000
+		);
+		jQuery('#updraft_activejobsrow').before(requeststart_el);
+	}
+	
 	updraft_activejobslist_backupnownonce_only = 1;
 	updraft_send_command('backupnow', params, function(resp) {
 		jQuery('#updraft_backup_started').html(resp.m);
@@ -1851,9 +1987,11 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		var email = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_email').val();
 		var password = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_password').val();
+		var auto_update = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_auto_updates').is(':checked') ? 1: 0;
 		var options = {
 			email: email,
-			password: password
+			password: password,
+			auto_update: auto_update
 		};
 		updraftplus_com_login_submit(options);
 	});
@@ -1863,9 +2001,11 @@ jQuery(document).ready(function($) {
 			e.preventDefault();
 			var email = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_email').val();
 			var password = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_password').val();
+			var auto_update = $('#updraft-navtab-addons-content .wrap .updraftplus_com_login #updraftplus-addons_options_auto_updates').is(':checked') ? 1: 0;
 			var options = {
 				email: email,
-				password: password
+				password: password,
+				auto_update: auto_update
 			};
 			updraftplus_com_login_submit(options);
 		}
@@ -1903,7 +2043,7 @@ jQuery(document).ready(function($) {
 		var email = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_email').val();
 		var password = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_password').val();
 		var tfa = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_two_factor_code').val();
-		var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
+		var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login .temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
 		var options = {
 			form_data: {
 				email: email,
@@ -1925,7 +2065,7 @@ jQuery(document).ready(function($) {
 			var email = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_email').val();
 			var password = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_password').val();
 			var tfa = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_options_two_factor_code').val();
-			var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login #temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
+			var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login .temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
 			var options = {
 				form_data: {
 					email: email,
@@ -1938,6 +2078,42 @@ jQuery(document).ready(function($) {
 				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login_status').html('<b>' + updraftlion.error + '</b> ' + updraftlion.username_password_required).show();
 			} else {
 				temporary_clone_submit(options);
+			}
+		}
+	});
+
+	$('#updraft-navtab-migrate-content').on('click', '.updraft_migrate_widget_module_content .updraftplus_com_key .ud_key_connectsubmit', function (e) {
+		e.preventDefault();
+		var clone_key = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key #temporary_clone_options_key').val();
+		var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key .temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
+		var options = {
+			form_data: {
+				clone_key: clone_key,
+				consent: consent
+			}
+		};
+		if (!clone_key) {
+			$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key_status').html('<b>' + updraftlion.error + '</b> ' + updraftlion.clone_key_required).show();
+		} else {
+			temporary_clone_key_submit(options);
+		}
+	});
+
+	$('#updraft-navtab-migrate-content').on('keydown', '.updraft_migrate_widget_module_content .updraftplus_com_key input', function (e) {
+		if (13 == e.which) {
+			e.preventDefault();
+			var clone_key = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key #temporary_clone_options_key').val();
+			var consent = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key .temporary_clone_terms_and_conditions').is(':checked') ? 1 : 0;
+			var options = {
+				form_data: {
+					clone_key: clone_key,
+					consent: consent
+				}
+			};
+			if (!clone_key) {
+				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key_status').html('<b>' + updraftlion.error + '</b> ' + updraftlion.clone_key_required).show();
+			} else {
+				temporary_clone_key_submit(options);
 			}
 		}
 	});
@@ -2039,10 +2215,10 @@ jQuery(document).ready(function($) {
 	 */
 	function temporary_clone_submit(options) {
 		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login_status').html('').hide();
-		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_spinner.spinner').addClass('visible');
+		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login .updraftplus_spinner.spinner').addClass('visible');
 		updraft_send_command('process_updraftplus_clone_login', options, function (response) {
 			try {
-				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_spinner.spinner').removeClass('visible');
+				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login .updraftplus_spinner.spinner').removeClass('visible');
 				
 				if (response.hasOwnProperty('status') && 'error' == response.status) {
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_login_status').html(response.message).show();
@@ -2063,6 +2239,34 @@ jQuery(document).ready(function($) {
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage1 .non_tfa_fields').show();
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage1 .tfa_fields').hide();
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage1 input#temporary_clone_options_two_factor_code').val('');
+					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage2').show();
+					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage2').html(response.html);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		});
+	}
+
+	/**
+	 * This function will send an AJAX request to the backend to check the clone key, then it will either inform the user of any errors or display UI elements that include their token count and a way to create new clones.
+	 *
+	 * @param {array} options - an array that includes the clone key
+	 */
+	function temporary_clone_key_submit(options) {
+		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key_status').html('').hide();
+		$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key .updraftplus_spinner.spinner').addClass('visible');
+		updraft_send_command('process_updraftplus_clone_login', options, function (response) {
+			try {
+				$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key .updraftplus_spinner.spinner').removeClass('visible');
+
+				if (response.hasOwnProperty('status') && 'error' == response.status) {
+					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraftplus_com_key_status').html(response.message).show();
+					return;
+				}
+
+				if ('authenticated' === response.status) {
+					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage1').hide();
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage2').show();
 					$('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content .updraft_migrate_widget_temporary_clone_stage2').html(response.html);
 				}
@@ -2104,6 +2308,7 @@ jQuery(document).ready(function($) {
 			if (response.hasOwnProperty('nonce')) {
 				// Can't return it from this context
 				updraft_backupnow_nonce = response.nonce;
+				updraft_clone_jobs.push(updraft_backupnow_nonce);
 				updraft_inpage_success_callback = function () {
 					jQuery('#updraft_clone_activejobsrow').hide();
 					// If user aborts the job
@@ -2536,7 +2741,7 @@ jQuery(document).ready(function($) {
 	
 	// Prevent profusion of notices
 	setTimeout(function() {
-jQuery('#setting-error-settings_updated').slideUp();}, 5000);
+		jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	
 	jQuery('#updraft_restore_db').change(function() {
 		if (jQuery('#updraft_restore_db').is(':checked') && 1 == jQuery(this).data('encrypted')) {
@@ -2550,7 +2755,8 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 
 	var updraft_message_modal_buttons = {};
 	updraft_message_modal_buttons[updraftlion.close] = function() {
- jQuery(this).dialog("close"); };
+		 jQuery(this).dialog("close");
+	};
 	jQuery("#updraft-message-modal").dialog({
 		autoOpen: false, height: 350, width: 520, modal: true,
 		buttons: updraft_message_modal_buttons
@@ -2558,11 +2764,12 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	
 	var updraft_delete_modal_buttons = {};
 	updraft_delete_modal_buttons[updraftlion.deletebutton] = function() {
- updraft_remove_backup_sets(0, 0, 0, 0); };
+		updraft_remove_backup_sets(0, 0, 0, 0);
+	};
 
 
 	function updraft_remove_backup_sets(deleted_counter, backup_local, backup_remote, backup_sets) {
-		jQuery('#updraft-delete-waitwarning').slideDown();
+		jQuery("#updraft-delete-modal").dialog('close');
 		var deleted_files_counter = deleted_counter;
 		var local_deleted = backup_local;
 		var remote_deleted = backup_remote;
@@ -2571,7 +2778,7 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 		
 		var form_data = jQuery('#updraft_delete_form').serializeArray();
 		var data = {};
-		
+
 		$.each(form_data, function() {
 			if (undefined !== data[this.name]) {
 				if (!data[this.name].push) {
@@ -2582,7 +2789,15 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				data[this.name] = this.value || '';
 			}
 		});
+
+		if (data.delete_remote) {
+			jQuery('#updraft-delete-waitwarning').find('.updraft-deleting-remote').show();
+		} else {
+			jQuery('#updraft-delete-waitwarning').find('.updraft-deleting-remote').hide();
+		}
 		
+		jQuery('#updraft-delete-waitwarning').slideDown().addClass('active');
+
 		data.remote_delete_limit = updraftlion.remote_delete_limit;
 		
 		delete data.action;
@@ -2590,8 +2805,12 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 		delete data.nonce;
 		
 		updraft_send_command('deleteset', data, function(resp) {
-			if (!resp.hasOwnProperty('result') || resp.result == null) { return; }
+			if (!resp.hasOwnProperty('result') || resp.result == null) {
+				jQuery('#updraft-delete-waitwarning').slideUp();
+				return;
+			}
 			if (resp.result == 'error') {
+				jQuery('#updraft-delete-waitwarning').slideUp();
 				alert(updraftlion.error+' '+resp.message);
 			} else if (resp.result == 'continue') {
 				deleted_files_counter = deleted_files_counter + resp.backup_local + resp.backup_remote;
@@ -2607,8 +2826,12 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				jQuery('#updraft-deleted-files-total').text(deleted_files_counter + ' ' + updraftlion.remote_files_deleted);
 				updraft_remove_backup_sets(deleted_files_counter, local_deleted, remote_deleted, sets_deleted);
 			} else if (resp.result == 'success') {
-				jQuery('#updraft-deleted-files-total').text('');
-				jQuery('#updraft-delete-waitwarning').slideUp();
+
+				setTimeout(function() {
+					jQuery('#updraft-deleted-files-total').text('');
+					jQuery('#updraft-delete-waitwarning').slideUp();
+				}, 500);
+
 				if (resp.hasOwnProperty('count_backups')) {
 					jQuery('#updraft-existing-backups-heading').html(updraftlion.existing_backups+' <span class="updraft_existing_backups_count">'+resp.count_backups+'</span>');
 				}
@@ -2620,13 +2843,13 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				updraft_backups_selection.checkSelectionStatus();
 
 				updraft_history_lastchecksum = false;
-				jQuery("#updraft-delete-modal").dialog('close');
 
 				local_deleted = local_deleted + resp.backup_local;
 				remote_deleted = remote_deleted + resp.backup_remote;
 				sets_deleted = sets_deleted + resp.backup_sets;
-
-				alert(resp.set_message + " " + sets_deleted + "\n" + resp.local_message + " " + local_deleted + "\n" + resp.remote_message + " " + remote_deleted);
+				setTimeout(function() {
+					alert(resp.set_message + " " + sets_deleted + "\n" + resp.local_message + " " + local_deleted + "\n" + resp.remote_message + " " + remote_deleted);
+				}, 900);
 			}
 		});
 	};
@@ -2775,7 +2998,7 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	});
 
 	jQuery("#updraft-backupnow-inpage-modal").dialog({
-		autoOpen: false, height: 345, width: 580, modal: true
+		autoOpen: false, height: 380, width: 580, modal: true
 	});
 	
 	var backupnow_modal_buttons = {};
@@ -2817,26 +3040,7 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				jQuery(this).fadeIn('slow');
 			});
 		}, 1700);
-
-		// Display Request start message
-		if (!jQuery('.updraft_requeststart').length) {
-			var requeststart_el = jQuery('<div class="updraft_requeststart" />').html('<span class="spinner"></span>'+updraftlion.requeststart);
-			requeststart_el.data('remove', false);
-			setTimeout(
-				function() {
-					requeststart_el.data('remove', true);
-				},
-				3000
-			);
-			setTimeout(
-				function() {
-					requeststart_el.remove();
-				},
-				75000
-			);
-			jQuery('#updraft_activejobsrow').before(requeststart_el);
-		}
-		
+	
 		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep}, jQuery('#backupnow_label').val(), onlythesetableentities);
 	};
 	backupnow_modal_buttons[updraftlion.cancel] = function() {
@@ -2869,15 +3073,15 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	function setup_file_entity_exclude_field(field, instant) {
 		if (jQuery('#updraft-navtab-settings-content #updraft_include_'+field).is(':checked')) {
 			if (instant) {
-				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude').show();
+				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude_container').show();
 			} else {
-				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude').slideDown();
+				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude_container').slideDown();
 			}
 		} else {
 			if (instant) {
 				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude').hide();
 			} else {
-				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude').slideUp();
+				jQuery('#updraft-navtab-settings-content #updraft_include_'+field+'_exclude_container').slideUp();
 			}
 		}
 	}
@@ -2887,6 +3091,191 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 		if (has_exclude_field) {
 			setup_file_entity_exclude_field(has_exclude_field, false);
 		}
+	});
+	
+	jQuery('.updraft_exclude_entity_container').on('click', '.updraft_exclude_entity_delete', function(event) {
+		event.preventDefault();
+		if (!confirm(updraftlion.exclude_rule_remove_conformation_msg))  return;
+		
+		var include_entity_name = jQuery(this).data('include-backup-file');
+		jQuery.when(
+			jQuery(this).closest('.updraft_exclude_entity_wrapper').remove()
+		).then(
+			updraft_exclude_entity_update(include_entity_name)
+		);
+	});
+	
+	jQuery('.updraft_exclude_entity_container').on('click', '.updraft_exclude_entity_edit', function(event) {
+		event.preventDefault();
+		var wrapper = jQuery(this).hide().closest('.updraft_exclude_entity_wrapper');
+		var input = wrapper.find('input');
+		input.removeProp('readonly').focus();
+
+		// place carret at the end of the text
+		var input_val = input.val();
+		input.val('');
+		input.val(input_val);
+
+		wrapper.find('.updraft_exclude_entity_update').addClass('is-active').show();
+	});
+	
+	jQuery('.updraft_exclude_entity_container').on('click', '.updraft_exclude_entity_update', function(event) {
+		event.preventDefault();
+		var wrapper = jQuery(this).closest('.updraft_exclude_entity_wrapper');
+		var include_backup_file = jQuery(this).data('include-backup-file')
+		var exclude_item_val = jQuery.trim(wrapper.find('input').val());
+		
+		var should_be_updated = false;
+		if (exclude_item_val == wrapper.find('input').data('val')) {
+			should_be_updated = true;
+		} else if (updraft_is_unique_exclude_rule(exclude_item_val, include_backup_file)) {
+			should_be_updated = true;
+		}
+		
+		if (should_be_updated) {
+			jQuery(this).hide().removeClass('is-active');
+			jQuery.when(
+				wrapper.find('input').prop('readonly', 'readonly').data('val', exclude_item_val)
+			).then(function() {
+				wrapper.find('.updraft_exclude_entity_edit').show();
+				updraft_exclude_entity_update(include_backup_file);
+			});
+		}
+	});
+	
+	jQuery('#updraft_exclude_modal').dialog({
+		autoOpen: false,
+		modal: true,
+		width: 520,
+		height: 'auto',
+		open: function(event,ui) {
+			$(this).parent().focus();
+		}
+	});
+	
+	jQuery('.updraft_exclude_container .updraft_add_exclude_item').click(function(event) {
+		event.preventDefault();
+		var backup_entity = jQuery(this).data('include-backup-file');
+		jQuery('#updraft_exclude_modal_for').val(backup_entity);
+		jQuery('#updraft_exclude_modal_path').val(jQuery(this).data('path'));
+		if ('uploads' == backup_entity) {
+			jQuery('#updraft-exclude-file-dir-prefix').html(jQuery('#updraft-exclude-upload-base-dir').val());
+		}
+		jQuery('.updraft-exclude-modal-reset').trigger('click');
+		jQuery('#updraft_exclude_modal').dialog('open');
+	});
+	
+	jQuery('.updraft-exclude-link').click(function(event) {
+		event.preventDefault();
+		var panel = jQuery(this).data('panel');
+		if ('file-dir' == panel) {
+			jQuery('#updraft_exclude_files_folders_jstree').jstree({
+				"core": {
+					"multiple": false,
+					"data": function (nodeid, callback) {
+						updraft_send_command('get_jstree_directory_nodes', {entity: 'filebrowser', node:nodeid, path: jQuery('#updraft_exclude_modal_path').val(), findex: 0, skip_root_node: true}, function(response) {
+						if (response.hasOwnProperty('error')) {
+									alert(response.error);
+													   } else {
+									callback.call(this, response.nodes);
+													   }
+						}, { error_callback: function(response, status, error_code, resp) {
+								if (typeof resp !== 'undefined' && resp.hasOwnProperty('fatal_error')) {
+								console.error(resp.fatal_error_message);
+								jQuery('#updraft_zip_files_jstree').html('<p style="color:red; margin: 5px;">'+resp.fatal_error_message+'</p>');
+								alert(resp.fatal_error_message);
+									} else {
+								var error_message = "updraft_send_command: error: "+status+" ("+error_code+")";
+								jQuery('#updraft_zip_files_jstree').html('<p style="color:red; margin: 5px;">'+error_message+'</p>');
+								console.log(error_message);
+								alert(error_message);
+								console.log(response);
+									}
+								}
+						});
+					},
+					"error": function(error) {
+						alert(error);
+						console.log(error);
+					},
+				},
+				"search": {
+					"show_only_matches": true
+				},
+				"plugins": ["sort"],
+			});
+		}
+		jQuery('#updraft_exclude_modal_main').slideUp();
+		jQuery('.updraft-exclude-panel').hide();
+		jQuery('.updraft-exclude-panel[data-panel='+panel+']').slideDown();
+	});
+	
+	jQuery('.updraft-exclude-modal-reset').click(function(event) {
+		event.preventDefault();
+		jQuery('#updraft_exclude_files_folders_jstree').jstree("destroy");
+		jQuery('#updraft_exclude_extension_field').val('');
+		jQuery('#updraft_exclude_prefix_field').val('');
+		jQuery('.updraft-exclude-panel').slideUp();
+		jQuery('#updraft_exclude_modal_main').slideDown();
+	});
+	
+	jQuery('.updraft-exclude-submit').click(function() {
+		var panel = jQuery(this).data('panel');
+		var exclude_item_val = '';
+		switch (panel) {
+			case 'file-dir':
+			var exclude_jstree_selected = jQuery("#updraft_exclude_files_folders_jstree").jstree("get_selected");
+			if (0 == exclude_jstree_selected.length) {
+					alert(updraftlion.exclude_select_file_or_folder_msg);
+					return;
+				}
+			var selected_file_or_folder = exclude_jstree_selected[0];
+			var prefix_path = jQuery('#updraft_exclude_modal_path').val();
+			if (selected_file_or_folder.substr(0, prefix_path.length) == prefix_path) {
+					selected_file_or_folder = selected_file_or_folder.substr(prefix_path.length, selected_file_or_folder.length);
+				}
+			if ('/' == selected_file_or_folder.charAt(0))  selected_file_or_folder = selected_file_or_folder.substr(1);
+			if ('/' == selected_file_or_folder.charAt(selected_file_or_folder.length - 1))  selected_file_or_folder = selected_file_or_folder.substr(0, selected_file_or_folder.length - 1);
+			exclude_item_val = selected_file_or_folder;
+				break;
+				
+			case 'extension':
+			var exclude_extension = jQuery('#updraft_exclude_extension_field').val();
+			if ('' == exclude_extension) {
+					alert(updraftlion.exclude_type_ext_msg);
+					return;
+				}
+			if (!exclude_extension.match(/^[0-9a-zA-Z]+$/)) {
+					alert(updraftlion.exclude_ext_error_msg);
+					return;
+				}
+			exclude_item_val = 'ext:'+exclude_extension;
+				break;
+				
+			case 'begin-with':
+			var prefix = jQuery('#updraft_exclude_prefix_field').val();
+			if ('' == prefix) {
+					alert(updraftlion.exclude_type_prefix_msg);
+					return;
+				}
+			if (!prefix.match(/^\s*[a-z-_\d,\s]+\s*$/i)) {
+					alert(updraftlion.exclude_prefix_error_msg);
+					return;
+				}
+			exclude_item_val = 'prefix:'+prefix;
+				break;
+		
+			default:
+				return;
+		}
+		
+		var include_backup_file = jQuery('#updraft_exclude_modal_for').val();
+		if (!updraft_is_unique_exclude_rule(exclude_item_val, include_backup_file))  return;
+		
+		var exclude_entity_html = '<div class="updraft_exclude_entity_wrapper"><input type="text" class="updraft_exclude_entity_field updraft_include_' + include_backup_file + '_exclude_entity" name="updraft_include_' + include_backup_file + '_exclude_entity[]" value="' + exclude_item_val + '" data-val="' + exclude_item_val + '" data-include-backup-file="' + include_backup_file + '" readonly="readonly"><a href="#" class="updraft_exclude_entity_edit dashicons dashicons-edit" data-include-backup-file="' + include_backup_file + '"></a><a href="#" class="updraft_exclude_entity_update dashicons dashicons-yes" data-include-backup-file="' + include_backup_file + '" style="display: none;"></a><a href="#" class="updraft_exclude_entity_delete dashicons dashicons-no" data-include-backup-file="' + include_backup_file + '"></a></div>';
+		jQuery('.updraft_exclude_entity_container[data-include-backup-file="' + include_backup_file + '"]').append(exclude_entity_html);
+		updraft_exclude_entity_update(include_backup_file);
+		jQuery('#updraft_exclude_modal').dialog('close');
 	});
 	
 	// TODO: This is suspected to be obsolete. Confirm + remove.
@@ -3614,11 +4003,12 @@ jQuery(document).ready(function($) {
 			return opts.inverse(this);
 		}
 	});
+
 	// Add remote methods html using handlebarjs
 	if ($('#remote-storage-holder').length) {
 		var html = '';
 		for (var method in updraftlion.remote_storage_templates) {
-			if ('undefined' != typeof updraftlion.remote_storage_options[method]) {
+			if ('undefined' != typeof updraftlion.remote_storage_options[method] && 1 < Object.keys(updraftlion.remote_storage_options[method]).length) {
 				var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
 				var first_instance = true;
 				for (var instance_id in updraftlion.remote_storage_options[method]) {

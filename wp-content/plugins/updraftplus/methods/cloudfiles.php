@@ -481,16 +481,16 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 		$template_str .= '
 		<tr class="'.$classes.'">
 			<th>'.__('Cloud Files username', 'updraftplus').':</th>
-			<td><input data-updraft_settings_test="user" type="text" autocomplete="off" style="width: 282px" '.$this->output_settings_field_name_and_id('user', true).' value="{{user}}" /></td>
+			<td><input data-updraft_settings_test="user" type="text" autocomplete="off" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('user', true).' value="{{user}}" /></td>
 		</tr>
 		<tr class="'.$classes.'">
 			<th>'.__('Cloud Files API Key', 'updraftplus').':</th>
-			<td><input data-updraft_settings_test="apikey" type="'.apply_filters('updraftplus_admin_secret_field_type', 'password').'" autocomplete="off" style="width: 282px" '.$this->output_settings_field_name_and_id('apikey', true).' value="{{apikey}}" />
+			<td><input data-updraft_settings_test="apikey" type="'.apply_filters('updraftplus_admin_secret_field_type', 'password').'" autocomplete="off" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('apikey', true).' value="{{apikey}}" />
 			</td>
 		</tr>
 		<tr class="'.$classes.'">
 			<th>'.apply_filters('updraftplus_cloudfiles_location_description', __('Cloud Files Container', 'updraftplus')).':</th>
-			<td><input data-updraft_settings_test="path" type="text" style="width: 282px" '.$this->output_settings_field_name_and_id('path', true).' value="{{path}}" /></td>
+			<td><input data-updraft_settings_test="path" type="text" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('path', true).' value="{{path}}" /></td>
 		</tr>';
 		$template_str .= $this->get_test_button_html(__('Cloud Files', 'updraftplus'));
 		return $template_str;

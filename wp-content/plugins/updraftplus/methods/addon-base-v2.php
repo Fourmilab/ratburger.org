@@ -11,7 +11,7 @@ do_delete($file) - return true/false
 do_download($file, $fullpath, $start_offset) - return true/false
 do_config_print()
 get_credentials_test_required_parameters() - return an array: keys = required _POST parameters; values = description of each
-do_credentials_test($testfile, $posted_settings) - return true/false
+do_credentials_test($testfile, $posted_settings) - return true/false; or alternatively an array with keys 'result' (true/false) and 'data' (arbitrary debug data)
 do_credentials_test_deletefile($testfile, $posted_settings)
 */
 
@@ -266,6 +266,13 @@ abstract class UpdraftPlus_RemoteStorage_Addons_Base_v2 extends UpdraftPlus_Back
 	protected function do_config_javascript() {
 	}
 	
+	/**
+	 * Analyse the passed-in options to indicate whether something is configured or not.
+	 *
+	 * @param Array $opts - options to examine
+	 *
+	 * @return Boolean
+	 */
 	protected function options_exist($opts) {
 		if (is_array($opts) && !empty($opts)) return true;
 		return false;
@@ -280,6 +287,13 @@ abstract class UpdraftPlus_RemoteStorage_Addons_Base_v2 extends UpdraftPlus_Back
 		return $this->do_bootstrap($opts, $connect);
 	}
 
+	/**
+	 * Run a credentials test. Output can be echoed.
+	 *
+	 * @param Array $posted_settings - settings to use
+	 *
+	 * @return Mixed - any data to return (gets logged in the browser eventually)
+	 */
 	public function credentials_test($posted_settings) {
 	
 		global $updraftplus;
@@ -304,12 +318,19 @@ abstract class UpdraftPlus_RemoteStorage_Addons_Base_v2 extends UpdraftPlus_Back
 		}
 
 		$testfile = md5(time().rand()).'.txt';
-		if ($this->do_credentials_test($testfile, $posted_settings)) {
+		
+		$test_results = $this->do_credentials_test($testfile, $posted_settings);
+		
+		$data = (is_array($test_results) && isset($test_results['data'])) ? $test_results['data'] : null;
+		
+		if ((is_array($test_results) && $test_results['result']) || (!is_array($test_results) && $test_results)) {
 			_e('Success', 'updraftplus');
 			$this->do_credentials_test_deletefile($testfile, $posted_settings);
 		} else {
 			_e("Failed: We were not able to place a file in that directory - please check your credentials.", 'updraftplus');
 		}
 
+		return $data;
+		
 	}
 }

@@ -2,8 +2,8 @@
 Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snightingale, bcrodua
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
-Tested up to: 4.9
-Stable tag: 1.15.2
+Tested up to: 5.0
+Stable tag: 1.15.3
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -161,7 +161,40 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.0.x of the free version correspond to changes made in 1.15.0.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.3.x of the free version correspond to changes made in 1.15.3.x of the paid version.
+
+= 1.15.3 - 29/Oct/2018 =
+
+* FEATURE: UpdraftPlus now has an option to auto-update
+* FEATURE: Azure for Government endpoint support (Premium)
+* FIX: SSL verification settings were not allowing verification to be turned off for generic S3 storage
+* FIX: In some situations in which a user had defined UTF8 as their character set but WordPress was using UTF8MB4, UpdraftPlus was not detecting this
+* FIX: Prevent particular a SQL text pattern wrongly triggering detection of database features when it is within content
+* TWEAK: Marked as supporting WordPress 5.0
+* TWEAK: Automatically re-scan for presence of database backup after restoring it, to prevent confusion over its status
+* TWEAK: Change logic that controls whether the minified or full JavaScript is used
+* TWEAK: Improve Settings tab UI on mobile
+* TWEAK: Improve UpdraftClone UI
+* TWEAK: Improve UpdraftClone temporary page UI
+* TWEAK: Change method used to record the MySQL version to deal with how MariaDB can report when using a non-MariaDB client library (see: https://github.com/joomla/joomla-cms/issues/9062)
+* TWEAK: Replace Base64 encoded logo by image file
+* TWEAK: Hide guided tour on UpdraftClone
+* TWEAK: Fixed broken automatic backup modal layout
+* TWEAK: Auto rescan after restoring the remote database
+* TWEAK: Explicitly set the backup history option to not autoload, as it can get non-trivial in size
+* TWEAK: Improve UI of excluding things from the backup
+* TWEAK: Prevent a possible PHP debug notice in methods/backup-module.php
+* TWEAK: Show progress in browser view port instead of modal dialog when we delete the backup(s).
+* TWEAK: Added a --db-dummy-restore option to WP-CLI which will run a dummy restore of the database (under an unused prefix) and then drop the tables after it finishes. This option can be useful for testing.
+* TWEAK: Update the UpdraftClone UI when site information becomes available
+* TWEAK: Curl errors when interacting with Backblaze B2 will now be passed up for easier debugging
+* TWEAK: Re-factor add-on remote storage credential testing to make passing debugging information easier
+* TWEAK: Implement non-default SSL options with Backblaze B2 (previously the defaults were always used)
+* TWEAK: UpdraftClone: redirect to admin page after using the auto login link
+* TWEAK: Improve internal more files backup location tracking
+* TWEAK: Send a single request to download a backup set not for each file entity
+* TWEAK: Fix a DOM element whereby multiple nonces had the same id
+* TWEAK: Automatically build the more files backup location tracking on local rescan
 
 = 1.15.2 - 19/Sep/2018 =
 
@@ -179,6 +212,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 
 * FEATURE: Introducing UpdraftClone. Create a live copy of your site with a button press. Great for testing changes, testing updates (e.g. WordPress core, plugins, PHP versions) and anything else you can think of. More information: https://updraftplus.com/updraftclone/
 * FIX: Fix the logic for claiming and activating licences/add-ons.
+* FIX: Fixed OneDrive for Business Germany authentication tenant issue
 * TWEAK: WP-CLI - use dash (-) instead of underscore (_) to separate words, in order to match WP-CLI standards. 
 * TWEAK: Adds close_browser_connection capability for servers using phpfpm
 * TWEAK: Change multiple backups selection and actions UI
@@ -634,5 +668,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.15.2: A few fixes/tweaks to the 1.15.0 release, which introduced UpdraftClone. Create a live copy of your site with a button press. Great for testing changes, testing updates (e.g. WordPress core, plugins, PHP versions) and anything else you can think of. More information: https://updraftplus.com/updraftclone/ . A recommended update for all.
+* 1.15.3: Automatic update option. Some corner-case fixes, UI improvements and other tweaks. A recommended update for all.
 

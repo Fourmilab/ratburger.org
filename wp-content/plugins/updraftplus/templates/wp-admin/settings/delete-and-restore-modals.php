@@ -21,8 +21,6 @@
 			<input type="hidden" name="backup_nonce" value="0" id="updraft_delete_nonce">
 			<div id="updraft-delete-remote-section">
 				<input checked="checked" type="checkbox" name="delete_remote" id="updraft_delete_remote" value="1"> <label for="updraft_delete_remote"><?php _e('Also delete from remote storage', 'updraftplus');?></label><br>
-				<p id="updraft-delete-waitwarning" class="updraft-hidden" style="display:none;"><em><?php _e('Deleting... please allow time for the communications with the remote storage to complete.', 'updraftplus');?></em></p>
-				<p id="updraft-deleted-files-total"></p>
 			</div>
 		</fieldset>
 	</form>

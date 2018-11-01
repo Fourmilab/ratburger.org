@@ -19,7 +19,7 @@ if (defined('UPDRAFTPLUS_TEMPORARY_CLONE') && !UPDRAFTPLUS_TEMPORARY_CLONE) retu
 		<div class="updraft_migrate_widget_temporary_clone_stage0">
 			<p>
 				<?php
-					echo __("A temporary clone is an instant copy of this website, running on our servers. Rather than test  things on your live site, you can UpdraftClone it, and then throw away your clone when done.", 'updraftplus').' <a target="_blank" href="https://updraftplus.com/updraftclone/">'.__('Find out more here.', 'updraftplus').'</a> <a target="_blank" href="https://updraftplus.com/faq-category/updraftclone/">'.__('Read FAQs here.', 'updraftplus').'</a> <a target="_blank" href="'.$updraftplus->get_url('buy-tokens').'">'.__("You can buy UpdraftClone tokens from our shop, here.", 'updraftplus').'</a>';
+					echo __("A temporary clone is an instant copy of this website, running on our servers. Rather than test things on your live site, you can UpdraftClone it, and then throw away your clone when done.", 'updraftplus').' <a target="_blank" href="https://updraftplus.com/updraftclone/">'.__('Find out more here.', 'updraftplus').'</a> <a target="_blank" href="https://updraftplus.com/faq-category/updraftclone/">'.__('Read FAQs here.', 'updraftplus').'</a> <a target="_blank" href="'.$updraftplus->get_url('buy-tokens').'">'.__("You can buy UpdraftClone tokens from our shop, here.", 'updraftplus').'</a>';
 				?>
 				<ul style="list-style: disc inside;">
 					<li><strong><?php _e('Easy', 'updraftplus');?>:</strong> <?php _e('Press the buttons... UpdraftClone does the work.', 'updraftplus');?></li>
@@ -44,6 +44,35 @@ if (defined('UPDRAFTPLUS_TEMPORARY_CLONE') && !UPDRAFTPLUS_TEMPORARY_CLONE) retu
 				<?php echo __("To create a temporary clone you need: 1) credit in your account and 2) to connect to your account, below.", "updraftplus"); ?> <a target="_blank" href="<?php echo $updraftplus->get_url('buy-tokens'); ?>"><?php _e("You can buy UpdraftClone tokens from our shop, here.", "updraftplus"); ?></a>
 			</p>
 			<?php $updraftplus_admin->build_credentials_form('temporary_clone', true, false, array('under_username' => __('Not got an account? Get one by buying some tokens here.', 'updraftplus'), 'under_username_link' => $updraftplus->get_url('buy-tokens'), 'terms_and_conditions' => __('I accept the UpdraftClone terms and conditions', 'updraftplus'), 'terms_and_conditions_link' => 'https://updraftplus.com/faqs/what-are-the-updraftclone-terms-and-conditions/')); ?>
+			<h2> <?php _e('Or, use an UpdraftClone key', 'updraftplus'); ?></h2>
+			<p class="updraftplus_com_key_status"></p>
+			<div class="updraftplus_com_key">
+				<table class="form-table">
+					<tbody>
+						<tr>
+							<th><?php _e('Key', 'updraftplus'); ?></th>
+							<td>
+								<label for="temporary_clone_options_key">
+									<input id="temporary_clone_options_key" type="text" size="36" name="temporary_clone_options[key]" value="" tabindex="1" />
+									<br/>
+									<a target="_blank" href="https://updraftplus.com/updraftclone-keys/"><?php _e('You can find out more about clone keys here.', 'updraftplus'); ?></a>
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<input type="checkbox" class="temporary_clone_terms_and_conditions" name="temporary_clone_terms_and_conditions" value="1" tabindex="1">
+								<a target="_blank" href="https://updraftplus.com/faqs/what-are-the-updraftclone-terms-and-conditions/"><?php _e('I accept the UpdraftClone terms and conditions', 'updraftplus'); ?></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="updraft-after-form-table">
+					<button class="button-primary ud_key_connectsubmit" tabindex="1"><?php _e('Connect', 'updraftplus'); ?></button>
+					<span class="updraftplus_spinner spinner"><?php _e('Processing', 'updraftplus'); ?>...</span></p>
+				</p>
+			</div>
 		</div>
 		<div class="updraft_migrate_widget_temporary_clone_stage2" style="display: none;"></div>
 		<div class="updraft_migrate_widget_temporary_clone_stage3" style="display: none;"></div>

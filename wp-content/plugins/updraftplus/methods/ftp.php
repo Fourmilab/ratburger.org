@@ -355,22 +355,22 @@ class UpdraftPlus_BackupModule_ftp extends UpdraftPlus_BackupModule {
 
 		<tr class="<?php echo $classes;?>">
 			<th><?php _e('FTP server', 'updraftplus');?>:</th>
-			<td><input type="text" size="40" data-updraft_settings_test="server" <?php $this->output_settings_field_name_and_id('host');?> value="{{host}}" /></td>
+			<td><input class="updraft_input--wide" type="text" size="40" data-updraft_settings_test="server" <?php $this->output_settings_field_name_and_id('host');?> value="{{host}}" /></td>
 		</tr>
 		
 		<tr class="<?php echo $classes;?>">
 			<th><?php _e('FTP login', 'updraftplus');?>:</th>
-			<td><input type="text" size="40" data-updraft_settings_test="login" <?php $this->output_settings_field_name_and_id('user');?> value="{{user}}" /></td>
+			<td><input class="updraft_input--wide" type="text" size="40" data-updraft_settings_test="login" <?php $this->output_settings_field_name_and_id('user');?> value="{{user}}" /></td>
 		</tr>
 		
 		<tr class="<?php echo $classes;?>">
 			<th><?php _e('FTP password', 'updraftplus');?>:</th>
-			<td><input type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" size="40" data-updraft_settings_test="pass" <?php $this->output_settings_field_name_and_id('pass');?> value="{{pass}}" /></td>
+			<td><input class="updraft_input--wide" type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" size="40" data-updraft_settings_test="pass" <?php $this->output_settings_field_name_and_id('pass');?> value="{{pass}}" /></td>
 		</tr>
 		
 		<tr class="<?php echo $classes;?>">
 			<th><?php _e('Remote path', 'updraftplus');?>:</th>
-			<td><input type="text" size="64" data-updraft_settings_test="path" <?php $this->output_settings_field_name_and_id('path');?> value="{{path}}" /> <em><?php _e('Needs to already exist', 'updraftplus');?></em></td>
+			<td><input class="updraft_input--wide" type="text" size="64" data-updraft_settings_test="path" <?php $this->output_settings_field_name_and_id('path');?> value="{{path}}" /> <em><?php _e('Needs to already exist', 'updraftplus');?></em></td>
 		</tr>
 		
 		<tr class="<?php echo $classes;?>">

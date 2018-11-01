@@ -21,7 +21,7 @@ foreach ($default_options as $k => $v) {
 	<tr>
 		<th><?php _e('Files backup schedule', 'updraftplus'); ?>:</th>
 		<td class="js-file-backup-schedule">
-			<div style="float:left; clear:both;">
+			<div>
 				<select class="updraft_interval" name="updraft_interval">
 				<?php
 				$intervals = $updraftplus_admin->get_intervals();
@@ -58,7 +58,7 @@ foreach ($default_options as $k => $v) {
 			<?php _e('Database backup schedule', 'updraftplus'); ?>:
 		</th>
 		<td class="js-database-backup-schedule">
-		<div style="float:left; clear:both;">
+		<div>
 			<select class="updraft_interval_database" name="updraft_interval_database">
 			<?php
 			$selected_interval_db = UpdraftPlus_Options::get_updraft_option('updraft_interval_database', UpdraftPlus_Options::get_updraft_option('updraft_interval'));
@@ -135,15 +135,15 @@ foreach ($default_options as $k => $v) {
 	</tr>
 </table>
 
-<hr style="width:900px; float:left;">
+<hr class="updraft_separator width-900">
 
 <h2 class="updraft_settings_sectionheading"><?php _e('File Options', 'updraftplus');?></h2>
 
-<table class="form-table js-tour-settings-more" >
+<table class="form-table js-tour-settings-more width-900" >
 	<tr>
 		<th><?php _e('Include in files backup', 'updraftplus');?>:</th>
 		<td>
-			<?php echo $updraftplus_admin->files_selector_widgetry(); ?>
+			<?php echo $updraftplus_admin->files_selector_widgetry('', true, true); ?>
 			<p><?php echo apply_filters('updraftplus_admin_directories_description', __('The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org.', 'updraftplus').' <a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/").'">'.htmlspecialchars(__('See also the "More Files" add-on from our shop.', 'updraftplus')).'</a>'); ?></p>
 		</td>
 	</tr>
@@ -242,7 +242,7 @@ foreach ($default_options as $k => $v) {
 
 <h2 class="updraft_settings_sectionheading"><?php _e('Reporting', 'updraftplus');?></h2>
 
-<table class="form-table" style="width:900px;">
+<table class="form-table width-900">
 
 <?php
 	$report_rows = apply_filters('updraftplus_report_form', false);
@@ -257,7 +257,7 @@ foreach ($default_options as $k => $v) {
 			<?php
 				$updraft_email = UpdraftPlus_Options::get_updraft_option('updraft_email');
 			?>
-			<input type="checkbox" id="updraft_email" name="updraft_email" value="<?php esc_attr_e(get_bloginfo('admin_email')); ?>"<?php if (!empty($updraft_email)) echo ' checked="checked"';?> > <br><label for="updraft_email"><?php echo __("Check this box to have a basic report sent to", 'updraftplus').' <a href="'.admin_url('options-general.php').'">'.__("your site's admin address", 'updraftplus').'</a> ('.htmlspecialchars(get_bloginfo('admin_email')).")."; ?></label>
+			<label for="updraft_email" class="updraft_checkbox"><input type="checkbox" id="updraft_email" name="updraft_email" value="<?php esc_attr_e(get_bloginfo('admin_email')); ?>"<?php if (!empty($updraft_email)) echo ' checked="checked"';?> > <?php echo __("Check this box to have a basic report sent to", 'updraftplus').' <a href="'.admin_url('options-general.php').'">'.__("your site's admin address", 'updraftplus').'</a> ('.htmlspecialchars(get_bloginfo('admin_email')).")."; ?></label>
 			<?php
 				if (!class_exists('UpdraftPlus_Addon_Reporting')) echo '<a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/shop/reporting/").'">'.__('For more reporting features, use the Reporting add-on.', 'updraftplus').'</a>';
 			?>
@@ -343,6 +343,11 @@ foreach ($default_options as $k => $v) {
 	<tr class="expertmode updraft-hidden" style="display:none;">
 		<th><?php _e('Disable SSL entirely where possible', 'updraftplus');?>:</th>
 		<td><input data-updraft_settings_test="nossl" type="checkbox" id="updraft_ssl_nossl" name="updraft_ssl_nossl" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_ssl_nossl')) echo 'checked="checked"'; ?>> <br><label for="updraft_ssl_nossl"><?php _e('Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect.', 'updraftplus');?> <a href="<?php echo apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/i-get-ssl-certificate-errors-when-backing-up-andor-restoring/");?>"><?php _e('See this FAQ also.', 'updraftplus');?></a></label></td>
+	</tr>
+
+	<tr class="expertmode updraft-hidden" style="display:none;">
+		<th><?php _e('Automatic updates', 'updraftplus');?>:</th>
+		<td><label><input type="checkbox" id="updraft_auto_updates" data-updraft_settings_test="updraft_auto_updates" name="updraft_auto_updates" value="1" <?php if (UpdraftPlus_Options::get_updraft_option('updraft_auto_updates')) echo 'checked="checked"'; ?>><br /><?php _e('Ask WordPress to automatically update UpdraftPlus when it finds an available update.', 'updraftplus');?></label></td>
 	</tr>
 
 	<?php do_action('updraftplus_configprint_expertoptions'); ?>

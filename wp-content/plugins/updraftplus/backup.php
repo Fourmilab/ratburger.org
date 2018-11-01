@@ -1851,9 +1851,7 @@ class UpdraftPlus_Backup {
 			if (0 == $sind % 100) $updraftplus->something_useful_happened();
 		}
 
-		if (defined('DB_CHARSET') && DB_CHARSET) {
-			$this->stow("/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n");
-		}
+		$this->stow("/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;\n/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;\n/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;\n");
 
 		$updraftplus->log($file_base.'-db'.$this->whichdb_suffix.'.gz: finished writing out complete database file ('.round(filesize($backup_final_file_name)/1024, 1).' KB)');
 		if (!$this->close()) {
@@ -2203,7 +2201,8 @@ class UpdraftPlus_Backup {
 
 		global $updraftplus;
 		$wp_version = $updraftplus->get_wordpress_version();
-		$mysql_version = $this->wpdb_obj->db_version();
+		$mysql_version = $this->wpdb_obj->get_var('SELECT VERSION()');
+		if ('' == $mysql_version) $mysql_version = $this->wpdb_obj->db_version();
 
 		if ('wp' == $this->whichdb) {
 			$wp_upload_dir = wp_upload_dir();
@@ -2245,13 +2244,12 @@ class UpdraftPlus_Backup {
 		
 		$this->stow("# --------------------------------------------------------\n");
 
-		if (@constant("DB_CHARSET")) {
-			$this->stow("/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\n");
-			$this->stow("/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\n");
-			$this->stow("/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\n");
-			$this->stow("/*!40101 SET NAMES " . DB_CHARSET . " */;\n");
-		}
+		$this->stow("/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\n");
+		$this->stow("/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\n");
+		$this->stow("/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\n");
+		$this->stow("/*!40101 SET NAMES ".$updraftplus->get_connection_charset($this->wpdb_obj)." */;\n");
 		$this->stow("/*!40101 SET foreign_key_checks = 0 */;\n\n");
+		
 	}
 
 
@@ -2931,8 +2929,6 @@ class UpdraftPlus_Backup {
 	private function updraftplus_include_manifest($whichone) {
 		global $updraftplus;
 
-		if ('incremental' != $updraftplus->jobdata_get('job_type')) return;
-
 		$manifest_name = "updraftplus-manifest.json";
 		$manifest = trailingslashit($this->updraft_dir).$manifest_name;
 
@@ -2955,7 +2951,15 @@ class UpdraftPlus_Backup {
 
 		$go_to_level = isset($go_to_levels[$whichone]) ? $go_to_levels[$whichone] : 'all';
 
-		if (false === fwrite($handle, '{"version":'.$version.',"type":"'.$whichone.'","listed_levels":"'.$go_to_level.'","contents":{"directories":[')) $updraftplus->log("First write to manifest file failed ($manifest_name)");
+		$directory = '';
+
+		if ('more' == $whichone) {
+			foreach ($this->zipfiles_batched as $index => $dir) {
+				$directory = '"directory":"' . dirname($index) . '",';
+			}
+		}
+
+		if (false === fwrite($handle, '{"version":'.$version.',"type":"'.$whichone.'",'.$directory.'"listed_levels":"'.$go_to_level.'","contents":{"directories":[')) $updraftplus->log("First write to manifest file failed ($manifest_name)");
 
 		// First loop: find out which is the last entry, so that we don't write the comma after it
 		$last_file_index = false;

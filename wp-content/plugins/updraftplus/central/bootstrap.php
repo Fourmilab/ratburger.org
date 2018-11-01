@@ -111,7 +111,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 		}
 		
 		$our_keys[$updraft_key_index]['publickey_remote'] = base64_decode($_GET['public_key']);
-		UpdraftPlus_Options::update_updraft_option('updraft_central_localkeys', $our_keys);
+		UpdraftPlus_Options::update_updraft_option('updraft_central_localkeys', $our_keys, true, 'no');
 		
 		return array('responsetype' => 'ok', 'code' => 'ok');
 	}
@@ -396,7 +396,7 @@ class UpdraftPlus_UpdraftCentral_Main {
 			if (!empty($response) && is_array($response) && !empty($response['key_public'])) {
 				$our_keys[$name_hash]['publickey_remote'] = $response['key_public'];
 			}
-			UpdraftPlus_Options::update_updraft_option('updraft_central_localkeys', $our_keys);
+			UpdraftPlus_Options::update_updraft_option('updraft_central_localkeys', $our_keys, true, 'no');
 
 			return array(
 				'bundle' => $local_bundle,

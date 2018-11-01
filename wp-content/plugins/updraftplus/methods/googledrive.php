@@ -1223,11 +1223,11 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 			{{#unless use_master}}
 				<tr class="<?php echo $classes;?>">
 					<th><?php echo __('Google Drive', 'updraftplus').' '.__('Client ID', 'updraftplus'); ?>:</th>
-					<td><input type="text" autocomplete="off" style="width:442px" <?php $this->output_settings_field_name_and_id('clientid');?> value="{{clientid}}" /><br><em><?php _e('If Google later shows you the message "invalid_client", then you did not enter a valid client ID here.', 'updraftplus');?></em></td>
+					<td><input type="text" autocomplete="off" class="updraft_input--wide" <?php $this->output_settings_field_name_and_id('clientid');?> value="{{clientid}}" /><br><em><?php _e('If Google later shows you the message "invalid_client", then you did not enter a valid client ID here.', 'updraftplus');?></em></td>
 				</tr>
 				<tr class="<?php echo $classes;?>">
 					<th><?php echo __('Google Drive', 'updraftplus').' '.__('Client Secret', 'updraftplus'); ?>:</th>
-					<td><input type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" style="width:442px" <?php $this->output_settings_field_name_and_id('secret');?> value="{{secret}}" /></td>
+					<td><input type="<?php echo apply_filters('updraftplus_admin_secret_field_type', 'password'); ?>" class="updraft_input--wide" <?php $this->output_settings_field_name_and_id('secret');?> value="{{secret}}" /></td>
 				</tr>
 			{{/unless}}
 			{{#if is_google_enhanced_addon}}
@@ -1240,7 +1240,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 					<th><?php echo __('Google Drive', 'updraftplus').' '.__('Folder', 'updraftplus');?>:</th>
 					<td>
 						<input type="hidden" <?php $this->output_settings_field_name_and_id(array('parentid', 'id'));?> value="{{parentid_str}}">
-						<input type="text" title="{{parentid_str}}" readonly="readonly" style="width:442px" value="{{showparent}}">
+						<input type="text" title="{{parentid_str}}" readonly="readonly" class="updraft_input--wide" value="{{showparent}}">
 						{{#if is_id_number_instruction}}
 							<em><?php echo __("<strong>This is NOT a folder name</strong>.", 'updraftplus').' '.__('It is an ID number internal to Google Drive', 'updraftplus');?></em>
 						{{else}}
@@ -1250,7 +1250,7 @@ class UpdraftPlus_BackupModule_googledrive extends UpdraftPlus_BackupModule {
 					<tr class="<?php echo $classes;?>">
 						<th><?php echo __('Google Drive', 'updraftplus').' '.__('Folder', 'updraftplus');?>:</th>
 						<td>
-							<input type="text" readonly="readonly" style="width:442px" <?php $this->output_settings_field_name_and_id('folder');?> value="UpdraftPlus" />
+							<input type="text" readonly="readonly" class="updraft_input--wide" <?php $this->output_settings_field_name_and_id('folder');?> value="UpdraftPlus" />
 				{{/if}}
 							<br>
 							<em>

@@ -235,7 +235,7 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 			),
 			'newyear' => array(
 				'prefix' => '',
-				'title' => __('Happy New Year - 20% off UpdraftPlus Premium until January 1st', 'updraftplus'),
+				'title' => __('Happy New Year - 20% off UpdraftPlus Premium until January 14th', 'updraftplus'),
 				'text' => __('To benefit, use this discount code:', 'updraftplus').' ',
 				'image' => 'notices/new_year.png',
 				'button_link' => 'https://updraftplus.com/landing/updraftplus-premium',
@@ -286,8 +286,8 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 		// parent::notices_init();
 		$this->notices_content = (defined('UPDRAFTPLUS_NOADS_B') && UPDRAFTPLUS_NOADS_B) ? array() : $this->populate_notices_content();
 		global $updraftplus;
-		$enqueue_version = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? $updraftplus->version.'.'.time() : $updraftplus->version;
-		$min_or_not = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		$enqueue_version = $updraftplus->use_unminified_scripts() ? $updraftplus->version.'.'.time() : $updraftplus->version;
+		$min_or_not = $updraftplus->use_unminified_scripts() ? '' : '.min';
 
 		wp_enqueue_style('updraftplus-notices-css',  UPDRAFTPLUS_URL.'/css/updraftplus-notices'.$min_or_not.'.css', array(), $enqueue_version);
 	}

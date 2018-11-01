@@ -154,7 +154,8 @@ class UpdraftPlus_Backup_History {
 			unset($backup_history[$btime]['incremental_sets']);
 		}
 		
-		$changed = UpdraftPlus_Options::update_updraft_option('updraft_backup_history', $backup_history, $use_cache);
+		// Explicitly set autoload to 'no', as the backup history can get quite big.
+		$changed = UpdraftPlus_Options::update_updraft_option('updraft_backup_history', $backup_history, $use_cache, 'no');
 
 		if (!$changed) {
 		
@@ -166,7 +167,7 @@ class UpdraftPlus_Backup_History {
 			
 				$max_packet_size = $updraftplus->max_packet_size();
 				
-				$changed = UpdraftPlus_Options::update_updraft_option('updraft_backup_history', $backup_history, $use_cache);
+				$changed = UpdraftPlus_Options::update_updraft_option('updraft_backup_history', $backup_history, $use_cache, 'no');
 				
 				if (!$changed) {
 		
@@ -205,7 +206,7 @@ class UpdraftPlus_Backup_History {
 	 * N.B. The logic is a bit more subtle than it needs to be, because of backups being keyed by backup time, instead of backup nonce, and the subsequent introduction of the possibility of incremental backup sets taken at different times. This could be cleaned up to reduce the amount of code and make it simpler in places.
 	 *
 	 * @param Boolean	   $remote_scan		   - scan not only local, but also remote storage
-	 * @param Array|String $only_add_this_file - if set to an array (with keys 'name' and (optionally) 'label'), then a file will only be taken notice of if the filename matches the 'name' key (and the label will be associated with the backup set)
+	 * @param Array|String $only_add_this_file - if set to an array (with keys 'file' and (optionally) 'label'), then a file will only be taken notice of if the filename matches the 'file' key (and the label will be associated with the backup set)
 	 * @param Boolean	   $debug			   - include debugging messages. These will be keyed with keys beginning 'debug-' so that they can be distinguished.
 	 *
 	 * @return Array - an array of messages which the caller may wish to display to the user. N.B. Messages are not necessarily just strings.
@@ -626,7 +627,14 @@ class UpdraftPlus_Backup_History {
 				}
 			}
 		}
-			
+		
+		$more_backup_history = apply_filters('updraftplus_more_rebuild', $backup_history);
+		
+		if ($more_backup_history) {
+			$backup_history = $more_backup_history;
+			$changes = true;
+		}
+
 		if ($changes) self::save_history($backup_history);
 
 		return $messages;

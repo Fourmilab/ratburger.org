@@ -92,6 +92,9 @@ abstract class Updraft_Notices {
 
 			if ($dismiss) return false;
 
+			// If the advert has a validity function, then require the advert to be valid
+			if (!empty($this->notices_content[$notice]['validity_function']) && !call_user_func(array($this, $this->notices_content[$notice]['validity_function']))) return false;
+
 			return $this->notices_content[$notice];
 		}
 

@@ -132,7 +132,7 @@ class UpdraftPlus_BackupModule_cloudfiles_opencloudsdk extends UpdraftPlus_Backu
 		</tr>
 		<tr class="'.$classes.'">
 			<th>'.__('Cloud Files Username', 'updraftplus').':</th>
-			<td><input data-updraft_settings_test="user" type="text" autocomplete="off" style="width: 282px" '.$this->output_settings_field_name_and_id('user', true).' value="{{user}}" />
+			<td><input data-updraft_settings_test="user" type="text" autocomplete="off" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('user', true).' value="{{user}}" />
 			<div style="clear:both;">
 				'.apply_filters('updraft_cloudfiles_apikeysetting', '<a href="'.apply_filters("updraftplus_com_link", "https://updraftplus.com/shop/cloudfiles-enhanced/").'"><em>'.__('To create a new Rackspace API sub-user and API key that has access only to this Rackspace container, use this add-on.', 'updraftplus').'</em></a>').'
 			</div>
@@ -140,12 +140,12 @@ class UpdraftPlus_BackupModule_cloudfiles_opencloudsdk extends UpdraftPlus_Backu
 		</tr>
 		<tr class="'.$classes.'">
 			<th>'.__('Cloud Files API Key', 'updraftplus').':</th>
-			<td><input data-updraft_settings_test="apikey" type="'.apply_filters('updraftplus_admin_secret_field_type', 'password').'" autocomplete="off" style="width: 282px" '.$this->output_settings_field_name_and_id('apikey', true).' value="{{apikey}}" />
+			<td><input data-updraft_settings_test="apikey" type="'.apply_filters('updraftplus_admin_secret_field_type', 'password').'" autocomplete="off" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('apikey', true).' value="{{apikey}}" />
 			</td>
 		</tr>
 		<tr class="'.$classes.'">
 			<th>'.apply_filters('updraftplus_cloudfiles_location_description', __('Cloud Files Container', 'updraftplus')).':</th>
-			<td><input data-updraft_settings_test="path" type="text" style="width: 282px" '.$this->output_settings_field_name_and_id('path', true).' value="{{path}}" /></td>
+			<td><input data-updraft_settings_test="path" type="text" class="updraft_input--wide" '.$this->output_settings_field_name_and_id('path', true).' value="{{path}}" /></td>
 		</tr>';
 		return $template_str;
 	}

@@ -62,10 +62,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Backup to remote storage locations', 'updraftplus');?></h4>
 					<p><?php _e('To avoid server-wide risks, always backup to remote cloud storage. UpdraftPlus free includes Dropbox, Google Drive, Amazon S3, Rackspace and more.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -75,10 +75,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Cloning and migration', 'updraftplus');?></h4>
 					<p><?php _e('UpdraftPlus Migrator clones your WordPress site and moves it to a new domain directly and simply.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -88,10 +88,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Fast, personal support', 'updraftplus');?></h4>
 					<p><?php _e('Provides expert help and support from the developers whenever you need it.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -101,10 +101,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Pre-update backups', 'updraftplus');?></h4>
 					<p><?php _e('Automatically backs up your website before any updates to plugins, themes and WordPress core.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -114,10 +114,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Backup non-WordPress files and databases', 'updraftplus');?></h4>
 					<p><?php _e('Backup WordPress core and non-WP files and databases.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -127,10 +127,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Network / multisite', 'updraftplus');?></h4>
 					<p><?php _e('Backup WordPress multisites (i.e, networks), securely.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></span></p>
 				</td>
 			</tr>
@@ -140,10 +140,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Backup time and scheduling', 'updraftplus');?></h4>
 					<p><?php _e('Set exact times to create or delete backups.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -153,10 +153,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('WP-CLI support', 'updraftplus');?></h4>
 					<p><?php _e('WP-CLI commands to take, list and delete backups.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -166,10 +166,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('More database options', 'updraftplus');?></h4>
 					<p><?php _e('Encrypt your sensitive databases (e.g. customer information or passwords); Backup external databases too.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -179,10 +179,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Additional and enhanced remote storage locations', 'updraftplus');?></h4>
 					<p><?php _e('Get enhanced versions of the free remote storage options (Dropbox, Google Drive & S3) and even more remote storage options like OneDrive, SFTP, Azure, WebDAV and more with UpdraftPlus Premium.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -192,10 +192,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Reporting', 'updraftplus');?></h4>
 					<p><?php _e('Sophisticated reporting and emailing capabilities.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -205,10 +205,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('No ads', 'updraftplus');?></h4>
 					<p><?php _e('Tidy things up for clients and remove all adverts for our other products.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -218,10 +218,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Importer', 'updraftplus');?></h4>
 					<p><?php _e("Some backup plugins can't restore a backup, so Premium allows you to restore backups from other plugins.", 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -231,10 +231,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					<h4><?php _e('Lock settings', 'updraftplus');?></h4>
 					<p><?php _e('Lock access to UpdraftPlus via a password so you choose which admin users can access backups.', 'updraftplus');?></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>"></span></p>
 				</td>
 			</tr>
@@ -248,10 +248,10 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 					</p>
 					
 				</td>
-				<td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
 					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus');?>"></span></span></p>
 				</td>
-				<td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
 					<p><span class="updraft-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus');?>">1 GB</span></p>
 				</td>
 			</tr>

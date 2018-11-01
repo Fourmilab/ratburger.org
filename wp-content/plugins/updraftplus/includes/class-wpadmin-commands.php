@@ -435,16 +435,17 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 				if (!empty($params['path'])) $path = $params['path'];
 
 				if (!empty($params['drop_directory']) && true == $params['drop_directory']) $path = dirname($path);
-
-				$node_array[] = array(
-					'text' => basename($path),
-					'children' => true,
-					'id' => $path,
-					'icon' => 'jstree-folder',
-					'state' => array(
-						'opened' => true
-					)
-				);
+				if (empty($params['skip_root_node'])) {
+					$node_array[] = array(
+						'text' => basename($path),
+						'children' => true,
+						'id' => $path,
+						'icon' => 'jstree-folder',
+						'state' => array(
+							'opened' => true
+						)
+					);
+				}
 		} else {
 			$path = $params['node']['id'];
 		}
@@ -460,14 +461,14 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 						$node_array[] = array(
 							'text' => $value,
 							'children' => true,
-							'id' => $path . DIRECTORY_SEPARATOR . $value,
+							'id' => UpdraftPlus_Manipulation_Functions::wp_normalize_path($path . DIRECTORY_SEPARATOR . $value),
 							'icon' => 'jstree-folder'
 						);
 					} else {
 						$node_array[] = array(
 							'text' => $value,
 							'children' => false,
-							'id' => $path . DIRECTORY_SEPARATOR . $value,
+							'id' => UpdraftPlus_Manipulation_Functions::wp_normalize_path($path . DIRECTORY_SEPARATOR . $value),
 							'type' => 'file',
 							'icon' => 'jstree-file'
 						);
@@ -495,14 +496,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 
 		$node_array = array();
 
-		include_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
-		
-		$zip_object = 'UpdraftPlus_ZipArchive';
-
-		// In tests, PclZip was found to be 25% slower than ZipArchive
-		if (((defined('UPDRAFTPLUS_PREFERPCLZIP') && UPDRAFTPLUS_PREFERPCLZIP == true) || !class_exists('ZipArchive') || !class_exists('UpdraftPlus_ZipArchive') || (!extension_loaded('zip') && !method_exists('ZipArchive', 'AddFile')))) {
-			$zip_object = 'UpdraftPlus_PclZip';
-		}
+		$zip_object = $updraftplus->get_zip_object_name();
 
 		// Retrieve the information from our backup history
 		$backup_history = UpdraftPlus_Backup_History::get_history();

@@ -118,6 +118,9 @@ class UpdraftPlus {
 		
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
 
+		// Auto update plugin
+		add_filter('auto_update_plugin', array($this, 'maybe_auto_update_plugin'), 20, 2);
+
 		// Prevent iThemes Security from telling people that they have no backups (and advertising them another product on that basis!)
 		add_filter('itsec_has_external_backup', '__return_true', 999);
 		add_filter('itsec_external_backup_link', array($this, 'itsec_external_backup_link'), 999);
@@ -138,6 +141,24 @@ class UpdraftPlus {
 		}
 	}
 
+	/**
+	 * Enables automatic updates for the plugin.
+	 *
+	 * Enables automatic updates for the plugin..
+	 *
+	 * @access public
+	 * @see __construct
+	 * @internal uses auto_update_plugin filter
+	 *
+	 * @param bool   $update Whether the item has automatic updates enabled
+	 * @param object $item   Object holding the asset to be updated
+	 * @return bool True of automatic updates enabled, false if not
+	 */
+	public function maybe_auto_update_plugin($update, $item) {
+		if (!isset($item->plugin) || basename(UPDRAFTPLUS_DIR).'/updraftplus.php' !== $item->plugin) return $update;
+		$option_auto_update_settings = UpdraftPlus_Options::get_updraft_option('updraft_auto_updates');
+		return (1 == $option_auto_update_settings);
+	}
 	
 	/**
 	 * WP filter upgrader_source_selection. We use it to tweak the error message shown when an install of a new version is prevented by the existence of an existing version (i.e. us!), to give the user some actual useful information instead of WP's default.
@@ -648,6 +669,30 @@ class UpdraftPlus {
 	}
 	
 	/**
+	 * Get the character set for the current database connection
+	 *
+	 * @uses WPDB::determine_charset() - exists on WP 4.6+
+	 *
+	 * @param Object|Null $wpdb - WPDB object; if none passed, then use the global one
+	 *
+	 * @return String
+	 */
+	public function get_connection_charset($wpdb = null) {
+		if (null === $wpdb) {
+			global $wpdb;
+		}
+
+		$charset = (defined('DB_CHARSET') && DB_CHARSET) ? DB_CHARSET : 'utf8mb4';
+		
+		if (method_exists($wpdb, 'determine_charset')) {
+			$charset_collate = $wpdb->determine_charset($charset, '');
+			if (!empty($charset_collate['charset'])) $charset = $charset_collate['charset'];
+		}
+		
+		return $charset;
+	}
+	
+	/**
 	 * Runs upon the action updraftcentral_listener_pre_udrpc_action
 	 */
 	public function updraftcentral_listener_pre_udrpc_action() {
@@ -772,7 +817,8 @@ class UpdraftPlus {
 		call_user_func($logging_function, 'Opened log file at time: '.date('r').' on '.network_site_url());
 		
 		$wp_version = $this->get_wordpress_version();
-		$mysql_version = $wpdb->db_version();
+		$mysql_version = $wpdb->get_var('SELECT VERSION()');
+		if ('' == $mysql_version) $mysql_version = $wpdb->db_version();
 		$safe_mode = $this->detect_safe_mode();
 
 		$memory_limit = ini_get('memory_limit');
@@ -1334,7 +1380,15 @@ class UpdraftPlus {
 		// @codingStandardsIgnoreLine
 		return (@ini_get('safe_mode') && 'off' != strtolower(@ini_get('safe_mode'))) ? 1 : 0;
 	}
-
+	
+	/**
+	 * Find, if possible, a working mysqldump executable
+	 *
+	 * @param Boolean $logit   - whether to log the workings or not
+	 * @param Boolean $cacheit - whether to cache the results for subsequent queries or not
+	 *
+	 * @return String|Boolean - either a path to an executable, or false for failure
+	 */
 	public function find_working_sqldump($logit = true, $cacheit = true) {
 
 		// The hosting provider may have explicitly disabled the popen or proc_open functions
@@ -1358,9 +1412,9 @@ class UpdraftPlus {
 			
 			if (!@is_executable($potsql)) continue;
 			
-			if ($logit) $this->log("Testing: $potsql");
+			if ($logit) $this->log("Testing potential mysqldump binary: $potsql");
 
-			if (strtolower(substr(PHP_OS, 0, 3)) == 'win') {
+			if ('win' == strtolower(substr(PHP_OS, 0, 3))) {
 				$exec = "cd ".escapeshellarg(str_replace('/', '\\', $updraft_dir))." & ";
 				$siteurl = "'siteurl'";
 				if (false !== strpos($potsql, ' ')) $potsql = '"'.$potsql.'"';
@@ -1407,6 +1461,25 @@ class UpdraftPlus {
 		if ($cacheit) $this->jobdata_set('binsqldump', $result);
 
 		return $result;
+	}
+
+	/**
+	 * This function will work out which zip object we want to use and return it's name
+	 *
+	 * @return string - the name of the zip object we want to use
+	 */
+	public function get_zip_object_name() {
+		
+		if (!class_exists('UpdraftPlus_BinZip')) include_once(UPDRAFTPLUS_DIR . '/includes/class-zip.php');
+
+		$zip_object = 'UpdraftPlus_ZipArchive';
+
+		// In tests, PclZip was found to be 25% slower than ZipArchive
+		if (((defined('UPDRAFTPLUS_PREFERPCLZIP') && UPDRAFTPLUS_PREFERPCLZIP == true) || !class_exists('ZipArchive') || !class_exists('UpdraftPlus_ZipArchive') || (!extension_loaded('zip') && !method_exists('ZipArchive', 'AddFile')))) {
+			$zip_object = 'UpdraftPlus_PclZip';
+		}
+
+		return $zip_object;
 	}
 
 	/**
@@ -2196,7 +2269,7 @@ class UpdraftPlus {
 			$this->save_backup_to_history($our_files);
 
 			// Potentially encrypt the database if it is not already
-			if ('no' != $backup_database && isset($our_files[$tindex]) && !preg_match("/\.crypt$/", $our_files[$tindex])) {
+			if ('no' != $backup_database && isset($our_files[$tindex]) && !preg_match("/\.crypt$/", $our_files[$tindex]) && 'incremental' != $job_type) {
 				$our_files[$tindex] = $updraftplus_backup->encrypt_file($our_files[$tindex]);
 				// No need to save backup history now, as it will happen in a few lines time
 				if (preg_match("/\.crypt$/", $our_files[$tindex])) {
@@ -3480,6 +3553,9 @@ class UpdraftPlus {
 		$remotesend_info = $this->jobdata_get('remotesend_info');
 		if (is_array($remotesend_info) && !empty($remotesend_info['url'])) $backup_array['remotesend_url'] = $remotesend_info['url'];
 		if (false != $this->jobdata_get('is_autobackup', false)) $backup_array['autobackup'] = true;
+
+		if (false != ($morefiles_linked_indexes = $this->jobdata_get('morefiles_linked_indexes', false))) $backup_array['morefiles_linked_indexes'] = $morefiles_linked_indexes;
+		if (false != ($morefiles_more_locations = $this->jobdata_get('morefiles_more_locations', false))) $backup_array['morefiles_more_locations'] = $morefiles_more_locations;
 		
 		UpdraftPlus_Backup_History::save_backup(apply_filters('updraftplus_backup_timestamp', $this->backup_time), $backup_array);
 	}
@@ -3790,8 +3866,8 @@ class UpdraftPlus {
 		// De-register to defeat any plugins that may have registered incompatible versions (e.g. WooCommerce 2.5 beta1 still has the Select 2 3.5 series)
 		wp_deregister_script('select2');
 		wp_deregister_style('select2');
-		$select2_version = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '4.0.3'.'.'.time() : '4.0.3';
-		$min_or_not = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		$select2_version = $this->use_unminified_scripts() ? '4.0.3'.'.'.time() : '4.0.3';
+		$min_or_not = $this->use_unminified_scripts() ? '' : '.min';
 		wp_enqueue_script('select2', UPDRAFTPLUS_URL."/includes/select2/select2".$min_or_not.".js", array('jquery'), $select2_version);
 		wp_enqueue_style('select2', UPDRAFTPLUS_URL."/includes/select2/select2".$min_or_not.".css", array(), $select2_version);
 	}
@@ -4074,7 +4150,7 @@ class UpdraftPlus {
 					$skipped_tables = explode(',', $matches[1]);
 				}
 
-			} elseif (preg_match('#/\*\!40\d+ SET NAMES (.*)\*\/#i', $buffer, $smatches)) {
+			} elseif (preg_match('#^\s*/\*\!40\d+ SET NAMES (.*)\*\/#i', $buffer, $smatches)) {
 				$db_charsets_found[] = rtrim($smatches[1]);
 			} elseif (preg_match('/^\s*create table \`?([^\`\(]*)\`?\s*\(/i', $buffer, $matches)) {
 				$table = $matches[1];
@@ -4422,6 +4498,7 @@ class UpdraftPlus {
 			'updraft_include_more',
 			'updraft_include_blogs',
 			'updraft_include_mu-plugins',
+			'updraft_auto_updates',
 			'updraft_include_others_exclude',
 			'updraft_include_uploads_exclude',
 			'updraft_lastmessage',
@@ -4645,5 +4722,14 @@ class UpdraftPlus {
 	 */
 	private function do_posix_functions_exist() {
 		return function_exists('posix_geteuid') && function_exists('posix_getuid') && function_exists('posix_getegid') && function_exists('posix_getgid');
+	}
+
+	/**
+	 * Checks whether debug mode is on or not. If it is on then unminified script will be used.
+	 *
+	 * @return boolean true indicate use the unminified script
+	 */
+	public function use_unminified_scripts() {
+		return UpdraftPlus_Options::get_updraft_option('updraft_debug_mode') || (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG);
 	}
 }
