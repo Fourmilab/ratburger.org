@@ -6,7 +6,7 @@
 #<limit GET>
 #order allow,deny
 #allow from 193.8.230
-#satisfy any
+#allow from 127
 #</limit>
 
 # Block rogue user agents
