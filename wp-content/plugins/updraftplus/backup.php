@@ -8,7 +8,7 @@ if (!class_exists('UpdraftPlus_PclZip')) require_once(UPDRAFTPLUS_DIR.'/includes
  */
 class UpdraftPlus_Backup {
 
-	public $index = 0;
+	private $index = 0;
 
 	private $manifest_path;
 
@@ -114,7 +114,7 @@ class UpdraftPlus_Backup {
 		if (0 === $this->binzip && (!defined('UPDRAFTPLUS_PREFERPCLZIP') || UPDRAFTPLUS_PREFERPCLZIP != true) && (!defined('UPDRAFTPLUS_NO_BINZIP') || !UPDRAFTPLUS_NO_BINZIP) && $updraftplus->current_resumption <9) {
 
 			if (@file_exists('/proc/user_beancounters') && @file_exists('/proc/meminfo') && @is_readable('/proc/meminfo')) {
-				$meminfo = @file_get_contents('/proc/meminfo', false, null, -1, 200);
+				$meminfo = @file_get_contents('/proc/meminfo', false, null, 0, 200);
 				if (is_string($meminfo) && preg_match('/MemTotal:\s+(\d+) kB/', $meminfo, $matches)) {
 					$memory_mb = $matches[1]/1024;
 					// If the report is of a large amount, then we're probably getting the total memory on the hypervisor (this has been observed), and don't really know the VPS's memory
@@ -305,9 +305,9 @@ class UpdraftPlus_Backup {
 
 		// Create the results array to send back (just the new ones, not any prior ones)
 		$files_existing = array();
-		$res_index = 0;
+		$res_index = $original_index;
 		for ($i = $original_index; $i<= $this->index; $i++) {
-			$itext = (empty($i)) ? '' : ($i+1);
+			$itext = empty($i) ? '' : ($i+1);
 			$full_path = $this->updraft_dir.'/'.$backup_file_basename.'-'.$whichone.$itext.'.zip';
 			if (file_exists($full_path)) {
 				$files_existing[$res_index] = $backup_file_basename.'-'.$whichone.$itext.'.zip';
@@ -1478,7 +1478,7 @@ class UpdraftPlus_Backup {
 
 					if ($created != $whichdir && (is_string($created) || is_array($created))) {
 						if (is_string($created)) $created =array($created);
-						foreach ($created as $findex => $fname) {
+						foreach ($created as $fname) {
 							$backup_array[$youwhat][$index] = $fname;
 							$itext = (0 == $index) ? '' : $index;
 							$index++;
@@ -3153,6 +3153,34 @@ class UpdraftPlus_Backup {
 				$reaching_split_limit = ($this->zip_last_ratio > 0 && $original_size>0 && ($original_size + 1.1*$data_added_since_reopen*$this->zip_last_ratio) > $this->zip_split_every) ? true : false;
 
 				if (!$force_allinone && ($zipfiles_added_thisbatch > UPDRAFTPLUS_MAXBATCHFILES || $reaching_split_limit || $data_added_since_reopen > $maxzipbatch || (time() - $this->zipfiles_lastwritetime) > 2)) {
+
+					// We are coming towards a limit and about to close the zip, check if this is a more file backup and the manifest file has made it into this zip if not add it
+					if (apply_filters('updraftplus_include_manifest', false, $this->whichone, $this)) {
+						
+						$manifest = false;
+
+						foreach ($files_zipadded_since_open as $info) {
+							if ('updraftplus-manifest.json' == $info['file']) $manifest = true;
+						}
+
+						if (!$manifest) {
+							@touch($zipfile);
+							$path = array_search('updraftplus-manifest.json', $this->zipfiles_batched);
+							$zip->addFile($path, 'updraftplus-manifest.json');
+							$zipfiles_added_thisbatch++;
+
+							if (method_exists($zip, 'setCompressionName') && $this->file_should_be_stored_without_compression($this->zipfiles_batched[$path])) {
+								if (false == ($set_compress = $zip->setCompressionName($this->zipfiles_batched[$path], ZipArchive::CM_STORE))) {
+									$updraftplus->log("Zip: setCompressionName failed on: $this->zipfiles_batched[$path]");
+								}
+							}
+
+							// N.B., Since makezip_addfiles() can get called more than once if there were errors detected, potentially $zipfiles_added_thisrun can exceed the total number of batched files (if they get processed twice).
+							$this->zipfiles_added_thisrun++;
+							$files_zipadded_since_open[] = array('file' => $path, 'addas' => 'updraftplus-manifest.json');
+							$data_added_since_reopen += filesize($path);
+						}
+					}
 
 					@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
 					$something_useful_sizetest = false;

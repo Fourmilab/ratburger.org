@@ -216,6 +216,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 				if (1 < count($incremental_sets)) {
 					$incremental_select_html = '<label>'.__('Select your incremental restore point', 'updraftplus').': </label>';
 					$incremental_select_html .= '<select name="updraft_incremental_restore_point" id="updraft_incremental_restore_point">';
+					$incremental_sets = array_reverse($incremental_sets);
 					$first_timestamp = $incremental_sets[0];
 					
 					foreach ($incremental_sets as $timestamp) {

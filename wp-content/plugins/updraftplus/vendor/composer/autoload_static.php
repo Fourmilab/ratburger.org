@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97
+class ComposerStaticInit4fa97b5ca32ed47cda216627d94e1e59
 {
     public static $files = array (
         'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
@@ -129,6 +129,7 @@ class ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/NullLogger.php',
         'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
+        'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'Symfony\\Component\\EventDispatcher\\ContainerAwareEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/ContainerAwareEventDispatcher.php',
         'Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcher' => __DIR__ . '/..' . '/symfony/event-dispatcher/Debug/TraceableEventDispatcher.php',
         'Symfony\\Component\\EventDispatcher\\Debug\\TraceableEventDispatcherInterface' => __DIR__ . '/..' . '/symfony/event-dispatcher/Debug/TraceableEventDispatcherInterface.php',
@@ -145,10 +146,10 @@ class ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInita6af85b5e9ceed6467b07976b3b32f97::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit4fa97b5ca32ed47cda216627d94e1e59::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit4fa97b5ca32ed47cda216627d94e1e59::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit4fa97b5ca32ed47cda216627d94e1e59::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit4fa97b5ca32ed47cda216627d94e1e59::$classMap;
 
         }, null, ClassLoader::class);
     }

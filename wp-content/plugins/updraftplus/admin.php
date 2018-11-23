@@ -921,7 +921,7 @@ class UpdraftPlus_Admin {
 			'instance_enabled' => __('Currently enabled', 'updraftplus'),
 			'instance_disabled' => __('Currently disabled', 'updraftplus'),
 			'local_upload_started' => __('Local backup upload has started; please check the current status tab to see the upload progress', 'updraftplus'),
-			'local_upload_error' => __('You must select at least one remote storage destination to upload this backup set to.', 'updrafplus'),
+			'local_upload_error' => __('You must select at least one remote storage destination to upload this backup set to.', 'updraftplus'),
 			'already_uploaded' => __('(already uploaded)', 'updraftplus'),
 			'onedrive_folder_url_warning' => __('Please specify the Microsoft OneDrive folder name, not the URL.', 'updraftplus'),
 			'updraftcentral_cloud' => __('UpdraftCentral Cloud', 'updraftplus'),
@@ -5192,6 +5192,10 @@ ENDHERE;
 		foreach ($opts as $opt) {
 			$response['html'] .= '<tr><td>'.htmlspecialchars($opt).'</td><td>'.htmlspecialchars(print_r(UpdraftPlus_Options::get_updraft_option($opt), true)).'</td>';
 		}
+		
+		// Get the option saved by yahnis-elsts/plugin-update-checker
+		$response['html'] .= '<tr><td>external_updates-updraftplus</td><td><pre>'.htmlspecialchars(print_r(get_site_option('external_updates-updraftplus'), true)).'</pre></td>';
+		
 		$response['html'] .= '</tbody></table>';
 
 		ob_start();

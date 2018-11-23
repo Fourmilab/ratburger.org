@@ -1292,7 +1292,7 @@ class UpdraftPlus {
 
 			// Some more remains to download - so let's do it
 			// N.B. We use ftell(), which precludes us from using open in append-only ('a') mode - see https://php.net/manual/en/function.fopen.php
-			if (!($fh = fopen($fullpath, 'c'))) {
+			if (!($fh = fopen($fullpath, 'c'))) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cFound -- Passing "c" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c'
 				$this->log("Error opening local file: $fullpath");
 				$this->log($file.": ".__("Error", 'updraftplus').": ".__('Error opening local file: Failed to download', 'updraftplus'), 'error');
 				return false;
@@ -1336,7 +1336,7 @@ class UpdraftPlus {
 					} else {
 						$ret = filesize($fullpath);
 						// fseek returns - on success
-						if (false == ($fh = fopen($fullpath, 'c')) || 0 !== fseek($fh, $ret)) {
+						if (false == ($fh = fopen($fullpath, 'c')) || 0 !== fseek($fh, $ret)) {// phpcs:ignore PHPCompatibility.ParameterValues.NewFopenModes.cFound -- Passing "c" as the $mode to fopen() is not supported in PHP 5.2.5 or lower. Found 'c'
 							$this->log("Error opening local file: $fullpath");
 							$this->log($file.": ".__("Error", 'updraftplus').": ".__('Error opening local file: Failed to download', 'updraftplus'), 'error');
 							return false;
@@ -2404,8 +2404,9 @@ class UpdraftPlus {
 
 		$args = func_num_args();
 		
-		if (1 == $args && is_array(func_get_arg(0))) {
-			foreach (func_get_arg(0) as $key => $value) {
+		// func_get_arg() could not be used in parameter lists prior to PHP 5.3, so, we get it as a variable
+		if (1 == $args && null !== ($first_arg = func_get_arg(0)) && is_array($first_arg)) {
+			foreach ($first_arg as $key => $value) {
 				$this->jobdata[$key] = $value;
 			}
 		} else {
@@ -3532,7 +3533,7 @@ class UpdraftPlus {
 			return;
 		}
 		
-		$backup_array['nonce'] = $this->nonce;
+		$backup_array['nonce'] = $this->file_nonce;
 		$backup_array['service'] = $this->jobdata_get('service');
 		$backup_array['service_instance_ids'] = array();
 		$backup_array['always_keep'] = $this->jobdata_get('always_keep', false);
@@ -3627,7 +3628,11 @@ class UpdraftPlus {
 
 		// Clear schedule so that we don't stack up scheduled backups
 		wp_clear_scheduled_hook('updraft_backup');
-		if ('manual' == $interval) return 'manual';
+		if ('manual' == $interval) {
+			// Clear increments schedule as the file schedule is manual
+			wp_clear_scheduled_hook('updraft_backup_increments');
+			return 'manual';
+		}
 		$previous_interval = UpdraftPlus_Options::get_updraft_option('updraft_interval');
 
 		$valid_schedules = wp_get_schedules();

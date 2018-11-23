@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.0
-Stable tag: 1.15.3
+Stable tag: 1.15.5
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -161,7 +161,17 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.3.x of the free version correspond to changes made in 1.15.3.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.5.x of the free version correspond to changes made in 2.15.5.x of the paid version.
+
+= 1.15.5 - 19/Nov/2018 =
+
+* TWEAK: Include the backup set ID in clone ready state file
+* TWEAK: For Premium users with grand-fathered lifetime updates (i.e. purchased before August 2013), a regression had caused support entitlement expiries to no longer be notified
+* TWEAK: For Premium users with who have downgraded from unlimited licences to another package, a licence expiry message could show when in fact the real situation was that they just needed to specifically allocate a licence to the site. The relevant message has been adjusted to improve this.
+* TWEAK: Track "more files" incremental backup locations
+* TWEAK: Don't show individual add-ons that have not been bought in the account add-ons page if the user has Premium.
+* TWEAK: Include the raw updates check response information in the internal/advanced dump
+* TWEAK: Added the UpdraftClone video
 
 = 1.15.3 - 29/Oct/2018 =
 
@@ -195,6 +205,7 @@ N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which i
 * TWEAK: Send a single request to download a backup set not for each file entity
 * TWEAK: Fix a DOM element whereby multiple nonces had the same id
 * TWEAK: Automatically build the more files backup location tracking on local rescan
+* TWEAK: Refactor the remote storage logging code in Onedrive module
 
 = 1.15.2 - 19/Sep/2018 =
 
@@ -668,5 +679,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.15.3: Automatic update option. Some corner-case fixes, UI improvements and other tweaks. A recommended update for all.
+* 1.15.5: Various small/minor improvements. A recommended update for all.
 

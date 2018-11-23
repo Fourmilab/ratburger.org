@@ -57,7 +57,7 @@ class UpdraftPlus_Commands {
 	 *
 	 * @param Array $downloader_params - download parameters (findex, type, timestamp, stage)
 	 *
-	 * @return Array - as from UpdrafPlus_Admin::do_updraft_download_backup() (with 'request' key added, with value $downloader_params)
+	 * @return Array - as from UpdraftPlus_Admin::do_updraft_download_backup() (with 'request' key added, with value $downloader_params)
 	 */
 	public function downloader($downloader_params) {
 

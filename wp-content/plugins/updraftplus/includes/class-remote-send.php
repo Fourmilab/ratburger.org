@@ -213,7 +213,8 @@ abstract class UpdraftPlus_RemoteSend {
 		if (!preg_match('/^([a-f0-9]+)\.migrator.updraftplus.com$/', $name_indicator, $matches)) return $response;
 		
 		if (defined('UPDRAFTPLUS_THIS_IS_CLONE')) {
-			do_action('updraftplus_temporary_clone_ready_for_restore');
+			$job_id = (is_array($data) && !empty($data['job_id'])) ? $data['job_id'] : null;
+			do_action('updraftplus_temporary_clone_ready_for_restore', $job_id);
 		}
 
 		return $this->return_rpc_message(array(

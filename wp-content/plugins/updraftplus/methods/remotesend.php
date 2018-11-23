@@ -284,7 +284,7 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 
 		$this->set_storage($storage);
 		
-		$response = $this->send_message('upload_complete', array(), 30);
+		$response = $this->send_message('upload_complete', array('job_id' => $updraftplus->nonce), 30);
 
 		if (is_wp_error($response)) {
 			throw new Exception($response->get_error_message().' ('.$response->get_error_code().')');

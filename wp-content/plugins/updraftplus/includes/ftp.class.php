@@ -128,7 +128,7 @@ class UpdraftPlus_ftp_wrapper {
 
 		if ($resume) {
 			if (!$fh = fopen($local_file_path, 'ab')) return false;
-			clearstatcache($local_file_path);
+			clearstatcache($local_file_path);// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.clearstatcache_clear_realpath_cacheFound -- The function clearstatcache() does not have a parameter "clear_realpath_cache" in PHP version 5.2 or earlier
 			$file_last_size = filesize($local_file_path);
 		} else {
 			if (!$fh = fopen($local_file_path, 'wb')) return false;
@@ -146,7 +146,7 @@ class UpdraftPlus_ftp_wrapper {
 					$updraftplus->log("FTP fetch: file size is now: ".sprintf("%0.2f", filesize($local_file_path)/1048576)." Mb");
 					$file_last_size = $file_now_size;
 				}
-				clearstatcache($local_file_path);
+				clearstatcache($local_file_path);// phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.clearstatcache_clear_realpath_cacheFound -- The function clearstatcache() does not have a parameter "clear_realpath_cache" in PHP version 5.2 or earlier
 			}
 
 			$ret = ftp_nb_continue($this->conn_id);

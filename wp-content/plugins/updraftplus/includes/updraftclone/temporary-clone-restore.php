@@ -15,14 +15,20 @@ class UpdraftPlus_Temporary_Clone_Restore {
 	/**
 	 * This function will add a ready_for_restore file in the updraft backup directory to indicate that we are ready to restore the received backup set
 	 *
+	 * @param String|Null $job_id - the job that is ready to restore, if known.
+	 *
 	 * @return void
 	 */
-	public function clone_ready_for_restore() {
+	public function clone_ready_for_restore($job_id = null) {
 		global $updraftplus, $wp_filesystem;
 
-		$updraft_dir = trailingslashit($updraftplus->backups_dir_location());
-
-		touch($updraft_dir . 'ready_for_restore');
+		$state_file = trailingslashit($updraftplus->backups_dir_location()). 'ready_for_restore';
+		
+		if ($job_id) {
+			file_put_contents($state_file, $job_id);
+		} else {
+			touch($state_file);
+		}
 
 		if (!function_exists('WP_Filesystem')) require_once ABSPATH.'wp-admin/includes/file.php';
 		WP_Filesystem();
