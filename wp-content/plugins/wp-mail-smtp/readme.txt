@@ -3,7 +3,7 @@ Contributors: wpforms, jaredatch, smub, slaFFik
 Tags: smtp, wp mail smtp, wordpress smtp, gmail smtp, sendgrid smtp, mailgun smtp, mail, mailer, phpmailer, wp_mail, email, mailgun, sengrid, gmail, wp smtp
 Requires at least: 3.6
 Tested up to: 5.0
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Requires PHP: 5.3
 
 The most popular WordPress SMTP and PHP Mailer plugin. Trusted by over 1 million sites.
@@ -146,7 +146,11 @@ By all means please contact us to discuss features or options you'd like to see 
 
 == Changelog ==
 
-## [1.4.0] - 2018-11-29
+= 1.4.1 - 2018-12-03 =
+* Fixed: correctly process backslashes in SMTP passwords defined via constants.
+* Changed: allow to send a Test Email when Default (none) mailer is selected in plugin settings.
+
+= 1.4.0 - 2018-11-29 =
 * Added: New option: Do Not Send - block emails from being sent.
 * Added: New option: Send HTML or plain text emails when doing an Email Test.
 * Added: New option: Mailgun region selection - US and EU (US is default to preserve compatibility).
@@ -165,7 +169,7 @@ By all means please contact us to discuss features or options you'd like to see 
 * Changed: List all constants with descriptions in plugin main file: wp_mail_smtp.php.
 * Changed: TGMPA: change descriptions from "Required" to "Recommended" (labels were incorrect).
 
-## [1.3.3] - 2018-07-05
+= 1.3.3 - 2018-07-05 =
 * Fixed: Compatibility with other plugins, that are using Google Service or Google Client classes.
 * Changed: Optimize code loading.
 
