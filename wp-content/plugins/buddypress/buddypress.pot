@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later (license.txt).
 msgid ""
 msgstr ""
-"Project-Id-Version: BuddyPress 4.0.0\n"
+"Project-Id-Version: BuddyPress 4.1.0\n"
 "Report-Msgid-Bugs-To: https://buddypress.trac.wordpress.org\n"
-"POT-Creation-Date: 2018-11-27 18:53:11+00:00\n"
+"POT-Creation-Date: 2018-12-05 15:46:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1225,7 +1225,7 @@ msgstr ""
 
 #: bp-core/admin/bp-core-admin-components.php:75
 #: bp-core/bp-core-functions.php:2484 bp-core/deprecated/2.1.php:530
-#: bp-notifications/bp-notifications-functions.php:877
+#: bp-notifications/bp-notifications-functions.php:882
 #: bp-notifications/classes/class-bp-notifications-component.php:289
 #: bp-templates/bp-legacy/buddypress/members/single/notifications/read.php:16
 #. translators: accessibility text
@@ -6060,25 +6060,25 @@ msgstr ""
 msgid "BuddyPress Notifications Data"
 msgstr ""
 
-#: bp-notifications/bp-notifications-functions.php:862
+#: bp-notifications/bp-notifications-functions.php:867
 msgid "Notification Content"
 msgstr ""
 
-#: bp-notifications/bp-notifications-functions.php:866
+#: bp-notifications/bp-notifications-functions.php:871
 msgid "Notification Date"
 msgstr ""
 
-#: bp-notifications/bp-notifications-functions.php:870
+#: bp-notifications/bp-notifications-functions.php:875
 msgid "Status"
 msgstr ""
 
-#: bp-notifications/bp-notifications-functions.php:871
+#: bp-notifications/bp-notifications-functions.php:876
 #: bp-notifications/bp-notifications-template.php:650
 #: bp-templates/bp-legacy/buddypress/members/single/messages/messages-loop.php:145
 msgid "Unread"
 msgstr ""
 
-#: bp-notifications/bp-notifications-functions.php:871
+#: bp-notifications/bp-notifications-functions.php:876
 #: bp-notifications/bp-notifications-template.php:558
 #: bp-templates/bp-legacy/buddypress/members/single/messages/messages-loop.php:143
 msgid "Read"
