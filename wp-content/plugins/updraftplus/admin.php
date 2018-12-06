@@ -19,7 +19,9 @@ class UpdraftPlus_Admin {
 
 	private $php_versions = array('5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3');
 
-	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9');
+	private $wp_versions = array('3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9', '5.0');
+	
+	private $regions = array('London', 'New York', 'San Francisco', 'Amsterdam', 'Singapore', 'Frankfurt', 'Toronto', 'Bangalore');
 
 	/**
 	 * Constructor
@@ -5367,6 +5369,10 @@ ENDHERE;
 		$output .= '<p class="updraftplus-option updraftplus-option-inline wp-version">';
 		$output .= ' <span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'WordPress').'</span> ';
 		$output .= $this->output_select_data($this->get_wordpress_versions(), 'wp');
+		$output .= '</p>';
+		$output .= '<p class="updraftplus-option updraftplus-option-inline region">';
+		$output .= ' <span class="updraftplus-option-label">'.__('Clone region:', 'updraftplus').'</span> ';
+		$output .= $this->output_select_data($this->regions, 'region');
 		$output .= '</p>';
 		$output .= '<p class="updraftplus-option limit-to-admins">';
 		$output .= '<input type="checkbox" class="updraftplus_clone_admin_login_options" id="" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';

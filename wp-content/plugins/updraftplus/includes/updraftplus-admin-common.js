@@ -2151,6 +2151,7 @@ jQuery(document).ready(function($) {
 		var secret_token = $(this).data('secret_token');
 		var php_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_php_options').val();
 		var wp_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_wp_options').val();
+		var region = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_region_options').val();
 		var admin_only = $('.updraftplus_clone_admin_login_options').is(':checked');
 		
 		var options = {
@@ -2160,6 +2161,7 @@ jQuery(document).ready(function($) {
 				install_info: {
 					php_version: php_version,
 					wp_version: wp_version,
+					region: region,
 					admin_only: admin_only,
 				}
 			}
@@ -4342,6 +4344,13 @@ jQuery(document).ready(function($) {
 		}
 	}
 
+	$('.udp-replace-with-iframe--js').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).prop('href');
+		var iframe = $('<iframe width="356" height="200" allowfullscreen webkitallowfullscreen mozallowfullscreen>').attr('src', url);
+		iframe.insertAfter($(this));
+		$(this).remove();
+	});
 
 });
 
