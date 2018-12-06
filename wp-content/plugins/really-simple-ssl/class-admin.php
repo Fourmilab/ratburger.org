@@ -355,6 +355,9 @@ class rsssl_admin extends rsssl_front_end
 
     public function show_notice_activate_ssl()
     {
+        //prevent showing the review on edit screen, as gutenberg removes the class which makes it editable.
+        $screen = get_current_screen();
+        if ( $screen->parent_base === 'edit' ) return;
 
         if ($this->ssl_enabled) return;
 
@@ -1848,7 +1851,11 @@ class rsssl_admin extends rsssl_front_end
      */
 
     public function show_notice_wpconfig_needs_fixes()
-    { ?>
+    {
+        //prevent showing the review on edit screen, as gutenberg removes the class which makes it editable.
+        $screen = get_current_screen();
+        if ( $screen->parent_base === 'edit' ) return;
+        ?>
         <div id="message" class="error fade notice">
             <h1><?php echo __("System detection encountered issues", "really-simple-ssl"); ?></h1>
 
@@ -1935,6 +1942,10 @@ class rsssl_admin extends rsssl_front_end
 
     public function show_leave_review_notice()
     {
+        //prevent showing the review on edit screen, as gutenberg removes the class which makes it editable.
+        $screen = get_current_screen();
+        if ( $screen->parent_base === 'edit' ) return;
+
         if (!$this->review_notice_shown && get_option('rsssl_activation_timestamp') && get_option('rsssl_activation_timestamp') < strtotime("-1 month")) {
             add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_review'));
             ?>
@@ -1963,6 +1974,9 @@ class rsssl_admin extends rsssl_front_end
 
     public function show_notices()
     {
+        //prevent showing the review on edit screen, as gutenberg removes the class which makes it editable.
+        $screen = get_current_screen();
+        if ( $screen->parent_base === 'edit' ) return;
      /*
       show a notice when the .htaccess file does not contain redirect rules
      */
@@ -1974,7 +1988,7 @@ class rsssl_admin extends rsssl_front_end
             <div id="message" class="error fade notice is-dismissible rlrsssl-htaccess">
                 <p>
                     <?php echo __("You do not have a 301 redirect to https active in the settings. For SEO purposes it is advised to use 301 redirects. You can enable a 301 redirect in the settings.", "really-simple-ssl"); ?>
-                    <a href="options-general.php?page=rlrsssl_really_simple_ssl"><?php echo __("View settings page", "really-simple-ssl"); ?></a>
+                    <a href="<?php echo admin_url('options-general.php?page=rlrsssl_really_simple_ssl')?>"><?php echo __("View settings page", "really-simple-ssl"); ?></a>
                 </p>
             </div>
             <?php
@@ -1989,7 +2003,7 @@ class rsssl_admin extends rsssl_front_end
                 <p>
                     <?php _e("The 'force-deactivate.php' file has to be renamed to .txt. Otherwise your ssl can be deactived by anyone on the internet.", "really-simple-ssl"); ?>
                 </p>
-                <a href="options-general.php?page=rlrsssl_really_simple_ssl"><?php echo __("Check again", "really-simple-ssl"); ?></a>
+                <a href="<?php echo admin_url('options-general.php?page=rlrsssl_really_simple_ssl')?>"><?php echo __("Check again", "really-simple-ssl"); ?></a>
             </div>
             <?php
         }
@@ -2007,10 +2021,14 @@ class rsssl_admin extends rsssl_front_end
             <div id="message" class="updated fade notice is-dismissible rlrsssl-success">
                 <p>
                     <?php _e("SSL activated!", "really-simple-ssl"); ?>&nbsp;
-                    <?php _e("Don't forget to change your settings in Google Analytics and Webmaster tools.", "really-simple-ssl"); ?>
-                    &nbsp;
+                    <?php _e("Don't forget to change your settings in Google Analytics and Webmaster tools.", "really-simple-ssl");
+                    ?>&nbsp;
                     <a target="_blank"
                        href="https://really-simple-ssl.com/knowledge-base/how-to-setup-google-analytics-and-google-search-consolewebmaster-tools/"><?php _e("More info.", "really-simple-ssl"); ?></a>
+                    <?php
+
+                    $settings_link = '<a href="'.admin_url('options-general.php?page=rlrsssl_really_simple_ssl').'">';
+                    echo sprintf(__("See the %ssettings page%s for further SSL optimizations." , "really-simple-ssl"), $settings_link, "</a>"); ?>
                 </p>
             </div>
             <?php
@@ -2097,7 +2115,7 @@ class rsssl_admin extends rsssl_front_end
     /**
      * Insert some ajax script to dismiss the review notice, and stop nagging about it
      *
-     * @since  2.0
+     * @since  3.0
      *
      * @access public
      *
@@ -2135,6 +2153,7 @@ class rsssl_admin extends rsssl_front_end
         </script>
         <?php
     }
+
 
     /**
      * Process the ajax dismissal of the success message.
