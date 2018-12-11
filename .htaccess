@@ -24,6 +24,11 @@ Deny from all
 Allow from 193.8.230.0/24
 </Files>
 
+<Files wp-config.php>
+Order Deny,Allow
+Deny from all
+</Files>
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
