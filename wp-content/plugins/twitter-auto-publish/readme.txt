@@ -3,8 +3,8 @@ Contributors: f1logic
 Donate link: https://xyzscripts.com/donate/
 Tags:  twitter, wp twitter auto publish, twitter auto publish, publish post to twitter, add link to twitter, twitter publishing, post to twitter, social media auto publish, social media publishing, social network auto publish, social media, social network
 Requires at least: 3.0
-Tested up to: 4.9.4
-Stable tag: 1.3.6
+Tested up to: 5.0.1
+Stable tag: 1.4
 License: GPLv2 or later
 
 Publish posts automatically to Twitter.
@@ -117,8 +117,17 @@ SSL peer verification may not be functioning in your server. Please turn off SSL
 
 == Changelog ==
 
+= WP Twitter Auto Publish 1.4 =
+* Applied WordPress time format in {POST_PUBLISH_DATE}
+* Twitter developer settings url updated
+* Compatibility with gutenberg editor
+* Option to view social media posts from auto publish logs
+* Settings menu reorganized 
+* Compatibility with PHP version 7.2
+* Increased logs count from 5 to 10
+
 = WP Twitter Auto Publish 1.3.6 =
-* Plugin name changed,as per wordpress guidelines
+* Plugin name changed to WP Twitter Auto Publish, as per wordpress guidelines
 
 = Twitter Auto Publish 1.3.5 =
 * Twitter api updated with wp_remote_get

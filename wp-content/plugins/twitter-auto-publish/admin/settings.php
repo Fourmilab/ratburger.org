@@ -150,16 +150,17 @@ function dethide_twap(id)
 
 <div style="width: 100%">
 
-	<h2>
-		 <img	src="<?php echo plugins_url()?>/twitter-auto-publish/images/twap.png" height="16px"> Twitter Settings
-	</h2>
-	
+<div class="xyz_twap_tab">
+  <button class="xyz_twap_tablinks" onclick="xyz_twap_open_tab(event, 'xyz_twap_twitter_settings')" id="xyz_twap_default_tab_settings">Twitter Settings</button>
+   <button class="xyz_twap_tablinks" onclick="xyz_twap_open_tab(event, 'xyz_twap_basic_settings')" id="xyz_twap_basic_tab_settings">General Settings</button>
+</div>
+<div id="xyz_twap_twitter_settings" class="xyz_twap_tabcontent">
 <table class="widefat" style="width: 99%;background-color: #FFFBCC">
 <tr>
 <td id="bottomBorderNone" style="border: 1px solid #FCC328;">
 	<div>
 		<b>Note :</b> You have to create a Twitter application before filling in following fields. 	
-		<br><b><a href="https://apps.twitter.com/app/new" target="_blank">Click here</a></b> to create new application. Specify the website for the application as :	<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?>		 </span> 
+		<br><b><a href="https://developer.twitter.com/en/apps/create" target="_blank">Click here</a></b> to create new application. Specify the website for the application as :	<span style="color: red;"><?php echo  (is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']; ?>		 </span> 
 		 <br>In the twitter application, navigate to	<b>Settings > Application Type > Access</b>. Select <b>Read and Write</b> option. 
 		 <br>After updating access, navigate to <b>Details > Your access token</b> in the application and	click <b>Create my access token</b> button.
 		<br>For detailed step by step instructions <b><a href="http://help.xyzscripts.com/docs/social-media-auto-publish/faq/how-can-i-create-twitter-application/" target="_blank">Click here</a></b>.
@@ -174,10 +175,16 @@ function dethide_twap(id)
 	<?php wp_nonce_field( 'xyz_smap_tw_settings_form_nonce' );?>
 		<input type="hidden" value="config">
 
-
-
 			<div style="font-weight: bold;padding: 3px;">All fields given below are mandatory</div> 
 			<table class="widefat xyz_twap_widefat_table" style="width: 99%">
+						<tr valign="top">
+					<td>Enable auto publish	posts to my twitter account
+					</td>
+			<td  class="switch-field">
+				<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" value="1" <?php  if(get_option('xyz_twap_twpost_permission')==1) echo 'checked';?>/>Yes</label>
+				<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" value="0" <?php  if(get_option('xyz_twap_twpost_permission')==0) echo 'checked';?>/>No</label>
+			</td>
+				</tr>
 				<tr valign="top">
 					<td width="50%">API key
 					</td>
@@ -272,18 +279,6 @@ function dethide_twap(id)
 					<input id="xyz_twap_tw_char_limit"  name="xyz_twap_tw_char_limit" type="text" value="<?php echo esc_html(get_option('xyz_twap_tw_char_limit'));?>" style="width: 155px">
 				</td></tr>
 				
-				<tr valign="top">
-					<td>Enable auto publish	posts to my twitter account
-					</td>
-			<td  class="switch-field">
-				<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" value="1" <?php  if(get_option('xyz_twap_twpost_permission')==1) echo 'checked';?>/>Yes</label>
-				<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" value="0" <?php  if(get_option('xyz_twap_twpost_permission')==0) echo 'checked';?>/>No</label>
-			</td>
-				</tr>
-
-				
-
-
 				<tr>
 			<td   id="bottomBorderNone"></td>
 					<td   id="bottomBorderNone"><div style="height: 50px;">
@@ -295,7 +290,7 @@ function dethide_twap(id)
 			</table>
 
 	</form>
-
+</div>
 <?php 
 
 	if(isset($_POST['bsettngs']))
@@ -380,13 +375,12 @@ function dethide_twap(id)
 	$xyz_twap_premium_version_ads=esc_html(get_option('xyz_twap_premium_version_ads'));
 	$xyz_twap_default_selection_edit=esc_html(get_option('xyz_twap_default_selection_edit'));
 	?>
-		<h2>Basic Settings</h2>
-
-
+	
+		<div id="xyz_twap_basic_settings" class="xyz_twap_tabcontent">
 		<form method="post">
 <?php wp_nonce_field( 'xyz_smap_tw_basic_settings_form_nonce' );?>
 			<table class="widefat xyz_twap_widefat_table" style="width: 99%">
-
+			<tr><td><h2>Basic Settings</h2></td></tr>
 				<tr valign="top">
 
 					<td  colspan="1" width="50%">Publish wordpress `pages` to twitter
@@ -406,6 +400,44 @@ function dethide_twap(id)
 				<label id="xyz_twap_include_posts_no"><input type="radio" name="xyz_twap_include_posts" value="0" <?php  if($xyz_twap_include_posts==0) echo 'checked';?>/>No</label>
 			</td>
 				</tr>
+				<?php 
+				$xyz_twap_hide_custompost_settings='';
+					$args=array(
+							'public'   => true,
+							'_builtin' => false
+					);
+					$output = 'names'; // names or objects, note names is the default
+					$operator = 'and'; // 'and' or 'or'
+					$post_types=get_post_types($args,$output,$operator);
+
+					$ar1=explode(",",$xyz_twap_include_customposttypes);
+					$cnt=count($post_types);
+					if($cnt==0)
+					$xyz_twap_hide_custompost_settings = 'style="display: none;"';//echo 'NA';
+					?>
+				<tr valign="top" <?php echo $xyz_twap_hide_custompost_settings;?>>
+
+					<td  colspan="1">Select wordpress custom post types for auto publish</td>
+					<td><?php 
+					foreach ($post_types  as $post_type ) {
+					
+						echo '<input type="checkbox" name="post_types[]" value="'.$post_type.'" ';
+						if(in_array($post_type, $ar1))
+						{
+							echo 'checked="checked"/>';
+						}
+						else
+							echo '/>';
+					
+							echo $post_type.'<br/>';
+					
+					}
+					?>
+					</td>
+				</tr>
+				
+				
+				<tr><td><h2>Advanced Settings</h2></td></tr>
 				
 				<tr valign="top" id="selPostCat">
 
@@ -457,40 +489,6 @@ function dethide_twap(id)
 				</td>
 				</tr>
 
-
-				<tr valign="top">
-
-					<td  colspan="1">Select wordpress custom post types for auto publish</td>
-					<td><?php 
-
-					$args=array(
-							'public'   => true,
-							'_builtin' => false
-					);
-					$output = 'names'; // names or objects, note names is the default
-					$operator = 'and'; // 'and' or 'or'
-					$post_types=get_post_types($args,$output,$operator);
-
-					$ar1=explode(",",$xyz_twap_include_customposttypes);
-					$cnt=count($post_types);
-					foreach ($post_types  as $post_type ) {
-
-						echo '<input type="checkbox" name="post_types[]" value="'.$post_type.'" ';
-						if(in_array($post_type, $ar1))
-						{
-							echo 'checked="checked"/>';
-						}
-						else
-							echo '/>';
-
-						echo $post_type.'<br/>';
-
-					}
-					if($cnt==0)
-						echo 'NA';
-					?>
-					</td>
-				</tr>
 				<tr valign="top">
 
 					<td scope="row" colspan="1" width="50%">Default selection of auto publish while editing posts/pages/custom post types
@@ -541,7 +539,7 @@ function dethide_twap(id)
 					?>
 					</td>
 				</tr>
-
+<tr><td><h2>Other Settings</h2></td></tr>
 
 				<tr valign="top">
 
@@ -582,7 +580,7 @@ function dethide_twap(id)
 
 			</table>
 		</form>
-		
+		</div>
 		
 </div>		
 <?php if (is_array($xyz_twap_include_categories))
@@ -596,6 +594,14 @@ var catval='<?php echo esc_html($xyz_twap_include_categories1); ?>';
 var custtypeval='<?php echo esc_html($xyz_twap_include_customposttypes); ?>';
 var get_opt_cats='<?php echo esc_html(get_option('xyz_twap_include_posts'));?>';
 jQuery(document).ready(function() {
+	<?php  if(isset($_POST['bsettngs'])) {?>
+					document.getElementById("xyz_twap_basic_tab_settings").click();	
+					<?php }
+					else {?>
+					document.getElementById("xyz_twap_default_tab_settings").click();
+					<?php }?>
+
+	
 	  if(catval=="All")
 		  jQuery("#cat_dropdown_span").hide();
 	  else
@@ -699,6 +705,19 @@ jQuery.each(toggle_element_ids, function( index, value ) {
 			xyz_twap_show_postCategory(1);
 	});
 	});
+function xyz_twap_open_tab(evt, xyz_twap_form_div_id) {
+    var i, xyz_twap_tabcontent, xyz_twap_tablinks;
+    tabcontent = document.getElementsByClassName("xyz_twap_tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("xyz_twap_tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(xyz_twap_form_div_id).style.display = "block";
+    evt.currentTarget.className += " active";
+}
 </script>
 	<?php 
 ?>

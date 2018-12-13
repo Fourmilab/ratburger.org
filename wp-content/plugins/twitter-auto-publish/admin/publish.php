@@ -16,6 +16,8 @@ add_action(  'transition_post_status',  'xyz_link_twap_future_to_publish', 10, 3
 
 function xyz_link_twap_future_to_publish($new_status, $old_status, $post){
 	
+	if (isset($_GET['_locale']) && empty($_POST))
+		return ;
 	if(!isset($GLOBALS['twap_dup_publish']))
 		$GLOBALS['twap_dup_publish']=array();
 	
@@ -87,7 +89,7 @@ function xyz_twap_link_publish($post_ID) {
 
 	global $current_user;
 	wp_get_current_user();
-	$af=get_option('xyz_twap_af');
+	//$af=get_option('xyz_twap_af');
 	
 	
 /////////////twitter//////////
@@ -108,7 +110,7 @@ function xyz_twap_link_publish($post_ID) {
 	
 	$postpp= get_post($post_ID);global $wpdb;
 	$reg_exUrl = "/(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-	$entries0 = $wpdb->get_results($wpdb->prepare( 'SELECT user_nicename,display_name FROM '.$wpdb->prefix.'users WHERE ID=%d',$postpp->post_author));
+	$entries0 = $wpdb->get_results($wpdb->prepare( 'SELECT user_nicename,display_name FROM '.$wpdb->base_prefix.'users WHERE ID=%d',$postpp->post_author));
 	foreach( $entries0 as $entry ) {			
 		$user_nicename=$entry->user_nicename;
 		$user_displayname=$entry->display_name;
@@ -298,15 +300,13 @@ function xyz_twap_link_publish($post_ID) {
 			$substring=str_replace('{POST_CONTENT}', $description, $substring);
 			$substring=str_replace('{USER_NICENAME}', $user_nicename, $substring);
 			$substring=str_replace('{USER_DISPLAY_NAME}', $user_displayname, $substring);
-			$publish_time=get_the_time('Y/m/d',$post_ID );
+			$publish_time=get_the_time(get_option('date_format'),$post_ID );
 			$substring=str_replace('{POST_PUBLISH_DATE}', $publish_time, $substring);
 			$substring=str_replace('{POST_ID}', $post_ID, $substring);
 			preg_match_all($reg_exUrl,$substring,$matches); // @ is same as /
 			
 			if(is_array($matches) && isset($matches[0]))
 			{
-//RB_dumpvar('TWAP substring', $substring);
-//RB_dumpvar('TWAP matches', $matches);
 				$matches=$matches[0];
 				$final_str='';
 				$len=0;
@@ -440,7 +440,6 @@ function xyz_twap_link_publish($post_ID) {
 			
 				$substring=$final_str;
 			}
-//RB_dumpvar('TWAP final substring', $substring);
 
 			$twobj = new TWAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 			$tw_publish_status='';
@@ -491,7 +490,21 @@ function xyz_twap_link_publish($post_ID) {
 					$tw_publish_status="<span style=\"color:red\">".$img_status.".</span>";
 					
 			}
-			$tw_publish_status_insert=serialize($tw_publish_status);
+			$tweet_id_string='';
+			$resp = json_decode($twobj->response['response']);
+			if (isset($resp->id_str) && !empty($resp->id_str)){
+				$tweet_link="https://twitter.com/".$twid."/status/".$resp->id_str;
+				$tweet_id_string="<br/><span style=\"color:#21759B;text-decoration:underline;\"><a target=\"_blank\" href=".$tweet_link.">View Tweet</a></span>";
+					
+			}
+			elseif (isset($resp->id) && !empty($resp->id)){
+				$tweet_link="https://twitter.com/".$twid."/status/".$resp->id;
+				$tweet_id_string="<br/><span style=\"color:#21759B;text-decoration:underline;\"><a target=\"_blank\" href=".$tweet_link.">View Tweet</a></span>";
+					
+			}
+			
+			
+			$tw_publish_status_insert=serialize($tw_publish_status.$tweet_id_string);
 			
 			$time=time();
 			$post_tw_options=array(
@@ -509,14 +522,16 @@ function xyz_twap_link_publish($post_ID) {
 			$update_opt_array[2]=isset($arr_retrive[2]) ? $arr_retrive[2] : '';
 			$update_opt_array[3]=isset($arr_retrive[3]) ? $arr_retrive[3] : '';
 			$update_opt_array[4]=isset($arr_retrive[4]) ? $arr_retrive[4] : '';
+			$update_opt_array[5]=isset($arr_retrive[5]) ? $arr_retrive[5] : '';
+			$update_opt_array[6]=isset($arr_retrive[6]) ? $arr_retrive[6] : '';
+			$update_opt_array[7]=isset($arr_retrive[7]) ? $arr_retrive[7] : '';
+			$update_opt_array[8]=isset($arr_retrive[8]) ? $arr_retrive[8] : '';
+			$update_opt_array[9]=isset($arr_retrive[9]) ? $arr_retrive[9] : '';
 			
 			array_shift($update_opt_array);
 			array_push($update_opt_array,$post_tw_options);
 			update_option('xyz_twap_post_logs', $update_opt_array);
-			
-			
 		}
-		
 	}
 	
 	$_POST=$_POST_CPY;

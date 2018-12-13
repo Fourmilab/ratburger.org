@@ -100,7 +100,7 @@ function xyz_twap_getimage($post_ID,$description_org)
 			$attachmenturl = $matches[1][0];
 		else
 		{
-			apply_filters('the_content', $description_org);
+			$description_org=apply_filters('the_content', $description_org);
 			preg_match_all('/< *img[^>]*src *= *["\']?([^"\']*)/is', $description_org, $matches);
 			if(isset($matches[1][0]))
 				$attachmenturl = $matches[1][0];

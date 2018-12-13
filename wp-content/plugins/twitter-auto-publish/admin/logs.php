@@ -11,7 +11,7 @@ if( !defined('ABSPATH') ){ exit();}
 
 
 <div style="text-align: left;padding-left: 7px;"><h3>Auto Publish Logs</h3></div>
-	<span>Last five logs</span>
+	<span>Last ten logs</span>
 		   <table class="widefat" style="width: 99%; margin: 0 auto; border-bottom:none;">
 				<thead>
 					<tr class="xyz_smap_log_tr">
@@ -37,9 +37,9 @@ if( !defined('ABSPATH') ){ exit();}
 						$post_tw_logsmain_array[]=$logval;
 					}}
 					
-					if(count($post_tw_logsmain_array)>0)
+					if(!empty($post_tw_logsmain_array))//count($post_tw_logsmain_array)>0
 					{
-						for($i=4;$i>=0;$i--)
+						for($i=9;$i>=0;$i--)
 						{
 							if($post_tw_logsmain_array[$i]!='')
 							{
@@ -64,7 +64,7 @@ if( !defined('ABSPATH') ){ exit();}
 									<?php echo esc_html($publishtime);?>
 									</td>
 									
-									<td style="vertical-align: middle !important;">
+									<td class='xyz_twap_td_custom' style="vertical-align: middle !important;">
 									<?php
 									
 									
