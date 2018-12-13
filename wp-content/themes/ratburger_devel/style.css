@@ -2507,6 +2507,15 @@ body.search-no-results .page-header {
 	top: -5px;
 }
 
+/* RATBURGER LOCAL CODE */
+.rb-commment-navigation .page-numbers {
+    padding: 10px;
+}
+
+.rb-commment-navigation p {
+    text-align: center;
+}
+/* END RATBURGER LOCAL CODE */
 
 /**
  * 11.5 - Sidebar

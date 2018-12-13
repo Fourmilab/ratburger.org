@@ -46,7 +46,12 @@ if ( post_password_required() ) {
 			?>
 		</h2>
 
-		<?php the_comments_navigation(); ?>
+        <?php /* RATBURGER LOCAL CODE
+               Provide direct navigation to pages of comments.
+            the_comments_navigation();
+            */
+            rb_comments_navigation();
+        /* END RATBURGER LOCAL CODE */ ?>
 
 		<ol class="comment-list">
 			<?php
@@ -65,7 +70,12 @@ if ( post_password_required() ) {
 			?>
 		</ol><!-- .comment-list -->
 
-		<?php the_comments_navigation(); ?>
+        <?php /* RATBURGER LOCAL CODE
+               Provide direct navigation to pages of comments.
+            the_comments_navigation();
+            */
+            rb_comments_navigation();
+        /* END RATBURGER LOCAL CODE */ ?>
 
 	<?php endif; // Check for have_comments(). ?>
 
@@ -82,5 +92,15 @@ if ( post_password_required() ) {
 			'title_reply_after'  => '</h2>',
 		) );
 	?>
+
+    <?php /* RATBURGER LOCAL CODE
+             Generate navigation panel for multiple
+             pages of comments. */
+    function rb_comments_navigation() {
+        echo("<div class=\"rb-commment-navigation\"><p>\n");
+        paginate_comments_links();
+        echo("</p></div>\n");
+    }
+    /* END RATBURGER LOCAL CODE */ ?>
 
 </div><!-- .comments-area -->
