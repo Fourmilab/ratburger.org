@@ -38,12 +38,13 @@ if( ! function_exists( 'wp_ulike_shortcode' ) ){
 		$result = '';
 		// Default Args
 		$args   = shortcode_atts( array(
-					"for"           => 'post',	//shortcode Type (post, comment, activity, topic)
-					"id"            => '',		//Post ID
-					"slug"          => 'post',	//Slug Name
-					"style"         => '',		//Get Default Theme
-					"attributes"    => '',		//Get Attributes Filter
-					"wrapper_class" => ''		//Extra Wrapper class
+					"for"           => 'post',	// shortcode Type (post, comment, activity, topic)
+					"id"            => '',		// Post ID
+					"slug"          => 'post',	// Slug Name
+					"style"         => '',		// Get Default Theme
+					"button_type"   => '',		// Set Button Type ('image' || 'text')
+					"attributes"    => '',		// Get Attributes Filter
+					"wrapper_class" => ''		// Extra Wrapper class
 			    ), $atts );
 
 	    switch ( $args['for'] ) {
@@ -67,6 +68,74 @@ if( ! function_exists( 'wp_ulike_shortcode' ) ){
 	}
 	add_shortcode( 'wp_ulike', 'wp_ulike_shortcode' );
 }
+
+/**
+ * Generate rich snippet hooks
+ *
+ * @author       	Alimir
+ * @since           3.5
+ * @return          String
+ */
+if( ! function_exists( 'wp_ulike_generate_microdata' ) ){
+	function wp_ulike_generate_microdata( $args ){
+		// Bulk output
+		$output = '';
+
+		// Check ulike type
+		switch ( $args['type'] ) {
+			case 'likeThis':
+				$output = apply_filters( 'wp_ulike_posts_microdata', null );
+				break;
+
+			case 'likeThisComment':
+				$output = apply_filters( 'wp_ulike_comments_microdata', null );
+				break;
+
+			case 'likeThisActivity':
+				$output = apply_filters( 'wp_ulike_activities_microdata', null );
+				break;
+
+			case 'likeThisTopic':
+				$output = apply_filters( 'wp_ulike_topics_microdata', null );
+				break;
+		}
+
+		echo $output;
+	}
+	add_action( 'wp_ulike_inside_template', 'wp_ulike_generate_microdata' );
+}
+
+
+/**
+ * Display inline likers box without AJAX request
+ *
+ * @author       	Alimir
+ * @since           3.5.1
+ * @return          String
+ */
+if( ! function_exists( 'wp_ulike_display_inline_likers_template' ) ){
+	function wp_ulike_display_inline_likers_template( $args ){
+		// Get settings for current type
+		$get_settings     = wp_ulike_get_post_settings_by_type(  $args['type'], $args['ID'] );
+		// If method not exist, then return error message
+		if( empty( $get_settings ) ) {
+			return;
+		}
+		// Extract settings array
+		extract( $get_settings );
+		// Check popover activation
+		$disable_pophover = wp_ulike_get_setting( $setting_key, 'disable_likers_pophover', 0 );
+		// Display likers box
+		echo $disable_pophover ? sprintf(
+			'<div class="wp_ulike_likers_wrapper wp_ulike_display_inline">%s</div>',
+			wp_ulike_get_likers_template( $table_name, $column_name, $args['ID'], $setting_key )
+		) : '';
+	}
+	add_action( 'wp_ulike_inside_template', 'wp_ulike_display_inline_likers_template' );
+}
+
+
+
 
 /*******************************************************
   Posts
@@ -206,16 +275,33 @@ if( defined( 'BP_VERSION' ) ) {
 			wp_ulike_buddypress('get');
 		}
 
+		function wp_ulike_get_buddypress( $content ) {
+
+		}
+
 		if (wp_ulike_get_setting( 'wp_ulike_buddypress', 'auto_display' ) == '1') {
+			// Check display ulike in buddypress comments
+			$display_comments = wp_ulike_get_setting( 'wp_ulike_buddypress', 'activity_comment', 1 );
 
 			if (wp_ulike_get_setting( 'wp_ulike_buddypress', 'auto_display_position' ) == 'meta'){
 				add_action( 'bp_activity_entry_meta', 'wp_ulike_put_buddypress' );
+				// Add wp ulike in buddpress comments
+				if( $display_comments == '1' ) {
+					add_action( 'bp_activity_comment_options', 'wp_ulike_put_buddypress' );
+				}
 	        } else	{
 	        	add_action( 'bp_activity_entry_content', 'wp_ulike_put_buddypress' );
-	        }
-	        // Add wp ulike in buddpress comments
-	        if ( wp_ulike_get_setting( 'wp_ulike_buddypress', 'activity_comment' ) == '1' ) {
-	        	add_action( 'bp_activity_comment_options', 'wp_ulike_put_buddypress' );
+	        	// Add wp ulike in buddpress comments
+				if( $display_comments == '1' ) {
+					add_filter( 'bp_get_activity_content', function( $content ) {
+						// We've changed thhe 'bp_activity_comment_content' hook for making some ajax issues on inserting activity
+						// If doing ajax, do not update it value
+						// if( wp_doing_ajax() ) {
+						// 	return $content;
+						// }
+						return $content . wp_ulike_buddypress('put');
+					} );
+				}
 	        }
 		}
 	}
@@ -371,12 +457,13 @@ if( defined( 'BP_VERSION' ) ) {
 					default:
 						break;
 				}
+
 			}
 
 			//Sends out notifications when you get a like from someone
 			if ( wp_ulike_get_setting( 'wp_ulike_buddypress', 'custom_notification' ) == '1' ) {
 				// No notifications from Anonymous
-				if ( ! $user_ID ) {
+				if ( ! $user_ID || false === get_userdata( $user_ID ) ) {
 					return false;
 				}
 				$author_ID = wp_ulike_get_auhtor_id( $cp_ID, $type );
@@ -386,9 +473,19 @@ if( defined( 'BP_VERSION' ) ) {
 				bp_notifications_add_notification( array(
 						'user_id'           => $author_ID,
 						'item_id'           => $cp_ID,
-						'secondary_item_id' => $author_ID,
+						'secondary_item_id' => $user_ID,
 						'component_name'    => 'wp_ulike',
+				        /* RATBURGER LOCAL CODE
+				           Provide $user_ID for Ratburger notification
+                           generation, appended to the component_action.
+                           (Note that $user_ID is now available in the
+                           secondary_item_id and that this may be removed
+                           when the notification generation code is modified
+                           to fetch it from there.
+						'component_action'  => 'wp_ulike' . $type . '_action',
+                        */
 						'component_action'  => 'wp_ulike' . $type . '_action_' . $user_ID,
+				        /* END RATBURGER LOCAL CODE */
 						'date_notified'     => bp_core_current_time(),
 						'is_new'            => 1,
 					)
@@ -416,7 +513,8 @@ if( defined( 'BP_VERSION' ) ) {
 	        /* END RATBURGER LOCAL CODE */
 			global $wp_filter,$wp_version;
 			// Return value
-			$return = false;
+			$return = $action;
+
 			if ( strpos( $action, 'wp_ulike_' ) !== false ) {
 				$custom_link	= '';
 				//Extracting ulike type from the action value.

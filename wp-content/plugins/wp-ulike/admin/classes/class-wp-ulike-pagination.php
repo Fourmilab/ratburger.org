@@ -7,6 +7,11 @@
  * @link       https://wpulike.com
  */
 
+// no direct access allowed
+if ( ! defined('ABSPATH') ) {
+    die();
+}
+
 if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 
 	class wp_ulike_pagination{
@@ -14,7 +19,7 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 		/*Default values*/
 		var $total_pages = -1;//items
 		var $limit = null;
-		var $target = ""; 
+		var $target = "";
 		var $page = 1;
 		var $adjacents = 2;
 		var $showCounter = false;
@@ -30,22 +35,22 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 
 		/*****/
 		var $calculate = false;
-		
+
 		#Total items
 		function items($value){$this->total_pages = (int) $value;}
-		
+
 		#how many items to show per page
 		function limit($value){$this->limit = (int) $value;}
-		
+
 		#Page to sent the page value
 		function target($value){$this->target = $value;}
-		
+
 		#Current page
 		function currentPage($value){$this->page = (int) $value;}
-		
+
 		#How many adjacent pages should be shown on each side of the current page?
 		function adjacents($value){$this->adjacents = (int) $value;}
-		
+
 		#show counter?
 		function showCounter($value=""){$this->showCounter=($value===true)?true:false;}
 
@@ -68,7 +73,7 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 				}
 			$this->urlF=$value;
 		}
-		
+
 		var $pagination;
 
 		function pagination(){}
@@ -91,7 +96,7 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 				else
 					return "$this->target&$this->parameterName=$id";
 		}
-		
+
 		function calculate(){
 			$this->pagination = "";
 			$this->calculate == true;
@@ -114,40 +119,40 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 					$error = true;
 				}
 			if($error)return false;
-			
+
 			$n = trim($this->nextT.' '.$this->nextI);
 			$p = trim($this->prevI.' '.$this->prevT);
-			
+
 			/* Setup vars for query. */
-			if($this->page) 
+			if($this->page)
 				$start = ($this->page - 1) * $this->limit;             //first item to display on this page
 			else
 				$start = 0;                                //if no page var is given, set start to 0
-		
+
 			/* Setup page vars for display. */
 			$prev = $this->page - 1;                            //previous page is page - 1
 			$next = $this->page + 1;                            //next page is page + 1
 			$lastpage = ceil($this->total_pages/$this->limit);        //lastpage is = total pages / items per page, rounded up.
 			$lpm1 = $lastpage - 1;                        //last page minus 1
-			
-			/* 
-				Now we apply our rules and draw the pagination object. 
+
+			/*
+				Now we apply our rules and draw the pagination object.
 				We're actually saving the code to a variable in case we want to draw it more than once.
 			*/
-			
+
 			if($lastpage > 1){
 					if($this->page){
 							//anterior button
 							if($this->page > 1)
 									$this->pagination .= "<a href=\"".$this->get_pagenum_link($prev)."\" class=\"prev\">$p</a>";
 								else
-									$this->pagination .= "<span class=\"disabled\">$p</span>";
+									$this->pagination .= "<span class=\"tablenav-pages-navspan\">$p</span> ";
 						}
-					//pages	
+					//pages
 					if ($lastpage < 7 + ($this->adjacents * 2)){//not enough pages to bother breaking it up
 							for ($counter = 1; $counter <= $lastpage; $counter++){
 									if ($counter == $this->page)
-											$this->pagination .= "<span class=\"current\">$counter</span>";
+											$this->pagination .= "<span class=\"tablenav-pages-navspan\">$counter</span> ";
 										else
 											$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a>";
 								}
@@ -157,46 +162,46 @@ if ( ! class_exists( 'wp_ulike_pagination' ) ) {
 							if($this->page < 1 + ($this->adjacents * 2)){
 									for ($counter = 1; $counter < 4 + ($this->adjacents * 2); $counter++){
 											if ($counter == $this->page)
-													$this->pagination .= "<span class=\"current\">$counter</span>";
+													$this->pagination .= "<span class=\"tablenav-pages-navspan\">$counter</span> ";
 												else
-													$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a>";
+													$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a> ";
 										}
-									$this->pagination .= "...";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lpm1)."\">$lpm1</a>";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lastpage)."\">$lastpage</a>";
+									$this->pagination .= "... ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lpm1)."\">$lpm1</a> ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lastpage)."\">$lastpage</a> ";
 								}
 							//in middle; hide some front and some back
 							elseif($lastpage - ($this->adjacents * 2) > $this->page && $this->page > ($this->adjacents * 2)){
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link(1)."\">1</a>";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link(2)."\">2</a>";
-									$this->pagination .= "...";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link(1)."\">1</a> ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link(2)."\">2</a> ";
+									$this->pagination .= "... ";
 									for ($counter = $this->page - $this->adjacents; $counter <= $this->page + $this->adjacents; $counter++)
 										if ($counter == $this->page)
-												$this->pagination .= "<span class=\"current\">$counter</span>";
+												$this->pagination .= "<span class=\"tablenav-pages-navspan\">$counter</span> ";
 											else
-												$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a>";
-									$this->pagination .= "...";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lpm1)."\">$lpm1</a>";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lastpage)."\">$lastpage</a>";
+												$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a> ";
+									$this->pagination .= "... ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lpm1)."\">$lpm1</a> ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link($lastpage)."\">$lastpage</a> ";
 								}
 							//close to end; only hide early pages
 							else{
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link(1)."\">1</a>";
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link(2)."\">2</a>";
-									$this->pagination .= "...";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link(1)."\">1</a> ";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link(2)."\">2</a> ";
+									$this->pagination .= "... ";
 									for ($counter = $lastpage - (2 + ($this->adjacents * 2)); $counter <= $lastpage; $counter++)
 										if ($counter == $this->page)
-												$this->pagination .= "<span class=\"current\">$counter</span>";
+												$this->pagination .= "<span class=\"tablenav-pages-navspan\">$counter</span> ";
 											else
-												$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a>";
+												$this->pagination .= "<a href=\"".$this->get_pagenum_link($counter)."\">$counter</a> ";
 								}
 						}
 					if($this->page){
 							//siguiente button
 							if ($this->page < $counter - 1)
-									$this->pagination .= "<a href=\"".$this->get_pagenum_link($next)."\" class=\"next\">$n</a>";
+									$this->pagination .= "<a href=\"".$this->get_pagenum_link($next)."\" class=\"next\">$n</a> ";
 								else
-									$this->pagination .= "<span class=\"disabled\">$n</span>";
+									$this->pagination .= "<span class=\"tablenav-pages-navspan\">$n</span> ";
 								if($this->showCounter)$this->pagination .= "<span class=\"pagination_data\">($this->total_pages Pages)</span>";
 						}
 				}

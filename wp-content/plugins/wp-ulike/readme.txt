@@ -1,11 +1,11 @@
-=== WP ULike ===
+﻿=== WP ULike ===
 Contributors: alimir
 Donate link: https://m.do.co/c/13ad5bc24738
 Author: Ali Mirzaei
 Tags: wp ulike, wordpress youlike plugin, like button, rating, vote, voting, most liked posts, wordpress like page, wordpress like post, wordpress vote page, wordpress vote post, wp like page, wp like post, wp like plugin, buddypress like system, buddypress votes, comment like system, voting button, wordpress, buddypress, statistics, stats likes, bbpress, bbPress like, WP-Translations, forums, community, credit, points, mycred, users, ultimate member
-Requires at least: 3.5
-Tested up to: 4.9.6
-Stable tag: 3.3.1
+Requires at least: 3.5.0
+Tested up to: 4.9.8
+Stable tag: 3.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -173,6 +173,41 @@ define( 'WP_MEMORY_LIMIT', '256M' );
 </code>
 
 == Changelog ==
+
+= 3.5.2 =
+* Fixed: An important issue with buddypress comments.
+* Added: Class name issue on likers box.
+* Upgraded: "WordpressUlike" js functionality.
+* Added: some improvements on general functions.
+
+= 3.5.1 =
+* Fixed: The buddypress notifications issue.
+* Added: A new option to disable popover on likers box and make it inline display.
+* Added: Some changes to improve statistics page and make it more faster.
+* Added: some improvements on ajax process of logs page.
+* Replaced: The <a> tag with <button> for accessible with the keyboard.
+* Fixed: An issue with button display on buddypress comments.
+* Fixed: Some styling issues.
+
+= 3.5.0 =
+* Added: New statistics system powered by vueJS.
+* Added: Ajax loading for likers box with better optimization.
+* Added: Huge optimization on admin core functionalities with reducing resource consumption.
+* Upgraded: The log pages templates.
+* Fixed: Some issues in button styles.
+* Fixed: Some issues in ulike js functionality.
+* Fixed: An issue with supporting ulike in ultimatememeber.
+* Fixed: Colorpicker issue in admin settings by replacing the wpColorPicker with spectrum plugin.
+
+= 3.4 =
+* Added: A new style for likers box with pophover effect.
+* Added: New stylesheet for all buttons.
+* Added: a new option for custom button_type.
+* Fixed: All of the reported bugs.
+* Fixed: The issue of IP6 convertion.
+* Upgraded: The database structure.
+* Optimized: The stylesheet issues.
+* Optimized: Some issues with data process.
 
 = 3.3.1 =
 * Fixed: An old issue with database structure.
@@ -464,6 +499,15 @@ define( 'WP_MEMORY_LIMIT', '256M' );
 * The initial version
 
 == Upgrade Notice ==
+
+= 3.5.2 =
+Attention Please! In this version, we have made some changes on plugin scripts! So, please clear your server cache after the plugin update.
+
+= 3.5.1 =
+Attention Please! In this version, we have made some changes on plugin scripts! So, please clear your server cache after the plugin update.
+
+= 3.4 =
+Attention Please! In this release, many changes have been made to the structure of the styles, and may result in the loss of your past custom styles. These changes are surely designed to improve the performance of the plugin, so it's best to update your system with these changes and then clear your server cache.
 
 = 3.3 =
 Attention Please! In this version, we have made some changes on plugin scripts! So, please clear your server cache after the plugin update.
