@@ -532,6 +532,7 @@ function ratburger_add_allowed_tags() {
 	$allowedtags['span']['style'] = array();
     $allowedtags['sub'] = array();
     $allowedtags['sup'] = array();
+    $allowedtags['hr'] = array();
 
     // Add attributes to already allowed tags
     $allowedposttags['blockquote']['class'] = true;
