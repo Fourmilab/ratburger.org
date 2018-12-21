@@ -84,6 +84,22 @@ $premv = UPDRAFTPLUS_URL.'/images/updraft_premv.png';
 			</tr>
 			<tr>
 				<td>
+					<img src="<?php echo UPDRAFTPLUS_URL . '/images/addons-images/incremental.png'; ?>" alt="<?php esc_attr_e('Incremental backups', 'updraftplus'); ?>" width="100" height="100" class="udp-premium-image">
+					<h4><?php _e('Incremental backups', 'updraftplus'); ?></h4>
+					<p>
+						<?php _e('Incremental backups are backups of just the changes since your last full backup. As a result, they are faster and need less space and resources to process.', 'updraftplus'); ?>
+					</p>
+					
+				</td>
+				<td data-colname="<?php _e('Free', 'updraftplus'); ?>">
+					<p><span class="dashicons dashicons-no-alt" aria-label="<?php esc_attr_e('No', 'updraftplus'); ?>"></span></span></p>
+				</td>
+				<td data-colname="<?php _e('Premium', 'updraftplus'); ?>">
+					<p><span class="dashicons dashicons-yes" aria-label="<?php esc_attr_e('Yes', 'updraftplus'); ?>"></span></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<img src="<?php echo UPDRAFTPLUS_URL.'/images/notices/support.png';?>" alt="<?php esc_attr_e('Support', 'updraftplus');?>" width="80" height="80" class="udp-premium-image">
 					<h4><?php _e('Fast, personal support', 'updraftplus');?></h4>
 					<p><?php _e('Provides expert help and support from the developers whenever you need it.', 'updraftplus');?></p>

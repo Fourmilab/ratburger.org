@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2014-10-25 14:58:38+0000\n"
+"PO-Revision-Date: 2018-12-15 11:41:50+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1456,7 +1456,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:191
 msgid "Select Files"
-msgstr ""
+msgstr "Chọn file"
 
 #: src/methods/cloudfiles.php:476
 msgid "Rackspace Storage Region"
@@ -2171,7 +2171,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:114
 msgid "Backup using %s?"
-msgstr ""
+msgstr "Sao lưu đang dùng %s?"
 
 #: src/addons/s3-enhanced.php:379
 msgid "Asia Pacific (Mumbai)"
@@ -2187,11 +2187,11 @@ msgstr ""
 
 #: src/central/bootstrap.php:554
 msgid "More information..."
-msgstr ""
+msgstr "Thêm thông tin..."
 
 #: src/central/bootstrap.php:553
 msgid "Use the alternative method for making a connection with the dashboard."
-msgstr ""
+msgstr "Sử dụng phương pháp khác để thực hiện kết nối với bảng điều khiển."
 
 #: src/central/bootstrap.php:458
 msgid "Key size: %d bits"
@@ -2215,15 +2215,15 @@ msgstr ""
 
 #: src/addons/migrator.php:1765, src/central/bootstrap.php:547
 msgid "slower, strongest"
-msgstr ""
+msgstr "chậm hơn, mạnh"
 
 #: src/addons/migrator.php:1764, src/central/bootstrap.php:546
 msgid "recommended"
-msgstr ""
+msgstr "đề nghị"
 
 #: src/addons/migrator.php:1764, src/central/bootstrap.php:546
 msgid "%s bytes"
-msgstr ""
+msgstr "%s byte"
 
 #: src/addons/migrator.php:1763, src/central/bootstrap.php:545
 msgid "faster (possibility for slow PHP installs)"
@@ -2237,7 +2237,7 @@ msgstr ""
 #: src/addons/migrator.php:1765, src/central/bootstrap.php:544,
 #: src/central/bootstrap.php:545, src/central/bootstrap.php:547
 msgid "%s bits"
-msgstr ""
+msgstr "%s bit"
 
 #: src/addons/migrator.php:1760, src/central/bootstrap.php:542
 msgid "Encryption key size:"
@@ -2261,7 +2261,7 @@ msgstr ""
 
 #: src/methods/ftp.php:412
 msgid "login"
-msgstr ""
+msgstr "đăng nhập"
 
 #: src/addons/reporting.php:527, src/addons/reporting.php:527,
 #: src/addons/reporting.php:529, src/methods/email.php:100
@@ -2286,7 +2286,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:103
 msgid "(tap on an icon to select or unselect)"
-msgstr ""
+msgstr "(chạm vào biểu tượng để chọn hoặc bỏ chọn)"
 
 #: src/methods/updraftvault.php:333, src/methods/updraftvault.php:339,
 #: src/methods/updraftvault.php:345
@@ -2316,31 +2316,31 @@ msgstr ""
 
 #: src/central/bootstrap.php:536
 msgid "Enter any description"
-msgstr ""
+msgstr "Nhập bất kỳ mô tả"
 
 #: src/central/bootstrap.php:535
 msgid "Description"
-msgstr ""
+msgstr "Miêu tả"
 
 #: src/central/bootstrap.php:463
 msgid "Delete..."
-msgstr ""
+msgstr "Xóa..."
 
 #: src/central/bootstrap.php:456
 msgid "Created:"
-msgstr ""
+msgstr "Đã tạo:"
 
 #: src/central/bootstrap.php:453
 msgid "Access this site as user:"
-msgstr ""
+msgstr "Truy cập trang web này như người dùng:"
 
 #: src/central/bootstrap.php:477
 msgid "Details"
-msgstr ""
+msgstr "Chi tiết"
 
 #: src/central/bootstrap.php:476
 msgid "Key description"
-msgstr ""
+msgstr "Mô tả khóa"
 
 #: src/central/bootstrap.php:349, src/central/bootstrap.php:360
 msgid "A key was created, but the attempt to register it with %s was unsuccessful - please try again later."
@@ -2348,15 +2348,15 @@ msgstr ""
 
 #: src/central/bootstrap.php:219
 msgid "An invalid URL was entered"
-msgstr ""
+msgstr "Một URL không hợp lệ đã được nhập"
 
 #: src/central/bootstrap.php:83
 msgid "Close..."
-msgstr ""
+msgstr "Đóng..."
 
 #: src/central/bootstrap.php:75
 msgid "This connection appears to already have been made."
-msgstr ""
+msgstr "Kết nối này dường như đã được thực hiện."
 
 #: src/central/bootstrap.php:72
 msgid "You must visit this link in the same browser and login session as you created the key in."
@@ -2388,19 +2388,19 @@ msgstr ""
 
 #: src/backup.php:1042, src/class-updraftplus.php:2973
 msgid "The backup was aborted by the user"
-msgstr ""
+msgstr "Các sao lưu đã bị hủy bỏ bởi người sử dụng"
 
 #: src/admin.php:4929
 msgid "Your settings have been saved."
-msgstr ""
+msgstr "Cài đặt của bạn đã được lưu."
 
 #: src/admin.php:4009
 msgid "Total backup size:"
-msgstr ""
+msgstr "Tổng kích thước sao lưu:"
 
 #: src/admin.php:3416
 msgid "stop"
-msgstr ""
+msgstr "dừng lại"
 
 #: src/admin.php:905, src/admin.php:3209
 msgid "The backup has finished running"
@@ -2410,15 +2410,15 @@ msgstr ""
 #: src/templates/wp-admin/advanced/wipe-settings.php:5,
 #: src/templates/wp-admin/advanced/wipe-settings.php:9
 msgid "Wipe settings"
-msgstr ""
+msgstr "Làm sạch cài đặt"
 
 #: src/templates/wp-admin/advanced/site-info.php:102
 msgid "reset"
-msgstr ""
+msgstr "thiết lập lại"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:14
 msgid "these backup sets"
-msgstr ""
+msgstr "các bản sao lưu"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:11
 msgid "this backup set"
@@ -2426,7 +2426,7 @@ msgstr ""
 
 #: src/includes/class-filesystem-functions.php:72
 msgid "calculate"
-msgstr ""
+msgstr "tính toán"
 
 #: src/admin.php:879
 msgid "You should save your changes to ensure that they are used for making your backup."
@@ -2438,15 +2438,15 @@ msgstr ""
 
 #: src/admin.php:871
 msgid "Please enter a valid URL"
-msgstr ""
+msgstr "Vui lòng nhập một URL hợp lệ"
 
 #: src/admin.php:854
 msgid "Saving..."
-msgstr ""
+msgstr "Đang lưu..."
 
 #: src/admin.php:815
 msgid "Error: the server sent us a response which we did not understand."
-msgstr ""
+msgstr "Lỗi: máy chủ gửi cho chúng tôi hồi đáp mà chúng tôi không hiểu."
 
 #: src/admin.php:807
 msgid "Fetching..."
@@ -2479,11 +2479,11 @@ msgstr ""
 #: src/admin.php:2842, src/templates/wp-admin/notices/horizontal-notice.php:16,
 #: src/templates/wp-admin/notices/horizontal-notice.php:18
 msgid "Dismiss"
-msgstr ""
+msgstr "Bỏ qua"
 
 #: src/admin.php:891
 msgid "Please fill in the required information."
-msgstr ""
+msgstr "Vui lòng điền vào các thông tin cần thiết."
 
 #: src/addons/multisite.php:619
 msgid "Read more..."
@@ -2548,11 +2548,11 @@ msgstr ""
 
 #: src/restorer.php:211
 msgid "Skipping: this archive was already restored."
-msgstr ""
+msgstr "Đang bỏ qua: kho lưu trữ này đã được phục hồi."
 
 #: src/templates/wp-admin/settings/form-contents.php:140
 msgid "File Options"
-msgstr ""
+msgstr "Tùy chọn tập tin"
 
 #: src/templates/wp-admin/settings/form-contents.php:93
 msgid "Sending Your Backup To Remote Storage"
@@ -2588,7 +2588,7 @@ msgstr ""
 
 #: src/admin.php:4801
 msgid "settings"
-msgstr ""
+msgstr "cài đặt"
 
 #: src/admin.php:4801
 msgid "Backup won't be sent to any remote storage - none has been saved in the %s"
@@ -2633,19 +2633,19 @@ msgstr ""
 #: src/addons/morefiles.php:71, src/admin.php:877
 msgctxt "(verb)"
 msgid "Download"
-msgstr ""
+msgstr "Tải về"
 
 #: src/admin.php:800
 msgid "You have chosen to backup files, but no file entities have been selected"
-msgstr ""
+msgstr "Bạn đã chọn tập tin sao lưu, nhưng không có thực thể tập tin đã được chọn"
 
 #: src/admin.php:695
 msgid "Extensions"
-msgstr ""
+msgstr "Phần mở rộng"
 
 #: src/admin.php:687, src/admin.php:2801
 msgid "Advanced Tools"
-msgstr ""
+msgstr "Công cụ nâng cao"
 
 #: src/addons/googlecloud.php:1055
 msgid "Bucket location"
@@ -2788,7 +2788,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:56
 msgid "Not installed"
-msgstr ""
+msgstr "Chưa cài đặt"
 
 #: src/addons/googlecloud.php:1042, src/addons/s3-enhanced.php:63
 msgid "Storage class"
@@ -2873,15 +2873,15 @@ msgstr ""
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:11,
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:14
 msgid "Are you sure that you wish to remove %s from UpdraftPlus?"
-msgstr ""
+msgstr "Bạn có chắc chắn rằng bạn muốn loại bỏ %s từ UpdraftPlus?"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:157
 msgid "Deselect"
-msgstr ""
+msgstr "Bỏ chọn"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:156
 msgid "Select all"
-msgstr ""
+msgstr "Chọn tất cả"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:154
 msgid "Actions upon selected backups"
@@ -2898,7 +2898,7 @@ msgstr ""
 
 #: src/admin.php:890
 msgid "Processing..."
-msgstr ""
+msgstr "Đang xử lý..."
 
 #: src/admin.php:888
 msgid "For backups older than"
@@ -2994,19 +2994,19 @@ msgstr ""
 
 #: src/admin.php:860
 msgid "Update quota count"
-msgstr ""
+msgstr "Cập nhật số lượng hạn ngạch"
 
 #: src/admin.php:859
 msgid "Counting..."
-msgstr ""
+msgstr "Đang đếm..."
 
 #: src/admin.php:858
 msgid "Disconnecting..."
-msgstr ""
+msgstr "Đang ngắt kết nối..."
 
 #: src/admin.php:856
 msgid "Connecting..."
-msgstr ""
+msgstr "Đang kết nối..."
 
 #: src/methods/updraftvault.php:468, src/methods/updraftvault.php:542
 msgid "Refresh current status"
@@ -3033,7 +3033,7 @@ msgstr ""
 #: src/admin.php:857, src/methods/updraftvault.php:392,
 #: src/methods/updraftvault.php:450
 msgid "Disconnect"
-msgstr ""
+msgstr "Ngắt kết nối"
 
 #: src/methods/updraftvault.php:389, src/methods/updraftvault.php:442
 msgid "Quota:"
@@ -3220,7 +3220,7 @@ msgstr ""
 #: src/addons/wp-cli.php:371,
 #: src/templates/wp-admin/settings/existing-backups-table.php:101
 msgid "Backup sent to remote site - not available for download."
-msgstr ""
+msgstr "Bản sao lưu gửi đến trang web từ xa - không có sẵn để tải về."
 
 #: src/includes/class-wpadmin-commands.php:137
 msgid "You should make sure that this really is a backup set intended for use on this website, before you restore (rather than a backup set of an unrelated website)."
@@ -3232,16 +3232,16 @@ msgstr ""
 
 #: src/admin.php:873, src/includes/class-remote-send.php:327
 msgid "Testing connection..."
-msgstr ""
+msgstr "Đang kiểm tra kết nối..."
 
 #: src/admin.php:870,
 #: src/templates/wp-admin/settings/existing-backups-table.php:161
 msgid "Deleting..."
-msgstr ""
+msgstr "Đang xóa..."
 
 #: src/admin.php:869
 msgid "key name"
-msgstr ""
+msgstr "tên khóa"
 
 #: src/admin.php:867
 msgid "Please give this key a name (e.g. indicate the site it is for):"
@@ -3249,7 +3249,7 @@ msgstr ""
 
 #: src/admin.php:864
 msgid "Creating..."
-msgstr ""
+msgstr "Đang tạo..."
 
 #: src/addons/migrator.php:1753
 msgid "Receive a backup from a remote site"
@@ -3274,11 +3274,11 @@ msgstr ""
 #: src/admin.php:874, src/includes/class-remote-send.php:358,
 #: src/includes/class-remote-send.php:520
 msgid "Send"
-msgstr ""
+msgstr "Gửi"
 
 #: src/admin.php:865, src/includes/class-remote-send.php:514
 msgid "Send to site:"
-msgstr ""
+msgstr "Gửi đến trang web:"
 
 #: src/includes/class-remote-send.php:512
 msgid "No receiving sites have yet been added."
@@ -3348,11 +3348,11 @@ msgstr ""
 
 #: src/addons/migrator.php:1745, src/admin.php:862
 msgid "Add site"
-msgstr ""
+msgstr "Thêm trang web"
 
 #: src/admin.php:861
 msgid "Adding..."
-msgstr ""
+msgstr "Đang thêm..."
 
 #: src/udaddons/options.php:298
 msgid "Claim not granted - perhaps you have already used this purchase somewhere else, or your paid period for downloading from updraftplus.com has expired?"
@@ -3380,7 +3380,7 @@ msgstr ""
 
 #: src/admin.php:853, src/admin.php:879, src/admin.php:880
 msgid "You have made changes to your settings, and not saved."
-msgstr ""
+msgstr "Bạn đã làm thay đổi cài đặt của bạn, và không được lưu."
 
 #: src/addons/onedrive.php:1188
 msgid "N.B. %s is not case-sensitive."
@@ -3617,21 +3617,21 @@ msgstr ""
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:13
 msgid "Compare with the free version"
-msgstr ""
+msgstr "So sánh với phiên bản miễn phí"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:12,
 #: src/templates/wp-admin/settings/tab-addons.php:46
 msgid "UpdraftPlus Premium"
-msgstr ""
+msgstr "UpdraftPlus Premium"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:29
 msgid "Free Newsletter"
-msgstr ""
+msgstr "Bản tin miễn phí"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:2,
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:35
 msgid "Dismiss (for %s months)"
-msgstr ""
+msgstr "Bỏ qua (%s tháng)"
 
 #: src/addons/fixtime.php:448
 msgid "(at same time as files backup)"
@@ -3678,11 +3678,11 @@ msgstr ""
 #: src/templates/wp-admin/settings/form-contents.php:190
 msgctxt "Uploader: Drop db.gz.crypt files here to upload them for decryption - or - Select Files"
 msgid "or"
-msgstr ""
+msgstr "hoặc"
 
 #: src/admin.php:847
 msgid "You did not select any components to restore. Please select at least one, and then try again."
-msgstr ""
+msgstr "Bạn chưa chọn bất kỳ thành phần nào để khôi phục lại. Vui lòng chọn ít nhất một, và sau đó thử lại."
 
 #: src/addons/sftp.php:470
 msgctxt "Do not translate BEGIN RSA PRIVATE KEY. PCKS1, XML, PEM and PuTTY are also technical acronyms which should not be translated."
@@ -3714,7 +3714,7 @@ msgstr ""
 #: src/admin.php:3717
 msgctxt "i.e. Non-automatic"
 msgid "Manual"
-msgstr ""
+msgstr "Hướng dẫn sử dụng"
 
 #: src/restorer.php:2784
 msgctxt "The user is being told the number of times an error has happened, e.g. An error (27) occurred"
@@ -3740,7 +3740,7 @@ msgstr ""
 #: src/addons/autobackup.php:157, src/addons/autobackup.php:1026,
 #: src/admin.php:852
 msgid "Automatic backup before update"
-msgstr ""
+msgstr "Tự động sao lưu trước khi cập nhật"
 
 #: src/addons/autobackup.php:122
 msgid "WordPress core (only)"
@@ -3825,17 +3825,17 @@ msgstr ""
 
 #: src/admin.php:3209, src/admin.php:4278
 msgid "View Log"
-msgstr ""
+msgstr "Xem báo cáo"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:18,
 #: src/templates/wp-admin/settings/existing-backups-table.php:97
 msgid "Backup data (click to download)"
-msgstr ""
+msgstr "Sao lưu dữ liệu (bấm vào để tải về)"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:17,
 #: src/templates/wp-admin/settings/existing-backups-table.php:64
 msgid "Backup date"
-msgstr ""
+msgstr "Ngày sao lưu"
 
 #: src/templates/wp-admin/settings/form-contents.php:42,
 #: src/templates/wp-admin/settings/form-contents.php:75
@@ -3894,7 +3894,7 @@ msgstr "Địa chỉ email của bạn đã nhập không thể tìm thấy trê
 
 #: src/methods/updraftvault.php:715, src/udaddons/updraftplus-addons.php:996
 msgid "Your email address was valid, but your password was not recognised by UpdraftPlus.Com."
-msgstr "địa chỉ email hợp lệ, nhưng mật khẩu không thể tìm thấy trên UpdraftPlus.Com"
+msgstr "Địa chỉ email hợp lệ, nhưng mật khẩu không thể tìm thấy trên UpdraftPlus.Com"
 
 #: src/methods/updraftvault.php:656, src/udaddons/updraftplus-addons.php:862
 msgid "You need to supply both an email address and a password"
@@ -3943,15 +3943,15 @@ msgstr "bạn cần kết nối để nhận những bản cập nhật trong t�
 
 #: src/class-updraftplus.php:3982
 msgid "Any support requests to do with %s should be raised with your web hosting company."
-msgstr "bất kì yêu cầu hỗ trợ nào để làm với %s cần được đưa lên với công ty lưu trữ web (web hosting )"
+msgstr "Bất kì yêu cầu hỗ trợ nào để làm với %s cần được đưa lên với công ty lưu trữ web (web hosting )"
 
 #: src/class-updraftplus.php:3982
 msgid "You should only proceed if you cannot update the current server and are confident (or willing to risk) that your plugins/themes/etc. are compatible with the older %s version."
-msgstr "bạn chỉ nên thực hiện nếu bạn không thể cập nhật lên nhà cung cấp hiện tại và bạn tự tin (sẵn sàng chấp nhận rủi ro) rằng giao diện/ tiện ích/ v.v.. thích hợp với phiên bản %s trước đó"
+msgstr "Bạn chỉ nên thực hiện nếu bạn không thể cập nhật lên nhà cung cấp hiện tại và bạn tự tin (sẵn sàng chấp nhận rủi ro) rằng giao diện/ tiện ích/ v.v.. thích hợp với phiên bản %s trước đó"
 
 #: src/class-updraftplus.php:3982
 msgid "This is significantly newer than the server which you are now restoring onto (version %s)."
-msgstr "đây là một bản mới hơn hẳn so với trên nhà cung cấp, cái mà bạn đang phục hồi đến (phiên bản %s)."
+msgstr "Đây là một bản mới hơn hẳn so với trên nhà cung cấp, cái mà bạn đang phục hồi đến (phiên bản %s)."
 
 #: src/class-updraftplus.php:3982
 msgid "The site in this backup was running on a webserver with version %s of %s. "
@@ -3970,13 +3970,13 @@ msgstr "Google+"
 #: src/includes/updraftplus-notices.php:133,
 #: src/includes/updraftplus-notices.php:134
 msgid "Facebook"
-msgstr "facebook"
+msgstr "Facebook"
 
 #: src/includes/updraftplus-notices.php:133,
 #: src/includes/updraftplus-notices.php:134,
 #: src/templates/wp-admin/settings/header.php:16
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #: src/includes/updraftplus-notices.php:132
 msgid "UpdraftPlus is on social media - check us out!"
@@ -3998,7 +3998,7 @@ msgstr ""
 
 #: src/admin.php:2050, src/admin.php:2062, src/includes/class-commands.php:833
 msgid "Start backup"
-msgstr ""
+msgstr "Bắt đầu sao lưu"
 
 #: src/class-updraftplus.php:3953, src/restorer.php:1446
 msgid "You are using the %s webserver, but do not seem to have the %s module loaded."
@@ -4014,7 +4014,7 @@ msgstr ""
 
 #: src/admin.php:2288
 msgid "This file could not be uploaded"
-msgstr ""
+msgstr "Tập tin này không thể tải lên"
 
 #: src/admin.php:2251
 msgid "You will find more information about this in the Settings section."
@@ -4030,7 +4030,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:44
 msgid "Memory limit"
-msgstr ""
+msgstr "Giới hạn bộ nhớ"
 
 #: src/includes/class-filesystem-functions.php:233, src/restorer.php:2006
 msgid "restoration"
@@ -4061,7 +4061,7 @@ msgstr ""
 #: src/admin.php:3718, src/admin.php:3719, src/admin.php:3720,
 #: src/updraftplus.php:100, src/updraftplus.php:101, src/updraftplus.php:102
 msgid "Every %s hours"
-msgstr ""
+msgstr "Mỗi %s giờ"
 
 #: src/addons/migrator.php:903, src/addons/migrator.php:905
 msgid "search and replace"
@@ -4115,11 +4115,11 @@ msgstr ""
 
 #: src/includes/class-backup-history.php:69
 msgid "You have not yet made any backups."
-msgstr ""
+msgstr "Bạn chưa thực hiện bất kỳ bản sao lưu."
 
 #: src/templates/wp-admin/settings/form-contents.php:152
 msgid "Database Options"
-msgstr ""
+msgstr "Tùy chọn cơ sở dữ liệu"
 
 #: src/templates/wp-admin/advanced/site-info.php:95
 msgid "Plugins for debugging:"
@@ -4127,7 +4127,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:74
 msgid "%s (%s used)"
-msgstr ""
+msgstr "%s (%s đã sử dụng)"
 
 #: src/templates/wp-admin/advanced/site-info.php:74
 msgid "Free disk space in account:"
@@ -4143,7 +4143,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-backups.php:21,
 #: src/templates/wp-admin/settings/tab-backups.php:44
 msgid "Existing Backups"
-msgstr ""
+msgstr "Sao Lưu"
 
 #: src/admin.php:1143
 msgid "To change any of the default settings of what is backed up, to configure scheduled backups, to send your backups to remote storage (recommended), and more, go to the settings tab."
@@ -4151,11 +4151,11 @@ msgstr ""
 
 #: src/admin.php:1143
 msgid "To make a backup, just press the Backup Now button."
-msgstr ""
+msgstr "Để thực hiện một bản sao lưu, chỉ cần nhấn nút Sao Lưu Ngay"
 
 #: src/admin.php:1143
 msgid "Welcome to UpdraftPlus!"
-msgstr ""
+msgstr "Chào mừng đến UpdraftPlus!"
 
 #: src/addons/moredatabase.php:318
 msgid "If you enter text here, it is used to encrypt database backups (Rijndael). <strong>Do make a separate record of it and do not lose it, or all your backups <em>will</em> be useless.</strong> This is also the key used to decrypt backups from this admin interface (so if you change it, then automatic decryption will not work until you change it back)."
@@ -4227,7 +4227,7 @@ msgstr ""
 
 #: src/class-updraftplus.php:1736
 msgid "External database (%s)"
-msgstr ""
+msgstr "Cơ sở dữ liệu bên ngoài (%s)"
 
 #: src/methods/googledrive.php:1207
 msgid "Follow this link to your Google API Console, and there activate the Drive API and create a Client ID in the API Access section."
@@ -4245,7 +4245,7 @@ msgstr ""
 
 #: src/addons/wp-cli.php:437, src/admin.php:4034
 msgid "External database"
-msgstr ""
+msgstr "Cơ sở dữ liệu bên ngoài"
 
 #: src/templates/wp-admin/settings/form-contents.php:304
 msgid "This will also cause debugging output from all plugins to be shown upon this screen - please do not be surprised to see these."
@@ -4376,7 +4376,7 @@ msgstr ""
 
 #: src/methods/dropbox.php:611
 msgid "Dropbox"
-msgstr ""
+msgstr "Dropbox"
 
 #: src/addons/onedrive.php:1205, src/methods/dropbox.php:611
 msgid "Authenticate with %s"
@@ -4458,7 +4458,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:100
 msgid "Call"
-msgstr ""
+msgstr "Gọi"
 
 #: src/templates/wp-admin/advanced/site-info.php:98,
 #: src/templates/wp-admin/advanced/site-info.php:98
@@ -4504,7 +4504,7 @@ msgstr ""
 #: src/addons/migrator.php:1758, src/addons/sftp.php:467, src/admin.php:868,
 #: src/admin.php:5192, src/templates/wp-admin/settings/temporary-clone.php:63
 msgid "Key"
-msgstr ""
+msgstr "Chìa khóa"
 
 #: src/addons/sftp.php:462
 msgid "Your login may be either password or key-based - you only need to enter one, not both."
@@ -4520,24 +4520,24 @@ msgstr ""
 
 #: src/addons/wp-cli.php:449, src/admin.php:4078
 msgid "Files backup (created by %s)"
-msgstr ""
+msgstr "Bản sao lưu tập tin (được tạo ra bởi %s)"
 
 #: src/addons/wp-cli.php:449, src/admin.php:4078
 msgid "Files and database WordPress backup (created by %s)"
-msgstr ""
+msgstr "Bản sao lưu tập tin và cơ sở dữ liệu WordPress (được tạo ra bởi %s)"
 
 #: src/addons/importer.php:276, src/admin.php:4072,
 #: src/includes/class-backup-history.php:435
 msgid "Backup created by: %s."
-msgstr ""
+msgstr "Bản sao lưu được tạo bởi: %s."
 
 #: src/addons/wp-cli.php:431, src/admin.php:4032
 msgid "Database (created by %s)"
-msgstr ""
+msgstr "Cơ sở dữ liệu (được tạo ra bởi %s)"
 
 #: src/addons/wp-cli.php:429, src/admin.php:4026, src/admin.php:4074
 msgid "unknown source"
-msgstr ""
+msgstr "nguồn không rõ"
 
 #: src/templates/wp-admin/advanced/site-info.php:104,
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:56,
@@ -4548,11 +4548,11 @@ msgstr ""
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:51,
 #: src/templates/wp-admin/settings/tab-backups.php:55
 msgid "Upload backup files"
-msgstr ""
+msgstr "Tải lên tập tin sao lưu"
 
 #: src/admin.php:2303
 msgid "This backup was created by %s, and can be imported."
-msgstr ""
+msgstr "Bản sao lưu này đã được tạo ra bởi %s, Và có thể được nhập khẩu."
 
 #: src/admin.php:1172
 msgid "Read this page for a guide to possible causes and how to fix it."
@@ -4564,16 +4564,16 @@ msgstr ""
 
 #: src/admin.php:831, src/includes/class-backup-history.php:442
 msgid "If this is a backup created by a different backup plugin, then UpdraftPlus Premium may be able to help you."
-msgstr ""
+msgstr "Nếu đây là một bản sao lưu được tạo ra bởi một plugin sao lưu khác, Khi đó UpdraftPlus Premium  có thể giúp bạn."
 
 #: src/admin.php:830
 msgid "However, UpdraftPlus archives are standard zip/SQL files - so if you are sure that your file has the right format, then you can rename it to match that pattern."
-msgstr ""
+msgstr "Tuy nhiên, Lưu trữ UpdraftPlus là tiêu chuẩn tập tin zip/SQL - vì vậy nếu bạn chắc chắn rằng tập tin của bạn có định dạng phù hợp, sau đó bạn có thể đổi tên nó để phù hợp với mô hình đó."
 
 #: src/admin.php:830, src/admin.php:831,
 #: src/includes/class-backup-history.php:442
 msgid "This file does not appear to be an UpdraftPlus backup archive (such files are .zip or .gz files which have a name like: backup_(time)_(site name)_(code)_(type).(zip|gz))."
-msgstr ""
+msgstr "Tập tin này sẽ không xuất hiện để có một bản sao lưu UpdraftPlus (tập tin như vậy là .zip hoặc .gz trong đó có tên như:. backup_ (thời gian) _ (tên trang web) _ (code) _ (loại) (zip | gz) )."
 
 #: src/admin.php:4075, src/includes/class-wpadmin-commands.php:162,
 #: src/restorer.php:1975
@@ -4961,11 +4961,11 @@ msgstr ""
 
 #: src/admin.php:845, src/central/bootstrap.php:565
 msgid "Create"
-msgstr ""
+msgstr "Tạo"
 
 #: src/admin.php:806
 msgid "Trying..."
-msgstr ""
+msgstr "Đang thử lại..."
 
 #: src/admin.php:805
 msgid "The new user's RackSpace console password is (this will not be shown again):"
@@ -4973,7 +4973,7 @@ msgstr ""
 
 #: src/addons/wp-cli.php:797, src/admin.php:816, src/admin.php:4586
 msgid "Error data:"
-msgstr ""
+msgstr "Dữ liệu lỗi:"
 
 #: src/admin.php:4489
 msgid "Backup does not exist in the backup history"
@@ -5025,7 +5025,7 @@ msgstr ""
 
 #: src/class-updraftplus.php:1680, src/class-updraftplus.php:1682
 msgid "files: %s"
-msgstr ""
+msgstr "các tập tin: %s"
 
 #: src/addons/reporting.php:392
 msgid "Use the \"Reporting\" section to configure the email addresses to be used."
@@ -5037,7 +5037,7 @@ msgstr ""
 
 #: src/addons/reporting.php:223, src/admin.php:3992
 msgid "Uploaded to:"
-msgstr ""
+msgstr "Đã tải lên:"
 
 #: src/addons/reporting.php:222
 msgid "Time taken:"
@@ -5111,7 +5111,7 @@ msgstr ""
 #: src/methods/updraftvault.php:362,
 #: src/templates/wp-admin/settings/temporary-clone.php:82
 msgid "Connect"
-msgstr ""
+msgstr "Kết nối"
 
 #: src/templates/wp-admin/settings/form-contents.php:262
 msgid "For more reporting features, use the Reporting add-on."
@@ -5139,11 +5139,11 @@ msgstr ""
 
 #: src/backup.php:1094
 msgid "Backed up: %s"
-msgstr ""
+msgstr "Sao lưu: %s"
 
 #: src/addons/reporting.php:265, src/backup.php:1088
 msgid "The log file has been attached to this email."
-msgstr ""
+msgstr "Tập tin báo cáo đã được đính kèm vào email này."
 
 #: src/backup.php:1052
 msgid "Unknown/unexpected error - please raise a support request"
@@ -5256,7 +5256,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:191,
 #: src/templates/wp-admin/settings/tab-addons.php:192
 msgid "Reporting"
-msgstr ""
+msgstr "Đang báo cáo"
 
 #: src/admin.php:5189
 msgid "Options (raw)"
@@ -5264,7 +5264,7 @@ msgstr ""
 
 #: src/addons/reporting.php:525, src/admin.php:792
 msgid "Send a report only when there are warnings/errors"
-msgstr ""
+msgstr "Gửi một báo cáo chỉ khi có cảnh báo/lỗi"
 
 #: src/restorer.php:2203
 msgid "Content URL:"
@@ -5419,7 +5419,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:78,
 #: src/templates/wp-admin/settings/tab-backups.php:80
 msgid "Drop backup files here"
-msgstr ""
+msgstr "Thả các tập tin sao lưu ở đây"
 
 #: src/admin.php:804
 msgid "The web server returned an error code (try again, or check your web server logs)"
@@ -5464,7 +5464,7 @@ msgstr ""
 
 #: src/admin.php:3283
 msgid "(%s%%, file %s of %s)"
-msgstr ""
+msgstr "(%s%%, tập tin %s của %s)"
 
 #: src/addons/autobackup.php:304, src/addons/autobackup.php:1090,
 #: src/addons/lockadmin.php:160
@@ -5505,7 +5505,7 @@ msgstr ""
 
 #: src/admin.php:4140, src/admin.php:4142
 msgid "(Not finished)"
-msgstr ""
+msgstr "(Chưa xong)"
 
 #: src/admin.php:4142
 msgid "If you are seeing more backups than you expect, then it is probably because the deletion of old backup sets does not happen until a fresh backup completes."
@@ -5539,11 +5539,11 @@ msgstr ""
 
 #: src/admin.php:3297
 msgid "Backup finished"
-msgstr ""
+msgstr "Sao lưu hoàn thành"
 
 #: src/admin.php:3292
 msgid "Waiting until scheduled time to retry because of errors"
-msgstr ""
+msgstr "Đang chờ đến thời gian dự kiến để thử lại bởi vì lỗi gặp phải"
 
 #: src/admin.php:3288
 msgid "Pruning old backup sets"
@@ -5551,19 +5551,19 @@ msgstr ""
 
 #: src/admin.php:3275
 msgid "Uploading files to remote storage"
-msgstr ""
+msgstr "Đang tải tập tin đến kho lưu trữ từ xa"
 
 #: src/admin.php:3344
 msgid "Encrypted database"
-msgstr ""
+msgstr "Đã mã hóa cơ sở dữ liệu"
 
 #: src/admin.php:3336
 msgid "Encrypting database"
-msgstr ""
+msgstr "Đang mã hóa cơ sở dữ liệu"
 
 #: src/admin.php:3310
 msgid "Created database backup"
-msgstr ""
+msgstr "Đã tạo bản sao lưu cơ sở dữ liệu"
 
 #: src/admin.php:3323
 msgid "table: %s"
@@ -5571,19 +5571,19 @@ msgstr ""
 
 #: src/admin.php:3321
 msgid "Creating database backup"
-msgstr ""
+msgstr "Đang tạo bản sao lưu cơ sở dữ liệu"
 
 #: src/admin.php:3266
 msgid "Created file backup zips"
-msgstr ""
+msgstr "Đã tạo tập tin sao lưu zip"
 
 #: src/admin.php:3253
 msgid "Creating file backup zips"
-msgstr ""
+msgstr "Đang tạo tập tin sao lưu zip"
 
 #: src/admin.php:3248
 msgid "Backup begun"
-msgstr ""
+msgstr "Bắt đầu sao lưu"
 
 #: src/admin.php:1151
 msgid "The scheduler is disabled in your WordPress install, via the DISABLE_WP_CRON setting. No backups can run (even &quot;Backup Now&quot;) unless either you have set up a facility to call the scheduler manually, or until it is enabled."
@@ -5620,7 +5620,7 @@ msgstr ""
 
 #: src/addons/autobackup.php:1104, src/admin.php:848
 msgid "Proceed with update"
-msgstr ""
+msgstr "Tiến hành cập nhật"
 
 #: src/addons/autobackup.php:1097
 msgid "Do not abort after pressing Proceed below - wait for the backup to complete."
@@ -5692,7 +5692,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:21,
 #: src/templates/wp-admin/settings/tab-addons.php:87
 msgid "Support"
-msgstr ""
+msgstr "Hỗ trợ"
 
 #: src/class-updraftplus.php:4237
 msgid "UpdraftPlus was unable to find the table prefix when scanning the database backup."
@@ -5717,7 +5717,7 @@ msgstr ""
 #: src/addons/autobackup.php:1072, src/admin.php:976,
 #: src/includes/updraftplus-notices.php:171
 msgid "Be safe with an automatic backup"
-msgstr ""
+msgstr "An toàn với một bản sao lưu tự động"
 
 #: src/admin.php:2591
 msgid "If you can still read these words after the page finishes loading, then there is a JavaScript or jQuery problem in the site."
@@ -5725,15 +5725,15 @@ msgstr ""
 
 #: src/admin.php:840
 msgid "The file was uploaded."
-msgstr ""
+msgstr "Tập tin đã được tải lên."
 
 #: src/admin.php:839
 msgid "Unknown server response status:"
-msgstr ""
+msgstr "Tình trạng máy chủ không phản hồi:"
 
 #: src/admin.php:838
 msgid "Unknown server response:"
-msgstr ""
+msgstr "Máy chủ không phản hồi:"
 
 #: src/admin.php:837
 msgid "This decryption key will be attempted:"
@@ -5741,31 +5741,31 @@ msgstr ""
 
 #: src/admin.php:836
 msgid "Follow this link to attempt decryption and download the database file to your computer."
-msgstr ""
+msgstr "Nhấn vào liên kết này để tải tập tin cơ sở dữ liệu về máy tính của bạn."
 
 #: src/admin.php:835
 msgid "Upload error"
-msgstr ""
+msgstr "Lỗi tải lên"
 
 #: src/admin.php:834
 msgid "This file does not appear to be an UpdraftPlus encrypted database archive (such files are .gz.crypt files which have a name like: backup_(time)_(site name)_(code)_db.crypt.gz)."
-msgstr ""
+msgstr "Tập tin này sẽ không xuất hiện để có một mã hóa lưu trữ cơ sở dữ liệu UpdraftPlus (tập tin như vậy là .gz.crypt trong đó có tên như: backup_ (thời gian) _ (tên trang web) _ (code) _db.crypt.gz)."
 
 #: src/admin.php:833
 msgid "Upload error:"
-msgstr ""
+msgstr "Lỗi tải lên:"
 
 #: src/admin.php:832
 msgid "(make sure that you were trying to upload a zip file previously created by UpdraftPlus)"
-msgstr ""
+msgstr "(hãy chắc chắn rằng bạn đã cố gắng để tải lên một tập tin zip trước đó được tạo ra bởi UpdraftPlus)"
 
 #: src/admin.php:823
 msgid "Download to your computer"
-msgstr ""
+msgstr "Tải về máy tính của bạn"
 
 #: src/admin.php:822
 msgid "Delete from your web server"
-msgstr ""
+msgstr "Xóa từ máy chủ web của bạn"
 
 #: src/admin.php:4112
 msgid "You appear to be missing one or more archives from this multi-archive set."
@@ -5785,11 +5785,11 @@ msgstr ""
 
 #: src/admin.php:813
 msgid "Warnings:"
-msgstr ""
+msgstr "Cảnh báo:"
 
 #: src/admin.php:812
 msgid "Error: the server sent an empty response."
-msgstr ""
+msgstr "Lỗi: máy chủ gửi một phản hồi trống."
 
 #: src/admin.php:2317
 msgid "This looks like a file created by UpdraftPlus, but this install does not know about this type of object: %s. Perhaps you need to install an add-on?"
@@ -5797,15 +5797,15 @@ msgstr ""
 
 #: src/includes/class-wpadmin-commands.php:238
 msgid "The backup archive files have been processed, but with some errors. You will need to cancel and correct any problems before retrying."
-msgstr ""
+msgstr "Các tập tin sao lưu đã được xử lý, nhưng có một số lỗi. Bạn sẽ cần phải hủy bỏ và sửa bất kỳ vấn đề gặp phải trước khi thử lại."
 
 #: src/includes/class-wpadmin-commands.php:236
 msgid "The backup archive files have been processed, but with some warnings. If all is well, then now press Restore again to proceed. Otherwise, cancel and correct any problems first."
-msgstr ""
+msgstr "Các tập tin sao lưu đã được xử lý, nhưng có một số cảnh báo. Nếu tất cả đều tốt, khi đó hãy bấm Khôi Phục một lần nữa để tiến hành. Nếu không, hủy bỏ và sửa bất kỳ vấn đề gặp phải."
 
 #: src/includes/class-wpadmin-commands.php:234
 msgid "The backup archive files have been successfully processed. Now press Restore again to proceed."
-msgstr ""
+msgstr "Các tập tin sao lưu dự phòng đã được xử lý thành công. Bây giờ bấm Khôi Phục một lần nữa để tiến hành."
 
 #: src/includes/class-wpadmin-commands.php:208
 msgid "This multi-archive backup set appears to have the following archives missing: %s"
@@ -5813,15 +5813,15 @@ msgstr ""
 
 #: src/includes/class-wpadmin-commands.php:193
 msgid "File (%s) was found, but has a different size (%s) from what was expected (%s) - it may be corrupt."
-msgstr ""
+msgstr "Tập tin (%s) đã được tìm thấy, nhưng có kích thước khác (%s) từ những gì đã được dự kiến ​​(%s) - nó có thể đã bị hỏng."
 
 #: src/includes/class-wpadmin-commands.php:188
 msgid "File was found, but is zero-sized (you need to re-upload it): %s"
-msgstr ""
+msgstr "Tập tin đã được tìm thấy, nhưng là số không nhỏ (bạn cần phải tải nó lên lại): %s"
 
 #: src/includes/class-wpadmin-commands.php:186
 msgid "File not found (you need to upload it): %s"
-msgstr ""
+msgstr "Tập tin không tìm thấy (bạn cần phải tải nó): %s"
 
 #: src/addons/wp-cli.php:611, src/addons/wp-cli.php:612,
 #: src/includes/class-wpadmin-commands.php:114
@@ -5883,7 +5883,7 @@ msgstr ""
 
 #: src/admin.php:829
 msgid "Raw backup history"
-msgstr ""
+msgstr "Lịch sử sao lưu thô"
 
 #: src/templates/wp-admin/advanced/site-info.php:104
 msgid "Show raw backup and file list"
@@ -5891,7 +5891,7 @@ msgstr ""
 
 #: src/admin.php:811
 msgid "Processing files - please wait..."
-msgstr ""
+msgstr "Đang xử lý các tập tin - vui lòng đợi..."
 
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:27,
 #: src/templates/wp-admin/settings/tab-backups.php:27
@@ -5924,11 +5924,11 @@ msgstr ""
 #: src/class-updraftplus.php:4097, src/class-updraftplus.php:4097,
 #: src/updraftplus.php:157
 msgid "Go here for more information."
-msgstr ""
+msgstr "Tới đây để biết thêm thông tin."
 
 #: src/admin.php:810
 msgid "Some files are still downloading or being processed - please wait."
-msgstr ""
+msgstr "Một số tập tin vẫn đang tải về hoặc đang được xử lý - vui lòng đợi."
 
 #: src/class-updraftplus.php:3945, src/class-updraftplus.php:3965
 msgid "This backup set is from a different site (%s) - this is not a restoration, but a migration. You need the Migrator add-on in order to make this work."
@@ -6004,7 +6004,7 @@ msgstr ""
 #: src/class-updraftplus.php:4076, src/methods/googledrive.php:403,
 #: src/methods/s3.php:341
 msgid "Error: %s"
-msgstr ""
+msgstr "Lỗi: %s"
 
 #: src/admin.php:3736
 msgid "Backup directory specified exists, but is <b>not</b> writable."
@@ -6036,7 +6036,7 @@ msgstr ""
 
 #: src/backup.php:1079
 msgid "Warnings encountered:"
-msgstr ""
+msgstr "Cảnh báo gặp phải:"
 
 #: src/class-updraftplus.php:2986
 msgid "The backup apparently succeeded (with warnings) and is now complete"
@@ -6104,7 +6104,7 @@ msgstr ""
 
 #: src/admin.php:2591, src/class-updraftplus.php:4009, src/restorer.php:2647
 msgid "Warning:"
-msgstr ""
+msgstr "Cảnh báo:"
 
 #: src/class-updraftplus.php:3998, src/class-updraftplus.php:4001,
 #: src/restorer.php:530
@@ -6122,7 +6122,7 @@ msgstr ""
 
 #: src/admin.php:849, src/includes/updraftplus-tour.php:89
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #: src/addons/autobackup.php:349, src/addons/autobackup.php:441,
 #: src/admin.php:803, src/methods/remotesend.php:69,
@@ -6137,7 +6137,7 @@ msgstr ""
 
 #: src/admin.php:827
 msgid "PHP information"
-msgstr ""
+msgstr "Thông tin PHP"
 
 #: src/templates/wp-admin/advanced/site-info.php:70
 msgid "zip executable found:"
@@ -6145,7 +6145,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:45
 msgid "show PHP information (phpinfo)"
-msgstr ""
+msgstr "Hiện thông tin PHP (phpinfo)"
 
 #: src/templates/wp-admin/settings/migrator-no-migrator.php:9
 msgid "Do you want to migrate or clone/duplicate a site?"
@@ -6189,7 +6189,7 @@ msgstr ""
 
 #: src/admin.php:1695, src/includes/class-wpadmin-commands.php:506
 msgid "Backup set not found"
-msgstr ""
+msgstr "Bộ sao lưu không tìm thấy"
 
 #: src/backup.php:189
 msgid "%s - could not back this entity up; the corresponding directory does not exist (%s)"
@@ -6224,11 +6224,11 @@ msgstr ""
 
 #: src/admin.php:1167
 msgid "Notice"
-msgstr ""
+msgstr "Chú ý"
 
 #: src/backup.php:1061
 msgid "Errors encountered:"
-msgstr ""
+msgstr "Lỗi gặp phải:"
 
 #: src/admin.php:795
 msgid "Rescanning (looking for backups that you have uploaded manually into the internal backup store)..."
@@ -6236,7 +6236,7 @@ msgstr ""
 
 #: src/admin.php:809
 msgid "Begun looking for this entity"
-msgstr ""
+msgstr "Đang bắt đầu tìm kiếm thực thể này"
 
 #: src/methods/s3.php:482
 msgid "%s Error: Failed to access bucket %s. Check your permissions and credentials.1"
@@ -6260,7 +6260,7 @@ msgstr ""
 
 #: src/addons/migrator.php:1302, src/admin.php:814
 msgid "Errors:"
-msgstr ""
+msgstr "Lỗi:"
 
 #: src/addons/migrator.php:1301
 msgid "SQL update commands run:"
@@ -6616,7 +6616,7 @@ msgstr ""
 
 #: src/methods/email.php:92
 msgid "Note:"
-msgstr ""
+msgstr "Ghi chú:"
 
 #: src/methods/email.php:45
 msgid "WordPress Backup"
@@ -6638,7 +6638,7 @@ msgstr ""
 #: src/addons/webdav.php:187, src/methods/cloudfiles-new.php:189,
 #: src/methods/cloudfiles.php:524, src/methods/openstack2.php:158
 msgid "Username"
-msgstr ""
+msgstr "Tài khoản"
 
 #: src/methods/cloudfiles-new.php:184, src/methods/cloudfiles.php:519,
 #: src/methods/s3.php:1089
@@ -6657,7 +6657,7 @@ msgstr ""
 #: src/methods/openstack2.php:190, src/methods/openstack2.php:195,
 #: src/methods/s3.php:1089, src/methods/s3.php:1093
 msgid "Failure: No %s was given."
-msgstr ""
+msgstr "Thất bại: Không có %s được đưa ra."
 
 #: src/methods/cloudfiles-new.php:100, src/methods/cloudfiles.php:440,
 #: src/methods/openstack-base.php:571, src/methods/s3.php:863
@@ -6929,7 +6929,7 @@ msgstr ""
 
 #: src/restorer.php:396
 msgid "Error message"
-msgstr ""
+msgstr "Thông báo lỗi"
 
 #: src/restorer.php:231
 msgid "The backup records do not contain information about the proper size of this file."
@@ -6961,7 +6961,7 @@ msgstr ""
 
 #: src/admin.php:4268
 msgid "Delete this backup set"
-msgstr ""
+msgstr "Xóa bản sao lưu này"
 
 #: src/admin.php:3921
 msgid "Good news: Your site's communications with %s can be encrypted. If you see any errors to do with encryption, then look in the 'Expert Settings' for more help."
@@ -6982,7 +6982,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:373
 msgid "Save Changes"
-msgstr ""
+msgstr "Lưu thay đổi"
 
 #: src/templates/wp-admin/settings/form-contents.php:345
 msgid "Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect."
@@ -7050,7 +7050,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:303
 msgid "Debug mode"
-msgstr ""
+msgstr "Chế độ kiểm tra sửa lỗi"
 
 #: src/templates/wp-admin/settings/form-contents.php:288
 msgid "Advanced / Debugging Settings"
@@ -7062,12 +7062,12 @@ msgstr ""
 
 #: src/addons/morefiles.php:311, src/admin.php:843
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy"
 
 #: src/addons/incremental.php:235, src/addons/reporting.php:245,
 #: src/admin.php:4004
 msgid "None"
-msgstr ""
+msgstr "Không mục nào"
 
 #: src/templates/wp-admin/settings/form-contents.php:103
 msgid "Choose your remote storage"
@@ -7084,7 +7084,7 @@ msgstr ""
 #: src/admin.php:2935, src/templates/wp-admin/settings/form-contents.php:255,
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:44
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: src/templates/wp-admin/settings/form-contents.php:147
 msgid "The above directories are everything, except for WordPress core itself which you can download afresh from WordPress.org."
@@ -7112,23 +7112,23 @@ msgstr ""
 
 #: src/addons/incremental.php:244, src/admin.php:3724
 msgid "Monthly"
-msgstr ""
+msgstr "Hằng tháng"
 
 #: src/addons/incremental.php:243, src/admin.php:3723
 msgid "Fortnightly"
-msgstr ""
+msgstr "Mỗi tháng hai lần"
 
 #: src/addons/incremental.php:242, src/admin.php:3722
 msgid "Weekly"
-msgstr ""
+msgstr "Hằng tuần"
 
 #: src/addons/incremental.php:241, src/admin.php:3721
 msgid "Daily"
-msgstr ""
+msgstr "Hằng ngày"
 
 #: src/admin.php:851, src/admin.php:3699
 msgid "Download log file"
-msgstr ""
+msgstr "Tải về tập tin báo cáo"
 
 #: src/admin.php:3571
 msgid "The folder exists, but your webserver does not have permission to write to it."
@@ -7147,7 +7147,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/existing-backups-table.php:155,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Delete"
-msgstr ""
+msgstr "Xóa"
 
 #: src/admin.php:3415
 msgid "show log"
@@ -7155,11 +7155,11 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:9
 msgid "This will delete all your UpdraftPlus settings - are you sure you want to do this?"
-msgstr ""
+msgstr "Điều này sẽ xóa tất cả cài đặt UpdraftPlus của bạn - bạn có chắc bạn muốn làm điều này?"
 
 #: src/templates/wp-admin/advanced/total-size.php:19
 msgid "count"
-msgstr ""
+msgstr "đếm"
 
 #: src/templates/wp-admin/advanced/total-size.php:9
 msgid "N.B. This count is based upon what was, or was not, excluded the last time you saved the options."
@@ -7167,7 +7167,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/total-size.php:6
 msgid "Total (uncompressed) on-disk data:"
-msgstr ""
+msgstr "Tổng số dữ liệu trên đĩa (không nén):"
 
 #: src/templates/wp-admin/advanced/site-info.php:66,
 #: src/templates/wp-admin/settings/tab-addons.php:79,
@@ -7185,7 +7185,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:235,
 #: src/templates/wp-admin/settings/tab-addons.php:252
 msgid "No"
-msgstr ""
+msgstr "Không"
 
 #: src/templates/wp-admin/advanced/site-info.php:63,
 #: src/templates/wp-admin/advanced/site-info.php:66,
@@ -7208,7 +7208,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:255,
 #: src/templates/wp-admin/settings/tab-addons.php:261
 msgid "Yes"
-msgstr ""
+msgstr "Có"
 
 #: src/admin.php:5366, src/admin.php:5370,
 #: src/templates/wp-admin/advanced/site-info.php:45,
@@ -7216,7 +7216,7 @@ msgstr ""
 #: src/templates/wp-admin/advanced/site-info.php:58,
 #: src/templates/wp-admin/advanced/site-info.php:59
 msgid "%s version:"
-msgstr ""
+msgstr "%s phiên bản:"
 
 #: src/templates/wp-admin/advanced/site-info.php:43
 msgid "Current memory usage"
@@ -7228,7 +7228,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:31
 msgid "Web server:"
-msgstr ""
+msgstr "Máy chủ web:"
 
 #: src/templates/wp-admin/settings/take-backup.php:91
 msgid "Please check out UpdraftPlus Premium, or the stand-alone Multisite add-on."
@@ -7240,7 +7240,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/take-backup.php:87
 msgid "Multisite"
-msgstr ""
+msgstr "Nhiều trang"
 
 #: src/templates/wp-admin/settings/take-backup.php:82
 msgid "Perform a one-time backup"
@@ -7257,11 +7257,11 @@ msgstr ""
 #: src/addons/morefiles.php:137,
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:75
 msgid "%s restoration options:"
-msgstr ""
+msgstr "%s tùy chọn phục hồi:"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:68
 msgid "You will need to restore it manually."
-msgstr ""
+msgstr "Bạn sẽ cần phải khôi phục lại nó bằng tay."
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:68
 msgid "The following entity cannot be restored automatically: \"%s\"."
@@ -7273,7 +7273,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:42
 msgid "Choose the components to restore"
-msgstr ""
+msgstr "Chọn các thành phần để khôi phục"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:42
 msgid "Restoring will replace this site's themes, plugins, uploads, database and/or other content directories (according to what is contained in the backup set, and your selection)."
@@ -7281,11 +7281,11 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:30
 msgid "Restore backup from"
-msgstr ""
+msgstr "Khôi phục sao lưu từ"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:29
 msgid "Restore backup"
-msgstr ""
+msgstr "Khôi phục bản sao lưu"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:8
 msgid "Delete backup set"
@@ -7293,7 +7293,7 @@ msgstr ""
 
 #: src/admin.php:825
 msgid "Download error: the server sent us a response which we did not understand."
-msgstr ""
+msgstr "Tải về lỗi: máy chủ gửi cho chúng tôi hồi đáp mà chúng tôi không hiểu."
 
 #: src/addons/backblaze.php:225, src/addons/cloudfiles-enhanced.php:117,
 #: src/addons/migrator.php:890, src/addons/migrator.php:1187,
@@ -7313,21 +7313,21 @@ msgstr ""
 #: src/methods/updraftvault.php:527, src/restorer.php:228,
 #: src/restorer.php:256, src/restorer.php:1921
 msgid "Error:"
-msgstr ""
+msgstr "Lỗi:"
 
 #: src/admin.php:808
 msgid "calculating..."
-msgstr ""
+msgstr "Đang tính..."
 
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:68,
 #: src/templates/wp-admin/settings/tab-backups.php:70
 msgid "UpdraftPlus - Upload backup files"
-msgstr ""
+msgstr "UpdraftPlus - Tải lên tập tin sao lưu"
 
 #: src/includes/class-filesystem-functions.php:65,
 #: src/templates/wp-admin/advanced/site-info.php:38
 msgid "refresh"
-msgstr ""
+msgstr "làm mới"
 
 #: src/includes/class-filesystem-functions.php:86,
 #: src/templates/wp-admin/advanced/site-info.php:38
@@ -7358,16 +7358,16 @@ msgstr ""
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:59,
 #: src/templates/wp-admin/settings/tab-backups.php:63
 msgid "Opera web browser"
-msgstr ""
+msgstr "Trình duyệt web Opera"
 
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:47,
 #: src/templates/wp-admin/settings/tab-backups.php:51
 msgid "More tasks:"
-msgstr ""
+msgstr "Nhiều nhiệm vụ:"
 
 #: src/admin.php:3114
 msgid "Download most recently modified log file"
-msgstr ""
+msgstr "Tải về tập tin báo cáo thay đổi mới nhất"
 
 #: src/central/bootstrap.php:187
 msgid "(Nothing yet logged)"
@@ -7377,16 +7377,16 @@ msgstr ""
 #: src/admin.php:3070, src/admin.php:3076,
 #: src/templates/wp-admin/settings/take-backup.php:64
 msgid "Last log message"
-msgstr ""
+msgstr "Báo cáo thay đổi mới nhất"
 
 #: src/addons/migrator.php:271, src/admin.php:663, src/admin.php:850,
 #: src/admin.php:4170
 msgid "Restore"
-msgstr ""
+msgstr "Khôi Phục"
 
 #: src/admin.php:842, src/templates/wp-admin/settings/take-backup.php:50
 msgid "Backup Now"
-msgstr ""
+msgstr "Sao Lưu Ngay"
 
 #: src/templates/wp-admin/settings/take-backup.php:45
 msgid "Time now"
@@ -7401,7 +7401,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:75,
 #: src/templates/wp-admin/settings/take-backup.php:33
 msgid "Database"
-msgstr ""
+msgstr "Cơ sở dữ liệu"
 
 #: src/admin.php:334, src/admin.php:5161,
 #: src/templates/wp-admin/settings/take-backup.php:23
@@ -7427,11 +7427,11 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/take-backup.php:5
 msgid "JavaScript warning"
-msgstr ""
+msgstr "Cảnh báo JavaScript"
 
 #: src/admin.php:828, src/admin.php:3151
 msgid "Delete Old Directories"
-msgstr ""
+msgstr "Xóa thư mục cũ"
 
 #: src/admin.php:2638
 msgid "Current limit is:"
@@ -7439,11 +7439,11 @@ msgstr ""
 
 #: src/admin.php:2613
 msgid "Your backup has been restored."
-msgstr ""
+msgstr "Bản sao lưu của bạn đã được khôi phục."
 
 #: src/templates/wp-admin/settings/header.php:26
 msgid "Version"
-msgstr ""
+msgstr "Phiên bản"
 
 #: src/templates/wp-admin/settings/header.php:25
 msgid "Lead developer's homepage"
@@ -7455,7 +7455,7 @@ msgstr ""
 
 #: src/admin.php:5053
 msgid "Your settings have been wiped."
-msgstr ""
+msgstr "Các cài đặt của bạn đã được xóa."
 
 #: src/admin.php:2573
 msgid "Backup directory successfully created."
@@ -7481,14 +7481,14 @@ msgstr ""
 #: src/admin.php:2514, src/admin.php:2524, src/admin.php:2533,
 #: src/admin.php:2575, src/admin.php:3433
 msgid "Return to UpdraftPlus Configuration"
-msgstr ""
+msgstr "Quay trở lại UpdraftPlus"
 
 #: src/admin.php:821, src/admin.php:2514, src/admin.php:2524,
 #: src/admin.php:2533, src/admin.php:2575, src/admin.php:3433,
 #: src/templates/wp-admin/settings/existing-backups-table.php:19,
 #: src/templates/wp-admin/settings/existing-backups-table.php:139
 msgid "Actions"
-msgstr ""
+msgstr "Tác vụ"
 
 #: src/admin.php:2409
 msgid "Bad filename format - this does not look like an encrypted database file created by UpdraftPlus"
@@ -7496,7 +7496,7 @@ msgstr ""
 
 #: src/admin.php:2309
 msgid "Bad filename format - this does not look like a file created by UpdraftPlus"
-msgstr ""
+msgstr "Định dạng sai tên tập tin - điều này không giống như tập tin được tạo bởi UpdraftPlus"
 
 #: src/admin.php:2205
 msgid "No local copy present."
@@ -7504,15 +7504,15 @@ msgstr ""
 
 #: src/admin.php:2202
 msgid "Download in progress"
-msgstr ""
+msgstr "Tiến trình tải về"
 
 #: src/admin.php:820, src/admin.php:2191
 msgid "File ready."
-msgstr ""
+msgstr "Tập tin sẵn sàng."
 
 #: src/admin.php:2172
 msgid "Download failed"
-msgstr ""
+msgstr "Tải về thất bại"
 
 #: src/addons/wp-cli.php:518, src/admin.php:818,
 #: src/class-updraftplus.php:1298, src/class-updraftplus.php:1342,
@@ -7523,7 +7523,7 @@ msgstr ""
 #: src/methods/stream-base.php:219, src/restorer.php:2884,
 #: src/restorer.php:2909, src/restorer.php:2990, src/updraftplus.php:157
 msgid "Error"
-msgstr ""
+msgstr "Lỗi"
 
 #: src/admin.php:1959
 msgid "Could not find that job - perhaps it has already finished?"
@@ -7531,11 +7531,11 @@ msgstr ""
 
 #: src/admin.php:1951
 msgid "Job deleted"
-msgstr ""
+msgstr "Công việc đã xóa"
 
 #: src/admin.php:2050, src/includes/class-commands.php:833
 msgid "OK. You should soon see activity in the \"Last log message\" field below."
-msgstr ""
+msgstr "OK. Bạn sẽ sớm nhìn thấy \"Báo cáo thay đổi mới nhất\" trong trường bên dưới"
 
 #: src/admin.php:895
 msgid "Nothing yet logged"
@@ -7543,7 +7543,7 @@ msgstr ""
 
 #: src/admin.php:1163
 msgid "Please consult this FAQ if you have problems backing up."
-msgstr ""
+msgstr "Vui lòng tham khảo FAQ nếu bạn gặp vấn đề sao lưu."
 
 #: src/admin.php:1163
 msgid "Your website is hosted using the %s web server."
@@ -7569,7 +7569,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-backups.php:27,
 #: src/udaddons/updraftplus-addons.php:259
 msgid "Warning"
-msgstr ""
+msgstr "Cảnh báo"
 
 #: src/admin.php:1092
 msgid "Add-Ons / Pro Support"
@@ -7577,7 +7577,7 @@ msgstr ""
 
 #: src/admin.php:679, src/admin.php:1090, src/admin.php:2800
 msgid "Settings"
-msgstr ""
+msgstr "Thiết lập"
 
 #: src/backup.php:261
 msgid "Could not create %s zip. Consult the log file for more information."

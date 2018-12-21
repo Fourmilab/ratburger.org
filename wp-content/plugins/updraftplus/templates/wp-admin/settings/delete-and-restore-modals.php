@@ -27,7 +27,7 @@
 </div>
 
 <div id="updraft-restore-modal" title="UpdraftPlus - <?php _e('Restore backup', 'updraftplus');?>">
-	<p><strong><?php _e('Restore backup from', 'updraftplus');?>:</strong> <span class="updraft_restore_date"></span></p>
+	<p><strong><?php _e('Restore files from', 'updraftplus');?>:</strong> <span class="updraft_restore_date"></span></p>
 
 	<div id="updraft-restore-modal-stage2">
 

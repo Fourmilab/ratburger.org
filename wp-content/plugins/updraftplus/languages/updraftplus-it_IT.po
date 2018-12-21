@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-05-28 22:27:12+0000\n"
+"PO-Revision-Date: 2018-12-15 11:42:50+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Read more about Easy Updates Manager"
-msgstr ""
+msgstr "Leggi tutto sull'Easy Updates Manager"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:68
 msgid "You can find out more about clone keys here."
@@ -43,7 +43,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:57
 msgid "Or, use an UpdraftClone key"
-msgstr ""
+msgstr "O utilizza una chiave UpdraftClone"
 
 #: src/restorer.php:2493
 msgid "Found SET NAMES %s, but changing to %s as suggested by WPDB::determine_charset()."
@@ -63,11 +63,11 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:350
 msgid "Ask WordPress to automatically update UpdraftPlus when it finds an available update."
-msgstr ""
+msgstr "Chiedi a WordPress di aggiornare automaticamente UpdraftPlus quando trova un aggiornamento disponibile."
 
 #: src/templates/wp-admin/settings/form-contents.php:349
 msgid "Automatic updates"
-msgstr ""
+msgstr "Aggiornamenti automatici"
 
 #: src/restorer.php:2092, src/restorer.php:2134
 msgid "Your database user does not have permission to drop tables"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Confirm change"
-msgstr ""
+msgstr "Conferma la modifica"
 
 #: src/templates/wp-admin/settings/exclude-settings-modal/exclude-panel-submit.php:3,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:18
@@ -167,12 +167,12 @@ msgstr ""
 #: src/templates/wp-admin/settings/exclude-modal.php:44,
 #: src/templates/wp-admin/settings/exclude-modal.php:46
 msgid "All files with this extension"
-msgstr ""
+msgstr "Tutti i file con questa estensione"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:9,
 #: src/templates/wp-admin/settings/exclude-modal.php:22
 msgid "File/directory"
-msgstr ""
+msgstr "File/directory"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:6
 msgid "Select a way to exclude files or directories from the backup"
@@ -180,7 +180,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/exclude-modal.php:2
 msgid "Exclude files/directories"
-msgstr ""
+msgstr "Escludi file/directory"
 
 #: src/includes/updraftclone/temporary-clone-status.php:422
 msgid "To read FAQs/documentation about UpdraftClone, go here."
@@ -188,7 +188,7 @@ msgstr ""
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "your UpdraftPlus.com account"
-msgstr ""
+msgstr "il tuo account UpdraftPlus.com"
 
 #: src/includes/updraftclone/temporary-clone-status.php:421
 msgid "You can check the progress here or in %s"
@@ -239,7 +239,7 @@ msgstr ""
 #: src/includes/updraftclone/temporary-clone-status.php:66,
 #: src/includes/updraftclone/temporary-clone-status.php:341
 msgid "WordPress installed"
-msgstr ""
+msgstr "WordPress installato"
 
 #: src/admin.php:5428
 msgid "Your clone has started, network information is not yet available but will be displayed here and at your updraftplus.com account once it is ready."
@@ -299,7 +299,7 @@ msgstr ""
 
 #: src/admin.php:5424
 msgid "Dashboard:"
-msgstr ""
+msgstr "Bacheca:"
 
 #: src/admin.php:5423
 msgid "Front page:"
@@ -386,7 +386,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/temporary-clone.php:56,
 #: src/templates/wp-admin/settings/temporary-clone.php:76
 msgid "I accept the UpdraftClone terms and conditions"
-msgstr ""
+msgstr "Accetto i termini e le condizioni di utilizzo di UpdraftClone"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:56
 msgid "Not got an account? Get one by buying some tokens here."
@@ -408,7 +408,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:32
 msgid "Flexible"
-msgstr ""
+msgstr "Flessibile"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:31
 msgid "Takes just the time needed to create a backup and send it."
@@ -416,7 +416,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:31
 msgid "Fast"
-msgstr ""
+msgstr "Veloce"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:30
 msgid "One VPS (Virtual Private Server) per clone, shared with nobody."
@@ -424,7 +424,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:30
 msgid "Secure"
-msgstr ""
+msgstr "Sicuro"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:29
 msgid "Runs on capacity from a leading cloud computing provider."
@@ -432,7 +432,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:29
 msgid "Reliable"
-msgstr ""
+msgstr "Affidabile"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Press the buttons... UpdraftClone does the work."
@@ -440,7 +440,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Easy"
-msgstr ""
+msgstr "Facile"
 
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "A temporary clone is an instant copy of this website, running on our servers. Rather than test things on your live site, you can UpdraftClone it, and then throw away your clone when done."
@@ -453,7 +453,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/tab-addons.php:23
 msgid "WooCommerce plugins"
-msgstr ""
+msgstr "Plugin di WooCommerce"
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:13
 msgid "Reset tour"
@@ -511,15 +511,15 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:139
 msgid "Congratulations, your settings have successfully been saved."
-msgstr ""
+msgstr "Congratulazioni, le tue impostazioni sono state salvate con successo."
 
 #: src/includes/updraftplus-tour.php:135
 msgid "Press here to save your settings."
-msgstr ""
+msgstr "Premi qui per salvare le tue impostazioni."
 
 #: src/includes/updraftplus-tour.php:134, src/includes/updraftplus-tour.php:138
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: src/includes/updraftplus-tour.php:131
 msgid "Look through the other settings here, making any changes you’d like."
@@ -557,7 +557,7 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:109, src/includes/updraftplus-tour.php:114
 msgid "Go to settings"
-msgstr ""
+msgstr "Vai alle impostazioni"
 
 #: src/includes/updraftplus-tour.php:108, src/includes/updraftplus-tour.php:113
 msgctxt "Translators: %s is a bold tag."
@@ -566,7 +566,7 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:108
 msgid "Press here to run a manual backup."
-msgstr ""
+msgstr "Premi qui per effettuare un backup manuale."
 
 #: src/includes/updraftplus-tour.php:107, src/includes/updraftplus-tour.php:112
 msgid "Creating your first backup"
@@ -587,7 +587,7 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:99
 msgid "Your first backup"
-msgstr ""
+msgstr "Il tuo primo backup"
 
 #: src/includes/updraftplus-tour.php:95
 msgid "Press here to start!"
@@ -599,11 +599,11 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:92
 msgid "Welcome to UpdraftPlus"
-msgstr ""
+msgstr "Benvenuto in UpdraftPlus"
 
 #: src/includes/updraftplus-tour.php:91
 msgid "UpdraftPlus settings"
-msgstr ""
+msgstr "Impostazioni UpdraftPlus"
 
 #: src/includes/updraftplus-tour.php:88
 msgid "End tour"
@@ -611,11 +611,11 @@ msgstr ""
 
 #: src/includes/updraftplus-tour.php:87
 msgid "Skip this step"
-msgstr ""
+msgstr "Salta questo passaggio"
 
 #: src/includes/updraftplus-tour.php:86
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #: src/includes/class-commands.php:893
 msgid "You can buy more temporary clone tokens here."
@@ -663,11 +663,11 @@ msgstr ""
 
 #: src/admin.php:2798
 msgid "Backup / Restore"
-msgstr ""
+msgstr "Backup / Ripristino"
 
 #: src/admin.php:663
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 #: src/addons/wp-cli.php:408
 msgid "Latest full backup found; identifier:"
@@ -769,16 +769,16 @@ msgstr ""
 
 #: src/admin.php:5402
 msgid "(current version)"
-msgstr ""
+msgstr "(versione attuale)"
 
 #: src/admin.php:3738
 msgid "press here"
-msgstr ""
+msgstr "premi qui"
 
 #: src/addons/onedrive.php:1157, src/methods/dropbox.php:586,
 #: src/methods/googledrive.php:1214
 msgid "this privacy policy"
-msgstr ""
+msgstr "questa privacy policy"
 
 #: src/addons/onedrive.php:1157, src/methods/dropbox.php:586,
 #: src/methods/googledrive.php:1214
@@ -795,7 +795,7 @@ msgstr ""
 
 #: src/addons/incremental.php:236, src/updraftplus.php:99
 msgid "Every hour"
-msgstr ""
+msgstr "Ogni ora"
 
 #: src/includes/class-commands.php:900
 msgid "Create clone"
@@ -930,7 +930,7 @@ msgstr ""
 #: src/admin.php:929,
 #: src/templates/wp-admin/settings/updraftcentral-connect.php:9
 msgid "UpdraftCentral Cloud"
-msgstr ""
+msgstr "UpdraftCentral Cloud"
 
 #: src/admin.php:489
 msgid "Are you sure you want to dismiss all UpdraftPlus news forever?"
@@ -990,7 +990,7 @@ msgstr ""
 
 #: src/admin.php:846, src/admin.php:4248
 msgid "Upload"
-msgstr ""
+msgstr "Carica"
 
 #: src/addons/reporting.php:529, src/admin.php:796
 msgid "Only email the database backup"
@@ -1026,11 +1026,11 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/tab-addons.php:153
 msgid "WP-CLI support"
-msgstr ""
+msgstr "Supporto WP-CLI"
 
 #: src/templates/wp-admin/settings/tab-addons.php:152
 msgid "WP CLI"
-msgstr ""
+msgstr "WP CLI"
 
 #: src/addons/wp-cli.php:265
 msgid "Invalid Job Id"
@@ -1128,7 +1128,7 @@ msgstr ""
 
 #: src/admin.php:4982
 msgid "authentication error"
-msgstr ""
+msgstr "errore di autenticazione"
 
 #: src/addons/multisite.php:44, src/options.php:38
 msgid "(Nothing has been logged yet)"
@@ -1156,19 +1156,19 @@ msgstr ""
 
 #: src/addons/morestorage.php:81, src/admin.php:924
 msgid "Currently disabled"
-msgstr ""
+msgstr "Attualmente disabilitato"
 
 #: src/addons/morestorage.php:81, src/admin.php:923
 msgid "Currently enabled"
-msgstr ""
+msgstr "Attualmente abilitato"
 
 #: src/templates/wp-admin/settings/tab-addons.php:30
 msgid "If you have purchased from UpdraftPlus.Com, then follow this link to the installation instructions (particularly step 1)."
-msgstr ""
+msgstr "Se hai acquistato da UpdraftPlus.Com, segui questo link per le istruzioni di installazione (in particolare passaggio 1)."
 
 #: src/templates/wp-admin/settings/tab-addons.php:30
 msgid "You are currently using the free version of UpdraftPlus."
-msgstr ""
+msgstr "Stai utilizzando la versione gratuita di UpdraftPlus."
 
 #: src/templates/wp-admin/settings/tab-addons.php:26
 msgid "Get it here"
@@ -1188,11 +1188,11 @@ msgstr ""
 
 #: src/includes/updraftplus-notices.php:193
 msgid "No more forgotten passwords. Find out more about our revolutionary new WordPress plugin"
-msgstr ""
+msgstr "Mai più password dimenticate. Scopri di più sul nostro nuovo rivoluzionario plugin WordPress"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:87
 msgid "remote site"
-msgstr ""
+msgstr "sito remoto"
 
 #: src/addons/backblaze.php:475
 msgid "Invalid bucket name"
@@ -1296,7 +1296,7 @@ msgstr[1] ""
 
 #: src/central/bootstrap.php:602
 msgid "Create another key"
-msgstr ""
+msgstr "Cra un'altra chiave"
 
 #: src/central/bootstrap.php:533
 msgid "UpdraftCentral dashboard connection details"
@@ -1304,11 +1304,11 @@ msgstr ""
 
 #: src/central/bootstrap.php:527, src/includes/updraftplus-tour.php:85
 msgid "Next"
-msgstr ""
+msgstr "Successivo"
 
 #: src/central/bootstrap.php:513
 msgid "an account"
-msgstr ""
+msgstr "un account"
 
 #: src/central/bootstrap.php:513
 msgid "i.e. if you have %s there"
@@ -1320,7 +1320,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:471
 msgid "Manage existing keys (%d)..."
-msgstr ""
+msgstr "Gestisci le chiavi esistenti (%d)..."
 
 #: src/central/bootstrap.php:421
 msgid "There are no UpdraftCentral dashboards that can currently control this site."
@@ -1328,7 +1328,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:258
 msgid "You can now control this site via your UpdraftCentral dashboard at %s."
-msgstr ""
+msgstr "Ora puoi controllare questo sito attraverso il tuo pannello di controllo di UpdraftCentral da %s."
 
 #: src/central/bootstrap.php:256
 msgid "Detailed instructions for this can be found at %s"
@@ -1340,7 +1340,7 @@ msgstr ""
 
 #: src/admin.php:918
 msgid "Please enter a valid URL e.g http://example.com"
-msgstr ""
+msgstr "Inserisci un URL valido, ad es. http://example.com"
 
 #: src/addons/backblaze.php:661
 msgid "There are limits upon which path-names are valid. Spaces are not allowed."
@@ -1408,7 +1408,7 @@ msgstr ""
 
 #: src/admin.php:897
 msgid "Error: The chosen file is corrupt. Please choose a valid UpdraftPlus export file."
-msgstr ""
+msgstr "Errore: il file scelto è corrotto. Scegli un file di esportazione UpdraftPlus valido."
 
 #: src/backup.php:456, src/backup.php:2140, src/class-updraftplus.php:2133,
 #: src/class-updraftplus.php:2198,
@@ -1461,7 +1461,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:191
 msgid "Select Files"
-msgstr ""
+msgstr "Seleziona i file"
 
 #: src/methods/cloudfiles.php:476
 msgid "Rackspace Storage Region"
@@ -1538,7 +1538,7 @@ msgstr "Cerca"
 
 #: src/admin.php:912
 msgid "Select a file to view information about it"
-msgstr ""
+msgstr "Seleziona un file per visualizzarne le informazioni"
 
 #: src/admin.php:911
 msgid "Browsing zip file"
@@ -1590,7 +1590,7 @@ msgstr ""
 
 #: src/admin.php:909
 msgid "HTTP code:"
-msgstr "codice HTTP:"
+msgstr "Codice HTTP:"
 
 #: src/addons/wp-cli.php:109, src/admin.php:801
 msgid "You have chosen to backup a database, but no tables have been selected"
@@ -1614,7 +1614,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:11
 msgid "UpdraftPlus Tour"
-msgstr ""
+msgstr "Tour di UpdraftPlus"
 
 #: src/templates/wp-admin/settings/tab-addons.php:232
 msgid "Lock access to UpdraftPlus via a password so you choose which admin users can access backups."
@@ -1780,7 +1780,7 @@ msgstr ""
 #: src/addons/morefiles.php:297, src/addons/morefiles.php:317,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Edit"
-msgstr ""
+msgstr "Modifica"
 
 #: src/addons/morefiles.php:280
 msgid "If using it, select a path from the directory tree below and then press confirm selection."
@@ -2266,7 +2266,7 @@ msgstr "Questo è causato qualche volta da un firewall - prova a togliere l'SSL 
 
 #: src/methods/ftp.php:412
 msgid "login"
-msgstr "Login"
+msgstr "login"
 
 #: src/addons/reporting.php:527, src/addons/reporting.php:527,
 #: src/addons/reporting.php:529, src/methods/email.php:100
@@ -2405,7 +2405,7 @@ msgstr "Dimensione totale backup:"
 
 #: src/admin.php:3416
 msgid "stop"
-msgstr "Stop"
+msgstr "stop"
 
 #: src/admin.php:905, src/admin.php:3209
 msgid "The backup has finished running"
@@ -2484,7 +2484,7 @@ msgstr "Sarà importato come un nuovo sito."
 #: src/admin.php:2842, src/templates/wp-admin/notices/horizontal-notice.php:16,
 #: src/templates/wp-admin/notices/horizontal-notice.php:18
 msgid "Dismiss"
-msgstr "Chiudi"
+msgstr "Ignora"
 
 #: src/admin.php:891
 msgid "Please fill in the required information."
@@ -2971,7 +2971,7 @@ msgstr "Inserisci la tua mail / password di UpdraftPlus.Com qui per connetterti:
 
 #: src/methods/updraftvault.php:322, src/methods/updraftvault.php:351
 msgid "Read the FAQs here."
-msgstr ""
+msgstr "Leggi le FAQ qui."
 
 #: src/addons/s3-enhanced.php:73
 msgid "Check this box to use Amazon's server-side encryption"
@@ -3066,7 +3066,7 @@ msgstr "Vai qui per un aiuto"
 
 #: src/methods/updraftvault.php:360
 msgid "E-mail"
-msgstr ""
+msgstr "Email"
 
 #: src/central/bootstrap.php:570, src/methods/updraftvault.php:354,
 #: src/methods/updraftvault.php:368,
@@ -3098,7 +3098,7 @@ msgstr ""
 
 #: src/methods/updraftvault.php:315
 msgid "Show the options"
-msgstr ""
+msgstr "Mostra le opzioni"
 
 #: src/methods/updraftvault.php:314
 msgid "First time user?"
@@ -3126,7 +3126,7 @@ msgstr ""
 
 #: src/methods/updraftvault.php:99
 msgid "Updraft Vault"
-msgstr ""
+msgstr "Updraft Vault"
 
 #: src/addons/azure.php:443, src/addons/backblaze.php:528,
 #: src/addons/googlecloud.php:843, src/methods/s3.php:1172
@@ -3295,7 +3295,7 @@ msgstr "E' per l'invio dei backup ai seguenti siti:"
 
 #: src/includes/class-remote-send.php:493
 msgid "The key was successfully added."
-msgstr "La chiave è stata inserita correttamente."
+msgstr "La chiave è stata aggiunta con successo."
 
 #: src/includes/class-remote-send.php:477
 msgid "The entered key does not belong to a remote site (it belongs to this one)."
@@ -3606,7 +3606,7 @@ msgstr ""
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:33
 msgid "Premium WooCommerce plugins"
-msgstr "Premium WooCommerce plugin"
+msgstr "Plugin premium di WooCommerce"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:33
 msgid "Free two-factor security plugin"
@@ -3614,7 +3614,7 @@ msgstr ""
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:32
 msgid "More quality plugins"
-msgstr ""
+msgstr "Altri plugin di qualità"
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:13
 msgid "Go to the shop."
@@ -3636,7 +3636,7 @@ msgstr "Newsletter Gratuita"
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:2,
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:35
 msgid "Dismiss (for %s months)"
-msgstr ""
+msgstr "Ignora (per %s mesi)"
 
 #: src/addons/fixtime.php:448
 msgid "(at same time as files backup)"
@@ -3669,7 +3669,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/tab-addons.php:18
 msgid "Full feature list"
-msgstr ""
+msgstr "Lista completa delle funzionalità"
 
 #: src/addons/autobackup.php:1080
 msgid "Backup (where relevant) plugins, themes and the WordPress database with UpdraftPlus before updating"
@@ -3719,7 +3719,7 @@ msgstr ""
 #: src/admin.php:3717
 msgctxt "i.e. Non-automatic"
 msgid "Manual"
-msgstr ""
+msgstr "Manuale"
 
 #: src/restorer.php:2784
 msgctxt "The user is being told the number of times an error has happened, e.g. An error (27) occurred"
@@ -3830,7 +3830,7 @@ msgstr ""
 
 #: src/admin.php:3209, src/admin.php:4278
 msgid "View Log"
-msgstr "Vedi il Log"
+msgstr "Visualizza il log"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:18,
 #: src/templates/wp-admin/settings/existing-backups-table.php:97
@@ -3867,7 +3867,7 @@ msgstr ""
 
 #: src/class-updraftplus.php:3990
 msgid "Backup label:"
-msgstr "Etichetta Backup:"
+msgstr "Etichetta del backup:"
 
 #: src/addons/backblaze.php:205, src/admin.php:2113
 msgid "Error: unexpected file read fail"
@@ -3985,7 +3985,7 @@ msgstr "Twitter"
 
 #: src/includes/updraftplus-notices.php:132
 msgid "UpdraftPlus is on social media - check us out!"
-msgstr ""
+msgstr "UpdraftPlus è sui social media - dai un'occhiata qui!"
 
 #: src/addons/wp-cli.php:907, src/admin.php:4466
 msgid "Why am I seeing this?"
@@ -4148,7 +4148,7 @@ msgstr "Questo pulsante è disabilitato perché la directory di backup non è sc
 #: src/templates/wp-admin/settings/tab-backups.php:21,
 #: src/templates/wp-admin/settings/tab-backups.php:44
 msgid "Existing Backups"
-msgstr "Backup Esistenti"
+msgstr "Backup esistenti"
 
 #: src/admin.php:1143
 msgid "To change any of the default settings of what is backed up, to configure scheduled backups, to send your backups to remote storage (recommended), and more, go to the settings tab."
@@ -4258,7 +4258,7 @@ msgstr "Questo causerà inoltre la stampa a schermo del debugging di tutti i plu
 
 #: src/templates/wp-admin/settings/form-contents.php:233
 msgid "Backup more databases"
-msgstr ""
+msgstr "Backup di più di un database"
 
 #: src/templates/wp-admin/settings/form-contents.php:192
 msgid "First, enter the decryption key"
@@ -4910,7 +4910,7 @@ msgstr "Usa questo add-on per creare un nuovo API sub-user Rackspace e una API k
 
 #: src/methods/cloudfiles-new.php:134
 msgid "Cloud Files Username"
-msgstr "User Cloud Files"
+msgstr "Nome utente Cloud Files"
 
 #: src/addons/cloudfiles-enhanced.php:47, src/methods/cloudfiles-new.php:166
 msgid "London (LON)"
@@ -5098,7 +5098,7 @@ msgstr "logo %s"
 
 #: src/methods/dropbox.php:286
 msgid "did not return the expected response - check your log file for more details"
-msgstr ""
+msgstr "non ha prodotto la risposta attesa - controllare il file di log per ulteriori dettagli"
 
 #: src/methods/s3.php:312
 msgid "The required %s PHP module is not installed - ask your web hosting company to enable it"
@@ -5140,7 +5140,7 @@ msgstr "Ultimo status:"
 
 #: src/backup.php:1137
 msgid "Backup contains:"
-msgstr "Il Backup contiene:"
+msgstr "Il backup contiene:"
 
 #: src/backup.php:1094
 msgid "Backed up: %s"
@@ -5277,7 +5277,7 @@ msgstr "Contenuto URL:"
 
 #: src/restorer.php:525
 msgid "You should check the file ownerships and permissions in your WordPress installation"
-msgstr ""
+msgstr "Dovresti verificare la proprietà e i permessi dei file nell'installazione WordPress"
 
 #: src/templates/wp-admin/settings/form-contents.php:147
 msgid "See also the \"More Files\" add-on from our shop."
@@ -5872,7 +5872,7 @@ msgstr "Ricerca archivio %s: nome file:%s"
 
 #: src/addons/wp-cli.php:784, src/admin.php:4570
 msgid "Final checks"
-msgstr "Controlli Finali"
+msgstr "Controlli finali"
 
 #: src/templates/wp-admin/settings/form-contents.php:314
 msgid "Check this to delete any superfluous backup files from your server after the backup run finishes (i.e. if you uncheck, then any files despatched remotely will also remain locally, and any files being kept locally will not be subject to the retention limits)."
@@ -6505,7 +6505,7 @@ msgstr "c'è un add-on per questo."
 
 #: src/methods/dropbox.php:603, src/methods/dropbox.php:605
 msgid "If you backup several sites into the same Dropbox and want to organize with sub-folders, then "
-msgstr ""
+msgstr "Se esegui il backup di più siti nello stesso Dropbox e si vuoi organizzarli in sottocartelle, allora"
 
 #: src/methods/dropbox.php:603, src/methods/dropbox.php:605
 msgid "Backups are saved in"
@@ -6681,7 +6681,7 @@ msgstr "UK"
 #: src/addons/cloudfiles-enhanced.php:37, src/methods/cloudfiles-new.php:118,
 #: src/methods/cloudfiles.php:466
 msgid "US (default)"
-msgstr "USA (default)"
+msgstr "USA (predefinito)"
 
 #: src/methods/cloudfiles.php:463
 msgid "US or UK Cloud"
@@ -6750,7 +6750,7 @@ msgstr "Se Google in seguito visualizzerà il messaggio \"invalid_client\", allo
 #: src/addons/googlecloud.php:1019, src/addons/onedrive.php:1177,
 #: src/methods/googledrive.php:1233
 msgid "Client ID"
-msgstr "ID Cliente"
+msgstr "ID Client"
 
 #: src/methods/googledrive.php:1207
 msgid "You must add the following as the authorised redirect URI (under \"More Options\") when asked"
@@ -6814,7 +6814,7 @@ msgstr "Nessun token di aggiornamento è stato ricevuto da Google. Questo spesso
 
 #: src/methods/addon-not-yet-present.php:84
 msgid "follow this link to get it"
-msgstr "Clicca su questo collegamento per averlo."
+msgstr "fai clic su questo link per averlo."
 
 #: src/methods/addon-not-yet-present.php:84
 msgid "%s support is available as an add-on"
@@ -7029,7 +7029,7 @@ msgstr "o, per resettare questa opzione"
 
 #: src/admin.php:3738
 msgid "Follow this link to attempt to create the directory and set the permissions"
-msgstr ""
+msgstr "Fai clic qui per provare a creare la directory e impostare le autorizzazioni"
 
 #: src/admin.php:3730
 msgid "Backup directory specified is writable, which is good."
@@ -7154,11 +7154,11 @@ msgstr "La richiesta di creazione della cartella al file system è fallita."
 #: src/templates/wp-admin/settings/existing-backups-table.php:155,
 #: src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Delete"
-msgstr "Cancella"
+msgstr "Elimina"
 
 #: src/admin.php:3415
 msgid "show log"
-msgstr "Mostra log"
+msgstr "mostra log"
 
 #: src/templates/wp-admin/advanced/wipe-settings.php:9
 msgid "This will delete all your UpdraftPlus settings - are you sure you want to do this?"
@@ -7438,7 +7438,7 @@ msgstr "Notifiche JavaScript"
 
 #: src/admin.php:828, src/admin.php:3151
 msgid "Delete Old Directories"
-msgstr "Elimina Vecchie Cartelle"
+msgstr "Elimina directory vecchie"
 
 #: src/admin.php:2638
 msgid "Current limit is:"
@@ -7458,7 +7458,7 @@ msgstr "Vai alla homepage dello sviluppatore"
 
 #: src/central/bootstrap.php:511
 msgid "UpdraftPlus.Com"
-msgstr ""
+msgstr "UpdraftPlus.Com"
 
 #: src/admin.php:5053
 msgid "Your settings have been wiped."
@@ -7596,7 +7596,7 @@ msgstr "Ricursione infinita: consultare il log per maggiori informazioni"
 
 #: src/includes/updraftplus-notices.php:102
 msgid "Please help UpdraftPlus by giving a positive review at wordpress.org."
-msgstr ""
+msgstr "Aiuta UpdraftPlus lasciando una recensione positiva su wordpress.org."
 
 #: src/includes/updraftplus-notices.php:101
 msgid "Like UpdraftPlus and can spare one minute?"
@@ -7639,7 +7639,7 @@ msgstr "La cartella di backup (%s) non è scrivibile o non esiste."
 
 #: src/backup.php:1136
 msgid "WordPress backup is complete"
-msgstr "WordPress backup è completo"
+msgstr "Il backup di WordPress è completo"
 
 #: src/class-updraftplus.php:2998
 msgid "The backup attempt has finished, apparently unsuccessfully"
@@ -7663,7 +7663,7 @@ msgstr "Altri"
 
 #: src/addons/multisite.php:500, src/class-updraftplus.php:1781
 msgid "Uploads"
-msgstr "Uploads"
+msgstr "Upload"
 
 #: src/class-updraftplus.php:1780
 msgid "Themes"
@@ -7690,4 +7690,4 @@ msgstr "Note di UpdraftPlus:"
 #: src/addons/multisite.php:96, src/addons/multisite.php:736,
 #: src/options.php:74
 msgid "UpdraftPlus Backups"
-msgstr "UpdraftPlus Backups"
+msgstr "Backup di UpdraftPlus"

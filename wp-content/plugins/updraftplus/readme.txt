@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.0
-Stable tag: 1.15.7
+Stable tag: 1.16.0
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -161,7 +161,18 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.15.7.x of the free version correspond to changes made in 2.15.6.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.0.x of the free version correspond to changes made in 2.16.0.x of the paid version.
+
+= 1.16.0 - 19/Dec/2018 =
+
+* FEATURE: Added the abilty to create and restore Incremental Backups
+* FIX: Work around an issue with 'SSH2 Server Host Key Algorithm Mismatch' occurring with the current phpseclib release by temporarily reverting to an earlier one
+* TWEAK: Improve performance by aggregating separate SQL SELECT queries (previously one for each backup) when loading the settings page
+* TWEAK: internal backup extradata parameter to prevent unwanted PHP notices
+* TWEAK: Fork a method UpdraftPlus_Filesystem_Functions::unzip_file() to allow for future enhancements
+* TWEAK: Periodic purging of obsolete job data that didn't get cleaned when expected was not happening on multisite
+* TWEAK: Improve logging when the initial call to jobdata_set_multi fails
+* TWEAK: Any stored backup/restore progress log files will now be deleted after 40 days. (Since they are attached to email reports, you can keep and retrieve them from those if needed). Over-ride this with the filter updraftplus_log_delete_age if desired.
 
 = 1.15.7 - 06/Dec/2018 =
 
@@ -696,5 +707,5 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.15.7: Various small/minor improvements, including ability to clone a WP 5.0 site, and scheduling improvements on some very large sites. A recommended update for all.
+* 1.16.0: Added the ability to create and restore Incremental Backups (Premium version), work around an issue with 'SSH2 Server Host Key Algorithm Mismatch' and various small/minor improvements. A recommended update for all.
 

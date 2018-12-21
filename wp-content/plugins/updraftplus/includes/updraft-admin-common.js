@@ -438,16 +438,70 @@ function updraft_restore_setoptions(entities) {
 	jQuery('#updraft-restore-modal').dialog("option", "height", height);
 }
 
-function updraft_backup_dialog_open() {
-	jQuery('#backupnow_includefiles_moreoptions').hide();
-	if (updraft_settings_form_changed) {
-		if (window.confirm(updraftlion.unsavedsettingsbackup)) {
-			jQuery('#backupnow_label').val('');
-			jQuery('#updraft-backupnow-modal').dialog('open');
-		}
+/**
+ * Open the 'Backup Now' dialog box
+ *
+ * @param {string} type - the backup type; either "new" or "incremental"
+ */
+function updraft_backup_dialog_open(type) {
+	
+	type = ('undefined' === typeof type) ? 'new' : type;
+
+	if (0 == jQuery('#updraftplus_incremental_backup_link').data('incremental') && 'incremental' == type) {
+		jQuery('#updraft-backupnow-modal .incremental-free-only').show();
+		type = 'new';
 	} else {
+		jQuery('#updraft-backupnow-modal .incremental-backups-only').hide();
+	}
+	
+	jQuery('#backupnow_includefiles_moreoptions').hide();
+	if (!updraft_settings_form_changed || window.confirm(updraftlion.unsavedsettingsbackup)) {
 		jQuery('#backupnow_label').val('');
+		if ('incremental' == type) {
+			update_file_entities_checkboxes(true, impossible_increment_entities);
+			jQuery('#backupnow_includedb').prop('checked', false);
+			jQuery('#backupnow_includefiles').prop('checked', true);
+			jQuery('#backupnow_includefiles_label').text(updraftlion.files_incremental_backup);
+			jQuery('#updraft-backupnow-modal .new-backups-only').hide();
+			jQuery('#updraft-backupnow-modal .incremental-backups-only').show();
+		} else {
+			update_file_entities_checkboxes(false, impossible_increment_entities);
+			jQuery('#backupnow_includedb').prop('checked', true);
+			jQuery('#backupnow_includefiles_label').text(updraftlion.files_new_backup);
+			jQuery('#updraft-backupnow-modal .new-backups-only').show();
+			jQuery('#updraft-backupnow-modal .incremental-backups-only').hide();
+		}
+		jQuery('#updraft-backupnow-modal').data('backup-type', type);
 		jQuery('#updraft-backupnow-modal').dialog('open');
+	}
+}
+/**
+ * Open the 'Backup Now' dialog box
+ *
+ * @param {string} type - the backup type; either "new" or "incremental"
+ */
+/**
+ * This function will enable and disable the file entity options depending on what entities increments can be added to and if this is a new backup or not.
+ *
+ * @param {boolean} incremental - a boolean to indicate if this is an incremental backup or not
+ * @param {array}   entities    - an array of entities to disable
+ */
+function update_file_entities_checkboxes(incremental, entities) {
+	if (incremental) {
+		jQuery(entities).each(function (index, entity) {
+			jQuery('#backupnow_files_updraft_include_' + entity).prop('checked', false);
+			jQuery('#backupnow_files_updraft_include_' + entity).prop('disabled', true);
+		});
+	} else {
+		jQuery('#backupnow_includefiles_moreoptions input[type="checkbox"]').each(function (index) {
+			var name = jQuery(this).attr('name');
+			if (name.substring(0, 16) != 'updraft_include_') { return; }
+			var entity = name.substring(16);
+			jQuery('#backupnow_files_updraft_include_' + entity).prop('disabled', false);
+			if (jQuery(this).is(':checked')) {
+				jQuery('#backupnow_files_updraft_include_' + entity).prop('checked', true);
+			}
+		});
 	}
 }
 
@@ -458,6 +512,7 @@ if ('' == onlythesefileentities) {
 	jQuery("#backupnow_includefiles_moreoptions").hide();
 }
 
+var impossible_increment_entities;
 var updraft_restore_stage = 1;
 var lastlog_lastmessage = "";
 var lastlog_lastdata = "";
@@ -1119,6 +1174,12 @@ function updraft_updatehistory(rescan, remotescan, debug) {
 				}
 			}
 		}
+
+		update_backupnow_modal(resp);
+		
+		if (resp.hasOwnProperty('backupnow_file_entities')) {
+			impossible_increment_entities = resp.backupnow_file_entities;
+		}
 		
 		if (resp.n != null) { jQuery('#updraft-existing-backups-heading').html(resp.n); }
 		
@@ -1137,6 +1198,17 @@ function updraft_updatehistory(rescan, remotescan, debug) {
 			}
 		}
 	});
+}
+
+/**
+ * This function will check if the passed in response contains content for the backup now modal that needs updating on page
+ *
+ * @param {array} response - an array that may contain backupnow_modal content that needs updating
+ */
+function update_backupnow_modal(response) {
+	if (response.hasOwnProperty('modal_afterfileoptions')) {
+		jQuery('.backupnow_modal_afterfileoptions').html(response.modal_afterfileoptions);
+	}
 }
 
 /**
@@ -1827,6 +1899,9 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 	params.always_keep = (typeof extradata.always_keep !== 'undefined') ? extradata.always_keep : 0;
 	delete extradata.always_keep;
 
+	params.incremental = (typeof extradata.incremental !== 'undefined') ? extradata.incremental : 0;
+	delete extradata.incremental;
+
 	// Display Request start message
 	if (!jQuery('.updraft_requeststart').length) {
 		var requeststart_el = jQuery('<div class="updraft_requeststart" />').html('<span class="spinner"></span>'+updraftlion.requeststart);
@@ -1848,6 +1923,11 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 	
 	updraft_activejobslist_backupnownonce_only = 1;
 	updraft_send_command('backupnow', params, function(resp) {
+		if (resp.hasOwnProperty('error')) {
+			jQuery('.updraft_requeststart').remove();
+			alert(resp.error);
+			return;
+		}
 		jQuery('#updraft_backup_started').html(resp.m);
 		if (resp.hasOwnProperty('nonce')) {
 			// Can't return it from this context
@@ -2833,6 +2913,12 @@ jQuery(document).ready(function($) {
 					jQuery('#updraft-deleted-files-total').text('');
 					jQuery('#updraft-delete-waitwarning').slideUp();
 				}, 500);
+				
+				update_backupnow_modal(resp);
+
+				if (resp.hasOwnProperty('backupnow_file_entities')) {
+					impossible_increment_entities = resp.backupnow_file_entities;
+				}
 
 				if (resp.hasOwnProperty('count_backups')) {
 					jQuery('#updraft-existing-backups-heading').html(updraftlion.existing_backups+' <span class="updraft_existing_backups_count">'+resp.count_backups+'</span>');
@@ -3011,6 +3097,7 @@ jQuery(document).ready(function($) {
 		var backupnow_nocloud = jQuery('#backupnow_includecloud').is(':checked') ? 0 : 1;
 		var onlythesetableentities = backupnow_whichtables_checked('');
 		var always_keep = jQuery('#always_keep').is(':checked') ? 1 : 0;
+		var incremental = ('incremental' == jQuery('#updraft-backupnow-modal').data('backup-type')) ? 1 : 0;
 
 		if ('' == onlythesetableentities && 0 == backupnow_nodb) {
 			alert(updraftlion.notableschosen);
@@ -3043,7 +3130,7 @@ jQuery(document).ready(function($) {
 			});
 		}, 1700);
 	
-		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep}, jQuery('#backupnow_label').val(), onlythesetableentities);
+		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep, incremental: incremental}, jQuery('#backupnow_label').val(), onlythesetableentities);
 	};
 	backupnow_modal_buttons[updraftlion.cancel] = function() {
 	jQuery(this).dialog("close"); };
@@ -3553,8 +3640,11 @@ jQuery(document).ready(function($) {
 	
 	jQuery('#updraft_activejobs_table, #updraft-navtab-backups-content .updraft_existing_backups, #updraft-backupnow-inpage-modal, #updraft-navtab-migrate-content').on('click', '.updraft-log-link', function(e) {
 		e.preventDefault();
+		var file_id = jQuery(this).data('fileid');
 		var job_id = jQuery(this).data('jobid');
-		if (job_id) {
+		if (file_id) {
+			updraft_popuplog(file_id);
+		} else if (job_id) {
 			updraft_popuplog(job_id);
 		} else {
 			console.log("UpdraftPlus: A log link was clicked, but the Job ID could not be found");

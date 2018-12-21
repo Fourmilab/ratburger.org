@@ -103,11 +103,17 @@ class UpdraftPlus_Filesystem_Functions {
 	
 		// Clean out old job data
 		if ($older_than > 10000) {
-			global $wpdb;
 
-			$all_jobs = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'updraft_jobdata_%'", ARRAY_A);
+			global $wpdb;
+			$table = is_multisite() ? $wpdb->sitemeta : $wpdb->options;
+			$key_column = is_multisite() ? 'meta_key' : 'option_name';
+			$value_column = is_multisite() ? 'meta_value' : 'option_value';
+			
+			// Limit the maximum number for performance (the rest will get done next time, if for some reason there was a back-log)
+			$all_jobs = $wpdb->get_results("SELECT $key_column, $value_column FROM $table WHERE $key_column LIKE 'updraft_jobdata_%' LIMIT 100", ARRAY_A);
+			
 			foreach ($all_jobs as $job) {
-				$val = maybe_unserialize($job['option_value']);
+				$val = maybe_unserialize($job[$value_column]);
 				// TODO: Can simplify this after a while (now all jobs use job_time_ms) - 1 Jan 2014
 				$delete = false;
 				if (!empty($val['next_increment_start_scheduled_for'])) {
@@ -119,7 +125,7 @@ class UpdraftPlus_Filesystem_Functions {
 				} elseif (!empty($val['job_type']) && 'backup' != $val['job_type'] && empty($val['backup_time_ms']) && empty($val['job_time_ms'])) {
 					$delete = true;
 				}
-				if ($delete) delete_option($job['option_name']);
+				if ($delete) delete_site_option($job[$key_column]);
 			}
 		}
 		$updraft_dir = $updraftplus->backups_dir_location();
@@ -145,10 +151,16 @@ class UpdraftPlus_Filesystem_Functions {
 						@unlink($updraft_dir.'/'.$entry);
 						$files_deleted++;
 					}
+				} elseif (preg_match('/^log\.[0-9a-f]+\.txt$/', $entry) && $now_time-filemtime($updraft_dir.'/'.$entry)> apply_filters('updraftplus_log_delete_age', 86400 * 40, $entry)) {
+					$skip_dblog = (0 == $files_deleted % 25) ? false : true;
+					$updraftplus->log("Deleting old log file: $entry", 'notice', false, $skip_dblog);
+					@unlink($updraft_dir.'/'.$entry);
+					$files_deleted++;
 				}
 			}
 			@closedir($handle);
 		}
+
 		// Depending on the PHP setup, the current working directory could be ABSPATH or wp-admin - scan both
 		// Since 1.9.32, we set them to go into $updraft_dir, so now we must check there too. Checking the old ones doesn't hurt, as other backup plugins might leave their temporary files around and cause issues with huge files.
 		foreach (array(ABSPATH, ABSPATH.'wp-admin/', $updraft_dir.'/') as $path) {
@@ -156,7 +168,7 @@ class UpdraftPlus_Filesystem_Functions {
 				while (false !== ($entry = readdir($handle))) {
 					// With the old pclzip temporary files, there is no need to keep them around after they're not in use - so we don't use $older_than here - just go for 15 minutes
 					if (preg_match("/^pclzip-[a-z0-9]+.tmp$/", $entry) && $now_time-filemtime($path.$entry) >= 900) {
-						$updraftplus->log("Deleting old PclZip temporary file: $entry");
+						$updraftplus->log("Deleting old PclZip temporary file: $entry (from ".basename($path).")");
 						@unlink($path.$entry);
 					}
 				}
@@ -366,5 +378,200 @@ class UpdraftPlus_Filesystem_Functions {
 
 		// Default fallback
 		return apply_filters('updraftplus_get_disk_space_used_none', __('Error', 'updraftplus'), $entity, $backupable_entities);
+	}
+	
+	/**
+	 * Unzips a specified ZIP file to a location on the filesystem via the WordPress
+	 * Filesystem Abstraction. Forked from WordPress core in version 5.1-alpha-44182.
+	 * Forked to allow us to modify the behaviour (eventually, to provide feedback on progress)
+	 *
+	 * Assumes that WP_Filesystem() has already been called and set up. Does not extract
+	 * a root-level __MACOSX directory, if present.
+	 *
+	 * Attempts to increase the PHP memory limit before uncompressing. However,
+	 * the most memory required shouldn't be much larger than the archive itself.
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
+	 *
+	 * @param String $file Full path and filename of ZIP archive.
+	 * @param String $to   Full path on the filesystem to extract archive to.
+	 *
+	 * @return Boolean|WP_Error True on success, WP_Error on failure.
+	 */
+	public static function unzip_file($file, $to) {
+		global $wp_filesystem;
+
+		if (!$wp_filesystem || !is_object($wp_filesystem)) {
+			return new WP_Error('fs_unavailable', __('Could not access filesystem.'));
+		}
+
+		// Unzip can use a lot of memory, but not this much hopefully.
+		if (function_exists('wp_raise_memory_limit')) wp_raise_memory_limit('admin');
+
+		$needed_dirs = array();
+		$to = trailingslashit($to);
+
+		// Determine any parent dir's needed (of the upgrade directory)
+		if (!$wp_filesystem->is_dir($to)) { // Only do parents if no children exist
+			$path = preg_split('![/\\\]!', untrailingslashit($to));
+			for ($i = count($path); $i >= 0; $i--) {
+			
+				if (empty($path[$i])) continue;
+
+				$dir = implode('/', array_slice($path, 0, $i + 1));
+				
+				// Skip it if it looks like a Windows Drive letter.
+				if (preg_match('!^[a-z]:$!i', $dir)) continue;
+
+				// A folder exists; therefore, we don't need the check the levels below this
+				if ($wp_filesystem->is_dir($dir)) break;
+				
+				$needed_dirs[] = $dir;
+
+			}
+		}
+
+		if (class_exists('ZipArchive', false) && apply_filters('unzip_file_use_ziparchive', true)) {
+			// Should be able to use self::unzip_file_go() here - not yet tested
+			$result = _unzip_file_ziparchive($file, $to, $needed_dirs);
+			if (true === $result || (is_wp_error($result) && 'incompatible_archive' != $result->get_error_code())) return $result;
+		}
+		
+		// Fall through to PclZip if ZipArchive is not available, or encountered an error opening the file.
+		// Not yet ready to be able to use self::unzip_file_go() until that is ready for PclZip
+		return _unzip_file_pclzip($file, $to, $needed_dirs);
+	}
+	
+	/**
+	 * Attempts to unzip an archive; forked from _unzip_file_ziparchive() in WordPress 5.1-alpha-44182, and modified to use the UD zip classes.
+	 *
+	 * Assumes that WP_Filesystem() has already been called and set up.
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
+	 *
+	 * @param String $file		  Full path and filename of ZIP archive.
+	 * @param String $to		  Full path on the filesystem to extract archive to.
+	 * @param Array	 $needed_dirs A partial list of required folders needed to be created.
+	 * @param String $method	  Either 'ziparchive' or 'pclzip'. DO NOT USE 'pclzip'; it's not yet ready.
+	 *
+	 * @return Boolean|WP_Error True on success, WP_Error on failure.
+	 */
+	public static function unzip_file_go($file, $to, $needed_dirs = array(), $method = 'ziparchive') {
+		global $wp_filesystem;
+		
+		$class_to_use = ('ziparchive' == $method) ? 'UpdraftPlus_ZipArchive' : 'UpdraftPlus_PclZip';
+
+		if (!class_exists($class_to_use)) require_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
+		
+		$z = new $class_to_use;
+
+		$flags = (version_compare(PHP_VERSION, '5.2.12', '>') && defined('ZIPARCHIVE::CHECKCONS')) ? ZIPARCHIVE::CHECKCONS : 4;
+		
+		$zopen = $z->open($file, $flags);
+		
+		if (true !== $zopen) {
+			return new WP_Error('incompatible_archive', __('Incompatible Archive.'), array($method.'_error' => $zope));
+		}
+
+		$uncompressed_size = 0;
+
+		$num_files = $z->numFiles;
+		
+		for ($i = 0; $i < $num_files; $i++) {
+			if (!$info = $z->statIndex($i)) {
+				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.'));
+			}
+
+			if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Skip the OS X-created __MACOSX directory
+				continue;
+			}
+
+			// Don't extract invalid files:
+			if (0 !== validate_file($info['name'])) {
+				continue;
+			}
+
+			$uncompressed_size += $info['size'];
+
+			if ('/' === substr($info['name'], -1)) {
+				// Directory.
+				$needed_dirs[] = $to . untrailingslashit($info['name']);
+			} elseif ('.' !== $dirname = dirname($info['name'])) {
+				// Path to a file.
+				$needed_dirs[] = $to . untrailingslashit($dirname);
+			}
+		}
+
+		/*
+		* disk_free_space() could return false. Assume that any falsey value is an error.
+		* A disk that has zero free bytes has bigger problems.
+		* Require we have enough space to unzip the file and copy its contents, with a 10% buffer.
+		*/
+		if (wp_doing_cron()) {
+			$available_space = @disk_free_space(WP_CONTENT_DIR);
+			if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
+				return new WP_Error('disk_full_unzip_file', __('Could not copy files. You may have run out of disk space.'), compact('uncompressed_size', 'available_space'));
+			}
+		}
+
+		$needed_dirs = array_unique($needed_dirs);
+		foreach ($needed_dirs as $dir) {
+			// Check the parent folders of the folders all exist within the creation array.
+			if (untrailingslashit($to) == $dir) { // Skip over the working directory, We know this exists (or will exist)
+				continue;
+			}
+			if (strpos($dir, $to) === false) { // If the directory is not within the working directory, Skip it
+				continue;
+			}
+
+			$parent_folder = dirname($dir);
+			while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array($parent_folder, $needed_dirs)) {
+				$needed_dirs[] = $parent_folder;
+				$parent_folder = dirname($parent_folder);
+			}
+		}
+		asort($needed_dirs);
+
+		// Create those directories if need be:
+		foreach ($needed_dirs as $_dir) {
+			// Only check to see if the Dir exists upon creation failure. Less I/O this way.
+			if (!$wp_filesystem->mkdir($_dir, FS_CHMOD_DIR) && !$wp_filesystem->is_dir($_dir)) {
+				return new WP_Error('mkdir_failed_'.$method, __('Could not create directory.'), substr($_dir, strlen($to)));
+			}
+		}
+		unset($needed_dirs);
+
+		for ($i = 0; $i < $num_files; $i++) {
+			if (!$info = $z->statIndex($i)) {
+				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.'));
+			}
+
+			if ('/' == substr($info['name'], -1)) { // directory
+				continue;
+			}
+
+			if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Don't extract the OS X-created __MACOSX directory files
+				continue;
+			}
+
+			// Don't extract invalid files:
+			if (0 !== validate_file($info['name'])) {
+				continue;
+			}
+
+			$contents = $z->getFromIndex($i);
+
+			if (false === $contents) {
+				return new WP_Error('extract_failed_'.$method, __('Could not extract file from archive.'), $info['name']);
+			}
+
+			if (!$wp_filesystem->put_contents($to . $info['name'], $contents, FS_CHMOD_FILE)) {
+				return new WP_Error('copy_failed_'.$method, __('Could not copy file.'), $info['name']);
+			}
+		}
+
+		$z->close();
+
+		return true;
 	}
 }

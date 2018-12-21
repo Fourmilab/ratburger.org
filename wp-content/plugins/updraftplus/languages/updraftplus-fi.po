@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-12-04 18:52:27+0000\n"
+"PO-Revision-Date: 2018-12-06 10:54:40+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -149,7 +149,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/exclude-modal.php:56,
 #: src/templates/wp-admin/settings/exclude-modal.php:58
 msgid "All files beginning with these characters"
-msgstr ""
+msgstr "Kaikki tiedostot, jotka alkavat näillä merkeillä"
 
 #: src/templates/wp-admin/settings/exclude-modal.php:47
 msgid "Type an extension like zip"
@@ -247,7 +247,7 @@ msgstr ""
 
 #: src/admin.php:3828
 msgid "Exclude these from"
-msgstr ""
+msgstr "Poissulje nämä paikasta"
 
 #: src/admin.php:952
 msgid "The exclusion rule which you are trying to add already exists"
@@ -303,7 +303,7 @@ msgstr ""
 
 #: src/admin.php:5423
 msgid "Front page:"
-msgstr ""
+msgstr "Etusivu:"
 
 #: src/admin.php:5422
 msgid "Your clone has started and will be available at the following URLs once it is ready."
@@ -436,7 +436,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Press the buttons... UpdraftClone does the work."
-msgstr ""
+msgstr "Paina nappeja... UpdraftClone tekee kaiken homman."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:28
 msgid "Easy"
@@ -533,7 +533,7 @@ msgstr ""
 #: src/includes/updraftplus-tour.php:153,
 #: src/templates/wp-admin/settings/temporary-clone.php:22
 msgid "Find out more here."
-msgstr ""
+msgstr "Lue lisää täältä."
 
 #: src/includes/updraftplus-tour.php:125
 msgid "UpdraftVault is our remote storage which works seamlessly with UpdraftPlus."
@@ -683,7 +683,7 @@ msgstr ""
 
 #: src/addons/wp-cli.php:88
 msgid "No previous backup found to add an increment to."
-msgstr ""
+msgstr "Vanhoja varmuuskopioita ei löydetty."
 
 #: src/restorer.php:2499
 msgid "Requested character set (%s) is not present - changing to %s."
@@ -715,7 +715,7 @@ msgstr ""
 
 #: src/addons/sftp.php:601, src/addons/sftp.php:603
 msgid "The server's RSA key %s fingerprint: %s."
-msgstr ""
+msgstr "Palvelimen RSA avain %s sormenjälki: %s."
 
 #: src/addons/sftp.php:597
 msgid "Failed: We are unable to match the fingerprint. However, we were able to log in and move to the indicated directory and successfully create a file in that location."
@@ -727,7 +727,7 @@ msgstr ""
 
 #: src/addons/sftp.php:475
 msgid "RSA fingerprint"
-msgstr ""
+msgstr "RSA sormenjälki"
 
 #: src/addons/sftp.php:82
 msgid "Fingerprints don't match."
@@ -938,7 +938,7 @@ msgstr ""
 
 #: src/admin.php:488
 msgid "Dismiss all UpdraftPlus news"
-msgstr ""
+msgstr "Hylkää kaikki UpdraftPlus uutiset"
 
 #: src/admin.php:487
 msgid "UpdraftPlus News"
@@ -1324,7 +1324,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:421
 msgid "There are no UpdraftCentral dashboards that can currently control this site."
-msgstr ""
+msgstr "UpdraftCentral kojelautoja ei löydetty tälle sivulle."
 
 #: src/central/bootstrap.php:258
 msgid "You can now control this site via your UpdraftCentral dashboard at %s."
@@ -1489,7 +1489,7 @@ msgstr ""
 
 #: src/methods/cloudfiles.php:495
 msgid "Cloud Files"
-msgstr ""
+msgstr "Pilvi tiedostot"
 
 #: src/admin.php:4934
 msgid "Your settings failed to save. Please refresh the settings page and try again"
@@ -1510,7 +1510,7 @@ msgstr ""
 
 #: src/includes/class-wpadmin-commands.php:520
 msgid "Extra database"
-msgstr ""
+msgstr "Ylimääräinen tietokanta"
 
 #: src/admin.php:4104
 msgid "Press here to download or browse"
@@ -1526,7 +1526,7 @@ msgstr ""
 
 #: src/admin.php:915
 msgid "Loading log file"
-msgstr ""
+msgstr "Ladataan loki-tiedostoa"
 
 #: src/admin.php:914
 msgid "Unable to download file. This could be caused by a timeout. It would be best to download the zip to your computer."
@@ -1566,7 +1566,7 @@ msgstr ""
 
 #: src/admin.php:3022
 msgid "All WordPress tables will be backed up."
-msgstr ""
+msgstr "Kaikki WordPress taulut varmuuskopioidaan."
 
 #: src/admin.php:910
 msgid "Further information may be found in the browser JavaScript console, and the server PHP error logs."
@@ -1716,7 +1716,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:56,
 #: src/templates/wp-admin/settings/tab-addons.php:264
 msgid "Upgrade now"
-msgstr ""
+msgstr "Päivitä nyt"
 
 #: src/templates/wp-admin/settings/tab-addons.php:53,
 #: src/templates/wp-admin/settings/tab-addons.php:261
@@ -1796,7 +1796,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:372
 msgid "Europe (Ireland)"
-msgstr ""
+msgstr "Eurooppa (Irlanti)"
 
 #: src/includes/updraftplus-tour.php:142,
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:17
@@ -1856,7 +1856,7 @@ msgstr ""
 
 #: src/includes/updraftplus-notices.php:238
 msgid "Happy New Year - 20% off UpdraftPlus Premium until January 14th"
-msgstr ""
+msgstr "Hyvää uutta vuotta - 20% alennus UpdraftPlus Premiumista Tammukuun 14-päivä asti."
 
 #: src/includes/updraftplus-notices.php:225
 msgid "Christmas sale - 20% off UpdraftPlus Premium until December 25th"
@@ -1901,7 +1901,7 @@ msgstr ""
 
 #: src/includes/updraftplus-notices.php:91
 msgid "Introducing UpdraftCentral"
-msgstr ""
+msgstr "Esittelyssä UpdraftCentral"
 
 #: src/includes/updraftplus-notices.php:82
 msgid "Copy your site to another domain directly. Includes find-and-replace tool for database references."
@@ -2023,7 +2023,7 @@ msgstr ""
 
 #: src/methods/dropbox.php:790
 msgid "%s de-authentication"
-msgstr ""
+msgstr "%s epä-todennus"
 
 #: src/methods/dropbox.php:636
 msgid "You must add the following as the authorised redirect URI in your Dropbox console (under \"API Settings\") when asked"
@@ -2120,7 +2120,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:54
 msgid "or to restore manually"
-msgstr ""
+msgstr "tai palauta manuaalisesti"
 
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:54
 msgid "This makes time-outs much more likely. You are recommended to turn safe_mode off, or to restore only one entity at a time"
@@ -2242,7 +2242,7 @@ msgstr ""
 #: src/addons/migrator.php:1765, src/central/bootstrap.php:544,
 #: src/central/bootstrap.php:545, src/central/bootstrap.php:547
 msgid "%s bits"
-msgstr ""
+msgstr "%s bittiä"
 
 #: src/addons/migrator.php:1760, src/central/bootstrap.php:542
 msgid "Encryption key size:"
@@ -2262,7 +2262,7 @@ msgstr ""
 
 #: src/methods/ftp.php:440
 msgid "This is sometimes caused by a firewall - try turning off SSL in the expert settings, and testing again."
-msgstr ""
+msgstr "Tämä johtuu joskus palomuurista - yritä kytkeä SSL pois päältä kehittyneistä asetuksista, ja yritä uudelleen."
 
 #: src/methods/ftp.php:412
 msgid "login"
@@ -2321,7 +2321,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:536
 msgid "Enter any description"
-msgstr ""
+msgstr "Anna kuvaus"
 
 #: src/central/bootstrap.php:535
 msgid "Description"
@@ -2389,7 +2389,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:57
 msgid "UpdraftCentral Connection"
-msgstr ""
+msgstr "UpdraftCentral yhteys"
 
 #: src/backup.php:1042, src/class-updraftplus.php:2973
 msgid "The backup was aborted by the user"
@@ -2409,7 +2409,7 @@ msgstr "pysäkki"
 
 #: src/admin.php:905, src/admin.php:3209
 msgid "The backup has finished running"
-msgstr ""
+msgstr "Varmuuskopiointi on valmis"
 
 #: src/templates/wp-admin/advanced/tools-menu.php:30,
 #: src/templates/wp-admin/advanced/wipe-settings.php:5,
@@ -2561,7 +2561,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:93
 msgid "Sending Your Backup To Remote Storage"
-msgstr ""
+msgstr "Lähetetään varmuuskopiotasi etävarastoon"
 
 #: src/templates/wp-admin/settings/form-contents.php:58
 msgid "Database backup schedule"
@@ -2691,7 +2691,7 @@ msgstr ""
 
 #: src/addons/googlecloud.php:48, src/addons/googlecloud.php:49
 msgid "Eastern United States"
-msgstr ""
+msgstr "Itäinen Yhdysvallat"
 
 #: src/addons/googlecloud.php:47
 msgid "Central United States"
@@ -2724,7 +2724,7 @@ msgstr ""
 
 #: src/addons/googlecloud.php:38, src/addons/s3-enhanced.php:66
 msgid "Standard"
-msgstr ""
+msgstr "Standardi"
 
 #: src/addons/azure.php:638
 msgid "container"
@@ -2736,7 +2736,7 @@ msgstr ""
 
 #: src/addons/azure.php:637
 msgid "optional"
-msgstr ""
+msgstr "valinnainen"
 
 #: src/addons/azure.php:633
 msgid "See Microsoft's guidelines on container naming by following this link."
@@ -2833,7 +2833,7 @@ msgstr ""
 
 #: src/addons/googlecloud.php:1032
 msgid "Project ID"
-msgstr ""
+msgstr "Projekti ID"
 
 #: src/addons/googlecloud.php:759
 msgid "You must save and authenticate before you can test your settings."
@@ -2907,7 +2907,7 @@ msgstr "Käsitellään..."
 
 #: src/admin.php:888
 msgid "For backups older than"
-msgstr ""
+msgstr "Varmuuskopioihin vanhempia kuin"
 
 #: src/admin.php:887
 msgid "week(s)"
@@ -2975,7 +2975,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:73
 msgid "Check this box to use Amazon's server-side encryption"
-msgstr ""
+msgstr "Merkitse tämä laatikko käyttääksesi Amazonin palvelin-salausta"
 
 #: src/addons/s3-enhanced.php:72
 msgid "Server-side encryption"
@@ -3020,7 +3020,7 @@ msgstr ""
 #: src/methods/updraftvault.php:466, src/methods/updraftvault.php:482,
 #: src/methods/updraftvault.php:484, src/methods/updraftvault.php:542
 msgid "Get more quota"
-msgstr ""
+msgstr "Suurenna kiintiötäsi"
 
 #: src/methods/updraftvault.php:463, src/methods/updraftvault.php:479,
 #: src/methods/updraftvault.php:523
@@ -3029,7 +3029,7 @@ msgstr "Tämänhetkinen käyttö:"
 
 #: src/methods/updraftvault.php:458
 msgid "You can get more quota here"
-msgstr ""
+msgstr "Voit suurentaa kiintiötäsi täällä"
 
 #: src/methods/updraftvault.php:458
 msgid "%s Error: you have insufficient storage quota available (%s) to upload this archive (%s)."
@@ -3076,7 +3076,7 @@ msgstr ""
 
 #: src/methods/updraftvault.php:348
 msgid "Subscriptions can be cancelled at any time."
-msgstr ""
+msgstr "Tilaukset voidaan peruuttaa koska tahansa."
 
 #: src/methods/updraftvault.php:331, src/methods/updraftvault.php:337,
 #: src/methods/updraftvault.php:343
@@ -3183,7 +3183,7 @@ msgstr ""
 
 #: src/includes/class-remote-send.php:345
 msgid "Also send this backup to the active remote storage locations"
-msgstr ""
+msgstr "Lähetä tämä varmuuskopio myös etävarastoon"
 
 #: src/includes/class-remote-send.php:310
 msgid "The site URL you are sending to (%s) looks like a local development website. If you are sending from an external network, it is likely that a firewall will be blocking this."
@@ -3377,7 +3377,7 @@ msgstr ""
 
 #: src/udaddons/updraftplus-addons.php:996
 msgid "Go here to re-enter your password."
-msgstr ""
+msgstr "Mene tänne laittaaksesi salasanan uudelleen."
 
 #: src/addons/migrator.php:271
 msgid "After pressing this button, you will be given the option to choose which components you wish to migrate"
@@ -3444,7 +3444,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:392
 msgid "S3 bucket"
-msgstr ""
+msgstr "S3 ämpäri"
 
 #: src/addons/s3-enhanced.php:382
 msgid "China (Beijing) (restricted)"
@@ -3464,7 +3464,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:377
 msgid "Asia Pacific (Singapore)"
-msgstr ""
+msgstr "Aasian ja Tyynenmeren alue (Singapore)"
 
 #: src/addons/s3-enhanced.php:370
 msgid "US Government West (restricted)"
@@ -3553,7 +3553,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:161
 msgid "Cannot create new AWS user, since the old AWS toolkit is being used."
-msgstr ""
+msgstr "Et voi tehdä uutta AWS -käyttäjää, sillä vanhaa AWS -työkalupakettia käytetään."
 
 #: src/addons/s3-enhanced.php:134
 msgid "You need to enter a bucket"
@@ -3618,7 +3618,7 @@ msgstr ""
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:13
 msgid "Go to the shop."
-msgstr ""
+msgstr "Mene kauppaan."
 
 #: src/templates/wp-admin/notices/thanks-for-using-main-dash.php:13
 msgid "Compare with the free version"
@@ -4136,7 +4136,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:74
 msgid "Free disk space in account:"
-msgstr ""
+msgstr "Vapaata tilaa tilillä:"
 
 #: src/admin.php:4900, src/templates/wp-admin/settings/take-backup.php:50
 msgid "This button is disabled because your backup directory is not writable (see the settings)."
@@ -4216,7 +4216,7 @@ msgstr ""
 
 #: src/addons/moredatabase.php:104
 msgid "database connection attempt failed"
-msgstr ""
+msgstr "Tietokantaan yhdistäminen epäonnistui"
 
 #: src/addons/moredatabase.php:93
 msgid "database name"
@@ -4228,11 +4228,11 @@ msgstr ""
 
 #: src/addons/moredatabase.php:89
 msgid "user"
-msgstr ""
+msgstr "käyttäjä"
 
 #: src/class-updraftplus.php:1736
 msgid "External database (%s)"
-msgstr ""
+msgstr "Ulkoinen tietokanta (%s)"
 
 #: src/methods/googledrive.php:1207
 msgid "Follow this link to your Google API Console, and there activate the Drive API and create a Client ID in the API Access section."
@@ -4286,7 +4286,7 @@ msgstr ""
 
 #: src/includes/class-wpadmin-commands.php:149
 msgid "Only the WordPress database can be restored; you will need to deal with the external database manually."
-msgstr ""
+msgstr "Vain WordPress tietokanta voidaan palauttaa; sinun pitää huolehtia ulkoisesta tietokannasta manuaalisesti."
 
 #: src/restorer.php:2284, src/restorer.php:2753, src/restorer.php:2794,
 #: src/restorer.php:2807
@@ -4475,7 +4475,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/form-contents.php:182,
 #: src/templates/wp-admin/settings/tab-backups.php:74
 msgid "This feature requires %s version %s or later"
-msgstr ""
+msgstr "Tämä ominaisuus tarvitsee version %s tai %s myöhemmän"
 
 #: src/restorer.php:531
 msgid "Failed to unpack the archive"
@@ -4496,7 +4496,7 @@ msgstr ""
 
 #: src/udaddons/updraftplus-addons.php:259
 msgid "It has been tested up to version %s."
-msgstr ""
+msgstr "On testattu versioon %s asti."
 
 #: src/udaddons/updraftplus-addons.php:259
 msgid "The installed version of UpdraftPlus Backup/Restore has not been tested on your version of WordPress (%s)."
@@ -4612,7 +4612,7 @@ msgstr ""
 
 #: src/admin.php:797
 msgid "Rescanning remote and local storage for backup sets..."
-msgstr ""
+msgstr "Skannataan etä- ja paikallista varastoa varmuuskopioiden varalta..."
 
 #: src/addons/googlecloud.php:1042, src/addons/googlecloud.php:1055,
 #: src/addons/s3-enhanced.php:63, src/addons/s3-enhanced.php:72
@@ -4671,7 +4671,7 @@ msgstr ""
 
 #: src/udaddons/options.php:483
 msgid "Available to claim on this site"
-msgstr ""
+msgstr "Valmiina noutaa tältä sivulta"
 
 #: src/udaddons/updraftplus-addons.php:288
 msgid "To maintain your access to support, please renew."
@@ -4824,7 +4824,7 @@ msgstr ""
 
 #: src/addons/cloudfiles-enhanced.php:283
 msgid "Admin Username"
-msgstr ""
+msgstr "Järjestelmänvalvojan Käyttäjänimi"
 
 #: src/addons/cloudfiles-enhanced.php:278
 msgid "US or UK Rackspace Account"
@@ -4881,7 +4881,7 @@ msgstr ""
 
 #: src/addons/cloudfiles-enhanced.php:76
 msgid "You need to enter an admin username"
-msgstr ""
+msgstr "Sinun täytyy asettaa järjestelmänvalvojan käyttäjänimi"
 
 #: src/addons/cloudfiles-enhanced.php:62
 msgid "Create a new API user with access to only this container (rather than your whole account)"
@@ -5038,7 +5038,7 @@ msgstr ""
 
 #: src/addons/reporting.php:268
 msgid "Debugging information"
-msgstr ""
+msgstr "Virheenkorjauksen tiedot"
 
 #: src/addons/reporting.php:223, src/admin.php:3992
 msgid "Uploaded to:"
@@ -5071,7 +5071,7 @@ msgstr ""
 
 #: src/addons/reporting.php:171
 msgid "Backup Report"
-msgstr ""
+msgstr "Varmuuskopio Reportti"
 
 #: src/addons/reporting.php:166
 msgid "%d hours, %d minutes, %d seconds"
@@ -5144,7 +5144,7 @@ msgstr ""
 
 #: src/backup.php:1094
 msgid "Backed up: %s"
-msgstr ""
+msgstr "Varmuuskopioitu: %s"
 
 #: src/addons/reporting.php:265, src/backup.php:1088
 msgid "The log file has been attached to this email."
@@ -5160,7 +5160,7 @@ msgstr ""
 
 #: src/backup.php:1049
 msgid "Database (files backup has not completed)"
-msgstr ""
+msgstr "Tietokanta (tiedostojen varmuuskopiointi ei ole valmis)"
 
 #: src/backup.php:1046
 msgid "Files only (database was not part of this particular schedule)"
@@ -5192,7 +5192,7 @@ msgstr ""
 
 #: src/options.php:208
 msgid "UpdraftPlus warning:"
-msgstr ""
+msgstr "UpdraftPlus varoitus:"
 
 #: src/udaddons/options.php:489
 msgid "(or connect using the form on this page if you have already purchased it)"
@@ -5216,7 +5216,7 @@ msgstr ""
 
 #: src/udaddons/options.php:460, src/udaddons/options.php:460
 msgid "You've got it"
-msgstr ""
+msgstr "Sinä pystyt siihen"
 
 #: src/udaddons/options.php:421
 msgid "UpdraftPlus Support"
@@ -5285,7 +5285,7 @@ msgstr ""
 
 #: src/backup.php:3424, src/class-updraftplus.php:861
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
-msgstr ""
+msgstr "Sinun vapaa tilasi tililläsi on todella alhainen - enää %s Mb jäljellä"
 
 #: src/class-updraftplus.php:845
 msgid "The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should increase it to avoid failures due to insufficient memory (consult your web hosting company for more help)"
@@ -5377,7 +5377,7 @@ msgstr ""
 
 #: src/admin.php:2929
 msgid "Connect with your UpdraftPlus.Com account"
-msgstr ""
+msgstr "Yhdistä UpdraftPlus.Com tilisi"
 
 #: src/udaddons/options.php:110
 msgid "You do seem to have the obsolete Updraft plugin installed - perhaps you got them confused?"
@@ -5424,7 +5424,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:78,
 #: src/templates/wp-admin/settings/tab-backups.php:80
 msgid "Drop backup files here"
-msgstr ""
+msgstr "Raahaa varmuuskopiointi tiedostot tänne"
 
 #: src/admin.php:804
 msgid "The web server returned an error code (try again, or check your web server logs)"
@@ -5486,7 +5486,7 @@ msgstr ""
 
 #: src/addons/sftp.php:492
 msgid "Use SCP instead of SFTP"
-msgstr ""
+msgstr "Käytä SCP:tä SFTP:n sijaan"
 
 #: src/addons/sftp.php:48
 msgid "SCP/SFTP user setting"
@@ -5506,7 +5506,7 @@ msgstr ""
 
 #: src/admin.php:894
 msgid "%s settings test result:"
-msgstr ""
+msgstr "%s asetuksien testaamisen lopputulos:"
 
 #: src/admin.php:4140, src/admin.php:4142
 msgid "(Not finished)"
@@ -5552,7 +5552,7 @@ msgstr ""
 
 #: src/admin.php:3288
 msgid "Pruning old backup sets"
-msgstr ""
+msgstr "Karsitaan vanhoja varmuuskopio-settejä"
 
 #: src/admin.php:3275
 msgid "Uploading files to remote storage"
@@ -5560,7 +5560,7 @@ msgstr "Lähetetään tiedostoja etäsäilöön"
 
 #: src/admin.php:3344
 msgid "Encrypted database"
-msgstr ""
+msgstr "Suojattu tietokanta"
 
 #: src/admin.php:3336
 msgid "Encrypting database"
@@ -5641,7 +5641,7 @@ msgstr ""
 
 #: src/addons/autobackup.php:501
 msgid "Creating backup with UpdraftPlus..."
-msgstr ""
+msgstr "Varmuuskopiota tehdään UpdraftPlussan avulla..."
 
 #: src/addons/autobackup.php:446, src/addons/autobackup.php:576,
 #: src/addons/autobackup.php:627
@@ -5682,7 +5682,7 @@ msgstr ""
 
 #: src/addons/morefiles.php:190
 msgid "Unable to open zip file (%s) - could not pre-scan it to check its integrity."
-msgstr ""
+msgstr "Zip -tiedostoa (%s) ei voitu avata - ei voitu skannata sen sisältöä"
 
 #: src/addons/morefiles.php:180
 msgid "Unable to read zip file (%s) - could not pre-scan it to check its integrity."
@@ -5726,7 +5726,7 @@ msgstr "Automaattinen varmuuskopiointi tuo turvaa"
 
 #: src/admin.php:2591
 msgid "If you can still read these words after the page finishes loading, then there is a JavaScript or jQuery problem in the site."
-msgstr ""
+msgstr "Jos voit vielä lukea näitä sanoja sivun lataamisen jälkeen, sivullasi on JavaScript tai jQuery virhe."
 
 #: src/admin.php:840
 msgid "The file was uploaded."
@@ -5738,7 +5738,7 @@ msgstr ""
 
 #: src/admin.php:838
 msgid "Unknown server response:"
-msgstr ""
+msgstr "Tuntematon palvelinvastaus:"
 
 #: src/admin.php:837
 msgid "This decryption key will be attempted:"
@@ -5766,7 +5766,7 @@ msgstr ""
 
 #: src/admin.php:823
 msgid "Download to your computer"
-msgstr ""
+msgstr "Lataa tietokoneellesi"
 
 #: src/admin.php:822
 msgid "Delete from your web server"
@@ -5778,7 +5778,7 @@ msgstr ""
 
 #: src/admin.php:4109
 msgid "(%d archive(s) in set)."
-msgstr ""
+msgstr "(%d arkisto(a) setissä)."
 
 #: src/templates/wp-admin/settings/form-contents.php:308
 msgid "Split archives every:"
@@ -5843,7 +5843,7 @@ msgstr ""
 
 #: src/backup.php:3097, src/backup.php:3380
 msgid "Failed to open the zip file (%s) - %s"
-msgstr ""
+msgstr "Zip-tiedostoa (%s) ei voitu avata - %s"
 
 #: src/addons/morefiles.php:168
 msgid "WordPress root directory server path: %s"
@@ -5921,7 +5921,7 @@ msgstr ""
 
 #: src/restorer.php:228
 msgid "file is size:"
-msgstr ""
+msgstr "tiedoston koko:"
 
 #: src/addons/googlecloud.php:1034, src/addons/migrator.php:490,
 #: src/addons/migrator.php:493, src/addons/migrator.php:496,
@@ -5957,7 +5957,7 @@ msgstr ""
 
 #: src/methods/dropbox.php:481
 msgid "You do not appear to be authenticated with %s"
-msgstr ""
+msgstr "Sinua ei ole todennettu %s"
 
 #: src/methods/dropbox.php:448
 msgid "Failed to access %s when deleting (see log file for more)"
@@ -5973,7 +5973,7 @@ msgstr ""
 
 #: src/methods/cloudfiles.php:409
 msgid "Error - no such file exists at %s"
-msgstr ""
+msgstr "Virhe - tiedostoa ei löydy sijainnista %s"
 
 #: src/addons/azure.php:268, src/methods/addon-base-v2.php:219,
 #: src/methods/cloudfiles.php:383, src/methods/cloudfiles.php:400,
@@ -6093,7 +6093,7 @@ msgstr ""
 
 #: src/addons/s3-enhanced.php:215, src/methods/s3.php:1143
 msgid "The error reported by %s was:"
-msgstr ""
+msgstr "%s virhe oli:"
 
 #: src/restorer.php:1916
 msgid "Please supply the requested information, and then continue."
@@ -6216,7 +6216,7 @@ msgstr ""
 
 #: src/admin.php:893
 msgid "Testing %s Settings..."
-msgstr ""
+msgstr "Testataan %s asetuksia..."
 
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:69,
 #: src/templates/wp-admin/settings/tab-backups.php:71
@@ -6261,7 +6261,7 @@ msgstr ""
 
 #: src/addons/migrator.php:1303
 msgid "Time taken (seconds):"
-msgstr ""
+msgstr "Aikaa käytetty (sekunteina):"
 
 #: src/addons/migrator.php:1302, src/admin.php:814
 msgid "Errors:"
@@ -6277,7 +6277,7 @@ msgstr ""
 
 #: src/addons/migrator.php:1299
 msgid "Rows examined:"
-msgstr ""
+msgstr "Rivejä tarkistettu:"
 
 #: src/addons/migrator.php:1298
 msgid "Tables examined:"
@@ -6299,7 +6299,7 @@ msgstr ""
 #: src/addons/migrator.php:1093, src/addons/migrator.php:1098,
 #: src/addons/migrator.php:1102, src/addons/migrator.php:1107
 msgid "Error: unexpected empty parameter (%s, %s)"
-msgstr ""
+msgstr "Virhe: odottamaton tyhjä parametri (%s, %s)"
 
 #: src/addons/migrator.php:1045
 msgid "Database: search and replace site URL"
@@ -6383,7 +6383,7 @@ msgstr ""
 
 #: src/addons/sftp.php:567
 msgid "Check your file permissions: Could not successfully create and enter:"
-msgstr ""
+msgstr "Tarkista tiedosto-oikeutesi: Ei voitu luoda ja asettaa:"
 
 #: src/addons/sftp.php:47, src/addons/sftp.php:48, src/addons/sftp.php:49
 msgid "No %s found"
@@ -6423,7 +6423,7 @@ msgstr ""
 
 #: src/addons/morefiles.php:137, src/includes/class-wpadmin-commands.php:523
 msgid "WordPress Core"
-msgstr ""
+msgstr "WordPress Ydin"
 
 #: src/methods/addon-base-v2.php:330, src/methods/stream-base.php:375
 msgid "Failed: We were not able to place a file in that directory - please check your credentials."
@@ -6565,7 +6565,7 @@ msgstr ""
 
 #: src/methods/s3.php:1093
 msgid "API secret"
-msgstr ""
+msgstr "API salainen"
 
 #: src/methods/s3.php:941
 msgid "Enter only a bucket name or a bucket and path. Examples: mybucket, mybucket/mypath"
@@ -6577,7 +6577,7 @@ msgstr ""
 
 #: src/methods/s3.php:936
 msgid "%s secret key"
-msgstr ""
+msgstr "%s salainen avain"
 
 #: src/methods/s3.php:932
 msgid "%s access key"
@@ -6625,7 +6625,7 @@ msgstr "Huomaa:"
 
 #: src/methods/email.php:45
 msgid "WordPress Backup"
-msgstr ""
+msgstr "WordPress Varmuuskopio"
 
 #: src/methods/cloudfiles.php:575, src/methods/openstack-base.php:530
 msgid "We accessed the container, and were able to create files within it."
@@ -6648,7 +6648,7 @@ msgstr "Käyttäjätunnus"
 #: src/methods/cloudfiles-new.php:184, src/methods/cloudfiles.php:519,
 #: src/methods/s3.php:1089
 msgid "API key"
-msgstr ""
+msgstr "API avain"
 
 #: src/addons/migrator.php:337, src/addons/moredatabase.php:89,
 #: src/addons/moredatabase.php:91, src/addons/moredatabase.php:93,

@@ -227,7 +227,7 @@ class UpdraftPlus_Admin {
 		if ($this->disk_space_check(1048576*35) === false) add_action('all_admin_notices', array($this, 'show_admin_warning_diskspace'));
 	}
 	
-	private function setup_all_admin_notices_udonly($service, $override = false) {
+	private function setup_all_admin_notices_udonly($service, $override = false) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 
 		if (UpdraftPlus_Options::user_can_manage() && defined('DISABLE_WP_CRON') && DISABLE_WP_CRON && (!defined('UPDRAFTPLUS_DISABLE_WP_CRON_NOTICE') || !UPDRAFTPLUS_DISABLE_WP_CRON_NOTICE)) {
@@ -733,9 +733,9 @@ class UpdraftPlus_Admin {
 			wp_register_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery'.$min_or_not.'.js', false, $jquery_enqueue_version, false);
 			wp_enqueue_script('jquery');
 			// No plupload until 3.3
-			wp_enqueue_script('updraftplus-admin-common', UPDRAFTPLUS_URL.'/includes/updraftplus-admin-common'.$min_or_not.'.js', array('jquery', 'jquery-ui-dialog', 'jquery-ui-core', 'jquery-ui-accordion'), $enqueue_version, true);
+			wp_enqueue_script('updraft-admin-common', UPDRAFTPLUS_URL.'/includes/updraft-admin-common'.$min_or_not.'.js', array('jquery', 'jquery-ui-dialog', 'jquery-ui-core', 'jquery-ui-accordion'), $enqueue_version, true);
 		} else {
-			wp_enqueue_script('updraftplus-admin-common', UPDRAFTPLUS_URL.'/includes/updraftplus-admin-common'.$min_or_not.'.js', array('jquery', 'jquery-ui-dialog', 'jquery-ui-core', 'jquery-ui-accordion', 'plupload-all'), $enqueue_version);
+			wp_enqueue_script('updraft-admin-common', UPDRAFTPLUS_URL.'/includes/updraft-admin-common'.$min_or_not.'.js', array('jquery', 'jquery-ui-dialog', 'jquery-ui-core', 'jquery-ui-accordion', 'plupload-all'), $enqueue_version);
 		}
 		
 	}
@@ -787,7 +787,7 @@ class UpdraftPlus_Admin {
 		}
 		$remote_storage_options_and_templates = UpdraftPlus_Storage_Methods_Interface::get_remote_storage_options_and_templates();
 		$main_tabs = $this->get_main_tabs_array();
-		wp_localize_script('updraftplus-admin-common', 'updraftlion', array(
+		wp_localize_script('updraft-admin-common', 'updraftlion', array(
 			'tab' => empty($_GET['tab']) ? 'backups' : $_GET['tab'],
 			'sendonlyonwarnings' => __('Send a report only when there are warnings/errors', 'updraftplus'),
 			'wholebackup' => __('When the Email storage method is enabled, also send the backup', 'updraftplus'),
@@ -922,7 +922,7 @@ class UpdraftPlus_Admin {
 			'remote_storage_templates' => $remote_storage_options_and_templates['templates'],
 			'instance_enabled' => __('Currently enabled', 'updraftplus'),
 			'instance_disabled' => __('Currently disabled', 'updraftplus'),
-			'local_upload_started' => __('Local backup upload has started; please check the current status tab to see the upload progress', 'updraftplus'),
+			'local_upload_started' => __('Local backup upload has started; please check the log file to see the upload progress', 'updraftplus'),
 			'local_upload_error' => __('You must select at least one remote storage destination to upload this backup set to.', 'updraftplus'),
 			'already_uploaded' => __('(already uploaded)', 'updraftplus'),
 			'onedrive_folder_url_warning' => __('Please specify the Microsoft OneDrive folder name, not the URL.', 'updraftplus'),
@@ -951,6 +951,8 @@ class UpdraftPlus_Admin {
 			'exclude_prefix_error_msg' => __('Please enter a valid file name prefix', 'updraftplus'),
 			'duplicate_exclude_rule_error_msg' => __('The exclusion rule which you are trying to add already exists', 'updraftplus'),
 			'clone_key_required' => __('UpdraftClone key is required.', 'updraftplus'),
+			'files_new_backup' => __('Include your files in the backup', 'updraftplus'),
+			'files_incremental_backup' => __('File backup options', 'updraftplus'),
 		));
 	}
 	
@@ -2038,9 +2040,16 @@ class UpdraftPlus_Admin {
 	 */
 	public function request_backupnow($request, $close_connection_callable = false) {
 		global $updraftplus;
-		
-		$backupnow_nocloud = (empty($request['backupnow_nocloud'])) ? false : true;
+
+		$abort = false;
+		$backupnow_nocloud = !empty($request['backupnow_nocloud']);
 		$event = (!empty($request['backupnow_nofiles'])) ? 'updraft_backupnow_backup_database' : ((!empty($request['backupnow_nodb'])) ? 'updraft_backupnow_backup' : 'updraft_backupnow_backup_all');
+		
+		$request['incremental'] = !empty($request['incremental']);
+
+		$entities = !empty($request['onlythisfileentity']) ? explode(',', $request['onlythisfileentity']) : array();
+
+		$incremental = $request['incremental'] ? apply_filters('updraftplus_prepare_incremental_run', false, $entities) : false;
 
 		// The call to backup_time_nonce() allows us to know the nonce in advance, and return it
 		$nonce = $updraftplus->backup_time_nonce();
@@ -2049,6 +2058,13 @@ class UpdraftPlus_Admin {
 			'nonce' => $nonce,
 			'm' => apply_filters('updraftplus_backupnow_start_message', '<strong>'.__('Start backup', 'updraftplus').':</strong> '.htmlspecialchars(__('OK. You should soon see activity in the "Last log message" field below.', 'updraftplus')), $nonce)
 		);
+
+		if (!empty($request['incremental']) && !$incremental) {
+			$msg = array(
+				'error' => __('No suitable backup set (that already contains a full backup of all the requested file component types) was found, to add increments to. Aborting this backup.', 'updaftplus')
+			);
+			$abort = true;
+		}
 		
 		if ($close_connection_callable && is_callable($close_connection_callable)) {
 			call_user_func($close_connection_callable, $msg);
@@ -2056,6 +2072,8 @@ class UpdraftPlus_Admin {
 			$updraftplus->close_browser_connection(json_encode($msg));
 		}
 
+		if ($abort) die;
+		
 		$options = array('nocloud' => $backupnow_nocloud, 'use_nonce' => $nonce);
 		if (!empty($request['onlythisfileentity']) && is_string($request['onlythisfileentity'])) {
 			// Something to see in the 'last log' field when it first appears, before the backup actually starts
@@ -2063,9 +2081,12 @@ class UpdraftPlus_Admin {
 			$options['restrict_files_to_override'] = explode(',', $request['onlythisfileentity']);
 		}
 
-		if (!empty($request['extradata'])) {
-			$options['extradata'] = $request['extradata'];
+		if ($request['incremental'] && !$incremental) {
+			$updraftplus->log('An incremental backup was requested but no suitable backup found to add increments to; will proceed with a new backup');
+			$request['incremental'] = false;
 		}
+
+		if (!empty($request['extradata'])) $options['extradata'] = $request['extradata'];
 		
 		$options['always_keep'] = empty($request['always_keep']) ? false : true;
 
@@ -2211,6 +2232,13 @@ class UpdraftPlus_Admin {
 		return $response;
 	}
 
+	/**
+	 * Used with the WP filter upload_dir to adjust where uploads go to when uploading a backup
+	 *
+	 * @param Array $uploads - pre-filter array
+	 *
+	 * @return Array - filtered array
+	 */
 	public function upload_dir($uploads) {
 		global $updraftplus;
 		$updraft_dir = $updraftplus->backups_dir_location();
@@ -2224,9 +2252,10 @@ class UpdraftPlus_Admin {
 	 * @param  String $dir  Directory
 	 * @param  String $name Name
 	 * @param  String $ext  File extension
+	 *
 	 * @return String
 	 */
-	public function unique_filename_callback($dir, $name, $ext) {
+	public function unique_filename_callback($dir, $name, $ext) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		return $name.$ext;
 	}
 
@@ -2804,6 +2833,9 @@ class UpdraftPlus_Admin {
 		);
 	}
 	
+	/**
+	 * Potentially register an action for showing restore progress
+	 */
 	private function print_restore_in_progress_box_if_needed() {
 		$restore_in_progress = get_site_option('updraft_restore_in_progress');
 		if (empty($restore_in_progress)) return;
@@ -3004,42 +3036,9 @@ class UpdraftPlus_Admin {
 	 * @return String
 	 */
 	public function backupnow_modal_contents() {
-		return $this->backup_now_widgetry();
+		return $this->include_template('wp-admin/settings/backupnow-modal.php', true);
 	}
 	
-	private function backup_now_widgetry() {
-
-		$ret = '';
-
-		$ret .= '<p><input type="checkbox" id="backupnow_includedb" checked="checked"> <label for="backupnow_includedb">'.__("Include the database in the backup", 'updraftplus').'</label> '."\n";
-
-		$ret .= '(<a href="'.UpdraftPlus::get_current_clean_url().'" id="backupnow_database_showmoreoptions">...</a>)<br>'."\n";
-
-		$ret .= '<div id="backupnow_database_moreoptions" class="updraft-hidden" style="display:none;">'."\n";
-
-		$premium_link = apply_filters('updraftplus_com_link', 'https://updraftplus.com/landing/updraftplus-premium');
-
-		$free_ret = '<em>'.__('All WordPress tables will be backed up.', 'updraftplus').' <a href="'.$premium_link.'">'. __('With UpdraftPlus Premium, you can choose to backup non-WordPress tables, backup only specified tables, and backup other databases too.', 'updraftplus').'</a></em>'."\n";
-
-		$ret .= apply_filters('updraft_backupnow_database_showmoreoptions', $free_ret, '')."\n";
-
-		$ret .= '</div>';
-		
-		$ret .= '</p>';
-			
-		$ret .= '<p><input type="checkbox" id="backupnow_includefiles" checked="checked"> <label for="backupnow_includefiles">'.__("Include any files in the backup", 'updraftplus').'</label> (<a href="'.UpdraftPlus::get_current_clean_url().'" id="backupnow_includefiles_showmoreoptions">...</a>)<br>';
-
-		$ret .= '<div id="backupnow_includefiles_moreoptions" class="updraft-hidden" style="display:none;"><em>'.__('Your saved settings also affect what is backed up - e.g. files excluded.', 'updraftplus').'</em><br>'.$this->files_selector_widgetry('backupnow_files_', false, 'sometimes').'</div></p>';
-
-		$ret .= '<span id="backupnow_remote_container">'.$this->backup_now_remote_message().'</span>';
-		
-		$ret .= '<p><input type="checkbox" id="always_keep"> <label for="always_keep">'.__("Only allow this backup to be deleted manually (i.e. keep it even if retention limits are hit).", 'updraftplus').'</label> ';
-
-		$ret .= apply_filters('updraft_backupnow_modal_afteroptions', '', '');
-
-		return $ret;
-	}
-
 	/**
 	 * Also used by the auto-backups add-on
 	 *
@@ -3412,7 +3411,10 @@ class UpdraftPlus_Admin {
 			
 			$ret .= $show_inline_info;
 			if (!empty($show_inline_info)) $ret .= ' - ';
-			$ret .= '<a data-jobid="'.$job_id.'" href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&action=downloadlog&updraftplus_backup_nonce='.$job_id.'" class="updraft-log-link">'.__('show log', 'updraftplus').'</a>';
+
+			$file_nonce = empty($jobdata['file_nonce']) ? $job_id : $jobdata['file_nonce'];
+			
+			$ret .= '<a data-fileid="'.$file_nonce.'" data-jobid="'.$job_id.'" href="'.UpdraftPlus_Options::admin_page_url().'?page=updraftplus&action=downloadlog&updraftplus_backup_nonce='.$file_nonce.'" class="updraft-log-link">'.__('show log', 'updraftplus').'</a>';
 				if (!$is_oneshot) $ret .=' - <a href="#" data-jobid="'.$job_id.'" title="'.esc_attr(__('Note: the progress bar below is based on stages, NOT time. Do not stop the backup simply because it seems to have remained in the same place for a while - that is normal.', 'updraftplus')).'" class="updraft_jobinfo_delete">'.__('stop', 'updraftplus').'</a>';
 			$ret .= '</div>';
 		
@@ -3754,7 +3756,7 @@ class UpdraftPlus_Admin {
 		}
 	}
 
-	public function get_settings_js($method_objects, $really_is_writable, $updraft_dir, $active_service) {
+	public function get_settings_js($method_objects, $really_is_writable, $updraft_dir, $active_service) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 
 		global $updraftplus;
 		
@@ -3792,12 +3794,13 @@ class UpdraftPlus_Admin {
 	}
 	
 	/**
-	 * This is the files selector widget
+	 * Return the HTML for the files selector widget
 	 *
-	 * @param  string  $prefix                 Prefix for the ID
-	 * @param  boolean $show_exclusion_options True or False for exclusion options
-	 * @param  boolean $include_more           $include_more can be (bool) or (string)"sometimes"
-	 * @return string
+	 * @param  String		  $prefix                 Prefix for the ID
+	 * @param  Boolean		  $show_exclusion_options True or False for exclusion options
+	 * @param  Boolean|String $include_more           $include_more can be (bool) or (string)"sometimes"
+	 *
+	 * @return String
 	 */
 	public function files_selector_widgetry($prefix = '', $show_exclusion_options = true, $include_more = true) {
 
@@ -3931,18 +3934,20 @@ class UpdraftPlus_Admin {
 	/**
 	 * Get backup information in HTML format for a specific backup
 	 *
-	 * @param array  $backup_history all backups history
-	 * @param string $key		     backup timestamp
-	 * @param string $nonce			 backup nonce
+	 * @param Array		 $backup_history all backups history
+	 * @param String	 $key		     backup timestamp
+	 * @param String	 $nonce			 backup nonce (job ID)
+	 * @param Array|Null $job_data		 if an array, then use this as the job data (if null, then it will be fetched directly)
+	 *
 	 * @return string HTML-formatted backup information
 	 */
-	public function raw_backup_info($backup_history, $key, $nonce) {
+	public function raw_backup_info($backup_history, $key, $nonce, $job_data = null) {
 
 		global $updraftplus;
 
 		$backup = $backup_history[$key];
 
-		$only_remote_sent = (!empty($backup['service']) && (array('remotesend') === $backup['service'] || 'remotesend' === $backup['service'])) ? true : false;
+		$only_remote_sent = !empty($backup['service']) && (array('remotesend') === $backup['service'] || 'remotesend' === $backup['service']);
 
 		$pretty_date = get_date_from_gmt(gmdate('Y-m-d H:i:s', (int) $key), 'M d, Y G:i');
 
@@ -3950,11 +3955,7 @@ class UpdraftPlus_Admin {
 
 		if (!empty($backup['label'])) $rawbackup .= '<span class="raw-backup-info">'.$backup['label'].'</span>';
 
-		if (!empty($nonce)) {
-			$jd = $updraftplus->jobdata_getarray($nonce);
-		} else {
-			$jd = array();
-		}
+		if (null === $job_data) $job_data = empty($nonce) ? array() : $updraftplus->jobdata_getarray($nonce);
 		
 		if (!$only_remote_sent) {
 			$rawbackup .= '<hr>';
@@ -3970,13 +3971,13 @@ class UpdraftPlus_Admin {
 		foreach ($backupable_entities as $type => $info) {
 			if (!isset($backup[$type])) continue;
 
-			$rawbackup .= $updraftplus->printfile($info['description'], $backup, $type, $checksums, $jd, true);
+			$rawbackup .= $updraftplus->printfile($info['description'], $backup, $type, $checksums, $job_data, true);
 		}
 
 		$total_size = 0;
 		foreach ($backup as $ekey => $files) {
 			if ('db' == strtolower(substr($ekey, 0, 2)) && '-size' != substr($ekey, -5, 5)) {
-				$rawbackup .= $updraftplus->printfile(__('Database', 'updraftplus'), $backup, $ekey, $checksums, $jd, true);
+				$rawbackup .= $updraftplus->printfile(__('Database', 'updraftplus'), $backup, $ekey, $checksums, $job_data, true);
 			}
 			if (!isset($backupable_entities[$ekey]) && ('db' != substr($ekey, 0, 2) || '-size' == substr($ekey, -5, 5))) continue;
 			if (is_string($files)) $files = array($files);
@@ -4011,8 +4012,8 @@ class UpdraftPlus_Admin {
 		
 		$rawbackup .= '</p><hr><p><pre>'.print_r($backup, true).'</p></pre>';
 
-		if (!empty($jd) && is_array($jd)) {
-			$rawbackup .= '<p><pre>'.print_r($jd, true).'</pre></p>';
+		if (!empty($job_data) && is_array($job_data)) {
+			$rawbackup .= '<p><pre>'.htmlspecialchars(print_r($job_data, true)).'</pre></p>';
 		}
 
 		return esc_attr($rawbackup);
@@ -4145,7 +4146,7 @@ class UpdraftPlus_Admin {
 		return $ret;
 	}
 
-	public function download_button($type, $backup_timestamp, $findex, $info, $title, $pdescrip, $esc_pretty_date, $set_contents) {
+	public function download_button($type, $backup_timestamp, $findex, $info, $title, $pdescrip, $esc_pretty_date, $set_contents) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 	
 		$ret = '';
 
@@ -4176,17 +4177,18 @@ class UpdraftPlus_Admin {
 	/**
 	 * Get HTML for the 'Upload' button for a particular backup in the 'Existing Backups' tab
 	 *
-	 * @param Integer $backup_time - backup timestamp (epoch time)
-	 * @param String  $nonce       - backup nonce
-	 * @param Array   $backup      - backup information array
+	 * @param Integer	 $backup_time - backup timestamp (epoch time)
+	 * @param String	 $nonce       - backup nonce
+	 * @param Array		 $backup      - backup information array
+	 * @param Null|Array $jobdata	  - if not null, then use as the job data instead of fetching
 	 *
 	 * @return String - the resulting HTML
 	 */
-	public function upload_button($backup_time, $nonce, $backup) {
+	public function upload_button($backup_time, $nonce, $backup, $jobdata = null) {
 		global $updraftplus;
 
 		// Check the job is not still running.
-		$jobdata = $updraftplus->jobdata_getarray($nonce);
+		if (null === $jobdata) $jobdata = $updraftplus->jobdata_getarray($nonce);
 		
 		if (!empty($jobdata) && 'finished' != $jobdata['jobstatus']) return '';
 
@@ -4365,7 +4367,7 @@ ENDHERE;
 	 *
 	 * @return string             - the new filename or the original if the blog name from the job data is not set
 	 */
-	public function upload_local_backup_name($backup_name, $use_time, $blog_name) {
+	public function upload_local_backup_name($backup_name, $use_time, $blog_name) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 
 		$backup_blog_name = $updraftplus->jobdata_get('blog_name', '');
@@ -4662,22 +4664,22 @@ ENDHERE;
 		
 	}
 
-	public function option_filter_template($val) {
+	public function option_filter_template($val) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 		return $updraftplus->option_filter_get('template');
 	}
 
-	public function option_filter_stylesheet($val) {
+	public function option_filter_stylesheet($val) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 		return $updraftplus->option_filter_get('stylesheet');
 	}
 
-	public function option_filter_template_root($val) {
+	public function option_filter_template_root($val) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 		return $updraftplus->option_filter_get('template_root');
 	}
 
-	public function option_filter_stylesheet_root($val) {
+	public function option_filter_stylesheet_root($val) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Filter use
 		global $updraftplus;
 		return $updraftplus->option_filter_get('stylesheet_root');
 	}

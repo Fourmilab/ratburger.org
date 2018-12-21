@@ -379,17 +379,17 @@
     },
     {
         "name": "phpseclib/phpseclib",
-        "version": "1.0.12",
-        "version_normalized": "1.0.12.0",
+        "version": "1.0.11",
+        "version_normalized": "1.0.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "20c35d9c7592dfef140b6d8dc299cb2647605e0a"
+            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/20c35d9c7592dfef140b6d8dc299cb2647605e0a",
-            "reference": "20c35d9c7592dfef140b6d8dc299cb2647605e0a",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/fd33675e483b887fc59834ab69e33ef7f2706425",
+            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425",
             "shasum": ""
         },
         "require": {
@@ -406,9 +406,9 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2018-11-04T05:38:52+00:00",
+        "time": "2018-04-15T16:51:35+00:00",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Crypt": "phpseclib/",
@@ -646,8 +646,8 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.48",
-        "version_normalized": "2.8.48.0",
+        "version": "v2.8.49",
+        "version_normalized": "2.8.49.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
@@ -708,8 +708,8 @@
     },
     {
         "name": "symfony/process",
-        "version": "v3.4.19",
-        "version_normalized": "3.4.19.0",
+        "version": "v3.4.20",
+        "version_normalized": "3.4.20.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",

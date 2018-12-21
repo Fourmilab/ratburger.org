@@ -225,7 +225,7 @@ abstract class UpdraftPlus_RemoteSend {
 
 	public function updraftplus_initial_jobdata($initial_jobdata, $options, $split_every) {
 
-		if (is_array($options) && !empty($options['extradata']) && preg_match('#services=remotesend/(\d+)#', $options['extradata'], $matches)) {
+		if (is_array($options) && !empty($options['extradata']) && !empty($options['extradata']['services']) && preg_match('#remotesend/(\d+)#', $options['extradata']['services'], $matches)) {
 
 			// Load the option now - don't wait until send time
 			$site_id = $matches[1];
