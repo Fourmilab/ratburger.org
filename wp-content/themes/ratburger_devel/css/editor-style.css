@@ -292,6 +292,9 @@ sub {
 	vertical-align: baseline;
 }
 
+/* RATBURGER LOCAL CODE
+   Correct backward definition of sub- and superscripts
+   in the TinyMCE editor.
 sub {
 	top: -6px;
 }
@@ -299,6 +302,15 @@ sub {
 sup {
 	bottom: -3px;
 }
+*/
+sub {
+	bottom: -0.25em;
+}
+
+sup {
+	top: -0.5em;
+}
+/* END RATBURGER LOCAL CODE */
 
 small {
 	font-size: 80%;
