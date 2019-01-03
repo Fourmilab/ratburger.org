@@ -52,17 +52,25 @@ class URE_Lib extends URE_Base_Lib {
     protected function __construct($options_id) {
                                            
         parent::__construct($options_id); 
+        
         $this->debug = defined('URE_DEBUG') && (URE_DEBUG==1 || URE_DEBUG==true);
- 
-        if ($this->is_pro()) {
-            $this->bbpress = new URE_bbPress_Pro();
-        } else {
+        $this->get_bbpress();        
+        $this->upgrade();
+        
+    }
+    // end of __construct()
+
+
+    protected function get_bbpress() {
+        
+        if ($this->bbpress===null) {
             $this->bbpress = new URE_bbPress();
         }
         
-        $this->upgrade();
+        return $this->bbpress;
+        
     }
-    // end of __construct()
+    // end of get_bbpress()
     
     
     public static function get_instance($options_id = '') {
@@ -81,6 +89,10 @@ class URE_Lib extends URE_Base_Lib {
         
     
     protected function upgrade() {
+        
+        if (!is_admin()) {
+            return;
+        }
         
         $ure_version = $this->get_option('ure_version', '0');
         if (version_compare( $ure_version, URE_VERSION, '<' ) ) {
@@ -203,7 +215,7 @@ class URE_Lib extends URE_Base_Lib {
             
 
     /**
-     *  return front-end according to the context - role or user editor
+     *  Show main page according to the context - role or user editor
      */
     public function editor() {
 
@@ -478,7 +490,9 @@ class URE_Lib extends URE_Base_Lib {
     
 
     public function get_default_role() {
+        
         $this->wp_default_role = get_option('default_role');
+        
     }
     // end of get_default_role()
     
@@ -584,8 +598,9 @@ class URE_Lib extends URE_Base_Lib {
      */
     public function get_user_roles() {
 
-        if ($this->bbpress->is_active()) {  // bbPress plugin is active
-            $this->roles = $this->bbpress->get_roles();
+        $bbpress = $this->get_bbpress();
+        if ($bbpress->is_active()) {  // bbPress plugin is active
+            $this->roles = $bbpress->get_roles();
         } else {
             $wp_roles = wp_roles();
             $this->roles = $wp_roles->roles;
@@ -609,11 +624,12 @@ class URE_Lib extends URE_Base_Lib {
         if (empty($this->roles)) {
             $this->get_user_roles();
         }
-        if ($this->bbpress->is_active()) {
+        $bbpress = $this->get_bbpress();
+        if ($bbpress->is_active()) {
             remove_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
         $roles = apply_filters('editable_roles', $this->roles);
-        if ($this->bbpress->is_active()) {
+        if ($bbpress->is_active()) {
             add_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
         
@@ -942,11 +958,12 @@ class URE_Lib extends URE_Base_Lib {
      */
     protected function add_bbpress_caps() {
     
-        if (!$this->bbpress->is_active()) {
+        $bbpress = $this->get_bbpress();
+        if (!$bbpress->is_active()) {
             return;
         }
-        
-        $caps = $this->bbpress->get_caps();
+                
+        $caps = $bbpress->get_caps();
         foreach ($caps as $cap) {
             $this->add_capability_to_full_caps_list($cap);
         }
@@ -1262,7 +1279,8 @@ class URE_Lib extends URE_Base_Lib {
         }
 
         $serialized_roles = serialize($this->roles);
-        foreach ($this->blog_ids as $blog_id) {
+        $blog_ids = $this->get_blog_ids();
+        foreach ($blog_ids as $blog_id) {
             $prefix = $wpdb->get_blog_prefix($blog_id);
             $options_table_name = $prefix . 'options';
             $option_name = $prefix . 'user_roles';
@@ -1300,7 +1318,8 @@ class URE_Lib extends URE_Base_Lib {
         
         $result = true;
         $old_blog = $wpdb->blogid;
-        foreach ($this->blog_ids as $blog_id) {
+        $blog_ids = $this->get_blog_ids();
+        foreach ($blog_ids as $blog_id) {
             switch_to_blog($blog_id);
             $this->roles = $this->get_user_roles();
             if (!isset($this->roles[$this->current_role])) { // add new role to this blog

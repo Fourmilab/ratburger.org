@@ -1,5 +1,18 @@
 CHANGES LOG (full version).
 ===========================
+
+= [4.48] 03.01.2019 =
+* Update: Multisite: Sites list is not requested from the database on every page opened in order to reduce server load.
+* Update: URE plugin version update routine is called now at the wp-admin backend only.
+* Update: Direct access to URE_Lib::bbpress property was excluded as a preparation to future code enhancements. 
+
+= [4.47] 12.11.2018 =
+* Fix: "Users->User Role Editor": Capabilities view was not refreshed properly for new selected role in case "Granted Only" filter was turned ON before other role selection.
+* Update: Unused code was removed from user-role-editor/includes/classes/bbpress.php
+* Update: Prevent sudden revoke role 'administrator' from a user(s) during capability with the same ID ('administrator') deletion from roles.
+* Update: Adding custom capability with ID 'administrator' was prohibited.
+* Update: Marked as compatible with WordPress version 5.0
+
 = [4.46] 20.09.2018
 * Update: "Users" page, "Without role" button: underlying SQL queries were replaced with more robust versions (about 10 times faster).
   It is critical for sites with large quant of users.New query does not take into account though some cases with incorrect users data (usually imported from the external sources).
