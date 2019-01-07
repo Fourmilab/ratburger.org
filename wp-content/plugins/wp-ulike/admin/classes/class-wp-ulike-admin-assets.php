@@ -3,7 +3,7 @@
  * Wp ULike Admin Scripts Class.
  * 
  * @package    wp-ulike
- * @author     Alimir 2018
+ * @author     Alimir 2019
  * @link       https://wpulike.com
 */
 
@@ -14,7 +14,7 @@ if ( ! defined('ABSPATH') ) {
 
 if ( ! class_exists( 'wp_ulike_admin_assets' ) ) {
 	/**
-	 *  Class to load and print master slider panel scripts
+	 *  Class to load and print the admin panel scripts
 	 */
 	class wp_ulike_admin_assets {
 

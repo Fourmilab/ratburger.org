@@ -3,7 +3,7 @@
  * General Hooks
  * 
  * @package    wp-ulike
- * @author     Alimir 2018
+ * @author     Alimir 2019
  * @link       https://wpulike.com
  */
 
@@ -11,28 +11,30 @@
   General Hooks
 *******************************************************/
 
-/**
- * Register WP ULike Widgets
- *
- * @author       	Alimir
- * @since           1.2
- * @return			Void
- */
 if( ! function_exists( 'wp_ulike_register_widget' ) ){
+	/**
+	 * Register WP ULike Widgets
+	 *
+	 * @author Alimir
+	 * @since 1.2
+	 * @return Void
+	 */
 	function wp_ulike_register_widget() {
 		register_widget( 'wp_ulike_widget' );
 	}
 	add_action( 'widgets_init', 'wp_ulike_register_widget' );
 }
 
-/**
- * Create ShortCode: 	[wp_ulike]
- *
- * @author       	Alimir
- * @since           1.4
- * @return			wp ulike button
- */
 if( ! function_exists( 'wp_ulike_shortcode' ) ){
+	/**
+	 * Create shortcode: [wp_ulike]
+	 *
+	 * @author Alimir
+	 * @param array $atts
+	 * @param string $content
+	 * @since 1.4
+	 * @return void
+	 */
 	function  wp_ulike_shortcode( $atts, $content = null ){
 		// Final result
 		$result = '';
@@ -69,14 +71,13 @@ if( ! function_exists( 'wp_ulike_shortcode' ) ){
 	add_shortcode( 'wp_ulike', 'wp_ulike_shortcode' );
 }
 
-/**
- * Generate rich snippet hooks
- *
- * @author       	Alimir
- * @since           3.5
- * @return          String
- */
 if( ! function_exists( 'wp_ulike_generate_microdata' ) ){
+	/**
+	 * Generate rich snippet hooks
+	 *
+	 * @param array $args
+	 * @return string
+	 */
 	function wp_ulike_generate_microdata( $args ){
 		// Bulk output
 		$output = '';
@@ -105,15 +106,14 @@ if( ! function_exists( 'wp_ulike_generate_microdata' ) ){
 	add_action( 'wp_ulike_inside_template', 'wp_ulike_generate_microdata' );
 }
 
-
-/**
- * Display inline likers box without AJAX request
- *
- * @author       	Alimir
- * @since           3.5.1
- * @return          String
- */
 if( ! function_exists( 'wp_ulike_display_inline_likers_template' ) ){
+	/**
+	 * Display inline likers box without AJAX request
+	 *
+	 * @param array $args
+	 * @since 3.5.1
+	 * @return void
+	 */
 	function wp_ulike_display_inline_likers_template( $args ){
 		// Get settings for current type
 		$get_settings     = wp_ulike_get_post_settings_by_type(  $args['type'], $args['ID'] );
@@ -141,15 +141,14 @@ if( ! function_exists( 'wp_ulike_display_inline_likers_template' ) ){
   Posts
 *******************************************************/
 
-/**
- * Auto insert wp_ulike function in the posts/pages content
- *
- * @author       	Alimir
- * @param           String $content
- * @since           1.0
- * @return			filter on "the_content"
- */
 if( ! function_exists( 'wp_ulike_put_posts' ) ){
+	/**
+	 * Auto insert wp_ulike function in the posts/pages content
+	 *
+	 * @param string $content
+	 * @since 1.0
+	 * @return string
+	 */
 	function wp_ulike_put_posts($content) {
 		//auto display position
 		$position = wp_ulike_get_setting( 'wp_ulike_posts', 'auto_display_position');
@@ -170,20 +169,17 @@ if( ! function_exists( 'wp_ulike_put_posts' ) ){
 		else
 		return $content . $button;
 	}
-
 	if (wp_ulike_get_setting( 'wp_ulike_posts', 'auto_display' ) == '1') {
 		add_filter('the_content', 'wp_ulike_put_posts');
 	}
 }
 
-/**
- * Add itemtype to wp_ulike_posts_add_attr filter
- *
- * @author       	Alimir
- * @since           2.7
- * @return          String
- */
 if( ! function_exists( 'wp_ulike_get_posts_microdata_itemtype' ) ){
+	/**
+	 * Add itemtype to wp_ulike_posts_add_attr filter
+	 *
+	 * @return mixed
+	 */
 	function wp_ulike_get_posts_microdata_itemtype(){
 		$get_ulike_count = get_post_meta(get_the_ID(), '_liked', true);
 		if(!is_singular() || !wp_ulike_get_setting( 'wp_ulike_posts', 'google_rich_snippets') || $get_ulike_count == 0) return;
@@ -192,14 +188,13 @@ if( ! function_exists( 'wp_ulike_get_posts_microdata_itemtype' ) ){
 	add_filter('wp_ulike_posts_add_attr', 'wp_ulike_get_posts_microdata_itemtype');
 }
 
-/**
- * Add rich snippet for ratings in form of schema.org
- *
- * @author       	Alimir
- * @since           2.7
- * @return          String
- */
 if( ! function_exists( 'wp_ulike_get_posts_microdata' ) ){
+	/**
+	 * Add rich snippet for ratings in form of schema.org
+	 *
+	 * @since 2.7
+	 * @return string
+	 */
 	function wp_ulike_get_posts_microdata(){
 		$get_ulike_count = get_post_meta(get_the_ID(), '_liked', true);
 		if(!is_singular() || !wp_ulike_get_setting( 'wp_ulike_posts', 'google_rich_snippets') || $get_ulike_count == 0) return;
@@ -214,7 +209,7 @@ if( ! function_exists( 'wp_ulike_get_posts_microdata' ) ){
 		$ratings_meta 	.= '<meta itemprop="ratingCount" content="' . $get_ulike_count . '" />';
 		$ratings_meta 	.= '</span>';
 		$itemtype 		= apply_filters( 'wp_ulike_remove_microdata_post_meta', false );
-        return apply_filters( 'wp_ulike_generate_google_structured_data', ( $itemtype ? $ratings_meta : ( $post_meta . $ratings_meta )));
+        return apply_filters( 'wp_ulike_generate_google_structured_data', ( $itemtype ? $ratings_meta : ( $post_meta . $ratings_meta ) ) );
 	}
 	add_filter( 'wp_ulike_posts_microdata', 'wp_ulike_get_posts_microdata');
 }
@@ -223,16 +218,15 @@ if( ! function_exists( 'wp_ulike_get_posts_microdata' ) ){
   Comments
 *******************************************************/
 
-/**
- * Auto insert wp_ulike_comments in the comments content
- *
- * @author       	Alimir
- * @param           String $content
- * @since           1.6
- * @return          filter on "comment_text"
- */
 if( ! function_exists( 'wp_ulike_put_comments' ) ){
-	function wp_ulike_put_comments($content) {
+	/**
+	 * Auto insert wp_ulike_comments in the comments content
+	 *
+	 * @since 1.6
+	 * @param string $content
+	 * @return string
+	 */
+	function wp_ulike_put_comments( $content ) {
 		//auto display position
 		$position = wp_ulike_get_setting( 'wp_ulike_comments', 'auto_display_position');
 
@@ -262,23 +256,16 @@ if( ! function_exists( 'wp_ulike_put_comments' ) ){
 
 if( defined( 'BP_VERSION' ) ) {
 
-	/**
-	 * Auto insert wp_ulike_buddypress in the comments content
-	 *
-	 * @author       	Alimir
-	 * @param           String $content
-	 * @since           1.7
-	 * @return          filter on "bp_get_activity_action"
-	 */
 	if( ! function_exists( 'wp_ulike_put_buddypress' ) ){
+		/**
+		 * Auto insert wp_ulike_buddypress in the activities content
+		 *
+		 * @since 1.7
+		 * @return void
+		 */
 		function wp_ulike_put_buddypress() {
 			wp_ulike_buddypress('get');
 		}
-
-		function wp_ulike_get_buddypress( $content ) {
-
-		}
-
 		if (wp_ulike_get_setting( 'wp_ulike_buddypress', 'auto_display' ) == '1') {
 			// Check display ulike in buddypress comments
 			$display_comments = wp_ulike_get_setting( 'wp_ulike_buddypress', 'activity_comment', 1 );
@@ -306,14 +293,13 @@ if( defined( 'BP_VERSION' ) ) {
 		}
 	}
 
-	/**
-	 * Register "WP ULike Activity" action
-	 *
-	 * @author       	Alimir
-	 * @since           1.7
-	 * @return          Add action on "bp_register_activity_actions"
-	 */
 	if( ! function_exists( 'wp_ulike_register_activity_actions' ) ){
+		/**
+		 * Register "WP ULike Activity" action
+		 *
+		 * @since 1.7
+		 * @return void
+		 */
 		function wp_ulike_register_activity_actions() {
 			global $bp;
 			bp_activity_set_action(
@@ -325,14 +311,13 @@ if( defined( 'BP_VERSION' ) ) {
 		add_action( 'bp_register_activity_actions', 'wp_ulike_register_activity_actions' );
 	}
 
-	/**
-	 * Display likes option in BuddyPress activity filter
-	 *
-	 * @author       	Alimir
-	 * @since           2.5.1
-	 * @return          Void
-	 */
 	if( ! function_exists( 'wp_ulike_bp_activity_filter_options' ) ){
+		/**
+		 * Display likes option in BuddyPress activity filter
+		 *
+		 * @since 2.5.1
+		 * @return void
+		 */
 		function wp_ulike_bp_activity_filter_options() {
 			echo "<option value='wp_like_group'>". __('Likes') ."</option>";
 		}
@@ -341,15 +326,14 @@ if( defined( 'BP_VERSION' ) ) {
 		add_action( 'bp_group_activity_filter_options', 'wp_ulike_bp_activity_filter_options' ); // Group's activity
 	}
 
-	/**
-	 * Register 'wp_ulike' to BuddyPress component.
-	 *
-	 * @author       	Alimir
-	 * @param           Array $component_names
-	 * @since           2.5
-	 * @return          String
-	 */
 	if( ! function_exists( 'wp_ulike_filter_notifications_get_registered_components' ) ){
+		/**
+		 * Register 'wp_ulike' to BuddyPress component
+		 *
+		 * @since 2.5
+		 * @param array $component_names
+		 * @return string
+		 */
 		function wp_ulike_filter_notifications_get_registered_components( $component_names = array() ) {
 			// Force $component_names to be an array
 			if ( ! is_array( $component_names ) ) {
@@ -363,17 +347,19 @@ if( defined( 'BP_VERSION' ) ) {
 		add_filter( 'bp_notifications_get_registered_components', 'wp_ulike_filter_notifications_get_registered_components', 10 );
 	}
 
-	/**
-	 * Add new buddypress activities on each like.
-	 *
-	 * @author       	Alimir
-	 * @param           Integer $user_ID (User ID)
-	 * @param           Integer $cp_ID (Post/Comment ID)
-	 * @param           String 	$type (Simple Key for separate posts by comments)
-	 * @since           1.6
-	 * @return          Void
-	 */
+
 	if( ! function_exists( 'wp_ulike_add_bp_notifications' ) ){
+		/**
+		 * Add new buddypress activities on each like
+		 *
+		 * @since 1.6
+		 * @param integer $cp_ID
+		 * @param string $type
+		 * @param integer $user_ID
+		 * @param string $status
+		 * @param boolean $has_log
+		 * @return void
+		 */
 		function wp_ulike_add_bp_notifications( $cp_ID, $type, $user_ID, $status, $has_log  ){
 
             /* RATBURGER LOCAL CODE
@@ -475,17 +461,17 @@ if( defined( 'BP_VERSION' ) ) {
 						'item_id'           => $cp_ID,
 						'secondary_item_id' => $user_ID,
 						'component_name'    => 'wp_ulike',
-				        /* RATBURGER LOCAL CODE
-				           Provide $user_ID for Ratburger notification
-                           generation, appended to the component_action.
-                           (Note that $user_ID is now available in the
-                           secondary_item_id and that this may be removed
-                           when the notification generation code is modified
-                           to fetch it from there.
-						'component_action'  => 'wp_ulike' . $type . '_action',
-                        */
-						'component_action'  => 'wp_ulike' . $type . '_action_' . $user_ID,
-				        /* END RATBURGER LOCAL CODE */
+                /* RATBURGER LOCAL CODE
+                   Provide $user_ID for Ratburger notification
+                   generation, appended to the component_action.
+                   (Note that $user_ID is now available in the
+                   secondary_item_id and that this may be removed
+                   when the notification generation code is modified
+                   to fetch it from there.
+                        'component_action'  => 'wp_ulike' . $type . '_action',
+                */
+                        'component_action'  => 'wp_ulike' . $type . '_action_' . $user_ID,
+                /* END RATBURGER LOCAL CODE */
 						'date_notified'     => bp_core_current_time(),
 						'is_new'            => 1,
 					)
@@ -496,185 +482,304 @@ if( defined( 'BP_VERSION' ) ) {
 		add_action( 'wp_ulike_after_process', 'wp_ulike_add_bp_notifications', 10, 5 );
 	}
 
-	/**
-	 * Add custom format for 'wp_ulike' notifications.
-	 *
-	 * @author       	Alimir
-	 * @since           2.5
-	 * @return          String
-	 */
+    if( ! function_exists( 'wp_ulike_format_buddypress_notifications' ) ){
+        /**
+         * Format notifications related to activity.
+         *
+         * @param string $content               Component action. Deprecated. Do not do checks against this! Use
+         *                                      the 6th parameter instead - $component_action_name.
+         * @param int    $item_id               Notification item ID.
+         * @param int    $secondary_item_id     Notification secondary item ID.
+         * @param int    $total_items           Number of notifications with the same action.
+         * @param string $format                Format of return. Either 'string' or 'object'.
+         * @param string $action                Canonical notification action.
+         * @param string $component             Notification component ID.
+         * @param int    $id                    Notification ID.
+         * @return string $return               Formatted notification.
+         */
+    /* RATBURGER LOCAL CODE
+       This is our local version of this function.  It entirely replaces
+       the version supplied by the plug-in. */
+
+    function wp_ulike_format_buddypress_notifications($action, $item_id, $secondary_item_id, $total_items, $format = 'string',
+                    $canon_act, $comp_name, $not_id = -1) {
+
+        global $wp_filter, $wp_version;
+        // Return value
+        $return = $action;
+
+        if (strpos($action, 'wp_ulike_') !== false) {
+            $custom_link = '';
+            //Extracting ulike type from the action value.
+            preg_match('/wp_ulike_(.*?)_action/', $action, $type);
+            //Extracting user id from the action value.
+            preg_match('/action_([0-9]+)/', $action, $user_ID);
+            $user_info = get_userdata($user_ID[1]);
+
+            $custom_text = $user_info->display_name . " liked your ";
+            $custom_class = '';
+
+            //checking the ulike types
+
+            // Post liked
+
+            if ($type[1] == 'liked'){
+                $custom_link = get_permalink($item_id);
+                /* RB: Add title of post to post like notification */
+                $custom_text .= 'post ' . '"' .
+                get_post($item_id)->post_title . '"';
+                $custom_class = 'rb_notif_post_like rb_notif_highlight';
+            }
+
+            // Group post liked
+
+            else if($type[1] == 'topicliked'){
+                $custom_link = get_permalink($item_id);
+                /* RB: Include group name in group post like */
+                $zzact = new BP_Activity_Activity($item_id);  // Activity for post
+                $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
+                $custom_text .= 'post in group ' . '"' .
+                $custom_class = 'rb_notif_group_topic_like rb_notif_highlight';
+                $zzgrp->name . '"';
+            }
+
+            // Comment on post liked
+
+            else if($type[1] == 'commentliked'){
+                $custom_link = get_comment_link($item_id);
+                /* RB: Add title of post commented on to comment like notification. */
+                $custom_text .= 'comment on ' . '"' .
+                    get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+                $custom_class = 'rb_notif_comment_like rb_notif_highlight';
+            }
+
+            // Group post or comment liked
+
+            else if($type[1] == 'activityliked'){
+                $custom_link = bp_activity_get_permalink($item_id);
+                /* Include group name in group comment like notification. */
+                $zzact = new BP_Activity_Activity($item_id);  // Activity for comment
+                $zztype = 'post';
+                if ($zzact->type == 'activity_comment') {
+                    $zztype = 'comment';
+                    $zzact = new BP_Activity_Activity($zzact->item_id);  // Activity for parent group
+                }
+                $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
+                $custom_text .= $zztype . ' in group ' . '"' .
+                    $zzgrp->name . '"';
+                $custom_class = 'rb_notif_group_' . $zztype . '_like rb_notif_highlight';
+
+            /* Notification for new comment. */
+
+            } else if ($type[1] == 'commentadded') {
+                $custom_link = get_comment_link( $item_id );
+                $custom_text = $user_info->display_name . ' commented on ' . '"' .
+                get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
+                $custom_class = 'rb_notif_new_comment rb_notif_highlight';
+
+            /* Notification for new post in a group. */
+
+            } else if ($type[1] == 'grouppost') {
+                $grp = groups_get_group($secondary_item_id);
+                $custom_link = bp_get_group_permalink($grp) . '#activity-' . $item_id;
+                $custom_text = $user_info->display_name . ' posted an update in the ' .
+                    $grp->name . ' group';
+                    $custom_class = 'rb_notif_new_group_post rb_notif_highlight';
+
+            /* Notification for new comment in a group. */
+
+            } else if ($type[1] == 'groupcomment') {
+                $custom_link = add_query_arg( 'nid', (int) $not_id, bp_activity_get_permalink( $item_id ) );
+                $RB_grp = new BP_Groups_Group((new BP_Activity_Activity((new BP_Activity_Activity($item_id))->item_id))->item_id);
+                $custom_text = sprintf( __( '%1$s commented on one of your updates in group %2$s', 'buddypress' ),
+                    get_userdata($secondary_item_id)->display_name,
+                    $RB_grp->name );
+                $custom_class = 'rb_notif_new_group_comment rb_notif_highlight';
+            }
+
+            /* RB: Build urlencode()d $goto_link for redirect destination after marking the
+                   notification read. */
+
+             $goto_link = urlencode($custom_link);
+             /* Replace the $custom_link with a link to mark the notification read and
+                specify the redirect to view the topic of the notification. */
+             $custom_kink = bp_get_root_domain() . '/members/' .
+                 wp_get_current_user()->user_login .
+                 '/notifications/unread/' .
+                 wp_nonce_url('', 'bp_notification_mark_read_' . $not_id) .
+                 '&action=read&notification_id=' . $not_id .
+                 '&goto=' . $goto_link;
+             $custom_link = $custom_kink;
+
+             // WordPress Toolbar
+             if ( 'string' === $format ) {
+                $content = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_link, (int) $total_items, $item_id, $user_ID );
+             // Deprecated BuddyBar
+             } else {
+                 /* RB: If $custom_class specified, wrap around the $custom_text. */
+                 $ctx = rb_trimtext($custom_text, 90);
+                 if ($custom_class !== '') {
+                    $ctx = '<span class="' . $custom_class . '">' . $ctx . '</span>';
+                 }
+                 $content = apply_filters('wp_ulike_bp_notifications_template', array(
+                    'text' => $ctx,
+                    'link' => $custom_link
+                 ), $custom_link, (int) $total_items, $ctx, $ctx);
+             }
+             // global wp_filter to call bbPress wrapper function
+             if (isset( $wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications'])) {
+                if (version_compare( $wp_version, '4.7', '>=') ) {
+                $wp_filter['bp_notifications_get_notifications_for_user']->callbacks[10]['bbp_format_buddypress_notifications']['function'] = 'wp_ulike_bbp_format_buddypress_notifications';
+                } else {
+                    $wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications']['function'] = 'wp_ulike_bbp_format_buddypress_notifications';
+                }
+             }
+             return $content;
+        }
+        return $content;
+    }
+
+    add_filter( 'bp_notifications_get_notifications_for_user',
+        'wp_ulike_format_buddypress_notifications', 5, 8 );
+    /* END RATBURGER LOCAL CODE */
+        }
+/* RATBURGER LOCAL CODE
+   Disable stock version of this function.
 	if( ! function_exists( 'wp_ulike_format_buddypress_notifications' ) ){
-	        /* RATBURGER LOCAL CODE
-	           Add $not_id (notification ID) argument
-		function wp_ulike_format_buddypress_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string' ) {
-	        */
-	        function wp_ulike_format_buddypress_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string',
-	            $canon_act, $comp_name, $not_id = -1 ) {
-	        /* END RATBURGER LOCAL CODE */
+   END RATBURGER LOCAL CODE */
+		/**
+		 * Format notifications related to activity.
+		 *
+		 * @param string $content               Component action. Deprecated. Do not do checks against this! Use
+		 *                                      the 6th parameter instead - $component_action_name.
+		 * @param int    $item_id               Notification item ID.
+		 * @param int    $secondary_item_id     Notification secondary item ID.
+		 * @param int    $total_items     		Number of notifications with the same action.
+		 * @param string $format                Format of return. Either 'string' or 'object'.
+		 * @param string $action 				Canonical notification action.
+		 * @param string $component        		Notification component ID.
+		 * @param int    $id                    Notification ID.
+		 * @return string $return Formatted notification.
+		 */
+/* RATBURGER LOCAL CODE
+   Disable stock version of this function.
+
+		function wp_ulike_format_buddypress_notifications( $content, $item_id, $secondary_item_id, $total_items, $format = 'string', $action, $component, $id ) {
 			global $wp_filter,$wp_version;
-			// Return value
-			$return = $action;
 
 			if ( strpos( $action, 'wp_ulike_' ) !== false ) {
-				$custom_link	= '';
 				//Extracting ulike type from the action value.
 				preg_match('/wp_ulike_(.*?)_action/', $action, $type);
-				//Extracting user id from the action value.
-				preg_match('/action_([0-9]+)/', $action, $user_ID);
-				$user_info 		= get_userdata($user_ID[1]);
-				    /* RATBURGER LOCAL CODE
-				$custom_text 	= __('You have a new like from', WP_ULIKE_SLUG ) . ' "' . $user_info->display_name . '"';
-				    */
-				    $custom_text = $user_info->display_name . " liked your ";
-				    $custom_class = '';
-				    /* END RATBURGER LOCAL CODE */
-				//checking the ulike types
-				if($type[1] == 'liked'){
-					$custom_link  	= get_permalink($item_id);
-					    /* RATBURGER LOCAL CODE
-					       Add title of post to post like notification */
-					    $custom_text .= 'post ' . '"' .
-					    get_post($item_id)->post_title . '"';
-					    $custom_class = 'rb_notif_post_like rb_notif_highlight';
-					    /* END RATBURGER LOCAL CODE */
+			    //Extracting user id from old action name values.
+			    preg_match('/action_([0-9]+)/', $action, $user_ID);
+				//Get user info
+				$user_ID     = isset( $user_ID[1] ) ? $user_ID[1] : $secondary_item_id;
+				$action_type = __( 'posts' , WP_ULIKE_SLUG );
+				$custom_link = '';
+
+				// Check the the ulike types
+				switch ( $type[1] ) {
+					case 'commentliked':
+						$custom_link = get_comment_link( $item_id );
+						$action_type = __( 'comments' , WP_ULIKE_SLUG );
+						break;
+
+					case 'activityliked':
+						$custom_link = bp_activity_get_permalink( $item_id );
+						$action_type = __( 'activities' , WP_ULIKE_SLUG );
+						break;
+
+					default:
+						$custom_link = get_permalink( $item_id );
+						break;
 				}
-				else if($type[1] == 'topicliked'){
-					$custom_link  	= get_permalink($item_id);
-					    /* RATBURGER LOCAL CODE
-					       Include group name in group post like */
-					    $zzact = new BP_Activity_Activity($item_id);  // Activity for post
-					    $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
-					    $custom_text .= 'post in group ' . '"' .
-					    $custom_class = 'rb_notif_group_topic_like rb_notif_highlight';
-					    $zzgrp->name . '"';
-					    /* END RATBURGER LOCAL CODE */
+
+				// Setup the output strings
+				if ( (int) $total_items > 1 ) {
+					$custom_text = sprintf( __( 'You have %d new %s likes', WP_ULIKE_SLUG ), (int) $total_items, $action_type );
+					$custom_link = add_query_arg( 'type', $action, bp_get_notifications_permalink() );
+				} else {
+					$user_fullname = bp_core_get_user_displayname( $user_ID );
+					$custom_text   = sprintf( __( '%s liked one of your %s', WP_ULIKE_SLUG ), $user_fullname, $action_type );
+					$custom_link   = add_query_arg( 'read_ulike_notification', (int) $id, $custom_link );
 				}
-				else if($type[1] == 'commentliked'){
-					$custom_link  	= get_comment_link( $item_id );
-					    /* RATBURGER LOCAL CODE
-					       Add title of post commented on to comment like notification.
-					    */
-					    $custom_text .= 'comment on ' . '"' .
-					        get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
-					    $custom_class = 'rb_notif_comment_like rb_notif_highlight';
-					    /* END RATBURGER LOCAL CODE */
-				}
-				else if($type[1] == 'activityliked'){
-					$custom_link  	= bp_activity_get_permalink( $item_id );
-					    /* RATBURGER LOCAL CODE
-					       Include group name in group comment like notification.
-					    */
-					    $zzact = new BP_Activity_Activity($item_id);  // Activity for comment
-					    $zztype = 'post';
-					    if ($zzact->type == 'activity_comment') {
-					        $zztype = 'comment';
-					        $zzact = new BP_Activity_Activity($zzact->item_id);  // Activity for parent group
-				}
-					    $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
-					    $custom_text .= $zztype . ' in group ' . '"' .
-					        $zzgrp->name . '"';
-					    $custom_class = 'rb_notif_group_' . $zztype . '_like rb_notif_highlight';
-				    /* Handle notifications for new comments. */
-				    } else if ($type[1] == 'commentadded') {
-					    $custom_link = get_comment_link( $item_id );
-					    $custom_text = $user_info->display_name . ' commented on ' . '"' .
-                                                get_post(get_comment($item_id)->comment_post_ID)->post_title . '"';
-					    $custom_class = 'rb_notif_new_comment rb_notif_highlight';
-				    /* Handle notification for new posts in a group. */
-				    } else if ($type[1] == 'grouppost') {
-					    $grp = groups_get_group($secondary_item_id);
-					    $custom_link = bp_get_group_permalink($grp) . '#activity-' . $item_id;
-                                            $custom_text = $user_info->display_name . ' posted an update in the ' .
-					        $grp->name . ' group';
-					    $custom_class = 'rb_notif_new_group_post rb_notif_highlight';
-				    /* Handle notification for new comments in a group. */
-				    } else if ($type[1] == 'groupcomment') {
-				        $custom_link = add_query_arg( 'nid', (int) $not_id, bp_activity_get_permalink( $item_id ) );
-				        $RB_grp = new BP_Groups_Group((new BP_Activity_Activity((new BP_Activity_Activity($item_id))->item_id))->item_id);
-				        $custom_text = sprintf( __( '%1$s commented on one of your updates in group %2$s', 'buddypress' ),
-					    get_userdata($secondary_item_id)->display_name,
-					    $RB_grp->name );
-					$custom_class = 'rb_notif_new_group_comment rb_notif_highlight';
-					    /* END RATBURGER LOCAL CODE */
-					}
-				    /* RATBURGER LOCAL CODE
-				       Build urlencode()d $goto_link for redirect destination after marking the
-				       notification read.
-				    */
-				    $goto_link = urlencode($custom_link);
-				    /* Replace the $custom_link with a link to mark the notification read and
-				       specify the redirect to view the topic of the notification. */
-				    $custom_kink = bp_get_root_domain() . '/members/' .
-				        wp_get_current_user()->user_login .
-				        '/notifications/unread/' .
-				         wp_nonce_url('', 'bp_notification_mark_read_' . $not_id) .
-				        '&action=read&notification_id=' . $not_id .
-				        '&goto=' . $goto_link;
-				    $custom_link = $custom_kink;
-				    /* END RATBURGER LOCAL CODE */
+
 				// WordPress Toolbar
 				if ( 'string' === $format ) {
-					$return = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_text, $custom_link );
+					$content = apply_filters( 'wp_ulike_bp_notifications_template', '<a href="' . esc_url( $custom_link ) . '" title="' . esc_attr( $custom_text ) . '">' . esc_html( $custom_text ) . '</a>', $custom_link, (int) $total_items, $item_id, $user_ID );
 				// Deprecated BuddyBar
 				} else {
-                        /* RATBURGER LOCAL CODE
-                           Replace original notification construction with ours
-                           which includes $custom_class.
-					$return = apply_filters( 'wp_ulike_bp_notifications_template', array(
+					$content = apply_filters( 'wp_ulike_bp_notifications_template', array(
 						'text' => $custom_text,
 						'link' => $custom_link
-					), $custom_link, (int) $total_items, $custom_text, $custom_text );
-                           END RATBURGER LOCAL CODE */
-						/* RATBURGER LOCAL CODE
-						   If $custom_class specified, wrap around the $custom_text.
-						*/
-						$ctx = rb_trimtext($custom_text, 90);
-						if ($custom_class !== '') {
-							$ctx = '<span class="' . $custom_class . '">' . $ctx . '</span>';
-						}
-						$return = apply_filters( 'wp_ulike_bp_notifications_template', array(
-							'text' => $ctx,
-							'link' => $custom_link
-						), $custom_link, (int) $total_items, $ctx, $ctx );
-                        /* END RATBURGER LOCAL CODE */
+					), $custom_link, (int) $total_items, $item_id, $user_ID );
 				}
+
 				// global wp_filter to call bbPress wrapper function
 				if( isset( $wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications'] ) ) {
 					if( version_compare( $wp_version, '4.7', '>=' ) ) {
-						// https://make.wordpress.org/core/2016/09/08/wp_hook-next-generation-actions-and-filters/
 						$wp_filter['bp_notifications_get_notifications_for_user']->callbacks[10]['bbp_format_buddypress_notifications']['function'] = 'wp_ulike_bbp_format_buddypress_notifications';
 					} else {
 						$wp_filter['bp_notifications_get_notifications_for_user'][10]['bbp_format_buddypress_notifications']['function'] = 'wp_ulike_bbp_format_buddypress_notifications';
 					}
 				}
 
-			return $return;
-		}
-			return $action;
-		}
-        /* RATBURGER LOCAL CODE
-	       Add $not_id (notification ID) argument
-		add_filter( 'bp_notifications_get_notifications_for_user', 'wp_ulike_format_buddypress_notifications', 5, 5 );
-        */
-		add_filter( 'bp_notifications_get_notifications_for_user', 'wp_ulike_format_buddypress_notifications', 5, 8 );
-        /* END RATBURGER LOCAL CODE */
-	}
+				return $content;
+			}
 
+			return $content;
+		}
+		add_filter( 'bp_notifications_get_notifications_for_user', 'wp_ulike_format_buddypress_notifications', 25, 8 );
+	}
+  END RATBURGER LOCAL CODE */
+
+
+	if( ! function_exists( 'wp_ulike_seen_bp_notifications' ) ){
+		/**
+		 * Mark notifications as read when a user visits an activity permalink.
+		 *
+		 * @since 3.6.0
+		 */
+		function wp_ulike_seen_bp_notifications() {
+			if ( ! is_user_logged_in() ) {
+				return;
+			}
+
+			$comment_id = 0;
+			// For replies to a parent update.
+			if ( isset( $_GET['read_ulike_notification'] ) && ! empty( $_GET['read_ulike_notification'] ) ) {
+				$comment_id = (int) $_GET['read_ulike_notification'];
+			}
+
+			// Mark individual activity reply notification as read.
+			if ( $comment_id ) {
+				BP_Notifications_Notification::update(
+					array(
+						'is_new' => false
+					),
+					array(
+						'user_id' => bp_loggedin_user_id(),
+						'id'      => $comment_id
+					)
+				);
+			}
+		}
+		add_action( 'wp_loaded', 'wp_ulike_seen_bp_notifications' );
+	}
 }
 
 /*******************************************************
   bbPress
 *******************************************************/
 
-/**
- * Auto insert wp_ulike_bbpress in the topcis content
- *
- * @author       	Alimir
- * @param           String $content
- * @since           2.2
- * @return          filter on bbpPress hooks
- */
 if( ! function_exists( 'wp_ulike_put_bbpress' ) && function_exists( 'is_bbpress' ) ){
+	/**
+	 * Auto insert wp_ulike_bbpress in the topics content
+	 *
+	 * @author       	Alimir
+	 * @since           2.2
+	 * @return          filter on bbpPress hooks
+	 */
 	function wp_ulike_put_bbpress() {
 		 wp_ulike_bbpress('get');
 	}
@@ -691,14 +796,15 @@ if( ! function_exists( 'wp_ulike_put_bbpress' ) && function_exists( 'is_bbpress'
   Other Plugins
 *******************************************************/
 
-/**
- * MyCred Hooks
- *
- * @author       	Gabriel Lemarie & Alimir
- * @since          	2.3
- */
 if( defined( 'myCRED_VERSION' ) ){
 	if( ! function_exists( 'wp_ulike_register_myCRED_hook' ) ){
+		/**
+		 * register wp_ulike in mycred setup
+		 *
+		 * @since 2.3
+		 * @param array $installed
+		 * @return void
+		 */
 		function wp_ulike_register_myCRED_hook( $installed ) {
 			$installed['wp_ulike'] = array(
 				'title'       => __( 'WP ULike', WP_ULIKE_SLUG ),
@@ -710,32 +816,33 @@ if( defined( 'myCRED_VERSION' ) ){
 		add_filter( 'mycred_setup_hooks', 'wp_ulike_register_myCRED_hook' );
 	}
 	if( ! function_exists( 'wp_ulike_myCRED_references' ) ){
-		function wp_ulike_myCRED_references( $hooks ) {
-			$hooks['wp_add_like'] 	= __( 'Liking Content', WP_ULIKE_SLUG );
-			$hooks['wp_get_like'] 	= __( 'Liked Content', WP_ULIKE_SLUG );
-			$hooks['wp_add_unlike'] = __( 'Unliking Content', WP_ULIKE_SLUG );
-			$hooks['wp_get_unlike'] = __( 'Unliked Content', WP_ULIKE_SLUG );
-			return $hooks;
+		/**
+		 * Add ulike references
+		 *
+		 * @since 2.3
+		 * @param array $list
+		 * @return void
+		 */
+		function wp_ulike_myCRED_references( $list ) {
+			$list['wp_add_like'] 	= __( 'Liking Content', WP_ULIKE_SLUG );
+			$list['wp_get_like'] 	= __( 'Liked Content', WP_ULIKE_SLUG );
+			$list['wp_add_unlike'] = __( 'Unliking Content', WP_ULIKE_SLUG );
+			$list['wp_get_unlike'] = __( 'Unliked Content', WP_ULIKE_SLUG );
+			return $list;
 		}
 		add_filter( 'mycred_all_references', 'wp_ulike_myCRED_references' );
 	}
 }
 
-/**
- * UltimateMember Hooks
- *
- * @author       	Alimir
- * @since          	2.3
- */
 if ( defined( 'ultimatemember_version' ) ) {
-	/**
-	 * Add custom tabs in the UltimateMember profiles.
-	 *
-	 * @author       	Alimir
-	 * @since           2.3
-	 * @return          Array
-	 */
 	if( ! function_exists( 'wp_ulike_add_custom_profile_tab' ) ){
+		/**
+		 * Add custom tabs in the UltimateMember profiles.
+		 *
+		 * @since 2.3
+		 * @param array $tabs
+		 * @return array $tabs
+		 */
 		function wp_ulike_add_custom_profile_tab( $tabs ) {
 
 			$tabs['wp-ulike-posts'] = array(
@@ -753,14 +860,14 @@ if ( defined( 'ultimatemember_version' ) ) {
 		add_filter('um_profile_tabs', 'wp_ulike_add_custom_profile_tab', 1000 );
 	}
 
-	/**
-	 * Add content to the wp-ulike-posts tab
-	 *
-	 * @author       	Alimir
-	 * @since           2.3
-	 * @return          Void
-	 */
 	if( ! function_exists( 'wp_ulike_posts_um_profile_content' ) ){
+		/**
+		 * Add content to the wp-ulike-posts tab
+		 *
+		 * @since 2.3
+		 * @param array $args
+		 * @return void
+		 */
 		function wp_ulike_posts_um_profile_content( $args ) {
 			global $wp_ulike_class,$ultimatemember;
 
@@ -795,14 +902,14 @@ if ( defined( 'ultimatemember_version' ) ) {
 		add_action('um_profile_content_wp-ulike-posts_default', 'wp_ulike_posts_um_profile_content');
 	}
 
-	/**
-	 * Add content to the wp-ulike-comments tab
-	 *
-	 * @author       	Alimir
-	 * @since           2.3
-	 * @return          Void
-	 */
 	if( ! function_exists( 'wp_ulike_comments_um_profile_content' ) ){
+		/**
+		 * Add content to the wp-ulike-comments tab
+		 *
+		 * @since 2.3
+		 * @param array $args
+		 * @return void
+		 */
 		function wp_ulike_comments_um_profile_content( $args ) {
 			global $wp_ulike_class,$ultimatemember;
 

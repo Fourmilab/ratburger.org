@@ -3,7 +3,7 @@
  * Back-end AJAX Functionalities
  * 
  * @package    wp-ulike
- * @author     Alimir 2018
+ * @author     Alimir 2019
  * @link       https://wpulike.com
  */
 

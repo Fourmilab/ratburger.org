@@ -4,13 +4,13 @@
  *
  * 
  * @package    wp-ulike
- * @author     Alimir 2018
+ * @author     Alimir 2019
  * @link       https://wpulike.com
  *
  * Plugin Name:       WP ULike
  * Plugin URI:        https://wpulike.com/
  * Description:       WP ULike plugin allows to integrate a beautiful Ajax Like Button into your wordPress website to allow your visitors to like and unlike pages, posts, comments AND buddypress activities. Its very simple to use and supports many options.
- * Version:           3.5.2
+ * Version:           3.6.0
  * Author:            Ali Mirzaei
  * Author URI:        http://alimir.ir
  * Text Domain:       wp-ulike
@@ -36,9 +36,9 @@
 
 // Do not change these values
 define( 'WP_ULIKE_PLUGIN_URI'   , 'https://wpulike.com/' 		);
-define( 'WP_ULIKE_VERSION'      , '3.5.2' 						);
+define( 'WP_ULIKE_VERSION'      , '3.6.0' 						);
 define( 'WP_ULIKE_SLUG'         , 'wp-ulike' 					);
-define( 'WP_ULIKE_DB_VERSION'   , '1.5' 						);
+define( 'WP_ULIKE_DB_VERSION'   , '1.6' 						);
 
 define( 'WP_ULIKE_DIR'          , plugin_dir_path( __FILE__ ) 	);
 define( 'WP_ULIKE_URL'          , plugins_url( '', __FILE__ ) 	);
@@ -246,7 +246,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 
 	        // Dashboard and Administrative Functionality
 	        if ( is_admin() ) {
-	            // Load AJAX spesific codes on demand
+	            // Load AJAX specific codes on demand
 	            if ( defined('DOING_AJAX') && DOING_AJAX ){
 					include( WP_ULIKE_INC_DIR . '/frontend-ajax.php' );
 					include( WP_ULIKE_ADMIN_DIR . '/admin-ajax.php'  );
@@ -254,7 +254,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 		       	// Add Settings Page
 		        $this->settings();
 
-	            // Load admin spesific codes
+	            // Load admin specific codes
 	            include( WP_ULIKE_ADMIN_DIR . '/index.php' );
 	        }
 
@@ -433,7 +433,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	                        `post_id` bigint(20) NOT NULL,
 	                        `date_time` datetime NOT NULL,
-	                        `ip` varchar(30) NOT NULL,
+	                        `ip` varchar(60) NOT NULL,
 	                        `user_id` varchar(30) NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
@@ -443,7 +443,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                dbDelta( $sql );
 	            } else {
 	            	// Fix an old issue with user_id column
-	            	$wpdb->query( "ALTER TABLE $posts_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL" );
+					$wpdb->query( "ALTER TABLE $posts_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL, CHANGE `ip` `ip` VARCHAR(60) NOT NULL" );
 	            }
 
 	            $comments_table = $wpdb->prefix . "ulike_comments";
@@ -452,7 +452,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	                        `comment_id` bigint(20) NOT NULL,
 	                        `date_time` datetime NOT NULL,
-	                        `ip` varchar(30) NOT NULL,
+	                        `ip` varchar(60) NOT NULL,
 	                        `user_id` varchar(30) NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
@@ -462,7 +462,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                dbDelta( $sql );
 	            } else {
 	            	// Fix an old issue with user_id column
-	            	$wpdb->query( "ALTER TABLE $comments_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL" );
+	            	$wpdb->query( "ALTER TABLE $comments_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL, CHANGE `ip` `ip` VARCHAR(60) NOT NULL" );
 	            }
 
 	            $activities_table = $wpdb->prefix . "ulike_activities";
@@ -471,7 +471,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	                        `activity_id` bigint(20) NOT NULL,
 	                        `date_time` datetime NOT NULL,
-	                        `ip` varchar(30) NOT NULL,
+	                        `ip` varchar(60) NOT NULL,
 	                        `user_id` varchar(30) NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
@@ -481,7 +481,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                dbDelta( $sql );
 	            } else {
 	            	// Fix an old issue with user_id column
-	            	$wpdb->query( "ALTER TABLE $activities_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL" );
+	            	$wpdb->query( "ALTER TABLE $activities_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL, CHANGE `ip` `ip` VARCHAR(60) NOT NULL" );
 	            }
 
 	            $forums_table = $wpdb->prefix . "ulike_forums";
@@ -490,7 +490,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                        `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	                        `topic_id` bigint(20) NOT NULL,
 	                        `date_time` datetime NOT NULL,
-	                        `ip` varchar(30) NOT NULL,
+	                        `ip` varchar(60) NOT NULL,
 	                        `user_id` varchar(30) NOT NULL,
 	                        `status` varchar(15) NOT NULL,
 	                        PRIMARY KEY (`id`)
@@ -500,7 +500,7 @@ if ( ! class_exists( 'WPULIKE' ) ) :
 	                dbDelta( $sql );
 	            } else {
 	            	// Fix an old issue with user_id column
-	            	$wpdb->query( "ALTER TABLE $forums_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL" );
+	            	$wpdb->query( "ALTER TABLE $forums_table CHANGE `user_id` `user_id` VARCHAR(30) NOT NULL, CHANGE `ip` `ip` VARCHAR(60) NOT NULL" );
 	            }
 
 				update_option( 'wp_ulike_dbVersion', WP_ULIKE_DB_VERSION );

@@ -3,7 +3,7 @@
  * Class for our widget support
  * 
  * @package    wp-ulike
- * @author     Alimir 2018
+ * @author     Alimir 2019
  * @link       https://wpulike.com
  */
 
@@ -333,6 +333,11 @@ if ( ! class_exists( 'wp_ulike_widget' ) ) {
 				$activity_permalink = function_exists('bp_activity_get_permalink') ? bp_activity_get_permalink( $activity->activity_id ) : '';
 				$activity_action    = ! empty( $activity->content ) ? $activity->content : $activity->action;
 				$post_count         = $activity->meta_value;
+
+				// Skip empty activities
+				if( empty( $activity_action ) ){
+					continue;
+				}
 
 				$result .= $before_item;
 				$result .= '<a href="' . $activity_permalink . '" rel="nofollow">';
