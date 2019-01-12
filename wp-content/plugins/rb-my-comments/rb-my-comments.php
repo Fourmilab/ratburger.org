@@ -365,8 +365,8 @@ function rb_my_comments($attr) {
     } else {
         $content .= '<div class="rb-my-not-found">' .
             ((get_current_user_id() == 0) ?
-                __('You must be logged in to display your comments.') :
-                __('You have made no comments.'));
+                __('You must be logged in to display comments.') :
+                __('User has made no comments.'));
     }
 
     wp_enqueue_style('rb-my-style');
