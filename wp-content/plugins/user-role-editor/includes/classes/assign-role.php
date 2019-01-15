@@ -64,7 +64,7 @@ class URE_Assign_Role {
     private function get_thorougly_where_condition() {
         global $wpdb;
 
-        $usermeta = $this->lib->get_usermeta_table_name();
+        $usermeta = $wpdb->usermeta;
         $id = get_current_blog_id();
         $blog_prefix = $wpdb->get_blog_prefix($id);
         $where = "WHERE NOT EXISTS (SELECT user_id from {$usermeta} ".
@@ -81,7 +81,7 @@ class URE_Assign_Role {
     private function get_quick_query_part2() {
         global $wpdb;
 
-        $usermeta = $this->lib->get_usermeta_table_name();
+        $usermeta = $wpdb->usermeta;
         $id = get_current_blog_id();
         $blog_prefix = $wpdb->get_blog_prefix($id);
         $query = "FROM {$usermeta} usermeta ".

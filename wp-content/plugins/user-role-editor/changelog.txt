@@ -1,5 +1,12 @@
 CHANGES LOG (full version).
 ===========================
+= [4.49] 15.01.2019 =
+* Update: Selected role ID was added to "Delete role" confirmation dialog.
+* Update: Method URE_Base_Lib::get_short_list_str() was enhanced.
+* Update: Method URE_Base_Lib::get_blog_ids() was made public.
+* Update: Method URE_Lib::get_usermeta_table_name() was excluded.
+* Fix: PHP warning "Undefined index:'unexisted role ID'" was fixed at URE_Lib::roles_text() (wp-content/plugins/user-role-editor/includes/classes/lib.php:360).
+* Fix: Bug was fixed with incorrect usage of transient for option "Show deprecated capabilities".
 
 = [4.48] 03.01.2019 =
 * Update: Multisite: Sites list is not requested from the database on every page opened in order to reduce server load.

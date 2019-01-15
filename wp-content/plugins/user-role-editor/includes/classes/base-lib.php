@@ -85,7 +85,7 @@ class URE_Base_Lib {
      * @global wpdb $wpdb
      * @return array
      */
-    protected function get_blog_ids() {
+    public function get_blog_ids() {
         global $wpdb;
 
         $network = get_current_site();        
@@ -119,7 +119,7 @@ class URE_Base_Lib {
 
         if ($message) {
             if ($error_style) {
-                echo '<div id="message" class="error" >';
+                echo '<div id="message" class="error">';
             } else {
                 echo '<div id="message" class="updated fade">';
             }
@@ -275,8 +275,12 @@ class URE_Base_Lib {
      */
     public function get_short_list_str($full_list, $items_count=3) {
      
+        if (empty($full_list) || !is_array($full_list)) {
+            return '...';
+        }
+        
         $short_list = array(); $i = 0;
-        foreach($full_list as $key=>$item) {            
+        foreach($full_list as $item) {            
             if ($i>=$items_count) {
                 break;
             }
@@ -286,7 +290,7 @@ class URE_Base_Lib {
         
         $str = implode(', ', $short_list);
         if ($items_count<count($full_list)) {
-            $str .= '...';
+            $str .= ', ...';
         }
         
         return $str;

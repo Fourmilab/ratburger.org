@@ -274,7 +274,14 @@ jQuery(function ($) {
             buttons: {
                 'Delete Role': function () {
                     var user_role_id = $('#del_user_role').val();
-                    if (!confirm(ure_data.delete_role)) {
+                    var question = '';
+                    if (user_role_id!=-1) {
+                        question = ure_data.delete_role +' "'+ user_role_id +'"';
+                    } else {
+                        question = $('#del_user_role').find('option:selected').text();
+                    }
+                    question += '?';
+                    if (!confirm(question)) {
                         return false;
                     }
                     $(this).dialog('close');
