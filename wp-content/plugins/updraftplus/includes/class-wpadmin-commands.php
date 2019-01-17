@@ -552,22 +552,18 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 			if (true !== $zip_opened) {
 				return array('error' => 'UpdraftPlus: opening zip (' . $fullpath . '): failed to open this zip file (object='.$zip_object.', code: '.$zip_opened.')');
 			} else {
-				if ('UpdraftPlus_PclZip' == $zip_object) {
-					$numfiles = $zip->numAll;
-					if (false === $numfiles) {
-						return array('error' => 'UpdraftPlus: reading zip: '.$zip->last_error);
-					}
-				} else {
-					$numfiles = $zip->numFiles;
-				}
+			
+				$numfiles = $zip->numFiles;
 
+				if (false === $numfiles) return array('error' => 'UpdraftPlus: reading zip: '.$zip->last_error);
+					
 				for ($i=0; $i < $numfiles; $i++) {
 					$si = $zip->statIndex($i);
 
 					// Fix for windows being unable to build jstree due to different directory separators being used
 					$si['name'] = str_replace("/", DIRECTORY_SEPARATOR, $si['name']);
 
-					// if it's a dot then we don't want to append this as it will break the id's and the tree structure
+					// if it's a dot then we don't want to append this as it will break the ids and the tree structure
 					if ('.' == dirname($si['name'])) {
 						$node_id = $parent_name;
 					} else {

@@ -69,6 +69,25 @@ class UpdraftPlus_Job_Scheduler {
 
 		$updraftplus->something_useful_happened = true;
 
+		$clone_job = $updraftplus->jobdata_get('clone_job');
+
+		if (!empty($clone_job)) {
+			static $last_call = false;
+
+			// Check we haven't yet made a call or that 15 minutes has passed before we make another call
+			if (!$last_call || time() - $last_call > 900) {
+				$last_call = time();
+				$clone_id = $updraftplus->jobdata_get('clone_id');
+				$secret_token = $updraftplus->jobdata_get('secret_token');
+				$response = $updraftplus->get_updraftplus_clone()->clone_checkin(array('clone_id' => $clone_id, 'secret_token' => $secret_token));
+				if (!isset($response['status']) || 'success' != $response['status']) {
+					$updraftplus->log("UpdraftClone backup check-in failed.");
+				} else {
+					$updraftplus->log("UpdraftClone backup check-in made succfessfully.");
+				}
+			}
+		}
+
 		$updraft_dir = $updraftplus->backups_dir_location();
 		if (file_exists($updraft_dir.'/deleteflag-'.$updraftplus->nonce.'.txt')) {
 			$updraftplus->log("User request for abort: backup job will be immediately halted");

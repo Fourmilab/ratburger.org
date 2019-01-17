@@ -51,6 +51,55 @@ class UpdraftPlus_Filesystem_Functions {
 	}
 
 	/**
+	 * Ensure that WP_Filesystem is instantiated and functional. Otherwise, outputs necessary HTML and dies.
+	 * Will also consult $_POST['updraft_restore'] and can set $_POST['updraft_restore_*'] and $_POST['updraft_restorer_*']
+	 *
+	 * @param Array|Null $second_loop_entities - array of files grouped by type
+	 * @param Array		 $url_parameters	   - parameters and values to be added to the URL output
+	 */
+	public static function ensure_wp_filesystem_set_up_for_restore($second_loop_entities, $url_parameters = array()) {
+	
+		global $wp_filesystem;
+
+		// request_filesystem_credentials passes on fields just via hidden name/value pairs.
+		// Build array of parameters to be passed via this
+		$extra_fields = array();
+		if (isset($_POST['updraft_restore']) && is_array($_POST['updraft_restore'])) {
+			foreach ($_POST['updraft_restore'] as $entity) {
+				$_POST['updraft_restore_'.$entity] = 1;
+				$extra_fields[] = 'updraft_restore_'.$entity;
+			}
+		}
+
+		foreach ($second_loop_entities as $type => $files) {
+			$_POST['updraft_restore_'.$type] = 1;
+			if (!in_array('updraft_restore_'.$type, $extra_fields)) $extra_fields[] = 'updraft_restore_'.$type;
+		}
+
+		// Now make sure that updraft_restorer_ option fields get passed along to request_filesystem_credentials
+		foreach ($_POST as $key => $value) {
+			if (0 === strpos($key, 'updraft_restorer_')) $extra_fields[] = $key;
+		}
+
+		$build_url = UpdraftPlus_Options::admin_page().'?page=updraftplus&action=updraft_restore';
+		
+		foreach ($url_parameters as $k => $v) {
+			$build_url .= '&'.$k.'='.$v;
+		}
+		
+		$credentials = request_filesystem_credentials($build_url, '', false, false, $extra_fields);
+		
+		WP_Filesystem($credentials);
+		
+		if ($wp_filesystem->errors->get_error_code()) {
+			echo '<p><em><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/asked-ftp-details-upon-restorationmigration-updates/").'" target="_blank">'.__('Why am I seeing this?', 'updraftplus').'</a></em></p>';
+			foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
+			exit;
+		}
+		
+	}
+	
+	/**
 	 * Get the html of "Web-server disk space" line which resides above of the existing backup table
 	 *
 	 * @param Boolean $will_immediately_calculate_disk_space Whether disk space should be counted now or when user click Refresh link
@@ -393,12 +442,13 @@ class UpdraftPlus_Filesystem_Functions {
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
 	 *
-	 * @param String $file Full path and filename of ZIP archive.
-	 * @param String $to   Full path on the filesystem to extract archive to.
+	 * @param String  $file			  - Full path and filename of ZIP archive.
+	 * @param String  $to			  - Full path on the filesystem to extract archive to.
+	 * @param Integer $starting_index - index of entry to start unzipping from (allows resumption)
 	 *
 	 * @return Boolean|WP_Error True on success, WP_Error on failure.
 	 */
-	public static function unzip_file($file, $to) {
+	public static function unzip_file($file, $to, $starting_index = 0) {
 		global $wp_filesystem;
 
 		if (!$wp_filesystem || !is_object($wp_filesystem)) {
@@ -431,15 +481,83 @@ class UpdraftPlus_Filesystem_Functions {
 			}
 		}
 
+		static $added_unzip_action = false;
+		if (!$added_unzip_action) {
+			add_action('updraftplus_unzip_file_unzipped', array('UpdraftPlus_Filesystem_Functions', 'unzip_file_unzipped'), 10, 5);
+			$added_unzip_action = true;
+		}
+		
 		if (class_exists('ZipArchive', false) && apply_filters('unzip_file_use_ziparchive', true)) {
-			// Should be able to use self::unzip_file_go() here - not yet tested
-			$result = _unzip_file_ziparchive($file, $to, $needed_dirs);
+			$result = self::unzip_file_go($file, $to, $needed_dirs, 'ziparchive', $starting_index);
 			if (true === $result || (is_wp_error($result) && 'incompatible_archive' != $result->get_error_code())) return $result;
 		}
 		
 		// Fall through to PclZip if ZipArchive is not available, or encountered an error opening the file.
-		// Not yet ready to be able to use self::unzip_file_go() until that is ready for PclZip
-		return _unzip_file_pclzip($file, $to, $needed_dirs);
+		// The switch here is a sort-of emergency switch-off in case something in WP's version diverges or behaves differently
+		if (!defined('UPDRAFTPLUS_USE_INTERNAL_PCLZIP') || UPDRAFTPLUS_USE_INTERNAL_PCLZIP) {
+			return self::unzip_file_go($file, $to, $needed_dirs, 'pclzip', $starting_index);
+		} else {
+			return _unzip_file_pclzip($file, $to, $needed_dirs);
+		}
+	}
+	
+	/**
+	 * Called upon the WP action updraftplus_unzip_file_unzipped, to indicate that a file has been unzipped.
+	 *
+	 * @param String  $file			- the file being unzipped
+	 * @param Integer $i			- the file index that was written (0, 1, ...)
+	 * @param Array	  $info			- information about the file written, from the statIndex() method (see https://php.net/manual/en/ziparchive.statindex.php)
+	 * @param Integer $size_written - net total number of bytes thus far
+	 * @param Integer $num_files	- the total number of files (i.e. one more than the the maximum value of $i)
+	 */
+	public static function unzip_file_unzipped($file, $i, $info, $size_written, $num_files) {
+	
+		global $updraftplus;
+
+		static $last_file_seen = null;
+
+		static $last_logged_bytes;
+		static $last_logged_index;
+		static $last_logged_time;
+		static $last_saved_time;
+		
+		// Detect a new zip file; reset state
+		if ($file !== $last_file_seen) {
+			$last_file_seen = $file;
+			$last_logged_bytes = 0;
+			$last_logged_index = 0;
+			$last_logged_time = time();
+			$last_saved_time = time();
+		}
+		
+		// We always log the last one for clarity (the log/display looks odd if the last mention of something being unzipped isn't the last). Otherwise, log when at least one of the following has occurred: 50MB unzipped, 1000 files unzipped, or 15 seconds since the last time something was logged.
+		if ($i >= $num_files -1 || $size_written > $last_logged_bytes + 100 * 1048576 || $i > $last_logged_index + 1000 || time() > $last_logged_time + 15) {
+		
+			$updraftplus->jobdata_set('last_index_'.md5(basename($file)), $i);
+			
+			$updraftplus->log(sprintf(__('Unzip progress: %d out of %d files', 'updraftplus').' (%s, %s)', $i+1, $num_files, UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size_written), $info['name']), 'notice-restore');
+			$updraftplus->log(sprintf('Unzip progress: %d out of %d files (%s, %s)', $i+1, $num_files, UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size_written), $info['name']), 'notice');
+			
+			$last_logged_bytes = $size_written;
+			$last_logged_index = $i;
+			$last_logged_time = time();
+			$last_saved_time = time();
+		}
+		
+		// Because a lot can happen in 5 seconds, we update the job data more often
+		if (time() > $last_saved_time + 5) {
+			// N.B. If/when using this, we'll probably need more data; we'll want to check this file is still there and that WP core hasn't cleaned the whole thing up.
+			$updraftplus->jobdata_set('last_index_'.md5(basename($file)), $i);
+			$last_saved_time = time();
+		}
+	}
+	
+	/**
+	 * Compatibility function (exists in WP 4.8+)
+	 */
+	public static function wp_doing_cron() {
+		if (function_exists('wp_doing_cron')) return wp_doing_cron();
+		return apply_filters('wp_doing_cron', defined('DOING_CRON') && DOING_CRON);
 	}
 	
 	/**
@@ -449,23 +567,31 @@ class UpdraftPlus_Filesystem_Functions {
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
 	 *
-	 * @param String $file		  Full path and filename of ZIP archive.
-	 * @param String $to		  Full path on the filesystem to extract archive to.
-	 * @param Array	 $needed_dirs A partial list of required folders needed to be created.
-	 * @param String $method	  Either 'ziparchive' or 'pclzip'. DO NOT USE 'pclzip'; it's not yet ready.
+	 * @param String  $file		  	  - full path and filename of ZIP archive.
+	 * @param String  $to		  	  - full path on the filesystem to extract archive to.
+	 * @param Array	  $needed_dirs	  - a partial list of required folders needed to be created.
+	 * @param String  $method	 	  - either 'ziparchive' or 'pclzip'.
+	 * @param Integer $starting_index - index of entry to start unzipping from (allows resumption)
 	 *
 	 * @return Boolean|WP_Error True on success, WP_Error on failure.
 	 */
-	public static function unzip_file_go($file, $to, $needed_dirs = array(), $method = 'ziparchive') {
-		global $wp_filesystem;
+	public static function unzip_file_go($file, $to, $needed_dirs = array(), $method = 'ziparchive', $starting_index = 0) {
+		global $wp_filesystem, $updraftplus;
 		
 		$class_to_use = ('ziparchive' == $method) ? 'UpdraftPlus_ZipArchive' : 'UpdraftPlus_PclZip';
 
 		if (!class_exists($class_to_use)) require_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
 		
+		$updraftplus->log('Unzipping '.basename($file).' to '.$to.' using '.$class_to_use);
+		
 		$z = new $class_to_use;
 
 		$flags = (version_compare(PHP_VERSION, '5.2.12', '>') && defined('ZIPARCHIVE::CHECKCONS')) ? ZIPARCHIVE::CHECKCONS : 4;
+		
+		// This is just for crazy people with mbstring.func_overload enabled (deprecated from PHP 7.2)
+		// This belongs somewhere else
+		// if ('UpdraftPlus_PclZip' == $class_to_use) mbstring_binary_safe_encoding();
+		// if ('UpdraftPlus_PclZip' == $class_to_use) reset_mbstring_encoding();
 		
 		$zopen = $z->open($file, $flags);
 		
@@ -477,26 +603,23 @@ class UpdraftPlus_Filesystem_Functions {
 
 		$num_files = $z->numFiles;
 		
-		for ($i = 0; $i < $num_files; $i++) {
+		for ($i = $starting_index; $i < $num_files; $i++) {
 			if (!$info = $z->statIndex($i)) {
-				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.'));
+				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.').' ('.$z->last_error.')');
 			}
 
-			if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Skip the OS X-created __MACOSX directory
-				continue;
-			}
+			// Skip the OS X-created __MACOSX directory
+			if ('__MACOSX/' === substr($info['name'], 0, 9)) continue;
 
 			// Don't extract invalid files:
-			if (0 !== validate_file($info['name'])) {
-				continue;
-			}
+			if (0 !== validate_file($info['name'])) continue;
 
 			$uncompressed_size += $info['size'];
 
 			if ('/' === substr($info['name'], -1)) {
 				// Directory.
 				$needed_dirs[] = $to . untrailingslashit($info['name']);
-			} elseif ('.' !== $dirname = dirname($info['name'])) {
+			} elseif ('.' !== ($dirname = dirname($info['name']))) {
 				// Path to a file.
 				$needed_dirs[] = $to . untrailingslashit($dirname);
 			}
@@ -507,7 +630,7 @@ class UpdraftPlus_Filesystem_Functions {
 		* A disk that has zero free bytes has bigger problems.
 		* Require we have enough space to unzip the file and copy its contents, with a 10% buffer.
 		*/
-		if (wp_doing_cron()) {
+		if (self::wp_doing_cron()) {
 			$available_space = @disk_free_space(WP_CONTENT_DIR);
 			if ($available_space && ($uncompressed_size * 2.1) > $available_space) {
 				return new WP_Error('disk_full_unzip_file', __('Could not copy files. You may have run out of disk space.'), compact('uncompressed_size', 'available_space'));
@@ -520,9 +643,9 @@ class UpdraftPlus_Filesystem_Functions {
 			if (untrailingslashit($to) == $dir) { // Skip over the working directory, We know this exists (or will exist)
 				continue;
 			}
-			if (strpos($dir, $to) === false) { // If the directory is not within the working directory, Skip it
-				continue;
-			}
+			
+			// If the directory is not within the working directory, Skip it
+			if (false === strpos($dir, $to)) continue;
 
 			$parent_folder = dirname($dir);
 			while (!empty($parent_folder) && untrailingslashit($to) != $parent_folder && !in_array($parent_folder, $needed_dirs)) {
@@ -541,33 +664,37 @@ class UpdraftPlus_Filesystem_Functions {
 		}
 		unset($needed_dirs);
 
-		for ($i = 0; $i < $num_files; $i++) {
+		$size_written = 0;
+		
+		for ($i = $starting_index; $i < $num_files; $i++) {
 			if (!$info = $z->statIndex($i)) {
 				return new WP_Error('stat_failed_'.$method, __('Could not retrieve file from archive.'));
 			}
 
-			if ('/' == substr($info['name'], -1)) { // directory
-				continue;
-			}
+			// directory
+			if ('/' == substr($info['name'], -1)) continue;
 
-			if ('__MACOSX/' === substr($info['name'], 0, 9)) { // Don't extract the OS X-created __MACOSX directory files
-				continue;
-			}
+			// Don't extract the OS X-created __MACOSX
+			if ('__MACOSX/' === substr($info['name'], 0, 9)) continue;
 
 			// Don't extract invalid files:
-			if (0 !== validate_file($info['name'])) {
-				continue;
-			}
+			if (0 !== validate_file($info['name'])) continue;
 
-			$contents = $z->getFromIndex($i);
-
-			if (false === $contents) {
-				return new WP_Error('extract_failed_'.$method, __('Could not extract file from archive.'), $info['name']);
+			// PclZip will return (boolean)false for an empty file
+			$contents = (isset($info['size']) && 0 == $info['size']) ? '' : $z->getFromIndex($i);
+			
+			if (false === $contents && ('pclzip' !== $method || 0 !== $info['size'])) {
+				return new WP_Error('extract_failed_'.$method, __('Could not extract file from archive.').' '.$z->last_error, json_encode($info));
 			}
 
 			if (!$wp_filesystem->put_contents($to . $info['name'], $contents, FS_CHMOD_FILE)) {
 				return new WP_Error('copy_failed_'.$method, __('Could not copy file.'), $info['name']);
 			}
+			
+			if (!empty($info['size'])) $size_written += $info['size'];
+
+			do_action('updraftplus_unzip_file_unzipped', $file, $i, $info, $size_written, $num_files);
+
 		}
 
 		$z->close();

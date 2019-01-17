@@ -281,7 +281,6 @@ span.tokens-number {
 .updraft_migrate_widget_temporary_clone_show_stage0 .dashicons {
 	text-decoration: none;
 	font-size: 20px;
-	line-height: inherit;
 }
 
 .opened .button.updraft_migrate_widget_temporary_clone_show_stage0 {
@@ -2182,9 +2181,14 @@ small.ud_massactions-tip {
 /* Add-ons */
 /* Want to fix the WordPress icons so that they fit inline with the text, and don't push everything out of place. */
 
-.dashicons {
+#updraft-wrap .dashicons.dashicons-adapt-size {
 	line-height: inherit;
 	font-size: inherit;
+}
+
+#updraft-wrap .button span.dashicons:not(.dashicons-adapt-size) {
+	vertical-align: middle;
+	margin-top: -3px;
 }
 
 .addon-logo-150 {

@@ -4,7 +4,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access allowed');
 if (!class_exists('UpdraftPlus_PclZip')) require_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
 
 /**
- * This file contains functions that are only needed/loaded when a backup is running (reduces memory usage on other pages)
+ * This file contains code that is only needed/loaded when a backup is running
  */
 class UpdraftPlus_Backup {
 
@@ -74,7 +74,19 @@ class UpdraftPlus_Backup {
 
 	// Append to this any skipped tables
 	private $skipped_tables;
+	
+	// When initialised, a boolean
+	public $last_storage_instance;
+	
+	// The absolute upper limit that will be considered for a zip batch (in bytes)
+	private $zip_batch_ceiling;
 
+	/**
+	 * Class constructor
+	 *
+	 * @param Array|String $backup_files  - files to backup, or (string)'no'
+	 * @param Integer	   $altered_since - only backup files altered since this time (UNIX epoch time)
+	 */
 	public function __construct($backup_files, $altered_since = -1) {
 
 		global $updraftplus;
@@ -143,9 +155,18 @@ class UpdraftPlus_Backup {
 			$updraftplus->log("Zip engine: ZipArchive (a.k.a. php-zip) is not available or is disabled (will use PclZip (much slower) if needed)");
 			$this->use_zip_object = 'UpdraftPlus_PclZip';
 		}
+		
+		$this->zip_batch_ceiling = (defined('UPDRAFTPLUS_ZIP_BATCH_CEILING') && UPDRAFTPLUS_ZIP_BATCH_CEILING > 104857600) ? UPDRAFTPLUS_ZIP_BATCH_CEILING : 200 * 1048576;
 
 	}
 
+	/**
+	 * Called by the WP action updraft_report_remotestorage_extrainfo
+	 *
+	 * @param String $service
+	 * @param String $info_html
+	 * @param String $info_plain
+	 */
 	public function report_remotestorage_extrainfo($service, $info_html, $info_plain) {
 		$this->remotestorage_extrainfo[$service] = array('pretty' => $info_html, 'plain' => $info_plain);
 	}
@@ -158,6 +179,7 @@ class UpdraftPlus_Backup {
 	 * @param String		  $backup_file_basename Name of backup file
 	 * @param Integer		  $index                Index of zip in the sequence
 	 * @param Integer|Boolean $first_linked_index   First linked index in the sequence, or false
+	 *
 	 * @return Boolean
 	 */
 	public function create_zip($create_from_dir, $whichone, $backup_file_basename, $index, $first_linked_index = false) {
@@ -403,14 +425,13 @@ class UpdraftPlus_Backup {
 				$this->current_service = $service;
 	
 				// Used when deciding whether to delete the local file
-				$this->last_service = ($ind+1 >= count($services) && $instance_id_count+1 >= $total_instance_ids && $errors_before_uploads == $updraftplus->error_count()) ? true : false;
-	
-				$log_extra = $this->last_service ? ' (last)' : '';
+				$this->last_storage_instance = ($ind+1 >= count($services) && $instance_id_count+1 >= $total_instance_ids && $errors_before_uploads == $updraftplus->error_count()) ? true : false;
+				$log_extra = $this->last_storage_instance ? ' (last)' : '';
 				$updraftplus->log("Cloud backup selection (".($ind+1)."/".count($services)."): ".$service." with instance (".($instance_id_count+1)."/".$total_instance_ids.")".$log_extra);
 				@set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);
 	
 				if ('none' == $service || '' == $service) {
-					$updraftplus->log("No remote despatch: user chose no remote backup service");
+					$updraftplus->log('No remote despatch: user chose no remote backup service');
 					// Still want to mark as "uploaded", to signal that nothing more needs doing. (Important on incremental runs with no cloud storage).
 					foreach ($backup_array as $bind => $file) {
 						if ($updraftplus->is_uploaded($file)) {
@@ -426,6 +447,13 @@ class UpdraftPlus_Backup {
 					$do_prune = array_merge_recursive($do_prune, $this->upload_cloud($remote_obj, $service, $backup_array, ''));
 				} elseif (!empty($storage_objects_and_ids[$service]['instance_settings'])) {
 					foreach ($storage_objects_and_ids[$service]['instance_settings'] as $instance_id => $options) {
+					
+						if ($instance_id_count > 0) {
+							$this->last_storage_instance = ($ind+1 >= count($services) && $instance_id_count+1 >= $total_instance_ids && $errors_before_uploads == $updraftplus->error_count()) ? true : false;
+							$log_extra = $this->last_storage_instance ? ' (last)' : '';
+							$updraftplus->log("Cloud backup selection (".($ind+1)."/".count($services)."): ".$service." with instance (".($instance_id_count+1)."/".$total_instance_ids.")".$log_extra);
+						}
+					
 						// Used for logging by record_upload_chunk()
 						$this->current_instance = $instance_id;
 	
@@ -433,11 +461,10 @@ class UpdraftPlus_Backup {
 	
 						if (1 == $options['instance_enabled']) {
 							$remote_obj = $storage_objects_and_ids[$service]['object'];
-						
 							$remote_obj->set_options($options, true, $instance_id);
 							$do_prune = array_merge_recursive($do_prune, $this->upload_cloud($remote_obj, $service, $backup_array, $instance_id));
 						} else {
-							$updraftplus->log("This instance id ($instance_id) has been set to inactive.");
+							$updraftplus->log("This instance id ($instance_id) is set as inactive.");
 						}
 	
 						$instance_id_count++;
@@ -512,6 +539,13 @@ class UpdraftPlus_Backup {
 		return $do_prune;
 	}
 
+	/**
+	 * Group the backup history into sets for retention processing and indicate the retention rule to apply to each group. This is a 'default' function which just puts them all in together.
+	 *
+	 * @param Array $backup_history
+	 *
+	 * @return Array
+	 */
 	private function group_backups($backup_history) {
 		return array(array('sets' => $backup_history, 'process_order' => 'keep_newest'));
 	}
@@ -1240,7 +1274,7 @@ class UpdraftPlus_Backup {
 			$updraftplus->log($e->getMessage());
 		}
 		
-		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions');
+		if (empty($core_tables)) $core_tables = array('terms', 'term_taxonomy', 'termmeta', 'term_relationships', 'commentmeta', 'comments', 'links', 'postmeta', 'posts', 'site', 'sitemeta', 'blogs', 'blogversions', 'blogmeta');
 
 		global $updraftplus;
 		$na = UpdraftPlus_Manipulation_Functions::str_replace_once($our_table_prefix, '', $a);
@@ -2335,7 +2369,7 @@ class UpdraftPlus_Backup {
 				return true;
 			}
 			
-			if (apply_filters('updraftplus_exclude_directory', false, $fullpath)) {
+			if (apply_filters('updraftplus_exclude_directory', false, $fullpath, $use_path_when_storing)) {
 				$updraftplus->log("Skip filtered directory: $use_path_when_storing");
 				return true;
 			}
@@ -2368,7 +2402,7 @@ class UpdraftPlus_Backup {
 								$updraftplus->log("Entity excluded by configuration option (extension): $use_stripped");
 							} elseif (!empty($this->excluded_prefixes) && $this->is_entity_excluded_by_prefix($e)) {
 								$updraftplus->log("Entity excluded by configuration option (prefix): $use_stripped");
-							} elseif (apply_filters('updraftplus_exclude_file', false, $deref)) {
+							} elseif (apply_filters('updraftplus_exclude_file', false, $deref, $use_stripped)) {
 								$updraftplus->log("Entity excluded by filter: $use_stripped");
 							} else {
 								$mtime = filemtime($deref);
@@ -2576,12 +2610,15 @@ class UpdraftPlus_Backup {
 					$updraftplus->log("Could not open zip file to examine (".$zip->last_error."); will remove: ".basename($examine_zip));
 					@unlink($examine_zip);
 				} else {
-					// Don't put this in the for loop, or the magic __get() method gets called and opens the zip file every time the loop goes round
+				
+					// Don't put this in the for loop, or the magic __get() method gets repeatedly called every time the loop goes round
 					$numfiles = $zip->numFiles;
 
 					for ($i=0; $i < $numfiles; $i++) {
 						$si = $zip->statIndex($i);
 						$name = $si['name'];
+						// Exclude folders
+						if ('/' == substr($name, -1)) continue;
 						$this->existing_files[$name] = $si['size'];
 						$this->existing_files_rawsize += $si['size'];
 					}
@@ -2961,41 +2998,39 @@ class UpdraftPlus_Backup {
 		if (false === fwrite($handle, '{"version":'.$version.',"type":"'.$whichone.'",'.$directory.'"listed_levels":"'.$go_to_level.'","contents":{"directories":[')) $updraftplus->log("First write to manifest file failed ($manifest_name)");
 
 		// First loop: find out which is the last entry, so that we don't write the comma after it
-		$last_file_index = false;
+		$last_dir_index = false;
 		foreach ($this->zipfiles_dirbatched as $index => $dir) {
 			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			$last_file_index = $index;
+			$last_dir_index = $index;
 		}
 		
 		// Second loop: write out the entry
 		foreach ($this->zipfiles_dirbatched as $index => $dir) {
 			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			fwrite($handle, json_encode($dir).(($index != $last_file_index) ? ',' : ''));
+			fwrite($handle, json_encode($dir).(($index != $last_dir_index) ? ',' : ''));
 		}
 		
 		// Now do the same for files
 		fwrite($handle, '],"files":[');
 		
 		$last_file_index = false;
-		foreach ($this->zipfiles_batched as $index => $dir) {
-			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			$last_file_index = $index;
+		foreach ($this->zipfiles_batched as $source => $store_as) {
+			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
+			$last_file_index = $store_as;
 		}
-		
-		foreach ($this->zipfiles_batched as $index => $dir) {
-			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			fwrite($handle, json_encode($dir).(($index != $last_file_index) ? ',' : ''));
+		foreach ($this->zipfiles_skipped_notaltered as $source => $store_as) {
+			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
+			$last_file_index = $store_as;
 		}
 
-		$last_file_index = false;
-		foreach ($this->zipfiles_skipped_notaltered as $index => $dir) {
-			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			$last_file_index = $index;
+		foreach ($this->zipfiles_batched as $source => $store_as) {
+			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
+			fwrite($handle, json_encode($store_as).(($store_as != $last_file_index) ? ',' : ''));
 		}
-		
-		foreach ($this->zipfiles_skipped_notaltered as $index => $dir) {
-			if ('all' !== $go_to_level && substr_count($dir, '/') > $go_to_level - 1) continue;
-			fwrite($handle, json_encode($dir).(($index != $last_file_index) ? ',' : ''));
+
+		foreach ($this->zipfiles_skipped_notaltered as $source => $store_as) {
+			if ('all' !== $go_to_level && substr_count($store_as, '/') > $go_to_level - 1) continue;
+			fwrite($handle, json_encode($store_as).(($store_as != $last_file_index) ? ',' : ''));
 		}
 
 		fwrite($handle, ']}}');
@@ -3261,19 +3296,19 @@ class UpdraftPlus_Backup {
 								$max_time = -1;
 							}
 
-							if ($normalised_time_since_began<6 || ($updraftplus->current_resumption >=1 && $run_times_known >=1 && $time_since_began < 0.6*$max_time)) {
+							if ($normalised_time_since_began < 6 || ($updraftplus->current_resumption >= 1 && $run_times_known >= 1 && $time_since_began < 0.6*$max_time)) {
 
 								// How much can we increase it by?
-								if ($normalised_time_since_began <6) {
+								if ($normalised_time_since_began < 6) {
 									if ($run_times_known > 0 && $max_time >0) {
-										$new_maxzipbatch = min(floor(max($maxzipbatch*6/$normalised_time_since_began, $maxzipbatch*((0.6*$max_time)/$normalised_time_since_began))), 200*1024*1024);
+										$new_maxzipbatch = min(floor(max($maxzipbatch*6/$normalised_time_since_began, $maxzipbatch*((0.6*$max_time)/$normalised_time_since_began))), $this->zip_batch_ceiling);
 									} else {
 										// Maximum of 200MB in a batch
-										$new_maxzipbatch = min(floor($maxzipbatch*6/$normalised_time_since_began), 200*1024*1024);
+										$new_maxzipbatch = min(floor($maxzipbatch*6/$normalised_time_since_began), $this->zip_batch_ceiling);
 									}
 								} else {
 									// Use up to 60% of available time
-									$new_maxzipbatch = min(floor($maxzipbatch*((0.6*$max_time)/$normalised_time_since_began)), 200*1024*1024);
+									$new_maxzipbatch = min(floor($maxzipbatch*((0.6*$max_time)/$normalised_time_since_began)), $this->zip_batch_ceiling);
 								}
 
 								// Throttle increases - don't increase by more than 2x in one go - ???

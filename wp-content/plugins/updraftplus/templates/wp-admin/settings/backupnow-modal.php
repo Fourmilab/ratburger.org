@@ -14,7 +14,7 @@
 </p>
 
 <div class="incremental-free-only">
-	<p><?php echo sprintf(__('Incremental backups are a feature of %s (upgrade by following this link).', 'updraftplus'), '<a href="'.$updraftplus->get_url('premium').'" target="_blank">UpdraftPlus Premium</a>'); ?>
+	<p><?php echo sprintf(__('Incremental backups are a feature of %s (upgrade by following this link).', 'updraftplus'), '<a href="'.$updraftplus->get_url('premium').'" target="_blank">UpdraftPlus Premium').'</a>'; ?>
 	</a>
 	<br>
 	<a href="https://updraftplus.com/tell-me-more-about-incremental-backups/" target="_blank"><?php _e('Find out more about incremental backups here.', 'updraftplus'); ?></a></p>

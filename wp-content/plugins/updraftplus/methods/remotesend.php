@@ -320,7 +320,7 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 		return $response;
 	}
 
-	public function do_bootstrap($opts, $connect = true) {
+	public function do_bootstrap($opts, $connect = true) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	
 		global $updraftplus;
 	
