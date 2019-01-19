@@ -18,6 +18,7 @@ if ( ! empty( $_POST['email_list'] ) ) {
 	}
 
 	$action = ! empty( $_POST['sra'] ) ? $_POST['sra'] : ( ! empty( $_GET['sra'] ) ? $_GET['sra'] : '' );
+    $action = sanitize_text_field( $action );
 	switch ( $action ) {
 	case 'delete':
 		$rows_affected = $wp_subscribe_reloaded->stcr->delete_subscriptions( $post_ID, $email_list );
@@ -50,7 +51,7 @@ if ( function_exists( 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) 
 echo "<p>$message</p>";
 ?>
 
-	<form action="<?php echo htmlspecialchars( $_SERVER['REQUEST_URI'] ) ?>" method="post" id="email_list_form" name="email_list_form" onsubmit="if(this.sra[0].checked) return confirm('<?php _e( 'Please remember: this operation cannot be undone. Are you sure you want to proceed?', 'subscribe-reloaded' ) ?>')">
+	<form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ) ?>" method="post" id="email_list_form" name="email_list_form" onsubmit="if(this.sra[0].checked) return confirm('<?php _e( 'Please remember: this operation cannot be undone. Are you sure you want to proceed?', 'subscribe-reloaded' ) ?>')">
 		<fieldset style="border:0">
 			<?php
                 $subscriptions = $wp_subscribe_reloaded->stcr->get_subscriptions( 'post_id', 'equals', $post_ID, 'dt', 'ASC' );
@@ -80,8 +81,8 @@ if ( is_array( $subscriptions ) && ! empty( $subscriptions ) ) {
         $date_translated = $wp_subscribe_reloaded->stcr->utils->stcr_translate_month( $formatted_date );
 
         echo "<tr>";
-            echo "<td style='text-align: center;'><input type='checkbox' name='email_list[]' value='" . urlencode( $a_subscription->email ) . "' id='e_$i'/><label for='e_$i'>$date_translated</label></td>";
-            echo "<td>$a_subscription->email</td>";
+            echo "<td style='text-align: center;'><input type='checkbox' name='email_list[]' value='" . esc_html( $a_subscription->email ) . "' id='e_$i'/><label for='e_$i'>$date_translated</label></td>";
+            echo "<td>". esc_html( $a_subscription->email ) . "</td>";
             echo "<td style='text-align: center;'>$legend_translate[$t_status]</td>";
         echo "</tr>";
 	}
@@ -93,7 +94,7 @@ if ( is_array( $subscriptions ) && ! empty( $subscriptions ) ) {
 	echo '<p id="subscribe-reloaded-action-p">' . __( 'Action:', 'subscribe-reloaded' );
 	echo '&nbsp;&nbsp;<select name="sra">';
 		echo '<option value="">'. __( 'Choose your action', 'subscribe-reloaded' ) .'</option>';
-		echo '<option value="delete">'. __( 'Delete', 'subscribe-reloaded' ) .'</option>';
+		echo '<option value="delete">'. __( 'Unsubscribe', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="suspend">'. __( 'Suspend', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="force_y">'. __( 'All comments', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="force_r">'. __( 'Replies to my comments', 'subscribe-reloaded' ) .'</option>';

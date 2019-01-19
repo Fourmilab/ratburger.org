@@ -6,11 +6,17 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit;
 }
 
+define( __NAMESPACE__.'\\VERSION','190117' );
+define( __NAMESPACE__.'\\DEVELOPMENT', true );
+define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
+
 require_once dirname(__FILE__).'/utils/stcr_manage.php';
+require_once dirname(__FILE__).'/classes/stcr_i18n.php';
 
 if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 
 	class wp_subscribe_reloaded extends stcr_manage {
+	    public $stcr_i18n;
 		/**
 		 * Constructor -- Sets things up.
 		 */
@@ -36,83 +42,183 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 
 			$this->maybe_update();
 
-			// What to do when a new comment is posted
-			add_action( 'comment_post', array( $this, 'new_comment_posted' ), 12, 2 );
-			// Add hook for the subscribe_reloaded_purge, define on the constructure so that the hook is read on time.
-			add_action('_cron_subscribe_reloaded_purge', array($this, 'subscribe_reloaded_purge'), 10 );
-			add_action('_cron_log_file_purge', array($this, 'log_file_purge'), 10 );
+			$this->define_wp_hooks();
 
-			// Load Text Domain
-			add_action( 'plugins_loaded', array( $this, 'subscribe_reloaded_load_plugin_textdomain' ) );
+            $this->stcr_i18n = new stcr_i18n(); // Loaded after the text domain was loaded.
 
-			// Provide content for the management page using WP filters
-			if ( ! is_admin() ) {
-				$manager_page_permalink = get_option( 'subscribe_reloaded_manager_page', '/comment-subscriptions/' );
-				if ( function_exists( 'qtrans_convertURL' ) ) {
-					$manager_page_permalink = qtrans_convertURL( $manager_page_permalink );
-				}
-				if ( empty( $manager_page_permalink ) ) {
-					$manager_page_permalink = get_option( 'subscribe_reloaded_manager_page', '/comment-subscriptions/' );
-				}
-				if ( ( strpos( $_SERVER["REQUEST_URI"], $manager_page_permalink ) !== false ) ) {
-					add_filter( 'the_posts', array( $this, 'subscribe_reloaded_manage' ), 10, 2 );
-				}
-				// Enqueue plugin scripts
-				$this->utils->hook_plugin_scripts();
-			} else {
-				// Hook for WPMU - New blog created
-				add_action( 'wpmu_new_blog', array( $this, 'new_blog' ), 10, 1 );
-
-				// Remove subscriptions attached to a post that is being deleted
-				add_action( 'delete_post', array( $this, 'delete_subscriptions' ), 10, 2 );
-
-				// Monitor actions on existing comments
-				add_action( 'deleted_comment', array( $this, 'comment_deleted' ) );
-				add_action( 'wp_set_comment_status', array( $this, 'comment_status_changed' ) );
-				// Add a new column to the Edit Comments panel
-				add_filter( 'manage_edit-comments_columns', array( $this, 'add_column_header' ) );
-				add_filter( 'manage_posts_columns', array( $this, 'add_column_header' ) );
-				add_action( 'manage_comments_custom_column', array( $this, 'add_comment_column' ) );
-				add_action( 'manage_posts_custom_column', array( $this, 'add_post_column' ) );
-
-				// Add appropriate entries in the admin menu
-				add_action( 'admin_menu', array( $this, 'add_config_menu' ) );
-				// TODO: Remove admin_print_styles and add the style with the correct hook.
-				add_action( 'admin_print_styles-edit-comments.php', array( $this, 'add_post_comments_stylesheet' ) );
-				add_action( 'admin_print_styles-edit.php', array( $this, 'add_post_comments_stylesheet' ) );
-
-				// Admin notices
-				add_action( 'admin_init', array( $this, 'stcr_admin_init' ) );
-				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-
-				// Contextual help
-				add_action( 'contextual_help', array( $this, 'contextual_help' ), 10, 3 );
-
-				// Shortcodes to use the management URL sitewide
-				add_shortcode( 'subscribe-url', array( $this, 'subscribe_url_shortcode' ) );
-
-				// Settings link for plugin on plugins page
-				add_filter( 'plugin_action_links', array( $this, 'plugin_settings_link' ), 10, 2 );
-				// Subscribe post authors, if the case
-				if ( get_option( 'subscribe_reloaded_notify_authors' ) === 'yes' ) {
-					add_action( 'publish_post', array( $this, 'subscribe_post_author' ) );
-				}
-				// Enqueue admin scripts
-				$this->utils->hook_admin_scripts();
-
-				// Add the AJAX Action
-				$this->utils->stcr_create_ajax_notices();
-			}
-
-
+            if ( DEVELOPMENT )
+            {
+                // Add subscriptions for tests
+//                $this->add_manual_subs( 50, 18,'Y', 'dev', 30);
+            }
 		}
 		// end __construct
+        public function add_manual_subs( $iterations = 1 ,$post_id, $status = 'Y', $email_prefix = 'dev', $last_id_subs = 0 )
+        {
+            for ( $i = $last_id_subs+1; $i <= $iterations; $i++)
+            {
+                $this->add_subscription( $post_id, "{$email_prefix}_{$i}@dev.com", $status);
+            }
+        }
+        /**
+         * Define the WordPress Hooks that will be use by the plugin.
+         *
+         * @since 02-March-2018
+         * @author reedyseth
+         */
+        public function define_wp_hooks()
+        {
+            // What to do when a new comment is posted
+            add_action( 'comment_post', array( $this, 'new_comment_posted' ), 12, 2 );
+            // Add hook for the subscribe_reloaded_purge, define on the constructure so that the hook is read on time.
+            add_action('_cron_subscribe_reloaded_purge', array($this, 'subscribe_reloaded_purge'), 10 );
+            add_action('_cron_log_file_purge', array($this, 'log_file_purge'), 10 );
+            add_action('_cron_subscribe_reloaded_system_report_file_purge', array($this->utils, 'stcr_delete_report_file'), 10 );
+
+            // Load Text Domain
+            add_action( 'plugins_loaded', array( $this, 'subscribe_reloaded_load_plugin_textdomain' ) );
+
+            // Provide content for the management page using WP filters
+            if ( ! is_admin() ) {
+                $manager_page_permalink = get_option( 'subscribe_reloaded_manager_page', '/comment-subscriptions/' );
+                if ( function_exists( 'qtrans_convertURL' ) ) {
+                    $manager_page_permalink = qtrans_convertURL( $manager_page_permalink );
+                }
+                if ( empty( $manager_page_permalink ) ) {
+                    // Manager page can't be empty, set it to default.
+                    $manager_page_permalink = '/comment-subscriptions/';
+                }
+
+                if ( ( strpos( $_SERVER["REQUEST_URI"], $manager_page_permalink ) !== false ) ) {
+                    add_filter( 'the_posts', array( $this, 'subscribe_reloaded_manage' ), 10, 2 );
+                }
+                // Enqueue plugin scripts
+                $this->utils->hook_plugin_scripts();
+            } else {
+                // Hook for WPMU - New blog created
+                add_action( 'wpmu_new_blog', array( $this, 'new_blog' ), 10, 1 );
+
+                // Remove subscriptions attached to a post that is being deleted
+                add_action( 'delete_post', array( $this, 'delete_subscriptions' ), 10, 2 );
+
+                // Monitor actions on existing comments
+                add_action( 'deleted_comment', array( $this, 'comment_deleted' ) );
+                add_action( 'wp_set_comment_status', array( $this, 'comment_status_changed' ) );
+                // Add a new column to the Edit Comments panel
+                add_filter( 'manage_edit-comments_columns', array( $this, 'add_column_header' ) );
+                add_filter( 'manage_posts_columns', array( $this, 'add_column_header' ) );
+                add_action( 'manage_comments_custom_column', array( $this, 'add_comment_column' ) );
+                add_action( 'manage_posts_custom_column', array( $this, 'add_post_column' ) );
+
+                // Add appropriate entries in the admin menu
+                add_action( 'admin_menu', array( $this, 'add_config_menu' ) );
+                add_action( 'admin_print_styles-edit-comments.php', array( $this, 'add_post_comments_stylesheet' ) );
+                add_action( 'admin_print_styles-edit.php', array( $this, 'add_post_comments_stylesheet' ) );
+
+                // Add hook for admin header
+                add_action( 'in_admin_header', array( $this, 'display_admin_header' ), 100 );
+
+                // Admin notices
+                add_action( 'admin_init', array( $this, 'stcr_admin_init' ) );
+                add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+
+                // Contextual help
+                add_action( 'contextual_help', array( $this, 'contextual_help' ), 10, 3 );
+
+                // Shortcodes to use the management URL sitewide
+                add_shortcode( 'subscribe-url', array( $this, 'subscribe_url_shortcode' ) );
+
+                // Settings link for plugin on plugins page
+                add_filter( 'plugin_action_links', array( $this, 'plugin_settings_link' ), 10, 2 );
+                // Subscribe post authors, if the case
+                if ( get_option( 'subscribe_reloaded_notify_authors' ) === 'yes' ) {
+                    add_action( 'publish_post', array( $this, 'subscribe_post_author' ) );
+                }
+                // Enqueue admin scripts
+                $this->utils->hook_admin_scripts();
+
+                // Add the AJAX Action
+                $this->utils->stcr_create_ajax_notices();
+                $this->utils->stcr_create_ajax_hook(
+                        array(
+                            "generate_system_report" => "stcr_recreate_file"
+                        )
+                );
+            }
+        }
+
+        public function display_admin_header ()
+        {
+            $slug = "stcr_manage_subscriptions";
+            $current_page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+            // Define the panels
+            $array_pages = array(
+                "stcr_manage_subscriptions" => __( 'Manage subscriptions', 'subscribe-reloaded' ),
+                "stcr_comment_form"         => __( 'Comment Form', 'subscribe-reloaded' ),
+                "stcr_management_page"      => __( 'Management Page', 'subscribe-reloaded' ),
+                "stcr_notifications"        => __( 'Notifications', 'subscribe-reloaded' ),
+                "stcr_options"              => __( 'Options', 'subscribe-reloaded' ),
+                "stcr_support"              => __( 'Support', 'subscribe-reloaded' ),
+                "stcr_system"               => __( 'Options', 'subscribe-reloaded' )
+            );
+
+
+            // Bail if we're not StCR plugin page.
+            if ( ! array_key_exists(  $current_page, $array_pages) ) {
+                return;
+            }
+
+            ?>
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light <?php echo $wp_locale->text_direction ?>">
+                <a class="navbar-brand "><img src="<?php echo plugins_url(); ?>/subscribe-to-comments-reloaded/images/stcr-logo-150.png" alt="" width="25" height="19"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                            <?php
+                            foreach ( $array_pages as $page => $page_desc ) {
+
+                                echo "<li class='". ( $page == "stcr_options" ? "dropdown" : "" ) ."'>";
+
+                                    if (  $page == "stcr_options" )
+                                    {
+                                        echo '<a class="nav-link dropdown-toggle'. ( $current_page == $page || $current_page == 'stcr_system' ? ' stcr-active-tab' : '' ) .'" style="padding: 5px 12px 0 0;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  '. $page_desc .'
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                  <a class="dropdown-item" href="admin.php?page=' . $page . '">'. __("StCR Options", "subscribe-reloaded") .'</a>
+                                                  <div class="dropdown-divider"></div>
+                                                  <a class="dropdown-item" href="admin.php?page=stcr_system">'. __("StCR System", "subscribe-reloaded") .'</a>
+                                                </div>';
+                                    }
+                                    elseif (  $page == "stcr_system" )
+                                    {
+                                        // do nothing
+                                    }
+                                    else
+                                    {
+                                        echo '<a class="navbar-brand ';
+                                        echo ( $current_page == $page ) ? ' stcr-active-tab' : '';
+                                        echo '" href="admin.php?page=' . $page . '">';
+                                        echo $page_desc;
+                                        echo '</a>';
+                                    }
+
+
+                                echo "<li>";
+                            }
+                            ?>
+                    </ul>
+                </div>
+
+            </nav>
+        <?php
+        }
 
 		/**
 		 * Load localization files
 		 */
 		function subscribe_reloaded_load_plugin_textdomain() {
-			load_plugin_textdomain( 'subscribe-reloaded', FALSE, basename( dirname( __FILE__ ) ) . '/langs/' );
+			load_plugin_textdomain( 'subscribe-reloaded', FALSE,  SLUG . "/langs/" );
 		}
 
 		/*
@@ -188,6 +294,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                             $this->sendConfirmationEMail($info);
                             $status = "{$status}C";
                         }
+
                         $this->add_subscription($info->comment_post_ID, $info->comment_author_email, $status);
 
                         // If comment is in the moderation queue
@@ -242,7 +349,6 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 		}
 
 		// end new_comment_posted
-
 		public function isDoubleCheckinEnabled( $info ) {
 
 		    $is_subscribe_to_post = false;
@@ -390,196 +496,181 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 			if ( ! isset( $_posts ) && ! empty( $_posts ) ) {
 				return $_posts;
 			}
+			try {
 
-			$post_ID = ! empty( $_POST['srp'] ) ? intval( $_POST['srp'] ) : ( ! empty( $_GET['srp'] ) ? intval( $_GET['srp'] ) : 0 );
+                $post_ID = !empty($_POST['srp']) ? intval($_POST['srp']) : (!empty($_GET['srp']) ? intval($_GET['srp']) : 0);
 
-			// Is the post_id passed in the query string valid?
-			$target_post = get_post( $post_ID );
-			if ( ( $post_ID > 0 ) && ! is_object( $target_post ) ) {
-				return $_posts;
-			}
+                // Is the post_id passed in the query string valid?
+                $target_post = get_post($post_ID);
+                if (($post_ID > 0) && !is_object($target_post)) {
+                    return $_posts;
+                }
 
-			$action 	   = ! empty( $_POST['sra'] )  ? $_POST['sra']     : ( ! empty( $_GET['sra'] )  ?  $_GET['sra']   : 0  );
-			$key    	   = ! empty( $_POST['srk'] )  ? $_POST['srk']     : ( ! empty( $_GET['srk'] )  ?  $_GET['srk']   : 0  );
-			$sre    	   = ! empty( $_POST['sre'] )  ? $_POST['sre']     : ( ! empty( $_GET['sre'] )  ?  $_GET['sre']   : '' );
-			$srek   	   = ! empty( $_POST['srek'] ) ? $_POST['srek']    : ( ! empty( $_GET['srek'] ) ?  $_GET['srek']  : '' );
-			$link_source   = ! empty( $_POST['srsrc'] ) ? $_POST['srsrc']  : ( ! empty( $_GET['srsrc'] ) ?  $_GET['srsrc']  : '' );
-			$key_expired   = ! empty( $_POST['key_expired'] ) ? $_POST['key_expired']  : ( ! empty( $_GET['key_expired'] ) ?  $_GET['key_expired']  : '0' );
-            // Check if the current subscriber has va email using the $srek key.
-			$email_by_key  = $this->utils->get_subscriber_email_by_key( $srek );
-			// Check for a valid SRE key, otherwise stop execution.
-			if( ! $email_by_key && ! empty($srek) ){
-				$this->utils->stcr_logger( "\n [ERROR][$date] - Couldn\'t find an email with the SRE key: ( $srek )\n" );
-                $email = '';
-			}
-			else
-			{
-			    if ( ! $email_by_key && empty($sre) )
-                {
+                $action = !empty($_POST['sra']) ? $_POST['sra'] : (!empty($_GET['sra']) ? $_GET['sra'] : 0);
+                $key = !empty($_POST['srk']) ? $_POST['srk'] : (!empty($_GET['srk']) ? $_GET['srk'] : 0);
+                $sre = !empty($_POST['sre']) ? $_POST['sre'] : (!empty($_GET['sre']) ? $_GET['sre'] : '');
+                $srek = !empty($_POST['srek']) ? $_POST['srek'] : (!empty($_GET['srek']) ? $_GET['srek'] : '');
+                $link_source = !empty($_POST['srsrc']) ? $_POST['srsrc'] : (!empty($_GET['srsrc']) ? $_GET['srsrc'] : '');
+                $key_expired = !empty($_POST['key_expired']) ? $_POST['key_expired'] : (!empty($_GET['key_expired']) ? $_GET['key_expired'] : '0');
+                // Check if the current subscriber has va email using the $srek key.
+                $email_by_key = $this->utils->get_subscriber_email_by_key($srek);
+                // Check for a valid SRE key, otherwise stop execution.
+                if (!$email_by_key && !empty($srek)) {
+                    $this->utils->stcr_logger("\n [ERROR][$date] - Couldn\'t find an email with the SRE key: ( $srek )\n");
                     $email = '';
+                } else {
+                    if (!$email_by_key && empty($sre)) {
+                        $email = '';
+                    } else if ($email_by_key && !empty($email_by_key)) {
+                        $email = $email_by_key;
+                    } else if (!empty($sre)) {
+                        $email = $this->utils->check_valid_email( $sre );
+                    } else {
+                        $email = '';
+                    }
                 }
-                else if( $email_by_key && ! empty($email_by_key) )
+                // Check the link source
+                if ($link_source == "f") // Comes from the comment form.
                 {
-                    $email = $email_by_key;
-                }
-                else if ( ! empty($sre) )
+                    // Check for a valid SRK key, until this point we know the email is correct but the $key has expired/change
+                    // or is wrong, in that case display the request management page template
+                    if ($email !== "" && $key !== 0 && $stcr_unique_key !== $key || $key_expired == "1") {
+                        if ($key_expired == "1") {
+                            $error_exits = true;
+                        } else {
+                            $this->utils->stcr_logger("\n [ERROR][$date] - Couldn\'t find a valid SRK key with the email ( $email_by_key ) and the SRK key: ( $key )\n This is the current unique key: ( $stcr_unique_key )\n");
+                            $error_exits = true;
+                        }
+                    }
+                } else if ($link_source == "e") // Comes from the email link.
                 {
-                    $email = $sre;
+                    if ($email !== "" && $key !== 0 && !$this->utils->_is_valid_key($key, $email) || $key_expired == "1") {
+                        if ($key_expired == "1") {
+                            $error_exits = true;
+                        } else {
+                            $this->utils->stcr_logger("\n [ERROR][$date] - Couldn\'t find a valid SRK key with the email ( $email_by_key ) and the SRK key: ( $key )\n This is the current unique key: ( $stcr_unique_key )\n");
+                            $error_exits = true;
+                        }
+                    }
                 }
-                else
-                {
-                    $email = '';
+
+
+
+
+                if ($error_exits) {
+                    $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/key_expired.php';
+                } else {
+                    // Subscribe without commenting
+                    if (!empty($action) &&
+                        ($action == 's') &&
+                        ($post_ID > 0) &&
+                        $key_expired != "1"
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/subscribe.php';
+                    } // Management page for post authors
+                    elseif (($post_ID > 0) &&
+                        $this->is_author($target_post->post_author)
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/author.php';
+                    } // Confirm your subscription (double check-in)
+                    elseif (($post_ID > 0) &&
+                        !empty($email) &&
+                        !empty($key) &&
+                        !empty($action) &&
+                        $this->utils->_is_valid_key($key, $email) &&
+                        $this->is_user_subscribed($post_ID, $email, 'C') &&
+                        ($action == 'c') &&
+                        $key_expired != "1"
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/confirm.php';
+                    } elseif (($post_ID > 0) &&
+                        !empty($email) &&
+                        !empty($key) &&
+                        !empty($action) &&
+                        $this->utils->_is_valid_key($key, $email) &&
+                        ($action == 'u') &&
+                        $key_expired != "1"
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/one-click-unsubscribe.php';
+                    } // Manage your subscriptions (user)
+                    elseif (!empty($email) &&
+                        ($key !== 0 && $this->utils->_is_valid_key($key, $email) || (!empty($current_user->data->user_email) && ($current_user->data->user_email === $email && current_user_can('read'))))
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/user.php';
+                    } elseif (!empty($email) &&
+                        ($key === 0 && (!empty($current_user->data->user_email) && ($current_user->data->user_email !== $email)))
+                    ) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/wrong-request.php';
+                    }
+
+                    if (empty($include_post_content)) {
+                        $include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/request-management-link.php';
+                    }
                 }
-			}
-			// Check the link source
-			if( $link_source == "f" ) // Comes from the comment form.
-			{
-				// Check for a valid SRK key, until this point we know the email is correct but the $key has expired/change
-				// or is wrong, in that case display the request management page template
-				if( $email !== "" && $key !== 0 && $stcr_unique_key !== $key || $key_expired == "1" )
-				{
-					if( $key_expired == "1" )
-					{
-						$error_exits = true;
-					}
-					else
-					{
-						$this->utils->stcr_logger( "\n [ERROR][$date] - Couldn\'t find a valid SRK key with the email ( $email_by_key ) and the SRK key: ( $key )\n This is the current unique key: ( $stcr_unique_key )\n" );
-						$error_exits = true;
-					}
-				}
-			}
-			else if( $link_source == "e" ) // Comes from the email link.
-			{
-				if( $email !== "" && $key !== 0 && ! $this->utils->_is_valid_key( $key, $email ) || $key_expired == "1" )
-				{
-					if( $key_expired == "1" )
-					{
-						$error_exits = true;
-					}
-					else
-					{
-						$this->utils->stcr_logger( "\n [ERROR][$date] - Couldn\'t find a valid SRK key with the email ( $email_by_key ) and the SRK key: ( $key )\n This is the current unique key: ( $stcr_unique_key )\n" );
-						$error_exits = true;
-					}
-				}
-			}
 
+                global $wp_query;
 
-			if( $error_exits )
-			{
-				$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/key_expired.php';
-			}
-			else
-			{
-				// Subscribe without commenting
-				if ( ! empty( $action ) &&
-					( $action == 's' ) &&
-					( $post_ID > 0 ) &&
-					$key_expired != "1" )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/subscribe.php';
-				} // Management page for post authors
-				elseif ( ( $post_ID > 0 ) &&
-					$this->is_author( $target_post->post_author ) )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/author.php';
-				} // Confirm your subscription (double check-in)
-				elseif ( ( $post_ID > 0 )  &&
-					! empty( $email ) &&
-					! empty( $key )   &&
-					! empty( $action ) &&
-					$this->utils->_is_valid_key( $key, $email ) &&
-					$this->is_user_subscribed( $post_ID, $email, 'C' ) &&
-					( $action == 'c' ) &&
-					$key_expired != "1" )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/confirm.php';
-				}
-				elseif ( ( $post_ID > 0 )  &&
-					! empty( $email ) &&
-					! empty( $key )   &&
-					! empty( $action ) &&
-					$this->utils->_is_valid_key( $key, $email ) &&
-					( $action == 'u' ) &&
-					$key_expired != "1" )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/one-click-unsubscribe.php';
-				}
-				// Manage your subscriptions (user)
-				elseif (   ! empty( $email ) &&
-					( $key !== 0 && $this->utils->_is_valid_key( $key, $email ) || ( ! empty($current_user->data->user_email) && ( $current_user->data->user_email === $email && current_user_can( 'read' ) ) ) ) )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/user.php';
-				}
-				elseif (   ! empty( $email ) &&
-					( $key === 0 && ( ! empty($current_user->data->user_email) && ( $current_user->data->user_email !== $email ) ) ) )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/wrong-request.php';
-				}
+                $manager_page_title = html_entity_decode(get_option('subscribe_reloaded_manager_page_title', 'Manage subscriptions'), ENT_QUOTES, 'UTF-8');
+                if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
+                    $manager_page_title = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($manager_page_title);
+                } else {
+                    $manager_page_title = __($manager_page_title, 'subscribe-reloaded');
+                }
 
-				if ( empty( $include_post_content ) )
-				{
-					$include_post_content = include WP_PLUGIN_DIR . '/subscribe-to-comments-reloaded/templates/request-management-link.php';
-				}
-			}
+                $posts[] =
+                    (object)array(
+                        'ID'                    => '9999999',
+                        'post_autToggle hor'    => '1',
+                        'post_date'             => '2001-01-01 11:38:56',
+                        'post_date_gmt'         => '2001-01-01 00:38:56',
+                        'post_content'          => $include_post_content,
+                        'post_title'            => $manager_page_title,
+                        'post_excerpt'          => '',
+                        'post_status'           => 'publish',
+                        'comment_status'        => 'closed',
+                        'ping_status'           => 'closed',
+                        'post_password'         => '',
+                        'to_ping'               => '',
+                        'pinged'                => '',
+                        'post_modified'         => '2001-01-01 11:00:01',
+                        'post_modified_gmt'     => '2001-01-01 00:00:01',
+                        'post_content_filtered' => '',
+                        'post_parent'           => '0',
+                        'menu_order'            => '0',
+                        'post_type'             => 'page',
+                        'post_mime_type'        => '',
+                        'post_category'         => '0',
+                        'comment_count'         => '0',
+                        'filter'                => 'raw',
+                        'guid'                  => get_bloginfo('url') . '/?page_id=9999999',
+                        'post_name'             => get_bloginfo('url') . '/?page_id=9999999',
+                        'ancestors'             => array()
+                    );
 
-			global $wp_query;
+                // Make WP believe this is a real page, with no comments attached
+                $wp_query->is_page = true;
+                $wp_query->is_single = false;
+                $wp_query->is_home = false;
+                $wp_query->comments = false;
 
-			$manager_page_title = html_entity_decode( get_option( 'subscribe_reloaded_manager_page_title', 'Manage subscriptions' ), ENT_QUOTES, 'UTF-8' );
-			if ( function_exists( 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) ) {
-				$manager_page_title = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage( $manager_page_title );
-			} else {
-				$manager_page_title = __( $manager_page_title, 'subscribe-reloaded' );
-			}
+                // Discard 404 errors thrown by other checks
+                unset($wp_query->query["error"]);
+                $wp_query->query_vars["error"] = "";
+                $wp_query->is_404 = false;
 
-			$posts[] =
-				(object) array(
-					'ID'                    => '9999999',
-					'post_author'           => '1',
-					'post_date'             => '2001-01-01 11:38:56',
-					'post_date_gmt'         => '2001-01-01 00:38:56',
-					'post_content'          => $include_post_content,
-					'post_title'            => $manager_page_title,
-					'post_excerpt'          => '',
-					'post_status'           => 'publish',
-					'comment_status'        => 'closed',
-					'ping_status'           => 'closed',
-					'post_password'         => '',
-					'to_ping'               => '',
-					'pinged'                => '',
-					'post_modified'         => '2001-01-01 11:00:01',
-					'post_modified_gmt'     => '2001-01-01 00:00:01',
-					'post_content_filtered' => '',
-					'post_parent'           => '0',
-					'menu_order'            => '0',
-					'post_type'             => 'page',
-					'post_mime_type'        => '',
-					'post_category'         => '0',
-					'comment_count'         => '0',
-					'filter'                => 'raw',
-					'guid'                  => get_bloginfo( 'url' ) . '/?page_id=9999999',
-					'post_name'             => get_bloginfo( 'url' ) . '/?page_id=9999999',
-					'ancestors'             => array()
-				);
+                // Seems like WP adds its own HTML formatting code to the content, we don't need that here
+                remove_filter('the_content', 'wpautop');
+                // Look like the plugin is call twice and therefor subscribe to the "the_posts" filter again so we need to
+                // tell to WordPress to not register again.
+                remove_filter("the_posts", array($this, "subscribe_reloaded_manage"));
+                add_action('wp_head', array($this, 'add_custom_header_meta'));
 
-			// Make WP believe this is a real page, with no comments attached
-			$wp_query->is_page   = true;
-			$wp_query->is_single = false;
-			$wp_query->is_home   = false;
-			$wp_query->comments  = false;
-
-			// Discard 404 errors thrown by other checks
-			unset( $wp_query->query["error"] );
-			$wp_query->query_vars["error"] = "";
-			$wp_query->is_404              = false;
-
-			// Seems like WP adds its own HTML formatting code to the content, we don't need that here
-			remove_filter( 'the_content', 'wpautop' );
-			// Look like the plugin is call twice and therefor subscribe to the "the_posts" filter again so we need to
-			// tell to WordPress to not register again.
-			remove_filter("the_posts", array( $this, "subscribe_reloaded_manage" ) );
-			add_action( 'wp_head', array( $this, 'add_custom_header_meta' ) );
+            }
+            catch(\Exception $ex)
+            {
+                $this->utils->stcr_logger( "\n [ERROR][$date] - $ex->getMessage()\n" );
+                $this->utils->stcr_logger( "\n [ERROR][$date] - $ex->getTraceAsString()\n" );
+            }
 
 			return $posts;
 		}
@@ -669,7 +760,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 				)
 			);
 
-			$OK = $this->utils->add_user_subscriber_table( $clean_email );
+			$OK = $this->utils->add_user_subscriber_table( $clean_email ); // TODO: Only on this section the user should be added to the subscribers table. On the send confirmation email is repeating this method.
 			if ( ! $OK) {
 				// TODO: Catch the error and add it to the log file.
 			}
@@ -1132,6 +1223,8 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 			// Check for the Comment Form location
 			if( get_option('subscribe_reloaded_stcr_position') == 'yes' ) {
 				$output .= "<style type='text/css'>.stcr-hidden{display: none !important;}</style>";
+				$output .= "<script type='text/javascript'>$(document).ready(function($){var stcr_form=$('div.stcr-form');stcr_form.prevUntil('form').each(function(){var $this=$(this);if($this.find(':input[type=\"submit\"]').length){stcr_form.remove(),$this.before(stcr_form);$('div.stcr-form').removeClass('stcr-hidden');return false;}})});
+</script>";
 				$output .= "<div class='stcr-form stcr-hidden'>";
                 $output .= "<!-- Subscribe to Comments Reloaded version ". $wp_subscribe_reloaded->stcr->current_version . " -->";
                 $output .= "<!-- BEGIN: subscribe to comments reloaded -->" . $html_to_show . "<!-- END: subscribe to comments reloaded -->";
@@ -1155,7 +1248,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 				( $subscribe_to_comments_action == 's' ) && ( $subscribe_to_comments_post_ID > 0 )
 			) {
 				$subscribe_to_comments_clean_email = $this->utils->clean_email( $_POST['subscribe_reloaded_email'] );
-				setcookie( 'comment_author_email' . COOKIEHASH, $subscribe_to_comments_clean_email, time() + 1209600, '/' );
+				setcookie( 'comment_author_email_' . COOKIEHASH, $subscribe_to_comments_clean_email, time() + 1209600, '/' );
 			}
 		}
 	} // end of class declaration

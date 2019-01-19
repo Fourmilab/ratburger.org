@@ -27,6 +27,7 @@ if ( ! empty( $_POST['post_list'] ) ) {
 	}
 
 	$action = ! empty( $_POST['sra'] ) ? $_POST['sra'] : ( ! empty( $_GET['sra'] ) ? $_GET['sra'] : '' );
+    $action = sanitize_text_field( $action );
 	switch ( $action ) {
 	case 'delete':
 		$rows_affected = $wp_subscribe_reloaded->stcr->delete_subscriptions( $post_list, $email );
@@ -62,7 +63,7 @@ echo "<p>$message</p>";
 
 ?>
 
-	<form action="<?php echo htmlspecialchars( $_SERVER['REQUEST_URI'] ) ?>" method="post" id="post_list_form" name="post_list_form" onsubmit="if(this.sra[0].checked) return confirm('<?php _e( 'Please remember: this operation cannot be undone. Are you sure you want to proceed?', 'subscribe-reloaded' ) ?>')">
+	<form action="<?php echo esc_url( $_SERVER['REQUEST_URI'] ) ?>" method="post" id="post_list_form" name="post_list_form" onsubmit="if(this.sra[0].checked) return confirm('<?php _e( 'Please remember: this operation cannot be undone. Are you sure you want to proceed?', 'subscribe-reloaded' ) ?>')">
 		<fieldset style="border:0">
 			<?php
                 $subscriptions = $wp_subscribe_reloaded->stcr->get_subscriptions( 'email', 'equals', $email, 'dt', 'DESC' );
@@ -87,7 +88,7 @@ if ( is_array( $subscriptions ) && ! empty( $subscriptions ) ) {
 
     foreach ( $subscriptions as $i => $a_subscription ) {
         $t_status  = $a_subscription->status;
-        $permalink = get_permalink( $a_subscription->post_id );
+        $permalink = esc_url( get_permalink( $a_subscription->post_id ) );
         $title     = get_the_title( $a_subscription->post_id );
         $date      = strtotime( $a_subscription->dt );
         $formatted_date = date( get_option( "subscribe_reloaded_date_format" ), $date );
@@ -111,7 +112,7 @@ if ( is_array( $subscriptions ) && ! empty( $subscriptions ) ) {
 
 	echo '<select name="sra">';
 		echo '<option value="">'. __( 'Choose your action', 'subscribe-reloaded' ) .'</option>';
-		echo '<option value="delete">'. __( 'Delete', 'subscribe-reloaded' ) .'</option>';
+		echo '<option value="delete">'. __( 'Unsubscribe', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="suspend">'. __( 'Suspend', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="force_y">'. __( 'All comments', 'subscribe-reloaded' ) .'</option>';
 		echo '<option value="force_r">'. __( 'Replies to my comments', 'subscribe-reloaded' ) .'</option>';

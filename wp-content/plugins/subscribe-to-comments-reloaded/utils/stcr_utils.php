@@ -15,6 +15,20 @@ if ( ! function_exists( 'add_action' ) ) {
 if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 {
 	class stcr_utils {
+
+	    protected $menu_opts_cache = [];
+
+	    public function __construct()
+        {
+            set_error_handler( array( $this, 'exceptions_error_handler' ) );
+        }
+
+        public function __destruct()
+        {
+            // house keeping
+            unset($this->menu_opts_cache);
+        }
+
         /**
          * Check a given email to be valid.
          *
@@ -62,7 +76,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			if( $email != null ) {
 				$subscriber = $wpdb->get_row($wpdb->prepare($retrieveEmail,$email), OBJECT);
 				if( ! empty( $subscriber ) ) {
-					return $subscriber->subscriber_unique_id;
+					return sanitize_key( $subscriber->subscriber_unique_id );
 				}
 			}
 			return false;
@@ -121,7 +135,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 
 			if( $key != null ) {
 				// Sanitize the key just for precaution.
-				$key = trim( esc_attr($key) );
+				$key = trim( sanitize_key($key) );
 				// Check if the user is register and the unique key
 				$retrieveEmail = "SELECT subscriber_email FROM "
 					.$wpdb->prefix."subscribe_reloaded_subscribers WHERE subscriber_unique_id = %s";
@@ -140,13 +154,13 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 		public function generate_key( $_email = "" ) {
 			$salt      = time();
 			$dd_salt   = md5( $salt );
-			$uniqueKey = md5( $dd_salt . $salt . $_email );
+			$uniqueKey = md5( $dd_salt . $salt . sanitize_email( $_email ) );
 
 			return $uniqueKey;
 		}
 
 		public function generate_temp_key( $_email ) {
-			$uniqueKey = get_option( "subscribe_reloaded_unique_key" );
+			$uniqueKey = sanitize_key( get_option( "subscribe_reloaded_unique_key" ) );
 			$key       = md5( $uniqueKey . $_email );
 
 			return $key;
@@ -197,6 +211,59 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
             // Return string
             return $date_str;
         }
+
+        public function to_num_ini_notation( $size )
+        {
+            $l   = substr( $size, - 1 );
+            $ret = substr( $size, 0, - 1 );
+            switch ( strtoupper( $l ) ) {
+                case 'P':
+                    $ret *= 1024;
+                case 'T':
+                    $ret *= 1024;
+                case 'G':
+                    $ret *= 1024;
+                case 'M':
+                    $ret *= 1024;
+                case 'K':
+                    $ret *= 1024;
+            }
+
+            return $ret;
+        }
+
+        /**
+         * Get plugin info including status
+         *
+         * This is an enhanced version of get_plugins() that returns the status
+         * (`active` or `inactive`) of all plugins. Does not include MU plugins.
+         *
+         * @version 1.0.0
+         * @since 28-Nov-2018
+         *
+         * @return array Plugin info plus status
+         */
+        function stcr_get_plugins() {
+            $plugins             = get_plugins();
+            $active_plugin_paths = (array) get_option( 'active_plugins', array() );
+
+            if ( is_multisite() ) {
+                $network_activated_plugin_paths = array_keys( get_site_option( 'active_sitewide_plugins', array() ) );
+                $active_plugin_paths            = array_merge( $active_plugin_paths, $network_activated_plugin_paths );
+            }
+
+            foreach ( $plugins as $plugin_path => $plugin_data ) {
+                // Is plugin active?
+                if ( in_array( $plugin_path, $active_plugin_paths ) ) {
+                    $plugins[ $plugin_path ]['Status'] = 'active';
+                } else {
+                    $plugins[ $plugin_path ]['Status'] = 'inactive';
+                }
+            }
+
+            return $plugins;
+        }
+
 		/**
 		 * Creates the HTML structure to properly handle HTML messages
 		 */
@@ -240,7 +307,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 				"/mime\-version\:/i"
 			);
 
-			return esc_attr( stripslashes( strip_tags( preg_replace( $offending_strings, '', $_email ) ) ) );
+			return sanitize_email( stripslashes( strip_tags( preg_replace( $offending_strings, '', $_email ) ) ) );
 		}
 		// end clean_email
 
@@ -298,7 +365,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
             add_option( 'subscribe_reloaded_management_email_content', __( "You have requested to manage your subscriptions to the articles on [blog_name]. Follow this link to access your personal page:\n<a href='[manager_link]'>[manager_link]</a>", 'subscribe-reloaded' ) );
 
             add_option( 'subscribe_reloaded_purge_days', '30', '', 'yes' );
-            add_option( 'subscribe_reloaded_enable_double_check', 'no', '', 'yes' );
+            add_option( 'subscribe_reloaded_enable_double_check', 'yes', '', 'yes' );
             add_option( 'subscribe_reloaded_notify_authors', 'no', '', 'yes' );
             add_option( 'subscribe_reloaded_enable_html_emails', 'yes', '', 'yes' );
             add_option( 'subscribe_reloaded_htmlify_message_links', 'no', '', 'yes' );
@@ -351,7 +418,43 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
                 return true;
             }
         }
-		/**
+        /**
+         * Enqueue a script that was previous registered,
+         *
+         * @since 28-Mar-2018
+         * @author reedyseth
+         * @param string $handle Script handle that will be enqueue
+         */
+        public function enqueue_script_to_wp( $handle )
+        {
+            wp_enqueue_script( $handle );
+        }
+
+        /**
+         *
+         *
+         * @since
+         * @author Israel Barragan (Reedyseth)
+         *
+         * @param $severity
+         * @param $message
+         * @param $filename
+         * @param $lineno
+         */
+        function exceptions_error_handler($severity, $message, $filename, $lineno)
+        {
+            $date = date_i18n( 'Y-m-d H:i:s' );
+            // We don't want to break things out, so instead we add the error information to
+            // the log file, thus allowing us to help more on the debug / error / support of StCR.
+            $this->stcr_logger("\n [ERROR][$date] - An error occur, here is the detail information\n");
+            $this->stcr_logger(" [ERROR][SEVERITY]    - $severity\n");
+            $this->stcr_logger(" [ERROR][MESSAGE]     - $message\n");
+            $this->stcr_logger(" [ERROR][FILENAME]    - $filename\n");
+            $this->stcr_logger(" [ERROR][LINE NUMBER] - $lineno\n\n");
+
+//            throw new \ErrorException($message, 0, $severity,$filename, $lineno);
+        }
+        /**
 		 * Will send an email by adding the correct headers.
 		 *
 		 * @since 28-May-2016
@@ -366,7 +469,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			$from_email   = get_option( 'subscribe_reloaded_from_email', get_bloginfo( 'admin_email' ) );
 			$reply_to     = get_option( "subscribe_reloaded_reply_to" ) == ''
 									? $from_email : get_option( "subscribe_reloaded_reply_to" );
-			$content_type = $content_type = (  get_option(  'subscribe_reloaded_enable_html_emails' ) == 'yes' )
+			$content_type = (  get_option(  'subscribe_reloaded_enable_html_emails' ) == 'yes' )
 									?  'text/html'  :  'text/plain';
 			$headers      = "Content-Type: $content_type; charset=" . get_bloginfo( 'charset' ) . "\n";
 			$date = date_i18n( 'Y-m-d H:i:s' );
@@ -384,10 +487,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			);
 
 			$_emailSettings = array_merge( $_emailSettings, $_settings );
-
-			if ( $content_type == 'text/html' ) {
-				$_emailSettings[ 'message' ] = $this->wrap_html_message( $_emailSettings['message'], $_emailSettings['subject'] );
-			}
+            $_emailSettings[ 'message' ] = $this->wrap_html_message( $_emailSettings['message'], $_emailSettings['subject'] );
 
 			$headers .= "From: \"{$_emailSettings['fromName']}\" <{$_emailSettings['fromEmail']}>\n";
 			$headers .= "Reply-To: {$_emailSettings['reply_to']}\n";
@@ -435,7 +535,7 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 		 * @author reedyseth
 		 */
 		public function add_ritch_editor_textarea() {
-			wp_enqueue_script('stcr-tinyMCE');
+			wp_enqueue_script('stcr-tinyMCE'); // TODO: Only enqueue it the first time.
 			wp_enqueue_script('stcr-tinyMCE-js');
 		}
 		/**
@@ -450,7 +550,6 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			// $tinyMCE_url_js = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/js/stcr-tinyMCE.js';
 			$stcr_admin_js  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/js/stcr-admin.js';
 			$stcr_admin_css  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/css/stcr-admin-style.css';
-            $stcr_font_awesome_css  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . '/subscribe-to-comments-reloaded/includes/css/font-awesome.min.css';
             // Javascript
             wp_register_script('stcr-admin-js', $stcr_admin_js, array( 'jquery' ) );
             // Enqueue Scripts
@@ -459,12 +558,6 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
             wp_register_style( 'stcr-admin-style',  $stcr_admin_css );
             // Enqueue the styles
             wp_enqueue_style('stcr-admin-style');
-            // Font Awesome
-            if( get_option( 'subscribe_reloaded_enable_font_awesome' ) == "yes" )
-            {
-                wp_register_style( 'stcr-font-awesome', $stcr_font_awesome_css );
-                wp_enqueue_style('stcr-font-awesome');
-            }
         }
 		/**
 		 * Hooking scripts for admin pages.
@@ -476,6 +569,20 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			add_action('admin_enqueue_scripts',array( $this, 'register_admin_scripts') );
 		}
         /**
+         * Registers a Javacsript file to the `wp_register_script` hook.
+         *
+         * @since 28-Mar-2018
+         * @author reedyseth
+         * @param string $handle Script handle the data will be attached to.
+         * @param string $script_name JS File name.
+         * @param string $path_add Sometimes the path is not in the root, therefore you can use this to complete the path.
+         */
+		public function register_script_to_wp( $handle, $script_name, $path_add = "" )
+        {
+            $js_resource  = ( is_ssl() ? str_replace( 'http://', 'https://', WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . "/". SLUG ."/$path_add/$script_name";
+            wp_register_script( $handle, $js_resource );
+        }
+        /**includes/js/admin
          * Hooking scripts for plugin pages.
          * @since 22-Sep-2015
          * @author reedyseth
@@ -529,6 +636,35 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			update_option( 'subscribe_reloaded_deferred_admin_notices', $notices );
 		}
 
+        /**
+         * Method to avoid using all the StCR option variable name. Return the given option value.
+         *
+         * @since 08-Apr-2018
+         * @author Israel Barragan (Reedyseth)
+         *
+         * @param string $_option Option Name
+         * @param string $_default Default value in case is not defined.
+         * @return string The option value store in WP.
+         */
+        public function stcr_get_menu_options($_option = '', $_default = '' )
+        {
+            $value = null;
+
+            if ( isset( $this->menu_opts_cache[$_option] ) )
+            {
+                return $this->menu_opts_cache[$_option];
+            }
+            else
+            {
+                $value = get_option( 'subscribe_reloaded_' . $_option, $_default );
+                $value = html_entity_decode( stripslashes( $value ), ENT_QUOTES, 'UTF-8' );
+                $value = stripslashes( $value );
+                // Set the cache value
+                $this->menu_opts_cache[$_option] = $value;
+            }
+
+            return $value;
+        }
 		/**
 		 * Update a given notice with the given arguments.
 		 *
@@ -577,6 +713,62 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			}
 			update_option( 'subscribe_reloaded_deferred_admin_notices', $notices );
 		}
+
+
+        /**
+         * Method to avoid using all the StCR option variable name. It also verify the type of value to be store.
+         *
+         * @since 07-Apr-2018
+         * @author Israel Barragan (Reedyseth)
+         *
+         * @param string $_option Option Name.
+         * @param string $_value
+         * @param string $_type type to use for the correct sanitation yesno|integer|text|text-html|email|url
+         * @return bool false in case that the value is not defined.
+         */
+        public function stcr_update_menu_options($_option = '', $_value = '', $_type = '' )
+        {
+            if ( ! isset( $_value ) ) {
+                return false;
+            }
+
+            // Prevent XSS/CSRF attacks
+            $_value = trim( stripslashes( $_value ) );
+
+            switch ( $_type ) {
+                case 'yesno':
+                    if ( $_value == 'yes' || $_value == 'no' ) {
+                        update_option( 'subscribe_reloaded_' . $_option, esc_attr( $_value ) );
+                    }
+                    break;
+                case 'integer':
+                    update_option( 'subscribe_reloaded_' . $_option, abs( intval( esc_attr( $_value ) ) ) );
+
+                    break;
+                case 'text':
+                    update_option( 'subscribe_reloaded_' . $_option, sanitize_text_field( $_value ) );
+
+                    break;
+                case 'text-html':
+                    update_option( 'subscribe_reloaded_' . $_option, esc_html( $_value ) );
+
+                    break;
+                case 'email':
+                    update_option( 'subscribe_reloaded_' . $_option, sanitize_email( esc_attr( $_value ) ) );
+
+                    break;
+                case 'url':
+                    update_option( 'subscribe_reloaded_' . $_option, esc_url( $_value ) );
+
+                    break;
+                default:
+                    update_option( 'subscribe_reloaded_' . $_option, esc_attr( $_value ) );
+
+                    break;
+            }
+
+            return true;
+        }
 		/**
 		 * Delete a given notice with the given arguments.
 		 *
@@ -612,6 +804,107 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			}
 			return;
 		}
+        /**
+         * Create a new Ajax Hook.
+         *
+         * @since 07-Dic-2018
+         * @author reedyseth
+         *
+         * @param array $_actions An array with the ajax hooks to bind. Each element of the array should be the name and the function to bind.
+         */
+        public function stcr_create_ajax_hook( array $_actions )
+        {
+            foreach ($_actions as $hookName => $functionToBind )
+            {
+                add_action( 'wp_ajax_' . $hookName, array( $this, $functionToBind ) );
+            }
+
+            return;
+        }
+        /**
+         * Create a file with the given information.
+         *
+         * @since 07-Dic-2018
+         * @author reedyseth
+         *
+         * @param string $_hookname The notice to be binded.
+         */
+        public function stcr_create_file( $_filename, $_filedata )
+        {
+            $plugin_dir   = plugin_dir_path( __DIR__ );
+            $file_path    = $plugin_dir . "utils/" ;
+            $path         = "";
+
+            // Check  if $_filedata is an array
+            if ( is_array( $_filedata ) )
+            {
+                $_filedata = serialize( $_filedata );
+            }
+
+            if( is_writable( $file_path ) )
+            {
+                $handle = fopen( $file_path . $_filename, "w" );
+                fwrite( $handle, $_filedata);
+                $path = "true|" . plugins_url( "download.php", __FILE__ ) . "|";
+                fclose( $handle );
+            }
+            else
+            {
+                $path = "false|Check file permissions|{$file_path}";
+            }
+
+            return $path;
+        }
+        /**
+         * Call stcr_create_file to create the file again.
+         *
+         * @since 10-Dic-2018
+         * @author reedyseth
+         *
+         */
+        public function stcr_recreate_file()
+        {
+            $filename = esc_attr( $_POST['fileName'] );
+            $filedata = stripslashes($_POST['fileData']);
+            $action   = esc_attr( $_POST['action'] );
+//            sleep(1/2);
+
+            // Check Nonce
+            $isValid = check_ajax_referer( $action, 'security', false );
+
+            if( $isValid )
+            {
+               $result =  $this->stcr_create_file( $filename, unserialize($filedata) );
+               $result = explode( "|", $result);
+               $data = array(
+                   "result"         => $result[0],
+                   "path"           => $result[1],
+                   "additionalInfo" => $result[2]
+               );
+                // Send success message
+                wp_send_json_success( $data );
+            }
+
+            die();
+        }
+        /**
+         * Delete the Report File to keep the house clean
+         *
+         * @since 12-Dic-2018
+         * @author reedyseth
+         *
+         */
+        public function stcr_delete_report_file()
+        {
+            $plugin_dir   = plugin_dir_path( __DIR__ );
+            $file    = $plugin_dir . "utils/systemInformation.txt" ;
+
+            if( file_exists( $file )  && is_writable( $plugin_dir ) )
+            {
+                // unlink the file
+                unlink($file);
+            }
+        }
 		/**
 		 * Update a StCR notification status
 		 *
@@ -630,6 +923,17 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\stcr_utils') )
 			wp_send_json_success( 'Notification status updated for "' . $_notification . '"' );
 			die();
 		}
+        /**
+         * Check if the current user is a WordPress Admin
+         *
+         * @since 10-Dic-2018
+         * @author reedyseth
+         *
+         */
+        public function stcr_is_admin()
+        {
+            return is_admin();
+        }
 		/**
 		 * Function to log messages into a given file. The variable $file_path must have writing permissions.
 		 *
