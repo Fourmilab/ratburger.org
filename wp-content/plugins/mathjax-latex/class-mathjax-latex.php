@@ -19,7 +19,7 @@
  * along with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-define( 'MATHJAX_VERSION', '1.3.10' );
+define( 'MATHJAX_VERSION', '1.3.11' );
 
 require_once __DIR__ . '/class-mathjax-latex-admin.php';
 
@@ -152,7 +152,7 @@ class MathJax_Latex {
 
 		// initialise option for existing MathJax-LaTeX users
 		if ( get_option( 'kblog_mathjax_use_cdn' ) || ! get_option( 'kblog_mathjax_custom_location' ) ) {
-			$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js';
+			$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js';
 		} else {
 			$mathjax_location = get_option( 'kblog_mathjax_custom_location' );
 		}
@@ -237,7 +237,7 @@ class MathJax_Latex {
 		$filtered_content = preg_replace_callback(
 			'/(<math.*>.*<\/math>)/isU',
 			function( $matches ) {
-				return str_replace( array( '<br/>', '<br />', '<br>' ), '', $matches[0] );
+				return str_replace( [ '<br/>', '<br />', '<br>' ], '', $matches[0] );
 			},
 			$content
 		);
