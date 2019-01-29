@@ -145,11 +145,11 @@ msgstr ""
 msgid "You must add the following as the authorised redirect URI in your Azure console (under \"API Settings\") when asked"
 msgstr ""
 
-#: src/addons/azure.php:601, src/addons/migrator.php:948, src/admin.php:1155, src/admin.php:1159, src/admin.php:1163, src/admin.php:1167, src/admin.php:1171, src/admin.php:1180, src/admin.php:3928, src/admin.php:3935, src/admin.php:3937, src/admin.php:5222, src/methods/cloudfiles-new.php:100, src/methods/cloudfiles.php:440, src/methods/ftp.php:330, src/methods/openstack-base.php:571, src/methods/s3.php:864, src/methods/s3.php:868, src/methods/updraftvault.php:311, src/templates/wp-admin/settings/downloading-and-restoring.php:27, src/templates/wp-admin/settings/tab-backups.php:27, src/udaddons/updraftplus-addons.php:259
+#: src/addons/azure.php:601, src/addons/migrator.php:948, src/admin.php:1155, src/admin.php:1159, src/admin.php:1163, src/admin.php:1167, src/admin.php:1171, src/admin.php:1180, src/admin.php:3934, src/admin.php:3941, src/admin.php:3943, src/admin.php:5228, src/methods/cloudfiles-new.php:100, src/methods/cloudfiles.php:440, src/methods/ftp.php:330, src/methods/openstack-base.php:571, src/methods/s3.php:864, src/methods/s3.php:868, src/methods/updraftvault.php:311, src/templates/wp-admin/settings/downloading-and-restoring.php:27, src/templates/wp-admin/settings/tab-backups.php:27, src/udaddons/updraftplus-addons.php:259
 msgid "Warning"
 msgstr ""
 
-#: src/addons/azure.php:601, src/admin.php:3928, src/methods/updraftvault.php:311
+#: src/addons/azure.php:601, src/admin.php:3934, src/methods/updraftvault.php:311
 msgid "Your web server's PHP installation does not included a <strong>required</strong> (for %s) module (%s). Please contact your web hosting provider's support and ask for them to enable it."
 msgstr ""
 
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Create Azure credentials in your Azure developer console."
 msgstr ""
 
-#: src/addons/azure.php:605, src/addons/onedrive.php:1149, src/includes/class-remote-send.php:314
+#: src/addons/azure.php:605, src/addons/onedrive.php:1142, src/includes/class-remote-send.php:314
 msgid "For longer help, including screenshots, follow this link."
 msgstr ""
 
@@ -201,7 +201,7 @@ msgstr ""
 msgid "You can enter the path of any %s virtual folder you wish to use here."
 msgstr ""
 
-#: src/addons/azure.php:638, src/addons/google-enhanced.php:76, src/addons/onedrive.php:1189
+#: src/addons/azure.php:638, src/addons/google-enhanced.php:76, src/addons/onedrive.php:1182
 msgid "If you leave it blank, then the backup will be placed in the root of your %s"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Error: unexpected file read fail"
 msgstr ""
 
-#: src/addons/backblaze.php:225, src/addons/cloudfiles-enhanced.php:117, src/addons/migrator.php:893, src/addons/migrator.php:1190, src/addons/migrator.php:1271, src/addons/migrator.php:1320, src/addons/migrator.php:1558, src/addons/s3-enhanced.php:164, src/addons/s3-enhanced.php:169, src/addons/s3-enhanced.php:171, src/addons/sftp.php:911, src/addons/webdav.php:203, src/admin.php:91, src/admin.php:817, src/includes/class-remote-send.php:266, src/includes/class-remote-send.php:293, src/includes/class-remote-send.php:299, src/includes/class-remote-send.php:362, src/includes/class-remote-send.php:421, src/includes/class-remote-send.php:448, src/includes/class-remote-send.php:471, src/includes/class-remote-send.php:481, src/includes/class-remote-send.php:486, src/methods/remotesend.php:74, src/methods/remotesend.php:242, src/methods/remotesend.php:298, src/methods/updraftvault.php:532, src/restorer.php:328, src/restorer.php:356, src/restorer.php:2040
+#: src/addons/backblaze.php:225, src/addons/cloudfiles-enhanced.php:117, src/addons/migrator.php:893, src/addons/migrator.php:1190, src/addons/migrator.php:1271, src/addons/migrator.php:1320, src/addons/migrator.php:1558, src/addons/s3-enhanced.php:164, src/addons/s3-enhanced.php:169, src/addons/s3-enhanced.php:171, src/addons/sftp.php:911, src/addons/webdav.php:203, src/admin.php:91, src/admin.php:817, src/includes/class-remote-send.php:266, src/includes/class-remote-send.php:293, src/includes/class-remote-send.php:299, src/includes/class-remote-send.php:362, src/includes/class-remote-send.php:421, src/includes/class-remote-send.php:448, src/includes/class-remote-send.php:471, src/includes/class-remote-send.php:481, src/includes/class-remote-send.php:486, src/methods/remotesend.php:74, src/methods/remotesend.php:242, src/methods/remotesend.php:298, src/methods/updraftvault.php:532, src/restorer.php:332, src/restorer.php:360, src/restorer.php:2093
 msgid "Error:"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "Failure: We could not successfully access or create such a bucket. Please check your access credentials, and if those are correct then try another bucket name (as another %s user may already have taken your name)."
 msgstr ""
 
-#: src/addons/backblaze.php:580, src/methods/cloudfiles.php:234, src/methods/dropbox.php:358, src/methods/openstack-base.php:118
+#: src/addons/backblaze.php:580, src/methods/cloudfiles.php:234, src/methods/dropbox.php:357, src/methods/openstack-base.php:118
 msgid "No settings were found"
 msgstr ""
 
@@ -449,11 +449,11 @@ msgstr ""
 msgid "Folder"
 msgstr ""
 
-#: src/addons/google-enhanced.php:76, src/addons/onedrive.php:1189
+#: src/addons/google-enhanced.php:76, src/addons/onedrive.php:1182
 msgid "Enter the path of the %s folder you wish to use here."
 msgstr ""
 
-#: src/addons/google-enhanced.php:76, src/addons/googlecloud.php:1039, src/addons/onedrive.php:1189
+#: src/addons/google-enhanced.php:76, src/addons/googlecloud.php:1039, src/addons/onedrive.php:1182
 msgid "e.g. %s"
 msgstr ""
 
@@ -625,15 +625,15 @@ msgstr ""
 msgid "But no %s settings were found. Please complete all fields in %s settings and save the settings."
 msgstr ""
 
-#: src/addons/googlecloud.php:698, src/addons/onedrive.php:908, src/addons/onedrive.php:919, src/methods/googledrive.php:442, src/methods/googledrive.php:455
+#: src/addons/googlecloud.php:698, src/addons/onedrive.php:901, src/addons/onedrive.php:912, src/methods/googledrive.php:442, src/methods/googledrive.php:455
 msgid "However, subsequent access attempts failed:"
 msgstr ""
 
-#: src/addons/googlecloud.php:718, src/addons/googlecloud.php:839, src/addons/onedrive.php:940, src/addons/sftp.php:591, src/addons/sftp.php:595, src/addons/wp-cli.php:516, src/methods/addon-base-v2.php:327, src/methods/cloudfiles.php:575, src/methods/googledrive.php:475, src/methods/openstack-base.php:530, src/methods/s3.php:1202, src/methods/stream-base.php:372
+#: src/addons/googlecloud.php:718, src/addons/googlecloud.php:839, src/addons/onedrive.php:933, src/addons/sftp.php:591, src/addons/sftp.php:595, src/addons/wp-cli.php:516, src/methods/addon-base-v2.php:327, src/methods/cloudfiles.php:575, src/methods/googledrive.php:475, src/methods/openstack-base.php:530, src/methods/s3.php:1202, src/methods/stream-base.php:372
 msgid "Success"
 msgstr ""
 
-#: src/addons/googlecloud.php:718, src/addons/onedrive.php:940, src/methods/googledrive.php:475
+#: src/addons/googlecloud.php:718, src/addons/onedrive.php:933, src/methods/googledrive.php:475
 msgid "you have authenticated your %s account."
 msgstr ""
 
@@ -645,7 +645,7 @@ msgstr ""
 msgid "You must save and authenticate before you can test your settings."
 msgstr ""
 
-#: src/addons/googlecloud.php:776, src/addons/googlecloud.php:810, src/addons/googlecloud.php:816, src/addons/sftp.php:553, src/admin.php:3482, src/admin.php:3518, src/admin.php:3528, src/methods/addon-base-v2.php:313, src/methods/stream-base.php:356
+#: src/addons/googlecloud.php:776, src/addons/googlecloud.php:810, src/addons/googlecloud.php:816, src/addons/sftp.php:553, src/admin.php:3488, src/admin.php:3524, src/admin.php:3534, src/methods/addon-base-v2.php:313, src/methods/stream-base.php:356
 msgid "Failed"
 msgstr ""
 
@@ -665,7 +665,7 @@ msgstr ""
 msgid "You must enter a project ID in order to be able to create a new bucket."
 msgstr ""
 
-#: src/addons/googlecloud.php:984, src/methods/dropbox.php:577
+#: src/addons/googlecloud.php:984, src/methods/dropbox.php:576
 msgid "%s logo"
 msgstr ""
 
@@ -693,7 +693,7 @@ msgstr ""
 msgid "You must add the following as the authorized redirect URI (under \"More Options\") when asked"
 msgstr ""
 
-#: src/addons/googlecloud.php:1019, src/addons/onedrive.php:1178, src/methods/googledrive.php:1233
+#: src/addons/googlecloud.php:1019, src/addons/onedrive.php:1171, src/methods/googledrive.php:1233
 msgid "Client ID"
 msgstr ""
 
@@ -701,7 +701,7 @@ msgstr ""
 msgid "If Google later shows you the message \"invalid_client\", then you did not enter a valid client ID here."
 msgstr ""
 
-#: src/addons/googlecloud.php:1027, src/addons/onedrive.php:1182, src/methods/googledrive.php:1237
+#: src/addons/googlecloud.php:1027, src/addons/onedrive.php:1175, src/methods/googledrive.php:1237
 msgid "Client Secret"
 msgstr ""
 
@@ -721,7 +721,7 @@ msgstr ""
 msgid "Otherwise, you can leave it blank."
 msgstr ""
 
-#: src/addons/googlecloud.php:1034, src/addons/migrator.php:493, src/addons/migrator.php:496, src/addons/migrator.php:499, src/admin.php:1159, src/admin.php:2631, src/backup.php:3465, src/class-updraftplus.php:4134, src/class-updraftplus.php:4134, src/updraftplus.php:157
+#: src/addons/googlecloud.php:1034, src/addons/migrator.php:493, src/addons/migrator.php:496, src/addons/migrator.php:499, src/admin.php:1159, src/admin.php:2631, src/backup.php:3474, src/class-updraftplus.php:4134, src/class-updraftplus.php:4134, src/updraftplus.php:157
 msgid "Go here for more information."
 msgstr ""
 
@@ -765,7 +765,7 @@ msgstr ""
 msgid "<strong>(You appear to be already authenticated,</strong> though you can authenticate again to refresh your access if you've had a problem)."
 msgstr ""
 
-#: src/addons/googlecloud.php:1108, src/addons/onedrive.php:1249, src/methods/dropbox.php:668, src/methods/googledrive.php:1289
+#: src/addons/googlecloud.php:1108, src/addons/onedrive.php:1242, src/methods/dropbox.php:667, src/methods/googledrive.php:1289
 msgid "Account holder's name: %s."
 msgstr ""
 
@@ -777,63 +777,63 @@ msgstr ""
 msgid "Supported backup plugins: %s"
 msgstr ""
 
-#: src/addons/importer.php:276, src/admin.php:4089, src/includes/class-backup-history.php:499
+#: src/addons/importer.php:276, src/admin.php:4095, src/includes/class-backup-history.php:499
 msgid "Backup created by: %s."
 msgstr ""
 
-#: src/addons/incremental.php:82, src/addons/incremental.php:84
+#: src/addons/incremental.php:89, src/addons/incremental.php:91
 msgid "(latest increment: %s)"
 msgstr ""
 
-#: src/addons/incremental.php:84
+#: src/addons/incremental.php:91
 msgid "Increments exist at: %s"
 msgstr ""
 
-#: src/addons/incremental.php:288
+#: src/addons/incremental.php:295
 msgid "Files changed since the last backup will be added as a new increment in that backup set."
 msgstr ""
 
-#: src/addons/incremental.php:288
+#: src/addons/incremental.php:295
 msgid "N.B. No backup of your database will be taken in an incremental backup; if you want a database backup as well, then take that separately."
 msgstr ""
 
-#: src/addons/incremental.php:290
+#: src/addons/incremental.php:297
 msgid "No incremental backup of your files is possible, as no suitable existing backup was found to add increments to."
 msgstr ""
 
-#: src/addons/incremental.php:335, src/addons/reporting.php:261, src/admin.php:4021
+#: src/addons/incremental.php:342, src/addons/reporting.php:261, src/admin.php:4027
 msgid "None"
 msgstr ""
 
-#: src/addons/incremental.php:336, src/updraftplus.php:99
+#: src/addons/incremental.php:343, src/updraftplus.php:99
 msgid "Every hour"
 msgstr ""
 
-#: src/addons/incremental.php:337, src/addons/incremental.php:338, src/addons/incremental.php:339, src/addons/incremental.php:340, src/admin.php:3736, src/admin.php:3737, src/admin.php:3738, src/updraftplus.php:100, src/updraftplus.php:101, src/updraftplus.php:102
+#: src/addons/incremental.php:344, src/addons/incremental.php:345, src/addons/incremental.php:346, src/addons/incremental.php:347, src/admin.php:3742, src/admin.php:3743, src/admin.php:3744, src/updraftplus.php:100, src/updraftplus.php:101, src/updraftplus.php:102
 msgid "Every %s hours"
 msgstr ""
 
-#: src/addons/incremental.php:341, src/admin.php:3739
+#: src/addons/incremental.php:348, src/admin.php:3745
 msgid "Daily"
 msgstr ""
 
-#: src/addons/incremental.php:342, src/admin.php:3740
+#: src/addons/incremental.php:349, src/admin.php:3746
 msgid "Weekly"
 msgstr ""
 
-#: src/addons/incremental.php:343, src/admin.php:3741
+#: src/addons/incremental.php:350, src/admin.php:3747
 msgid "Fortnightly"
 msgstr ""
 
-#: src/addons/incremental.php:344, src/admin.php:3742
+#: src/addons/incremental.php:351, src/admin.php:3748
 msgid "Monthly"
 msgstr ""
 
-#: src/addons/incremental.php:358
+#: src/addons/incremental.php:365
 msgid "And then add an incremental backup"
 msgstr ""
 
-#: src/addons/incremental.php:370
+#: src/addons/incremental.php:377
 msgid "Tell me more"
 msgstr ""
 
@@ -949,7 +949,7 @@ msgstr ""
 msgid "After pressing this button, you will be given the option to choose which components you wish to migrate"
 msgstr ""
 
-#: src/addons/migrator.php:274, src/admin.php:663, src/admin.php:850, src/admin.php:4187
+#: src/addons/migrator.php:274, src/admin.php:663, src/admin.php:850, src/admin.php:4193
 msgid "Restore"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 msgid "search term"
 msgstr ""
 
-#: src/addons/migrator.php:343, src/addons/migrator.php:358, src/admin.php:2549, src/admin.php:2559, src/admin.php:2568, src/admin.php:2610, src/admin.php:3451
+#: src/addons/migrator.php:343, src/addons/migrator.php:358, src/admin.php:2549, src/admin.php:2559, src/admin.php:2568, src/admin.php:2610, src/admin.php:3457
 msgid "Return to UpdraftPlus Configuration"
 msgstr ""
 
@@ -1183,7 +1183,7 @@ msgstr ""
 msgid "Time taken (seconds):"
 msgstr ""
 
-#: src/addons/migrator.php:1320, src/restorer.php:2924
+#: src/addons/migrator.php:1320, src/restorer.php:2977
 msgid "the database query being run was:"
 msgstr ""
 
@@ -1247,7 +1247,7 @@ msgstr ""
 msgid "Enter your chosen name"
 msgstr ""
 
-#: src/addons/migrator.php:1761, src/addons/sftp.php:467, src/admin.php:868, src/admin.php:5070, src/templates/wp-admin/settings/temporary-clone.php:63
+#: src/addons/migrator.php:1761, src/addons/sftp.php:467, src/admin.php:868, src/admin.php:5076, src/templates/wp-admin/settings/temporary-clone.php:63
 msgid "Key"
 msgstr ""
 
@@ -1307,7 +1307,7 @@ msgstr ""
 msgid "database connection attempt failed"
 msgstr ""
 
-#: src/addons/moredatabase.php:112, src/backup.php:1636
+#: src/addons/moredatabase.php:112, src/backup.php:1645
 msgid "Connection failed: check your access details, that the database server is up, and that the network connection is not firewalled."
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: src/addons/moredatabase.php:242, src/addons/reporting.php:276, src/addons/wp-cli.php:432, src/admin.php:344, src/admin.php:3996, src/admin.php:4049, src/includes/class-remote-send.php:331, src/includes/class-wpadmin-commands.php:157, src/includes/class-wpadmin-commands.php:521, src/restorer.php:461, src/templates/wp-admin/settings/delete-and-restore-modals.php:74, src/templates/wp-admin/settings/delete-and-restore-modals.php:75, src/templates/wp-admin/settings/take-backup.php:34
+#: src/addons/moredatabase.php:242, src/addons/reporting.php:276, src/addons/wp-cli.php:432, src/admin.php:344, src/admin.php:4002, src/admin.php:4055, src/includes/class-remote-send.php:331, src/includes/class-wpadmin-commands.php:157, src/includes/class-wpadmin-commands.php:521, src/restorer.php:466, src/templates/wp-admin/settings/delete-and-restore-modals.php:74, src/templates/wp-admin/settings/delete-and-restore-modals.php:75, src/templates/wp-admin/settings/take-backup.php:34
 msgid "Database"
 msgstr ""
 
@@ -1516,7 +1516,7 @@ msgstr ""
 msgid "Exclude these:"
 msgstr ""
 
-#: src/addons/morefiles.php:476, src/admin.php:3850
+#: src/addons/morefiles.php:476, src/admin.php:3856
 msgid "If entering multiple files/directories, then separate them with commas. For entities at the top level, you can use a * at the start or end of the entry as a wildcard."
 msgstr ""
 
@@ -1592,123 +1592,123 @@ msgstr ""
 msgid "The required %s PHP module is not installed - ask your web hosting company to enable it."
 msgstr ""
 
-#: src/addons/onedrive.php:112, src/methods/dropbox.php:267
+#: src/addons/onedrive.php:112, src/methods/dropbox.php:266
 msgid "Account full: your %s account has only %d bytes left, but the file to be uploaded has %d bytes remaining (total size: %d bytes)"
 msgstr ""
 
-#: src/addons/onedrive.php:678, src/udaddons/updraftplus-addons.php:937
+#: src/addons/onedrive.php:677, src/udaddons/updraftplus-addons.php:937
 msgid "An error response was received; HTTP code:"
 msgstr ""
 
-#: src/addons/onedrive.php:693, src/addons/onedrive.php:717, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:952, src/udaddons/updraftplus-addons.php:966
+#: src/addons/onedrive.php:690, src/addons/onedrive.php:710, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:950, src/udaddons/updraftplus-addons.php:963
 msgid "This most likely means that you share a webserver with a hacked website that has been used in previous attacks."
 msgstr ""
 
-#: src/addons/onedrive.php:693, src/udaddons/updraftplus-addons.php:952, src/udaddons/updraftplus-addons.php:966
+#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:950, src/udaddons/updraftplus-addons.php:963
 msgid "To remove any block, please go here."
 msgstr ""
 
-#: src/addons/onedrive.php:693, src/udaddons/updraftplus-addons.php:952
+#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:950
 msgid "Your IP address:"
 msgstr ""
 
-#: src/addons/onedrive.php:717, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:966
+#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:963
 msgid "UpdraftPlus.com has responded with 'Access Denied'."
 msgstr ""
 
-#: src/addons/onedrive.php:717, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:966
+#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685, src/udaddons/updraftplus-addons.php:963
 msgid "It appears that your web server's IP Address (%s) is blocked."
 msgstr ""
 
-#: src/addons/onedrive.php:717, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685
+#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:56, src/methods/updraftvault.php:685
 msgid "To remove the block, please go here."
 msgstr ""
 
-#: src/addons/onedrive.php:724
+#: src/addons/onedrive.php:717
 msgid "Please re-authorize the connection to your %s account."
 msgstr ""
 
-#: src/addons/onedrive.php:733
+#: src/addons/onedrive.php:726
 msgid "Account is not authorized (%s)."
 msgstr ""
 
-#: src/addons/onedrive.php:865, src/class-updraftplus.php:532, src/methods/dropbox.php:240, src/methods/dropbox.php:753, src/methods/dropbox.php:775, src/methods/dropbox.php:790, src/methods/dropbox.php:803, src/methods/dropbox.php:946
+#: src/addons/onedrive.php:858, src/class-updraftplus.php:532, src/methods/dropbox.php:239, src/methods/dropbox.php:752, src/methods/dropbox.php:774, src/methods/dropbox.php:789, src/methods/dropbox.php:802, src/methods/dropbox.php:945
 msgid "%s error: %s"
 msgstr ""
 
-#: src/addons/onedrive.php:865
+#: src/addons/onedrive.php:858
 msgid "Authentication"
 msgstr ""
 
-#: src/addons/onedrive.php:894, src/methods/dropbox.php:844, src/methods/dropbox.php:853, src/methods/googledrive.php:439
+#: src/addons/onedrive.php:887, src/methods/dropbox.php:843, src/methods/dropbox.php:852, src/methods/googledrive.php:439
 msgid "Your %s quota usage: %s %% used, %s available"
 msgstr ""
 
-#: src/addons/onedrive.php:902, src/methods/dropbox.php:821
+#: src/addons/onedrive.php:895, src/methods/dropbox.php:820
 msgid "Your %s account name: %s"
 msgstr ""
 
-#: src/addons/onedrive.php:940, src/addons/onedrive.php:1178, src/addons/onedrive.php:1182
+#: src/addons/onedrive.php:933, src/addons/onedrive.php:1171, src/addons/onedrive.php:1175
 msgid "OneDrive"
 msgstr ""
 
-#: src/addons/onedrive.php:1038, src/includes/Dropbox2/OAuth/Consumer/ConsumerAbstract.php:118
+#: src/addons/onedrive.php:1031, src/includes/Dropbox2/OAuth/Consumer/ConsumerAbstract.php:118
 msgid "The %s authentication could not go ahead, because something else on your site is breaking it. Try disabling your other plugins and switching to a default theme. (Specifically, you are looking for the component that sends output (most likely PHP warnings/errors) before the page begins. Turning off any debugging settings may also help)."
 msgstr ""
 
-#: src/addons/onedrive.php:1097, src/addons/onedrive.php:1099
+#: src/addons/onedrive.php:1090, src/addons/onedrive.php:1092
 msgid "authorization failed:"
 msgstr ""
 
-#: src/addons/onedrive.php:1126
+#: src/addons/onedrive.php:1119
 msgid "This site uses a URL which is either non-HTTPS, or is localhost or 127.0.0.1 URL. As such, you must use the main %s %s App to authenticate with your account."
 msgstr ""
 
-#: src/addons/onedrive.php:1134
+#: src/addons/onedrive.php:1127
 msgid "You must add the following as the authorized redirect URI in your OneDrive console (under \"API Settings\") when asked"
 msgstr ""
 
-#: src/addons/onedrive.php:1142
+#: src/addons/onedrive.php:1135
 msgid "Create OneDrive credentials in your OneDrive developer console."
 msgstr ""
 
-#: src/addons/onedrive.php:1158, src/methods/dropbox.php:586, src/methods/googledrive.php:1214
+#: src/addons/onedrive.php:1151, src/methods/dropbox.php:585, src/methods/googledrive.php:1214
 msgid "Please read %s for use of our %s authorization app (none of your backup data is sent to us)."
 msgstr ""
 
-#: src/addons/onedrive.php:1158, src/methods/dropbox.php:586, src/methods/googledrive.php:1214
+#: src/addons/onedrive.php:1151, src/methods/dropbox.php:585, src/methods/googledrive.php:1214
 msgid "this privacy policy"
 msgstr ""
 
-#: src/addons/onedrive.php:1179
+#: src/addons/onedrive.php:1172
 msgid "If OneDrive later shows you the message \"unauthorized_client\", then you did not enter a valid client ID here."
 msgstr ""
 
-#: src/addons/onedrive.php:1187, src/restorer.php:1191
+#: src/addons/onedrive.php:1180, src/restorer.php:1244
 msgid "folder"
 msgstr ""
 
-#: src/addons/onedrive.php:1189
+#: src/addons/onedrive.php:1182
 msgid "N.B. %s is not case-sensitive."
 msgstr ""
 
-#: src/addons/onedrive.php:1194
+#: src/addons/onedrive.php:1187
 msgid "Account type"
 msgstr ""
 
-#: src/addons/onedrive.php:1197
+#: src/addons/onedrive.php:1190
 msgid "OneDrive International"
 msgstr ""
 
-#: src/addons/onedrive.php:1198
+#: src/addons/onedrive.php:1191
 msgid "OneDrive Germany"
 msgstr ""
 
-#: src/addons/onedrive.php:1206, src/methods/dropbox.php:611
+#: src/addons/onedrive.php:1199, src/methods/dropbox.php:610
 msgid "Authenticate with %s"
 msgstr ""
 
-#: src/addons/onedrive.php:1213, src/methods/dropbox.php:615
+#: src/addons/onedrive.php:1206, src/methods/dropbox.php:614
 msgid "(You appear to be already authenticated)."
 msgstr ""
 
@@ -1716,7 +1716,7 @@ msgstr ""
 msgid "Your label for this backup (optional)"
 msgstr ""
 
-#: src/addons/reporting.php:86, src/addons/reporting.php:197, src/backup.php:1168, src/class-updraftplus.php:3951
+#: src/addons/reporting.php:86, src/addons/reporting.php:197, src/backup.php:1177, src/class-updraftplus.php:3951
 msgid "Backup of:"
 msgstr ""
 
@@ -1736,7 +1736,7 @@ msgstr ""
 msgid "Backup made by %s"
 msgstr ""
 
-#: src/addons/reporting.php:198, src/backup.php:1171
+#: src/addons/reporting.php:198, src/backup.php:1180
 msgid "Latest status:"
 msgstr ""
 
@@ -1764,11 +1764,11 @@ msgstr ""
 msgid "Time taken:"
 msgstr ""
 
-#: src/addons/reporting.php:239, src/admin.php:4009
+#: src/addons/reporting.php:239, src/admin.php:4015
 msgid "Uploaded to:"
 msgstr ""
 
-#: src/addons/reporting.php:281, src/backup.php:1121
+#: src/addons/reporting.php:281, src/backup.php:1130
 msgid "The log file has been attached to this email."
 msgstr ""
 
@@ -2237,27 +2237,27 @@ msgstr ""
 msgid "Latest full backup found; identifier:"
 msgstr ""
 
-#: src/addons/wp-cli.php:430, src/admin.php:4043, src/admin.php:4091
+#: src/addons/wp-cli.php:430, src/admin.php:4049, src/admin.php:4097
 msgid "unknown source"
 msgstr ""
 
-#: src/addons/wp-cli.php:432, src/admin.php:4049
+#: src/addons/wp-cli.php:432, src/admin.php:4055
 msgid "Database (created by %s)"
 msgstr ""
 
-#: src/addons/wp-cli.php:438, src/admin.php:4051
+#: src/addons/wp-cli.php:438, src/admin.php:4057
 msgid "External database"
 msgstr ""
 
-#: src/addons/wp-cli.php:450, src/admin.php:4095
+#: src/addons/wp-cli.php:450, src/admin.php:4101
 msgid "Files and database WordPress backup (created by %s)"
 msgstr ""
 
-#: src/addons/wp-cli.php:450, src/admin.php:4095
+#: src/addons/wp-cli.php:450, src/admin.php:4101
 msgid "Files backup (created by %s)"
 msgstr ""
 
-#: src/addons/wp-cli.php:519, src/admin.php:818, src/class-updraftplus.php:1298, src/class-updraftplus.php:1342, src/includes/class-filesystem-functions.php:429, src/includes/class-storage-methods-interface.php:324, src/methods/addon-base-v2.php:93, src/methods/addon-base-v2.php:98, src/methods/addon-base-v2.php:205, src/methods/addon-base-v2.php:225, src/methods/stream-base.php:219, src/restorer.php:3074, src/restorer.php:3099, src/restorer.php:3180, src/updraftplus.php:157
+#: src/addons/wp-cli.php:519, src/admin.php:818, src/class-updraftplus.php:1298, src/class-updraftplus.php:1342, src/includes/class-filesystem-functions.php:429, src/includes/class-storage-methods-interface.php:324, src/methods/addon-base-v2.php:93, src/methods/addon-base-v2.php:98, src/methods/addon-base-v2.php:205, src/methods/addon-base-v2.php:225, src/methods/stream-base.php:219, src/restorer.php:3127, src/restorer.php:3152, src/restorer.php:3233, src/updraftplus.php:157
 msgid "Error"
 msgstr ""
 
@@ -2273,11 +2273,11 @@ msgstr ""
 msgid "No such backup set exists"
 msgstr ""
 
-#: src/addons/wp-cli.php:648, src/admin.php:4504
+#: src/addons/wp-cli.php:648, src/admin.php:4510
 msgid "UpdraftPlus Restoration: Progress"
 msgstr ""
 
-#: src/addons/wp-cli.php:662, src/admin.php:4507
+#: src/addons/wp-cli.php:662, src/admin.php:4513
 msgid "Follow this link to download the log file for this restoration (needed for any support requests)."
 msgstr ""
 
@@ -2297,6 +2297,14 @@ msgstr ""
 msgid "Why am I seeing this?"
 msgstr ""
 
+#: src/addons/wp-cli.php:907
+msgid "Timestamp"
+msgstr ""
+
+#: src/addons/wp-cli.php:912
+msgid "There are no incremental backup restore points available."
+msgstr ""
+
 #: src/admin.php:91
 msgid "template not found"
 msgstr ""
@@ -2309,11 +2317,11 @@ msgstr ""
 msgid "At the same time as the files backup"
 msgstr ""
 
-#: src/admin.php:334, src/admin.php:5039, src/templates/wp-admin/settings/take-backup.php:24
+#: src/admin.php:334, src/admin.php:5045, src/templates/wp-admin/settings/take-backup.php:24
 msgid "Files"
 msgstr ""
 
-#: src/admin.php:334, src/backup.php:1077
+#: src/admin.php:334, src/backup.php:1086
 msgid "Files and database"
 msgstr ""
 
@@ -2417,7 +2425,7 @@ msgstr ""
 msgid "Error: the server sent us a response which we did not understand."
 msgstr ""
 
-#: src/admin.php:816, src/restorer.php:175
+#: src/admin.php:816, src/restorer.php:180
 msgid "Error data:"
 msgstr ""
 
@@ -2429,7 +2437,7 @@ msgstr ""
 msgid "File ready."
 msgstr ""
 
-#: src/admin.php:821, src/admin.php:2549, src/admin.php:2559, src/admin.php:2568, src/admin.php:2610, src/admin.php:3451, src/templates/wp-admin/settings/existing-backups-table.php:19, src/templates/wp-admin/settings/existing-backups-table.php:137
+#: src/admin.php:821, src/admin.php:2549, src/admin.php:2559, src/admin.php:2568, src/admin.php:2610, src/admin.php:3457, src/templates/wp-admin/settings/existing-backups-table.php:19, src/templates/wp-admin/settings/existing-backups-table.php:137
 msgid "Actions"
 msgstr ""
 
@@ -2457,7 +2465,7 @@ msgstr ""
 msgid "PHP information"
 msgstr ""
 
-#: src/admin.php:828, src/admin.php:3165
+#: src/admin.php:828, src/admin.php:3171
 msgid "Delete Old Directories"
 msgstr ""
 
@@ -2517,7 +2525,7 @@ msgstr ""
 msgid "Backup Now"
 msgstr ""
 
-#: src/admin.php:844, src/admin.php:3479, src/admin.php:3513, src/admin.php:4286, src/includes/class-remote-send.php:553, src/templates/wp-admin/settings/existing-backups-table.php:153, src/templates/wp-admin/settings/file-backup-exclude.php:11
+#: src/admin.php:844, src/admin.php:3485, src/admin.php:3519, src/admin.php:4292, src/includes/class-remote-send.php:553, src/templates/wp-admin/settings/existing-backups-table.php:153, src/templates/wp-admin/settings/file-backup-exclude.php:11
 msgid "Delete"
 msgstr ""
 
@@ -2525,7 +2533,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: src/admin.php:846, src/admin.php:4266
+#: src/admin.php:846, src/admin.php:4272
 msgid "Upload"
 msgstr ""
 
@@ -2537,7 +2545,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: src/admin.php:851, src/admin.php:3717
+#: src/admin.php:851, src/admin.php:3723
 msgid "Download log file"
 msgstr ""
 
@@ -2713,7 +2721,7 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: src/admin.php:905, src/admin.php:3224
+#: src/admin.php:905, src/admin.php:3230
 msgid "The backup has finished running"
 msgstr ""
 
@@ -3025,7 +3033,7 @@ msgstr ""
 msgid "No local copy present."
 msgstr ""
 
-#: src/admin.php:2286, src/backup.php:1392
+#: src/admin.php:2286, src/backup.php:1401
 msgid "Backup directory (%s) is not writable, or does not exist."
 msgstr ""
 
@@ -3065,7 +3073,7 @@ msgstr ""
 msgid "Backup directory successfully created."
 msgstr ""
 
-#: src/admin.php:2626, src/class-updraftplus.php:4046, src/restorer.php:2787
+#: src/admin.php:2626, src/class-updraftplus.php:4046, src/restorer.php:2840
 msgid "Warning:"
 msgstr ""
 
@@ -3173,538 +3181,538 @@ msgstr ""
 msgid "Download most recently modified log file"
 msgstr ""
 
-#: src/admin.php:3159
+#: src/admin.php:3165
 msgid "Your WordPress install has old directories from its state before you restored/migrated (technical information: these are suffixed with -old). You should press this button to delete them as soon as you have verified that the restoration worked."
 msgstr ""
 
-#: src/admin.php:3224, src/admin.php:4296
+#: src/admin.php:3230, src/admin.php:4302
 msgid "View Log"
 msgstr ""
 
-#: src/admin.php:3263
+#: src/admin.php:3269
 msgid "Backup begun"
 msgstr ""
 
-#: src/admin.php:3268
+#: src/admin.php:3274
 msgid "Creating file backup zips"
 msgstr ""
 
-#: src/admin.php:3281
+#: src/admin.php:3287
 msgid "Created file backup zips"
 msgstr ""
 
-#: src/admin.php:3286
+#: src/admin.php:3292
 msgid "Clone server being provisioned and booted (can take several minutes)"
 msgstr ""
 
-#: src/admin.php:3290
+#: src/admin.php:3296
 msgid "Uploading files to remote storage"
 msgstr ""
 
-#: src/admin.php:3291
+#: src/admin.php:3297
 msgid "Sending files to remote site"
 msgstr ""
 
-#: src/admin.php:3298
+#: src/admin.php:3304
 msgid "(%s%%, file %s of %s)"
 msgstr ""
 
-#: src/admin.php:3303
+#: src/admin.php:3309
 msgid "Pruning old backup sets"
 msgstr ""
 
-#: src/admin.php:3307
+#: src/admin.php:3313
 msgid "Waiting until scheduled time to retry because of errors"
 msgstr ""
 
-#: src/admin.php:3312
+#: src/admin.php:3318
 msgid "Backup finished"
 msgstr ""
 
-#: src/admin.php:3325
+#: src/admin.php:3331
 msgid "Created database backup"
 msgstr ""
 
-#: src/admin.php:3336
+#: src/admin.php:3342
 msgid "Creating database backup"
 msgstr ""
 
-#: src/admin.php:3338
+#: src/admin.php:3344
 msgid "table: %s"
 msgstr ""
 
-#: src/admin.php:3351
+#: src/admin.php:3357
 msgid "Encrypting database"
 msgstr ""
 
-#: src/admin.php:3359
+#: src/admin.php:3365
 msgid "Encrypted database"
 msgstr ""
 
-#: src/admin.php:3361, src/central/bootstrap.php:444, src/central/bootstrap.php:451, src/methods/updraftvault.php:415, src/methods/updraftvault.php:449, src/methods/updraftvault.php:534
+#: src/admin.php:3367, src/central/bootstrap.php:444, src/central/bootstrap.php:451, src/methods/updraftvault.php:415, src/methods/updraftvault.php:449, src/methods/updraftvault.php:534
 msgid "Unknown"
 msgstr ""
 
-#: src/admin.php:3378
+#: src/admin.php:3384
 msgid "next resumption: %d (after %ss)"
 msgstr ""
 
-#: src/admin.php:3379
+#: src/admin.php:3385
 msgid "last activity: %ss ago"
 msgstr ""
 
-#: src/admin.php:3399
+#: src/admin.php:3405
 msgid "Job ID: %s"
 msgstr ""
 
-#: src/admin.php:3413, src/admin.php:3703
+#: src/admin.php:3419, src/admin.php:3709
 msgid "Warning: %s"
 msgstr ""
 
-#: src/admin.php:3433
+#: src/admin.php:3439
 msgid "show log"
 msgstr ""
 
-#: src/admin.php:3434
+#: src/admin.php:3440
 msgid "Note: the progress bar below is based on stages, NOT time. Do not stop the backup simply because it seems to have remained in the same place for a while - that is normal."
 msgstr ""
 
-#: src/admin.php:3434
+#: src/admin.php:3440
 msgid "stop"
 msgstr ""
 
-#: src/admin.php:3444, src/admin.php:3444
+#: src/admin.php:3450, src/admin.php:3450
 msgid "Remove old directories"
 msgstr ""
 
-#: src/admin.php:3447
+#: src/admin.php:3453
 msgid "Old directories successfully removed."
 msgstr ""
 
-#: src/admin.php:3449
+#: src/admin.php:3455
 msgid "Old directory removal failed for some reason. You may want to do this manually."
 msgstr ""
 
-#: src/admin.php:3486, src/admin.php:3521, src/admin.php:3525, src/includes/class-remote-send.php:327, src/includes/class-storage-methods-interface.php:315, src/restorer.php:326, src/restorer.php:3078, src/restorer.php:3183
+#: src/admin.php:3492, src/admin.php:3527, src/admin.php:3531, src/includes/class-remote-send.php:327, src/includes/class-storage-methods-interface.php:315, src/restorer.php:330, src/restorer.php:3131, src/restorer.php:3236
 msgid "OK"
 msgstr ""
 
-#: src/admin.php:3570
+#: src/admin.php:3576
 msgid "The request to the filesystem to create the directory failed."
 msgstr ""
 
-#: src/admin.php:3584
+#: src/admin.php:3590
 msgid "The folder was created, but we had to change its file permissions to 777 (world-writable) to be able to write to it. You should check with your hosting provider that this will not cause any problems"
 msgstr ""
 
-#: src/admin.php:3589
+#: src/admin.php:3595
 msgid "The folder exists, but your webserver does not have permission to write to it."
 msgstr ""
 
-#: src/admin.php:3589
+#: src/admin.php:3595
 msgid "You will need to consult with your web hosting provider to find out how to set permissions for a WordPress plugin to write to the directory."
 msgstr ""
 
-#: src/admin.php:3691
+#: src/admin.php:3697
 msgid "incremental backup; base backup: %s"
 msgstr ""
 
-#: src/admin.php:3721
+#: src/admin.php:3727
 msgid "No backup has been completed"
 msgstr ""
 
-#: src/admin.php:3735
+#: src/admin.php:3741
 msgctxt "i.e. Non-automatic"
 msgid "Manual"
 msgstr ""
 
-#: src/admin.php:3748
+#: src/admin.php:3754
 msgid "Backup directory specified is writable, which is good."
 msgstr ""
 
-#: src/admin.php:3752
+#: src/admin.php:3758
 msgid "Backup directory specified does <b>not</b> exist."
 msgstr ""
 
-#: src/admin.php:3754
+#: src/admin.php:3760
 msgid "Backup directory specified exists, but is <b>not</b> writable."
 msgstr ""
 
-#: src/admin.php:3756
+#: src/admin.php:3762
 msgid "Follow this link to attempt to create the directory and set the permissions"
 msgstr ""
 
-#: src/admin.php:3756
+#: src/admin.php:3762
 msgid "or, to reset this option"
 msgstr ""
 
-#: src/admin.php:3756
+#: src/admin.php:3762
 msgid "press here"
 msgstr ""
 
-#: src/admin.php:3756
+#: src/admin.php:3762
 msgid "If that is unsuccessful check the permissions on your server or change it to another directory that is writable by your web server process."
 msgstr ""
 
-#: src/admin.php:3836
+#: src/admin.php:3842
 msgid "Your wp-content directory server path: %s"
 msgstr ""
 
-#: src/admin.php:3836
+#: src/admin.php:3842
 msgid "Any other directories found inside wp-content"
 msgstr ""
 
-#: src/admin.php:3847
+#: src/admin.php:3853
 msgid "Exclude these from"
 msgstr ""
 
-#: src/admin.php:3935
+#: src/admin.php:3941
 msgid "Your web server's PHP/Curl installation does not support https access. Communications with %s will be unencrypted. Ask your web host to install Curl/SSL in order to gain the ability for encryption (via an add-on)."
 msgstr ""
 
-#: src/admin.php:3937
+#: src/admin.php:3943
 msgid "Your web server's PHP/Curl installation does not support https access. We cannot access %s without this support. Please contact your web hosting provider's support. %s <strong>requires</strong> Curl+https. Please do not file any support requests; there is no alternative."
 msgstr ""
 
-#: src/admin.php:3940
+#: src/admin.php:3946
 msgid "Good news: Your site's communications with %s can be encrypted. If you see any errors to do with encryption, then look in the 'Expert Settings' for more help."
 msgstr ""
 
-#: src/admin.php:3978, src/templates/wp-admin/settings/backupnow-modal.php:60, src/templates/wp-admin/settings/existing-backups-table.php:71, src/templates/wp-admin/settings/existing-backups-table.php:74
+#: src/admin.php:3984, src/templates/wp-admin/settings/backupnow-modal.php:60, src/templates/wp-admin/settings/existing-backups-table.php:71, src/templates/wp-admin/settings/existing-backups-table.php:74
 msgid "Only allow this backup to be deleted manually (i.e. keep it even if retention limits are hit)."
 msgstr ""
 
-#: src/admin.php:4026
+#: src/admin.php:4032
 msgid "Total backup size:"
 msgstr ""
 
-#: src/admin.php:4092, src/includes/class-wpadmin-commands.php:162, src/restorer.php:2115
+#: src/admin.php:4098, src/includes/class-wpadmin-commands.php:162, src/restorer.php:2168
 msgid "Backup created by unknown source (%s) - cannot be restored."
 msgstr ""
 
-#: src/admin.php:4121
+#: src/admin.php:4127
 msgid "Press here to download or browse"
 msgstr ""
 
-#: src/admin.php:4126
+#: src/admin.php:4132
 msgid "(%d archive(s) in set)."
 msgstr ""
 
-#: src/admin.php:4129
+#: src/admin.php:4135
 msgid "You appear to be missing one or more archives from this multi-archive set."
 msgstr ""
 
-#: src/admin.php:4157, src/admin.php:4159
+#: src/admin.php:4163, src/admin.php:4165
 msgid "(Not finished)"
 msgstr ""
 
-#: src/admin.php:4159
+#: src/admin.php:4165
 msgid "If you are seeing more backups than you expect, then it is probably because the deletion of old backup sets does not happen until a fresh backup completes."
 msgstr ""
 
-#: src/admin.php:4184
+#: src/admin.php:4190
 msgid "(backup set imported from remote location)"
 msgstr ""
 
-#: src/admin.php:4187
+#: src/admin.php:4193
 msgid "After pressing this button, you will be given the option to choose which components you wish to restore"
 msgstr ""
 
-#: src/admin.php:4266
+#: src/admin.php:4272
 msgid "After pressing this button, you can select where to upload your backup from a list of your currently saved remote storage locations"
 msgstr ""
 
-#: src/admin.php:4286
+#: src/admin.php:4292
 msgid "Delete this backup set"
 msgstr ""
 
-#: src/admin.php:4489
+#: src/admin.php:4495
 msgid "This backup does not exist in the backup history - restoration aborted. Timestamp:"
 msgstr ""
 
-#: src/admin.php:4490
+#: src/admin.php:4496
 msgid "Backup does not exist in the backup history"
 msgstr ""
 
-#: src/admin.php:4513
+#: src/admin.php:4519
 msgid "ABORT: Could not find the information on which entities to restore."
 msgstr ""
 
-#: src/admin.php:4513
+#: src/admin.php:4519
 msgid "If making a request for support, please include this information:"
 msgstr ""
 
-#: src/admin.php:4679
+#: src/admin.php:4685
 msgid "Backup won't be sent to any remote storage - none has been saved in the %s"
 msgstr ""
 
-#: src/admin.php:4679
+#: src/admin.php:4685
 msgid "settings"
 msgstr ""
 
-#: src/admin.php:4679
+#: src/admin.php:4685
 msgid "Not got any remote storage?"
 msgstr ""
 
-#: src/admin.php:4679
+#: src/admin.php:4685
 msgid "Check out UpdraftPlus Vault."
 msgstr ""
 
-#: src/admin.php:4681
+#: src/admin.php:4687
 msgid "Send this backup to remote storage"
 msgstr ""
 
-#: src/admin.php:4771
+#: src/admin.php:4777
 msgid "UpdraftPlus seems to have been updated to version (%s), which is different to the version running when this settings page was loaded. Please reload the settings page before trying to save settings."
 msgstr ""
 
-#: src/admin.php:4778, src/templates/wp-admin/settings/take-backup.php:51
+#: src/admin.php:4784, src/templates/wp-admin/settings/take-backup.php:51
 msgid "This button is disabled because your backup directory is not writable (see the settings)."
 msgstr ""
 
-#: src/admin.php:4807
+#: src/admin.php:4813
 msgid "Your settings have been saved."
 msgstr ""
 
-#: src/admin.php:4812
+#: src/admin.php:4818
 msgid "Your settings failed to save. Please refresh the settings page and try again"
 msgstr ""
 
-#: src/admin.php:4860
+#: src/admin.php:4866
 msgid "authentication error"
 msgstr ""
 
-#: src/admin.php:4864
+#: src/admin.php:4870
 msgid "Remote storage method and instance id are required for authentication."
 msgstr ""
 
-#: src/admin.php:4931
+#: src/admin.php:4937
 msgid "Your settings have been wiped."
 msgstr ""
 
-#: src/admin.php:5032
+#: src/admin.php:5038
 msgid "Known backups (raw)"
 msgstr ""
 
-#: src/admin.php:5067
+#: src/admin.php:5073
 msgid "Options (raw)"
 msgstr ""
 
-#: src/admin.php:5070
+#: src/admin.php:5076
 msgid "Value"
 msgstr ""
 
-#: src/admin.php:5222
+#: src/admin.php:5228
 msgid "The file %s has a \"byte order mark\" (BOM) at its beginning."
 msgid_plural "The files %s have a \"byte order mark\" (BOM) at their beginning."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/admin.php:5222, src/methods/openstack2.php:144, src/restorer.php:178, src/restorer.php:180, src/templates/wp-admin/settings/downloading-and-restoring.php:27, src/templates/wp-admin/settings/tab-backups.php:27, src/templates/wp-admin/settings/updraftcentral-connect.php:14
+#: src/admin.php:5228, src/methods/openstack2.php:144, src/restorer.php:183, src/restorer.php:185, src/templates/wp-admin/settings/downloading-and-restoring.php:27, src/templates/wp-admin/settings/tab-backups.php:27, src/templates/wp-admin/settings/updraftcentral-connect.php:14
 msgid "Follow this link for more information"
 msgstr ""
 
-#: src/admin.php:5244, src/admin.php:5248, src/templates/wp-admin/advanced/site-info.php:45, src/templates/wp-admin/advanced/site-info.php:51, src/templates/wp-admin/advanced/site-info.php:58, src/templates/wp-admin/advanced/site-info.php:59
+#: src/admin.php:5250, src/admin.php:5254, src/templates/wp-admin/advanced/site-info.php:45, src/templates/wp-admin/advanced/site-info.php:51, src/templates/wp-admin/advanced/site-info.php:58, src/templates/wp-admin/advanced/site-info.php:59
 msgid "%s version:"
 msgstr ""
 
-#: src/admin.php:5252
+#: src/admin.php:5258
 msgid "Clone region:"
 msgstr ""
 
-#: src/admin.php:5257
+#: src/admin.php:5263
 msgid "Forbid non-administrators to login to WordPress on your clone"
 msgstr ""
 
-#: src/admin.php:5280
+#: src/admin.php:5286
 msgid "(current version)"
 msgstr ""
 
-#: src/admin.php:5300
+#: src/admin.php:5306
 msgid "Your clone has started and will be available at the following URLs once it is ready."
 msgstr ""
 
-#: src/admin.php:5301
+#: src/admin.php:5307
 msgid "Front page:"
 msgstr ""
 
-#: src/admin.php:5302
+#: src/admin.php:5308
 msgid "Dashboard:"
 msgstr ""
 
-#: src/admin.php:5304, src/admin.php:5307
+#: src/admin.php:5310, src/admin.php:5313
 msgid "You can find your temporary clone information in your updraftplus.com account here."
 msgstr ""
 
-#: src/admin.php:5306
+#: src/admin.php:5312
 msgid "Your clone has started, network information is not yet available but will be displayed here and at your updraftplus.com account once it is ready."
 msgstr ""
 
-#: src/backup.php:211
+#: src/backup.php:220
 msgid "%s - could not back this entity up; the corresponding directory does not exist (%s)"
 msgstr ""
 
-#: src/backup.php:283
+#: src/backup.php:292
 msgid "Could not create %s zip. Consult the log file for more information."
 msgstr ""
 
-#: src/backup.php:477, src/backup.php:2164, src/class-updraftplus.php:2125, src/class-updraftplus.php:2192, src/includes/class-storage-methods-interface.php:364, src/restorer.php:480
+#: src/backup.php:486, src/backup.php:2173, src/class-updraftplus.php:2125, src/class-updraftplus.php:2192, src/includes/class-storage-methods-interface.php:364, src/restorer.php:485
 msgid "A PHP exception (%s) has occurred: %s"
 msgstr ""
 
-#: src/backup.php:483, src/backup.php:2173, src/class-updraftplus.php:2134, src/class-updraftplus.php:2199, src/includes/class-storage-methods-interface.php:373, src/restorer.php:494
+#: src/backup.php:492, src/backup.php:2182, src/class-updraftplus.php:2134, src/class-updraftplus.php:2199, src/includes/class-storage-methods-interface.php:373, src/restorer.php:499
 msgid "A PHP fatal error (%s) has occurred: %s"
 msgstr ""
 
-#: src/backup.php:1070
+#: src/backup.php:1079
 msgid "Full backup"
 msgstr ""
 
-#: src/backup.php:1070
+#: src/backup.php:1079
 msgid "Incremental"
 msgstr ""
 
-#: src/backup.php:1075, src/class-updraftplus.php:2996
+#: src/backup.php:1084, src/class-updraftplus.php:2996
 msgid "The backup was aborted by the user"
 msgstr ""
 
-#: src/backup.php:1079
+#: src/backup.php:1088
 msgid "Files (database backup has not completed)"
 msgstr ""
 
-#: src/backup.php:1079
+#: src/backup.php:1088
 msgid "Files only (database was not part of this particular schedule)"
 msgstr ""
 
-#: src/backup.php:1082
+#: src/backup.php:1091
 msgid "Database (files backup has not completed)"
 msgstr ""
 
-#: src/backup.php:1082
+#: src/backup.php:1091
 msgid "Database only (files were not part of this particular schedule)"
 msgstr ""
 
-#: src/backup.php:1085
+#: src/backup.php:1094
 msgid "Unknown/unexpected error - please raise a support request"
 msgstr ""
 
-#: src/backup.php:1094
+#: src/backup.php:1103
 msgid "Errors encountered:"
 msgstr ""
 
-#: src/backup.php:1112
+#: src/backup.php:1121
 msgid "Warnings encountered:"
 msgstr ""
 
-#: src/backup.php:1127
+#: src/backup.php:1136
 msgid "Backed up: %s"
 msgstr ""
 
-#: src/backup.php:1136
+#: src/backup.php:1145
 msgid "Email reports created by UpdraftPlus (free edition) bring you the latest UpdraftPlus.com news"
 msgstr ""
 
-#: src/backup.php:1136
+#: src/backup.php:1145
 msgid "read more at %s"
 msgstr ""
 
-#: src/backup.php:1169
+#: src/backup.php:1178
 msgid "WordPress backup is complete"
 msgstr ""
 
-#: src/backup.php:1170
+#: src/backup.php:1179
 msgid "Backup contains:"
 msgstr ""
 
-#: src/backup.php:1636
+#: src/backup.php:1645
 msgid "database connection attempt failed."
 msgstr ""
 
-#: src/backup.php:1682
+#: src/backup.php:1691
 msgid "please wait for the rescheduled attempt"
 msgstr ""
 
-#: src/backup.php:1684
+#: src/backup.php:1693
 msgid "No database tables found"
 msgstr ""
 
-#: src/backup.php:1695
+#: src/backup.php:1704
 msgid "The backup directory is not writable (or disk space is full) - the database backup is expected to shortly fail."
 msgstr ""
 
-#: src/backup.php:1773
+#: src/backup.php:1782
 msgid "Table %s has very many rows (%s) - we hope your web hosting company gives you enough resources to dump out that table in the backup"
 msgstr ""
 
-#: src/backup.php:1773
+#: src/backup.php:1782
 msgid "If not, you will need to either remove data from this table, or contact your hosting company to request more resources."
 msgstr ""
 
-#: src/backup.php:1823, src/backup.php:1825
+#: src/backup.php:1832, src/backup.php:1834
 msgid "The database backup appears to have failed"
 msgstr ""
 
-#: src/backup.php:1823
+#: src/backup.php:1832
 msgid "no options or sitemeta table was found"
 msgstr ""
 
-#: src/backup.php:1825
+#: src/backup.php:1834
 msgid "the options table was not found"
 msgstr ""
 
-#: src/backup.php:1873
+#: src/backup.php:1882
 msgid "Failed to open database file for reading:"
 msgstr ""
 
-#: src/backup.php:1892
+#: src/backup.php:1901
 msgid "An error occurred whilst closing the final database file"
 msgstr ""
 
-#: src/backup.php:2205
+#: src/backup.php:2214
 msgid "Could not open the backup file for writing"
 msgstr ""
 
-#: src/backup.php:2331
+#: src/backup.php:2340
 msgid "Infinite recursion: consult your log for more information"
 msgstr ""
 
-#: src/backup.php:2364
+#: src/backup.php:2373
 msgid "%s: unreadable file - could not be backed up (check the file permissions and ownership)"
 msgstr ""
 
-#: src/backup.php:2386
+#: src/backup.php:2395
 msgid "Failed to open directory (check the file permissions and ownership): %s"
 msgstr ""
 
-#: src/backup.php:2451
+#: src/backup.php:2460
 msgid "%s: unreadable file - could not be backed up"
 msgstr ""
 
-#: src/backup.php:3131, src/backup.php:3414
+#: src/backup.php:3140, src/backup.php:3423
 msgid "Failed to open the zip file (%s) - %s"
 msgstr ""
 
-#: src/backup.php:3157
+#: src/backup.php:3166
 msgid "A very large file was encountered: %s (size: %s Mb)"
 msgstr ""
 
-#: src/backup.php:3458, src/class-updraftplus.php:861
+#: src/backup.php:3467, src/class-updraftplus.php:861
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
 msgstr ""
 
-#: src/backup.php:3465
+#: src/backup.php:3474
 msgid "The zip engine returned the message: %s."
 msgstr ""
 
-#: src/backup.php:3467
+#: src/backup.php:3476
 msgid "A zip error occurred"
 msgstr ""
 
-#: src/backup.php:3469
+#: src/backup.php:3478
 msgid "your web hosting account appears to be full; please see: %s"
 msgstr ""
 
-#: src/backup.php:3471
+#: src/backup.php:3480
 msgid "check your log for more details."
 msgstr ""
 
@@ -3996,7 +4004,7 @@ msgstr ""
 msgid "Could not save backup history because we have no backup array. Backup probably failed."
 msgstr ""
 
-#: src/class-updraftplus.php:3868, src/includes/class-updraftplus-encryption.php:336, src/restorer.php:876
+#: src/class-updraftplus.php:3868, src/includes/class-updraftplus-encryption.php:336, src/restorer.php:929
 msgid "Decryption failed. The database file is encrypted, but you have no encryption key entered."
 msgstr ""
 
@@ -4004,7 +4012,7 @@ msgstr ""
 msgid "Decryption failed. The database file is encrypted."
 msgstr ""
 
-#: src/class-updraftplus.php:3880, src/includes/class-updraftplus-encryption.php:354, src/restorer.php:889
+#: src/class-updraftplus.php:3880, src/includes/class-updraftplus-encryption.php:354, src/restorer.php:942
 msgid "Decryption failed. The most likely cause is that you used the wrong key."
 msgstr ""
 
@@ -4048,11 +4056,11 @@ msgstr ""
 msgid "You can search and replace your database (for migrating a website to a new location/URL) with the Migrator add-on - follow this link for more information"
 msgstr ""
 
-#: src/class-updraftplus.php:3990, src/restorer.php:1554
+#: src/class-updraftplus.php:3990, src/restorer.php:1607
 msgid "You are using the %s webserver, but do not seem to have the %s module loaded."
 msgstr ""
 
-#: src/class-updraftplus.php:3990, src/restorer.php:1554
+#: src/class-updraftplus.php:3990, src/restorer.php:1607
 msgid "You should enable %s to make any pretty permalinks (e.g. %s) work"
 msgstr ""
 
@@ -4080,7 +4088,7 @@ msgstr ""
 msgid "Any support requests to do with %s should be raised with your web hosting company."
 msgstr ""
 
-#: src/class-updraftplus.php:4024, src/restorer.php:2355, src/restorer.php:2444, src/restorer.php:2470
+#: src/class-updraftplus.php:4024, src/restorer.php:2408, src/restorer.php:2497, src/restorer.php:2523
 msgid "Old table prefix:"
 msgstr ""
 
@@ -4088,7 +4096,7 @@ msgstr ""
 msgid "Backup label:"
 msgstr ""
 
-#: src/class-updraftplus.php:4035, src/class-updraftplus.php:4038, src/restorer.php:638
+#: src/class-updraftplus.php:4035, src/class-updraftplus.php:4038, src/restorer.php:643
 msgid "You are running on WordPress multisite - but your backup is not of a multisite site."
 msgstr ""
 
@@ -4100,7 +4108,7 @@ msgstr ""
 msgid "Please read this link for important information on this process."
 msgstr ""
 
-#: src/class-updraftplus.php:4042, src/restorer.php:2367
+#: src/class-updraftplus.php:4042, src/restorer.php:2420
 msgid "To import an ordinary WordPress site into a multisite installation requires %s."
 msgstr ""
 
@@ -4112,7 +4120,7 @@ msgstr ""
 msgid "If you want to restore a multisite backup, you should first set up your WordPress installation as a multisite."
 msgstr ""
 
-#: src/class-updraftplus.php:4053, src/restorer.php:2373
+#: src/class-updraftplus.php:4053, src/restorer.php:2426
 msgid "Site information:"
 msgstr ""
 
@@ -4228,11 +4236,11 @@ msgstr ""
 msgid "Your web server's PHP installation has these functions disabled: %s."
 msgstr ""
 
-#: src/includes/class-filesystem-functions.php:294, src/methods/ftp.php:330, src/restorer.php:2146
+#: src/includes/class-filesystem-functions.php:294, src/methods/ftp.php:330, src/restorer.php:2199
 msgid "Your hosting company must enable these functions before %s can work."
 msgstr ""
 
-#: src/includes/class-filesystem-functions.php:294, src/restorer.php:2146
+#: src/includes/class-filesystem-functions.php:294, src/restorer.php:2199
 msgid "restoration"
 msgstr ""
 
@@ -4248,7 +4256,7 @@ msgstr ""
 msgid "The attempt to undo the double-compression succeeded."
 msgstr ""
 
-#: src/includes/class-filesystem-functions.php:538
+#: src/includes/class-filesystem-functions.php:543
 msgid "Unzip progress: %d out of %d files"
 msgstr ""
 
@@ -4492,7 +4500,7 @@ msgstr ""
 msgid "Allow only administrators to log in"
 msgstr ""
 
-#: src/includes/updraftplus-login.php:58, src/methods/updraftvault.php:687, src/udaddons/updraftplus-addons.php:971
+#: src/includes/updraftplus-login.php:58, src/methods/updraftvault.php:687, src/udaddons/updraftplus-addons.php:968
 msgid "UpdraftPlus.Com returned a response which we could not understand (data: %s)"
 msgstr ""
 
@@ -4983,15 +4991,15 @@ msgstr ""
 msgid "%s end-point"
 msgstr ""
 
-#: src/methods/dropbox.php:173, src/methods/dropbox.php:190
+#: src/methods/dropbox.php:172, src/methods/dropbox.php:189
 msgid "You do not appear to be authenticated with Dropbox"
 msgstr ""
 
-#: src/methods/dropbox.php:195
+#: src/methods/dropbox.php:194
 msgid "error: %s (see log file for more)"
 msgstr ""
 
-#: src/methods/dropbox.php:284
+#: src/methods/dropbox.php:283
 msgid "error: failed to upload file to %s (see log file for more)"
 msgstr ""
 
@@ -4999,67 +5007,67 @@ msgstr ""
 msgid "did not return the expected response - check your log file for more details"
 msgstr ""
 
-#: src/methods/dropbox.php:305, src/methods/dropbox.php:321
+#: src/methods/dropbox.php:305, src/methods/dropbox.php:320
 msgid "failed to upload file to %s (see log file for more)"
 msgstr ""
 
-#: src/methods/dropbox.php:377
+#: src/methods/dropbox.php:376
 msgid "%s returned an unexpected HTTP response: %s"
 msgstr ""
 
-#: src/methods/dropbox.php:440
+#: src/methods/dropbox.php:439
 msgid "You do not appear to be authenticated with %s (whilst deleting)"
 msgstr ""
 
-#: src/methods/dropbox.php:448
+#: src/methods/dropbox.php:447
 msgid "Failed to access %s when deleting (see log file for more)"
 msgstr ""
 
-#: src/methods/dropbox.php:481
+#: src/methods/dropbox.php:480
 msgid "You do not appear to be authenticated with %s"
 msgstr ""
 
-#: src/methods/dropbox.php:603, src/methods/dropbox.php:605
+#: src/methods/dropbox.php:602, src/methods/dropbox.php:604
 msgid "Need to use sub-folders?"
 msgstr ""
 
-#: src/methods/dropbox.php:603, src/methods/dropbox.php:605
+#: src/methods/dropbox.php:602, src/methods/dropbox.php:604
 msgid "Backups are saved in"
 msgstr ""
 
-#: src/methods/dropbox.php:603, src/methods/dropbox.php:605
+#: src/methods/dropbox.php:602, src/methods/dropbox.php:604
 msgid "If you backup several sites into the same Dropbox and want to organize with sub-folders, then "
 msgstr ""
 
-#: src/methods/dropbox.php:603, src/methods/dropbox.php:605
+#: src/methods/dropbox.php:602, src/methods/dropbox.php:604
 msgid "there's an add-on for that."
 msgstr ""
 
-#: src/methods/dropbox.php:611
+#: src/methods/dropbox.php:610
 msgid "Dropbox"
 msgstr ""
 
-#: src/methods/dropbox.php:636
+#: src/methods/dropbox.php:635
 msgid "You must add the following as the authorised redirect URI in your Dropbox console (under \"API Settings\") when asked"
 msgstr ""
 
-#: src/methods/dropbox.php:753, src/methods/dropbox.php:775
+#: src/methods/dropbox.php:752, src/methods/dropbox.php:774
 msgid "%s authentication"
 msgstr ""
 
-#: src/methods/dropbox.php:790
+#: src/methods/dropbox.php:789
 msgid "%s de-authentication"
 msgstr ""
 
-#: src/methods/dropbox.php:806, src/methods/dropbox.php:808
+#: src/methods/dropbox.php:805, src/methods/dropbox.php:807
 msgid "Success:"
 msgstr ""
 
-#: src/methods/dropbox.php:806, src/methods/dropbox.php:808
+#: src/methods/dropbox.php:805, src/methods/dropbox.php:807
 msgid "you have authenticated your %s account"
 msgstr ""
 
-#: src/methods/dropbox.php:811, src/methods/dropbox.php:833
+#: src/methods/dropbox.php:810, src/methods/dropbox.php:832
 msgid "though part of the returned information was not as expected - your mileage may vary"
 msgstr ""
 
@@ -5557,11 +5565,11 @@ msgstr ""
 msgid "You do not currently have any UpdraftPlus Vault quota"
 msgstr ""
 
-#: src/methods/updraftvault.php:714, src/methods/updraftvault.php:729, src/udaddons/updraftplus-addons.php:1012
+#: src/methods/updraftvault.php:714, src/methods/updraftvault.php:729, src/udaddons/updraftplus-addons.php:1009
 msgid "UpdraftPlus.Com returned a response, but we could not understand it"
 msgstr ""
 
-#: src/methods/updraftvault.php:720, src/udaddons/updraftplus-addons.php:1001
+#: src/methods/updraftvault.php:720, src/udaddons/updraftplus-addons.php:998
 msgid "Your email address was valid, but your password was not recognised by UpdraftPlus.Com."
 msgstr ""
 
@@ -5569,11 +5577,11 @@ msgstr ""
 msgid "If you have forgotten your password, then go here to change your password on updraftplus.com."
 msgstr ""
 
-#: src/methods/updraftvault.php:723, src/udaddons/updraftplus-addons.php:1005
+#: src/methods/updraftvault.php:723, src/udaddons/updraftplus-addons.php:1002
 msgid "You entered an email address that was not recognised by UpdraftPlus.Com"
 msgstr ""
 
-#: src/methods/updraftvault.php:726, src/udaddons/updraftplus-addons.php:1008
+#: src/methods/updraftvault.php:726, src/udaddons/updraftplus-addons.php:1005
 msgid "Your email address and password were not recognised by UpdraftPlus.Com"
 msgstr ""
 
@@ -5597,290 +5605,290 @@ msgstr ""
 msgid "(This applies to all WordPress backup plugins unless they have been explicitly coded for multisite compatibility)."
 msgstr ""
 
-#: src/restorer.php:169
+#: src/restorer.php:174
 msgid "Your WordPress install has old directories from its state before you restored/migrated (technical information: these are suffixed with -old)."
 msgstr ""
 
-#: src/restorer.php:297
+#: src/restorer.php:301
 msgid "Skipping restoration of WordPress core when importing a single site into a multisite installation. If you had anything necessary in your WordPress directory then you will need to re-add it manually from the zip file."
 msgstr ""
 
-#: src/restorer.php:308
+#: src/restorer.php:312
 msgid "Looking for %s archive: file name: %s"
 msgstr ""
 
-#: src/restorer.php:311
+#: src/restorer.php:315
 msgid "Skipping: this archive was already restored."
 msgstr ""
 
-#: src/restorer.php:323
+#: src/restorer.php:327
 msgid "Archive is expected to be size:"
 msgstr ""
 
-#: src/restorer.php:328
+#: src/restorer.php:332
 msgid "file is size:"
 msgstr ""
 
-#: src/restorer.php:331
+#: src/restorer.php:335
 msgid "The backup records do not contain information about the proper size of this file."
 msgstr ""
 
-#: src/restorer.php:334, src/restorer.php:335
+#: src/restorer.php:338, src/restorer.php:339
 msgid "Could not find one of the files for restoration"
 msgstr ""
 
-#: src/restorer.php:417
+#: src/restorer.php:422
 msgid "Final checks"
 msgstr ""
 
-#: src/restorer.php:506
+#: src/restorer.php:511
 msgid "Error message"
 msgstr ""
 
-#: src/restorer.php:623
+#: src/restorer.php:628
 msgid "UpdraftPlus is not able to directly restore this kind of entity. It must be restored manually."
 msgstr ""
 
-#: src/restorer.php:624
+#: src/restorer.php:629
 msgid "Backup file not available."
 msgstr ""
 
-#: src/restorer.php:625
+#: src/restorer.php:630
 msgid "Copying this entity failed."
 msgstr ""
 
-#: src/restorer.php:626
+#: src/restorer.php:631
 msgid "Unpacking backup..."
 msgstr ""
 
-#: src/restorer.php:627
+#: src/restorer.php:632
 msgid "Decrypting database (can take a while)..."
 msgstr ""
 
-#: src/restorer.php:628
+#: src/restorer.php:633
 msgid "Database successfully decrypted."
 msgstr ""
 
-#: src/restorer.php:629
+#: src/restorer.php:634
 msgid "Moving old data out of the way..."
 msgstr ""
 
-#: src/restorer.php:630
+#: src/restorer.php:635
 msgid "Moving unpacked backup into place..."
 msgstr ""
 
-#: src/restorer.php:631
+#: src/restorer.php:636
 msgid "Restoring the database (on a large site this can take a long time - if it times out (which can happen if your web hosting company has configured your hosting to limit resources) then you should use a different method, such as phpMyAdmin)..."
 msgstr ""
 
-#: src/restorer.php:632
+#: src/restorer.php:637
 msgid "Cleaning up rubbish..."
 msgstr ""
 
-#: src/restorer.php:633
+#: src/restorer.php:638
 msgid "Could not move old files out of the way."
 msgstr ""
 
-#: src/restorer.php:633
+#: src/restorer.php:638
 msgid "You should check the file ownerships and permissions in your WordPress installation"
 msgstr ""
 
-#: src/restorer.php:634
+#: src/restorer.php:639
 msgid "Could not delete old directory."
 msgstr ""
 
-#: src/restorer.php:635
+#: src/restorer.php:640
 msgid "Could not move new files into place. Check your wp-content/upgrade folder."
 msgstr ""
 
-#: src/restorer.php:636
+#: src/restorer.php:641
 msgid "Could not move the files into place. Check your file permissions."
 msgstr ""
 
-#: src/restorer.php:637
+#: src/restorer.php:642
 msgid "Failed to delete working directory after restoring."
 msgstr ""
 
-#: src/restorer.php:639
+#: src/restorer.php:644
 msgid "Failed to unpack the archive"
 msgstr ""
 
-#: src/restorer.php:640
+#: src/restorer.php:645
 msgid "Failed to read the manifest file from backup."
 msgstr ""
 
-#: src/restorer.php:641
+#: src/restorer.php:646
 msgid "Failed to find a manifest file in the backup."
 msgstr ""
 
-#: src/restorer.php:642
+#: src/restorer.php:647
 msgid "Failed to read from the working directory."
 msgstr ""
 
-#: src/restorer.php:868
+#: src/restorer.php:921
 msgid "Failed to create a temporary directory"
 msgstr ""
 
-#: src/restorer.php:884
+#: src/restorer.php:937
 msgid "Failed to write out the decrypted database to the filesystem"
 msgstr ""
 
-#: src/restorer.php:961
+#: src/restorer.php:1014
 msgid "The directory does not exist"
 msgstr ""
 
-#: src/restorer.php:1001
+#: src/restorer.php:1054
 msgid "wp-config.php from backup: will restore as wp-config-backup.php"
 msgstr ""
 
-#: src/restorer.php:1008
+#: src/restorer.php:1061
 msgid "wp-config.php from backup: restoring (as per user's request)"
 msgstr ""
 
-#: src/restorer.php:1191, src/restorer.php:1199
+#: src/restorer.php:1244, src/restorer.php:1252
 msgid "UpdraftPlus needed to create a %s in your content directory, but failed - please check your file permissions and enable the access (%s)"
 msgstr ""
 
-#: src/restorer.php:1199
+#: src/restorer.php:1252
 msgid "file"
 msgstr ""
 
-#: src/restorer.php:1214
+#: src/restorer.php:1267
 msgid "Existing unremoved folders from a previous restore exist (please use the \"Delete Old Directories\" button to delete them before trying again): %s"
 msgstr ""
 
-#: src/restorer.php:1221
+#: src/restorer.php:1274
 msgid "This version of UpdraftPlus does not know how to handle this type of foreign backup"
 msgstr ""
 
-#: src/restorer.php:1324
+#: src/restorer.php:1377
 msgid "Deferring..."
 msgstr ""
 
-#: src/restorer.php:1367, src/restorer.php:1415
+#: src/restorer.php:1420, src/restorer.php:1468
 msgid "The WordPress content folder (wp-content) was not found in this zip file."
 msgstr ""
 
-#: src/restorer.php:1508
+#: src/restorer.php:1561
 msgid "Files found:"
 msgstr ""
 
-#: src/restorer.php:2035
+#: src/restorer.php:2088
 msgid "Please supply the requested information, and then continue."
 msgstr ""
 
-#: src/restorer.php:2108
+#: src/restorer.php:2161
 msgid "Warning: PHP safe_mode is active on your server. Timeouts are much more likely. If these happen, then you will need to manually restore the file via phpMyAdmin or another method."
 msgstr ""
 
-#: src/restorer.php:2131
+#: src/restorer.php:2184
 msgid "Failed to find database file"
 msgstr ""
 
-#: src/restorer.php:2152
+#: src/restorer.php:2205
 msgid "Failed to open database file"
 msgstr ""
 
-#: src/restorer.php:2232, src/restorer.php:2274
+#: src/restorer.php:2285, src/restorer.php:2327
 msgid "Your database user does not have permission to drop tables"
 msgstr ""
 
-#: src/restorer.php:2235
+#: src/restorer.php:2288
 msgid "Your database user does not have permission to create tables. We will attempt to restore by simply emptying the tables; this should work as long as a) you are restoring from a WordPress version with the same database structure, and b) Your imported database does not contain any tables which are not already present on the importing site."
 msgstr ""
 
-#: src/restorer.php:2279
+#: src/restorer.php:2332
 msgid "Your database user does not have permission to drop tables. We will attempt to restore by simply emptying the tables; this should work as long as you are restoring from a WordPress version with the same database structure (%s)"
 msgstr ""
 
-#: src/restorer.php:2325
+#: src/restorer.php:2378
 msgid "Backup of: %s"
 msgstr ""
 
-#: src/restorer.php:2332
+#: src/restorer.php:2385
 msgid "Backup created by:"
 msgstr ""
 
-#: src/restorer.php:2337
+#: src/restorer.php:2390
 msgid "Site home:"
 msgstr ""
 
-#: src/restorer.php:2343
+#: src/restorer.php:2396
 msgid "Content URL:"
 msgstr ""
 
-#: src/restorer.php:2348
+#: src/restorer.php:2401
 msgid "Uploads URL:"
 msgstr ""
 
-#: src/restorer.php:2359
+#: src/restorer.php:2412
 msgid "Skipped tables:"
 msgstr ""
 
-#: src/restorer.php:2399
+#: src/restorer.php:2452
 msgid "Split line to avoid exceeding maximum packet size"
 msgstr ""
 
-#: src/restorer.php:2424, src/restorer.php:2893, src/restorer.php:2934, src/restorer.php:2947
+#: src/restorer.php:2477, src/restorer.php:2946, src/restorer.php:2987, src/restorer.php:3000
 msgid "An error occurred on the first %s command - aborting run"
 msgstr ""
 
-#: src/restorer.php:2525
+#: src/restorer.php:2578
 msgid "Requested table engine (%s) is not present - changing to MyISAM."
 msgstr ""
 
-#: src/restorer.php:2538
+#: src/restorer.php:2591
 msgid "Requested table character set (%s) is not present - changing to %s."
 msgstr ""
 
-#: src/restorer.php:2588
+#: src/restorer.php:2641
 msgid "Requested table collation (%1$s) is not present - changing to %2$s."
 msgid_plural "Requested table collations (%1$s) are not present - changing to %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/restorer.php:2590
+#: src/restorer.php:2643
 msgid "Processing table (%s)"
 msgstr ""
 
-#: src/restorer.php:2594
+#: src/restorer.php:2647
 msgid "will restore as:"
 msgstr ""
 
-#: src/restorer.php:2633
+#: src/restorer.php:2686
 msgid "Found SET NAMES %s, but changing to %s as suggested by WPDB::determine_charset()."
 msgstr ""
 
-#: src/restorer.php:2639
+#: src/restorer.php:2692
 msgid "Requested character set (%s) is not present - changing to %s."
 msgstr ""
 
-#: src/restorer.php:2787
+#: src/restorer.php:2840
 msgid "An SQL line that is larger than the maximum packet size and cannot be split was found; this line will not be processed, but will be dropped: %s"
 msgstr ""
 
-#: src/restorer.php:2924
+#: src/restorer.php:2977
 msgctxt "The user is being told the number of times an error has happened, e.g. An error (27) occurred"
 msgid "An error (%s) occurred:"
 msgstr ""
 
-#: src/restorer.php:2945
+#: src/restorer.php:2998
 msgid "This problem is caused by trying to restore a database on a very old MySQL version that is incompatible with the source database."
 msgstr ""
 
-#: src/restorer.php:2945
+#: src/restorer.php:2998
 msgid "This database needs to be deployed on MySQL version %s or later."
 msgstr ""
 
-#: src/restorer.php:2947
+#: src/restorer.php:3000
 msgid "To use this backup, your database server needs to support the %s character set."
 msgstr ""
 
-#: src/restorer.php:2952
+#: src/restorer.php:3005
 msgid "Too many database errors have occurred - aborting"
 msgstr ""
 
-#: src/restorer.php:3072, src/restorer.php:3147
+#: src/restorer.php:3125, src/restorer.php:3200
 msgid "Table prefix has changed: changing %s table field(s) accordingly:"
 msgstr ""
 
@@ -7265,19 +7273,19 @@ msgstr ""
 msgid "UpdraftPlus.Com responded, but we did not understand the response"
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:969
+#: src/udaddons/updraftplus-addons.php:966
 msgid "No response data was received. This usually indicates a network connectivity issue (e.g. an outgoing firewall or overloaded network) between this site and UpdraftPlus.com."
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1001
+#: src/udaddons/updraftplus-addons.php:998
 msgid "Go here to re-enter your password."
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1002
+#: src/udaddons/updraftplus-addons.php:999
 msgid "If you have forgotten your password "
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1002
+#: src/udaddons/updraftplus-addons.php:999
 msgid "go here to change your password on updraftplus.com."
 msgstr ""
 

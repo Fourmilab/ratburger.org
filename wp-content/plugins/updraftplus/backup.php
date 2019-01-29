@@ -55,7 +55,7 @@ class UpdraftPlus_Backup {
 
 	public $updraft_dir;
 
-	private $blog_name;
+	private $site_name;
 
 	private $wpdb_obj;
 
@@ -91,19 +91,7 @@ class UpdraftPlus_Backup {
 
 		global $updraftplus;
 
-		// Get the blog name and rip out known-problematic characters. Remember that we may need to be able to upload this to any FTP server or cloud storage, where filename support may be unknown
-		$blog_name = str_replace('__', '_', preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', substr(get_bloginfo(), 0, 32))));
-		if (!$blog_name || preg_match('#^_+$#', $blog_name)) {
-			// Try again...
-			$parsed_url = parse_url(home_url(), PHP_URL_HOST);
-			$parsed_subdir = untrailingslashit(parse_url(home_url(), PHP_URL_PATH));
-			if ($parsed_subdir && '/' != $parsed_subdir) $parsed_url .= str_replace(array('/', '\\'), '_', $parsed_subdir);
-			$blog_name = str_replace('__', '_', preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', substr($parsed_url, 0, 32))));
-			if (!$blog_name || preg_match('#^_+$#', $blog_name)) $blog_name = 'WordPress_Backup';
-		}
-
-		// Allow an over-ride. Careful about introducing characters not supported by your filesystem or cloud storage.
-		$this->blog_name = apply_filters('updraftplus_blog_name', $blog_name);
+		$this->site_name = $this->get_site_name();
 
 		// Decide which zip engine to begin with
 		$this->debug = UpdraftPlus_Options::get_updraft_option('updraft_debug_mode');
@@ -160,6 +148,27 @@ class UpdraftPlus_Backup {
 
 	}
 
+	/**
+	 * Get a site name suitable for use in the backup filename
+	 *
+	 * @return String
+	 */
+	private function get_site_name() {
+		// Get the blog name and rip out known-problematic characters. Remember that we may need to be able to upload this to any FTP server or cloud storage, where filename support may be unknown
+		$site_name = str_replace('__', '_', preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', substr(get_bloginfo(), 0, 32))));
+		if (!$site_name || preg_match('#^_+$#', $site_name)) {
+			// Try again...
+			$parsed_url = parse_url(home_url(), PHP_URL_HOST);
+			$parsed_subdir = untrailingslashit(parse_url(home_url(), PHP_URL_PATH));
+			if ($parsed_subdir && '/' != $parsed_subdir) $parsed_url .= str_replace(array('/', '\\'), '_', $parsed_subdir);
+			$site_name = str_replace('__', '_', preg_replace('/[^A-Za-z0-9_]/', '', str_replace(' ', '_', substr($parsed_url, 0, 32))));
+			if (!$site_name || preg_match('#^_+$#', $site_name)) $site_name = 'WordPress_Backup';
+		}
+
+		// Allow an over-ride. Careful about introducing characters not supported by your filesystem or cloud storage.
+		return apply_filters('updraftplus_blog_name', $site_name);
+	}
+	
 	/**
 	 * Called by the WP action updraft_report_remotestorage_extrainfo
 	 *
@@ -1303,7 +1312,7 @@ class UpdraftPlus_Backup {
 	 */
 	private function get_backup_file_basename_from_time($use_time) {
 		global $updraftplus;
-		return apply_filters('updraftplus_get_backup_file_basename_from_time', 'backup_'.get_date_from_gmt(gmdate('Y-m-d H:i:s', $use_time), 'Y-m-d-Hi').'_'.$this->blog_name.'_'.$updraftplus->file_nonce, $use_time, $this->blog_name);
+		return apply_filters('updraftplus_get_backup_file_basename_from_time', 'backup_'.get_date_from_gmt(gmdate('Y-m-d H:i:s', $use_time), 'Y-m-d-Hi').'_'.$this->site_name.'_'.$updraftplus->file_nonce, $use_time, $this->site_name);
 	}
 
 	private function find_existing_zips($dir, $match_nonce) {

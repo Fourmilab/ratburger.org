@@ -3151,7 +3151,13 @@ class UpdraftPlus_Admin {
 		return $this->include_template('wp-admin/advanced/advanced-tools.php', $return_instead_of_echo, $pass_through);
 	}
 
-	private function print_delete_old_dirs_form($include_blurb = true, $include_div = true) {
+	/**
+	 * Paint the HTML for the form for deleting old directories
+	 *
+	 * @param Boolean $include_blurb - whether to include explanatory text
+	 * @param Boolean $include_div	 - whether to wrap inside a div tag
+	 */
+	public function print_delete_old_dirs_form($include_blurb = true, $include_div = true) {
 		if ($include_blurb) {
 			if ($include_div) {
 				echo '<div id="updraft_delete_old_dirs_pagediv" class="updated delete-old-directories">';
@@ -4476,7 +4482,7 @@ ENDHERE;
 	 * Carry out the restore process within the WP admin dashboard, using data from $_POST
 	 *
 	 * @param  Array	  $timestamp         Identifying the backup to be restored
-	 * @param  Array|null $continuation_data For continuing a multi-stage restore; this is the saved jobdata for the job
+	 * @param  Array|null $continuation_data For continuing a multi-stage restore; this is the saved jobdata for the job; in this method the keys used are second_loop_entities, restore_options; but it is also passed on to Updraft_Restorer::perform_restore()
 	 * @return Boolean|WP_Error - a WP_Error indicates a terminal failure; false indicates not-yet complete (not necessarily terminal); true indicates complete.
 	 */
 	private function restore_backup($timestamp, $continuation_data = null) {
@@ -4532,9 +4538,9 @@ ENDHERE;
 		add_action('updraftplus_restoration_title', array($this, 'restoration_title'));
 		
 		// We use a single object for each entity, because we want to store information about the backup set
-		$updraftplus_restorer = new Updraft_Restorer(new Updraft_Restorer_Skin, $backup_set, false, $restore_options);
+		$updraftplus_restorer = new Updraft_Restorer(new Updraft_Restorer_Skin, $backup_set, false, $restore_options, $continuation_data);
 		
-		$restore_result = $updraftplus_restorer->perform_restore($entities_to_restore, $restore_options, $continuation_data);
+		$restore_result = $updraftplus_restorer->perform_restore($entities_to_restore, $restore_options);
 		
 		$updraftplus_restorer->post_restore_clean_up($restore_result);
 		

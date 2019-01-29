@@ -56,6 +56,8 @@ class Updraft_Restorer {
 	
 	private $import_table_prefix = null;
 	
+	private $continuation_data;
+	
 	// Constants for use with the move_backup_in method
 	// These can't be arbitrarily changed; there is legacy code doing bitwise operations and numerical comparisons, and possibly legacy code still using the values directly.
 	const MOVEIN_OVERWRITE_NO_BACKUP = 0;
@@ -72,16 +74,19 @@ class Updraft_Restorer {
 	/**
 	 * Constructor
 	 *
-	 * @param WP_Upgrader_Skin|Null	$skin			 - an upgrader skin
-	 * @param Array|Null			$backup_set		 - the backup set to restore
-	 * @param Boolean				$short_init		 - whether just to do a minimal initialisation
-	 * @param Array					$restore_options - options to guide the restoration
+	 * @param WP_Upgrader_Skin|Null	$skin			   - an upgrader skin
+	 * @param Array|Null			$backup_set		   - the backup set to restore
+	 * @param Boolean				$short_init		   - whether just to do a minimal initialisation
+	 * @param Array					$restore_options   - options to guide the restoration
+	 * @param Array|Null			$continuation_data - continuation data; the jobdata of the job thus far (but only a few properties are used - including second_loop_entities; $restore_options will have come from there too if relevant, but that is passed in here separately); the 'last_index_*' entries also indicate unzipping progress
 	 */
-	public function __construct($skin = null, $backup_set = null, $short_init = false, $restore_options = array()) {
+	public function __construct($skin = null, $backup_set = null, $short_init = false, $restore_options = array(), $continuation_data = null) {
 
 		global $wpdb, $updraftplus;
 		
 		$this->our_siteurl = untrailingslashit(site_url());
+		
+		$this->continuation_data = $continuation_data;
 
 		// Line up a wpdb-like object
 		if (!$this->use_wpdb()) {
@@ -259,19 +264,18 @@ class Updraft_Restorer {
 	}
 	
 	/**
-	 * Ensure that needed files are present, and return data for the next step (plus do some internal configuration)
+	 * Ensure that needed files are present locally, and return data for the next step (plus do some internal configuration)
 	 *
 	 * @param Array $entities_to_restore - as returned by self::get_entities_to_restore()
 	 * @param Array $backupable_entities - list of entities that can be backed u
-	 * @param Array $continuation_data	 - continuation data
 	 * @param Array $services			 - list of services that the backup can be found at
 	 *
 	 * @uses self::pre_restore_backup() (and some other internal properties)
 	 * @uses UpdraftPlus::log()
 	 *
-	 * @return Boolean|Array|WP_Error, or false or a WP_Error if there was an error
+	 * @return Boolean|Array|WP_Error - a sorted array (of entity types and files for each entity type) or false or a WP_Error if there was an error
 	 */
-	private function ensure_restore_files_present($entities_to_restore, $backupable_entities, $continuation_data, $services) {
+	private function ensure_restore_files_present($entities_to_restore, $backupable_entities, $services) {
 		
 		global $updraftplus;
 		
@@ -307,7 +311,7 @@ class Updraft_Restorer {
 				$fullpath = $updraft_dir.'/'.$file;
 				$updraftplus->log(sprintf(__("Looking for %s archive: file name: %s", 'updraftplus'), $type, $file), 'notice-restore');
 
-				if (is_array($continuation_data) && isset($continuation_data['second_loop_entities'][$type]) && !in_array($file, $continuation_data['second_loop_entities'][$type])) {
+				if (is_array($this->continuation_data) && isset($this->continuation_data['second_loop_entities'][$type]) && !in_array($file, $this->continuation_data['second_loop_entities'][$type])) {
 					$updraftplus->log(__('Skipping: this archive was already restored.', 'updraftplus'), 'notice-restore');
 					// Set the marker so that the existing directory isn't moved out of the way
 					$this->been_restored[$type] = true;
@@ -349,7 +353,7 @@ class Updraft_Restorer {
 
 			foreach ($types as $check_type) {
 				$info = isset($backupable_entities[$check_type]) ? $backupable_entities[$check_type] : array();
-				$val = $this->pre_restore_backup($files, $check_type, $info, $continuation_data);
+				$val = $this->pre_restore_backup($files, $check_type, $info);
 				if (is_wp_error($val)) {
 					$updraftplus->log_wp_error($val);
 					foreach ($val->get_error_messages() as $msg) {
@@ -385,9 +389,9 @@ class Updraft_Restorer {
 		uksort($second_loop, array('UpdraftPlus_Manipulation_Functions', 'sort_restoration_entities'));
 
 		// If continuing, then prune those already done
-		if (is_array($continuation_data)) {
+		if (is_array($this->continuation_data)) {
 			foreach ($second_loop as $type => $files) {
-				if (isset($continuation_data['second_loop_entities'][$type])) $second_loop[$type] = $continuation_data['second_loop_entities'][$type];
+				if (isset($this->continuation_data['second_loop_entities'][$type])) $second_loop[$type] = $this->continuation_data['second_loop_entities'][$type];
 			}
 		}
 		
@@ -397,15 +401,16 @@ class Updraft_Restorer {
 	/**
 	 * Perform the restoration. No code here (or called) should assume anything about the method used to call it (e.g. wp-admin or WP-CLI); it should be independent of how it is being called.
 	 *
-	 * @param Array		 $entities_to_restore - entities to restore
-	 * @param Array		 $restore_options	  - restoration options
-	 * @param Array|null $continuation_data	  - continuation data
+	 * The path through this class is perform_restore() -> restore_backup() -> unpack_package() -> unpack_package_(archive|database) and then (for standard UD archives) UpdraftPlus_Filesystem_Functions::unzip_file()
+	 *
+	 * @param Array $entities_to_restore - entities to restore
+	 * @param Array $restore_options	 - restoration options
 	 *
 	 * @uses the WordPress action updraftplus_restoration_title, allowing the title to be printed
 	 *
 	 * @return Boolean
 	 */
-	public function perform_restore($entities_to_restore, $restore_options, $continuation_data = null) {
+	public function perform_restore($entities_to_restore, $restore_options) {
 		
 		global $updraftplus;
 		
@@ -440,7 +445,7 @@ class Updraft_Restorer {
 		
 		// Get an ordered list of things to restore
 		// This requires the global $updraft_restorer to be set up
-		$second_loop = $this->ensure_restore_files_present($entities_to_download, $backupable_entities, $continuation_data, $services);
+		$second_loop = $this->ensure_restore_files_present($entities_to_download, $backupable_entities, $services);
 		
 		if (!is_array($second_loop)) return $second_loop;
 		
@@ -646,16 +651,21 @@ class Updraft_Restorer {
 	 * This function is copied from class WP_Upgrader (WP 3.8 - no significant changes since 3.2 at least); we only had to fork it because it hard-codes using the basename of the zip file as its unpack directory; which can be long; and then combining that with long pathnames in the zip being unpacked can overflow a 256-character path limit (yes, they apparently still exist - amazing!)
 	 * Subsequently, we have also added the ability to unpack tarballs
 	 *
-	 * @param  String		  $package        specify package
+	 * In the 'ordinary' case of unzipping a UD zip backup, this method basically does some preparation, and then calls UpdraftPlus_Filesystem_Functions::unzip_file() for the actual unzipping
+	 *
+	 * @used-by self::unpack_package()
+	 *
+	 * @param  String		  $package        specify package - full filepath
 	 * @param  Boolean		  $delete_package check to delete package
 	 * @param  String|Boolean $type           type of archive e.g. db.
 	 *
-	 * @return String|WP_Error If successful, then this indicates the working directory that the archive was unpacked in
+	 * @return String|WP_Error If successful, then this indicates the working directory that the archive was unpacked in; a WP_Filesystem path
 	 */
 	private function unpack_package_archive($package, $delete_package = true, $type = false) {
 
 		global $wp_filesystem, $updraftplus;
 		
+		// If it is a non-UD archive that is already unpacked, then don't re-run, but return the existing result
 		if (!empty($this->ud_foreign) && !empty($this->ud_foreign_working_dir) && $package == $this->ud_foreign_package) {
 			if (is_dir($this->ud_foreign_working_dir)) {
 				return $this->ud_foreign_working_dir;
@@ -664,36 +674,60 @@ class Updraft_Restorer {
 			}
 		}
 
-		$packsize = round(filesize($package)/1048576, 1).' Mb';
+		$this->skin->feedback($this->strings['unpack_package'].' ('.basename($package).', '.round(filesize($package)/1048576, 1).' MB)');
 
-		$this->skin->feedback($this->strings['unpack_package'].' ('.basename($package).', '.$packsize.')');
+		$upgrade_folder = $wp_filesystem->wp_content_dir().'upgrade/';
 
-		$upgrade_folder = $wp_filesystem->wp_content_dir() . 'upgrade/';
-
-		// Clean up contents of upgrade directory beforehand.
-		$upgrade_files = $wp_filesystem->dirlist($upgrade_folder);
-		if (!empty($upgrade_files)) {
-			foreach ($upgrade_files as $file)
-				if (!$wp_filesystem->delete($upgrade_folder . $file['name'], true)) {
-					$this->restore_log_permission_failure_message($upgrade_folder, 'Delete '.$upgrade_folder.$file['name']);
-				}
+		$zip_starting_index = 0;
+		
+		// We need a working directory. This has a change from the WP core version - minimise path length
+		// N.B. It is deterministic; the same package file will get the same working directory
+		// $working_dir = $upgrade_folder . basename($package, '.zip');
+		$working_dir = $upgrade_folder.substr(md5($package), 0, 8);
+		
+		if ('.zip' == strtolower(substr($package, -4, 4))) {
+		
+			$last_index_key = UpdraftPlus_Filesystem_Functions::get_jobdata_progress_key($package);
+			
+			// Turn off the feature with define('UPDRAFTPLUS_UNZIP_RESUME_ENABLED', false);
+			if ((!defined('UPDRAFTPLUS_UNZIP_RESUME_ENABLED') || UPDRAFTPLUS_UNZIP_RESUME_ENABLED) && !empty($this->continuation_data[$last_index_key]) && !empty($this->continuation_data[$last_index_key]['info']['name'])) {
+				
+				$reached = $this->continuation_data[$last_index_key];
+				
+				$last_exists = $wp_filesystem->exists($working_dir.'/'.$reached['info']['name']);
+				$last_size = $last_exists ? $wp_filesystem->size($working_dir.'/'.$reached['info']['name']) : 'n/a';
+				
+				if ($last_exists && $last_size == $reached['info']['size'] && isset($reached['index'])) $zip_starting_index = $reached['index'];
+				
+				$updraftplus->log("Unpack resumption may be possible: zip_starting_index=$zip_starting_index, last_exists=$last_exists, last_size=$last_size, last_status=".serialize($this->continuation_data[$last_index_key]));
+			}
+			
 		}
 
-		// We need a working directory
-		// This is the only change from the WP core version - minimise path length
-		// $working_dir = $upgrade_folder . basename($package, '.zip');
-		$working_dir = $upgrade_folder . substr(md5($package), 0, 8);
+		if (0 == $zip_starting_index) {
+			// Clean up contents of upgrade directory beforehand.
+			$upgrade_files = $wp_filesystem->dirlist($upgrade_folder);
+			if (!empty($upgrade_files)) {
+				foreach ($upgrade_files as $file) {
+					if (!$wp_filesystem->delete($upgrade_folder . $file['name'], true)) {
+						$this->restore_log_permission_failure_message($upgrade_folder, 'Delete '.$upgrade_folder.$file['name']);
+					}
+				}
+			}
 
-		// Clean up working directory
-		if ($wp_filesystem->is_dir($working_dir)) {
-			if (!$wp_filesystem->delete($working_dir, true)) {
-				$this->restore_log_permission_failure_message(dirname($working_dir), 'Delete '.$working_dir);
+			// Clean up working directory - this is redundant, as we already cleared out the parent folder
+			if ($wp_filesystem->is_dir($working_dir)) {
+				if (!$wp_filesystem->delete($working_dir, true)) {
+					$this->restore_log_permission_failure_message(dirname($working_dir), 'Delete '.$working_dir);
+				}
 			}
 		}
 
 		// Unzip package to working directory
 		if ('.zip' == strtolower(substr($package, -4, 4))) {
-			$result = UpdraftPlus_Filesystem_Functions::unzip_file($package, $working_dir);
+		
+			$result = UpdraftPlus_Filesystem_Functions::unzip_file($package, $working_dir, $zip_starting_index);
+			
 		} elseif ('.tar' == strtolower(substr($package, -4, 4)) || '.tar.gz' == strtolower(substr($package, -7, 7)) || '.tar.bz2' == strtolower(substr($package, -8, 8))) {
 			if (!class_exists('UpdraftPlus_Archive_Tar')) {
 				if (false === strpos(get_include_path(), UPDRAFTPLUS_DIR.'/includes/PEAR')) set_include_path(UPDRAFTPLUS_DIR.'/includes/PEAR'.PATH_SEPARATOR.get_include_path());
@@ -707,7 +741,7 @@ class Updraft_Restorer {
 				$p_compress = 'bz2';
 			}
 
-			// It's not pretty. But it works.
+			// It's not pretty, but it works.
 			if (is_a($wp_filesystem, 'WP_Filesystem_Direct')) {
 				$extract_dir = $working_dir;
 			} else {
@@ -721,6 +755,7 @@ class Updraft_Restorer {
 					$updraftplus->log("Using a temporary folder to extract before moving over WPFS: $extract_dir");
 				}
 			}
+
 			// Slightly hackish - rather than re-write Archive_Tar to use wp_filesystem, we instead unpack into the location that we already require to be directly writable for other reasons, and then move from there.
 		
 			if (empty($result)) {
@@ -824,14 +859,33 @@ class Updraft_Restorer {
 	 */
 	public function unpack_package($package, $delete_package = true, $type = false) {
 
+		if (preg_match('/-db(\.gz(\.crypt)?)?$/i', $package) || preg_match('/\.sql(\.gz|\.bz2)?$/i', $package)) {
+			return $this->unpack_package_database($package, $delete_package);
+		} else {
+			global $updraftplus;
+			// If not database, then it is a zip - unpack in the usual way
+			return $this->unpack_package_archive($updraftplus->backups_dir_location().'/'.$package, $delete_package, $type);
+		}
+		
+	}
+	
+	/**
+	 * Unpack a database backup file
+	 *
+	 * @used-by self::unpack_package()
+	 *
+	 * @param  String  $package        - file to unpack; relative filepath
+	 * @param  Boolean $delete_package - check to delete package
+	 *
+	 * @return String|WP_Error If successful, then this indicates the working directory that the archive was unpacked in (a WP_Filesystem path)
+	 */
+	private function unpack_package_database($package, $delete_package = true) {
+		
 		global $wp_filesystem, $updraftplus;
-
+		
 		$updraft_dir = $updraftplus->backups_dir_location();
-
-		// If not database, then it is a zip - unpack in the usual way
-		if (!preg_match('/-db(\.gz(\.crypt)?)?$/i', $package) && !preg_match('/\.sql(\.gz|\.bz2)?$/i', $package)) return $this->unpack_package_archive($updraft_dir.'/'.$package, $delete_package, $type);
-
-		// Unpack a database. The general shape of the following is copied from class-wp-upgrader.php
+		
+		// The general shape of the following comes from class-wp-upgrader.php
 
 		$backup_dir = $wp_filesystem->find_folder($updraft_dir);
 
@@ -847,16 +901,15 @@ class Updraft_Restorer {
 		// Clean up contents of upgrade directory beforehand.
 		$upgrade_files = $wp_filesystem->dirlist($upgrade_folder);
 		if (!empty($upgrade_files)) {
-			foreach ($upgrade_files as $file)
+			foreach ($upgrade_files as $file) {
 				if (!$wp_filesystem->delete($upgrade_folder.$file['name'], true)) {
 					$this->restore_log_permission_failure_message($upgrade_folder, 'Delete '.$upgrade_folder.$file['name']);
 				}
-				
+			}
 		}
 
 		// We need a working directory
 		$working_dir = $upgrade_folder . basename($package, '.crypt');
-		// $working_dir_localpath = WP_CONTENT_DIR.'/upgrade/'. basename($package, '.crypt');
 
 		// Clean up working directory
 		if ($wp_filesystem->is_dir($working_dir)) {
@@ -919,7 +972,7 @@ class Updraft_Restorer {
 			}
 		}
 
-		$updraftplus->log("Database successfully unpacked");
+		$updraftplus->log('Database successfully unpacked');
 
 		return $working_dir;
 	}
@@ -1157,19 +1210,19 @@ class Updraft_Restorer {
 	/**
 	 * Pre-flight check: chance to complain and abort before anything at all is done
 	 *
-	 * @param  array  $backup_files      An array of backup files
-	 * @param  string $type              Type of file
-	 * @param  array  $info              Information about the backup
-	 * @param  array  $continuation_data Information about continuing from an already-begun restore
-	 * @return boolean|WP_Error
+	 * @param  Array  $backup_files - An array of backup files
+	 * @param  String $type			- Type of file
+	 * @param  Array  $info			- Information about the backup
+	 *
+	 * @return Boolean|WP_Error
 	 */
-	public function pre_restore_backup($backup_files, $type, $info, $continuation_data = null) {
+	private function pre_restore_backup($backup_files, $type, $info) {
 		
 		if (is_string($backup_files)) $backup_files = array($backup_files);
 
 		if ('more' == $type) {
 			$this->skin->feedback($this->strings['not_possible']);
-			return;
+			return new WP_Error('not_possible', $this->strings['not_possible']);
 		}
 
 		// Ensure access to the indicated directory - and to WP_CONTENT_DIR (in which we use upgrade/)
@@ -1209,7 +1262,7 @@ class Updraft_Restorer {
 		$ret_val = true;
 		$updraft_dir = $updraftplus->backups_dir_location();
 
-		if (!is_array($continuation_data) && (('plugins' == $type || 'uploads' == $type || 'themes' == $type) && (!is_multisite() || 0 !== $this->ud_backup_is_multisite || ('uploads' != $type || empty($updraftplus_addons_migrator->new_blogid))))) {
+		if (!is_array($this->continuation_data) && (('plugins' == $type || 'uploads' == $type || 'themes' == $type) && (!is_multisite() || 0 !== $this->ud_backup_is_multisite || ('uploads' != $type || empty($updraftplus_addons_migrator->new_blogid))))) {
 			if (file_exists($updraft_dir.'/'.basename($wp_filesystem_dir)."-old")) {
 				$ret_val = new WP_Error('already_exists', sprintf(__('Existing unremoved folders from a previous restore exist (please use the "Delete Old Directories" button to delete them before trying again): %s', 'updraftplus'), $wp_filesystem_dir.'-old'));
 			}

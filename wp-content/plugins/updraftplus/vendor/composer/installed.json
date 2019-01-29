@@ -379,17 +379,17 @@
     },
     {
         "name": "phpseclib/phpseclib",
-        "version": "1.0.11",
-        "version_normalized": "1.0.11.0",
+        "version": "1.0.14",
+        "version_normalized": "1.0.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425"
+            "reference": "7432a6959afe98b9e93153d0034b0f62ad890d31"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/fd33675e483b887fc59834ab69e33ef7f2706425",
-            "reference": "fd33675e483b887fc59834ab69e33ef7f2706425",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/7432a6959afe98b9e93153d0034b0f62ad890d31",
+            "reference": "7432a6959afe98b9e93153d0034b0f62ad890d31",
             "shasum": ""
         },
         "require": {
@@ -406,7 +406,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 5.0.0."
         },
-        "time": "2018-04-15T16:51:35+00:00",
+        "time": "2019-01-27T19:35:10+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {

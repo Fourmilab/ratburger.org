@@ -13,10 +13,9 @@ if (!class_exists('UpdraftPlus_BackupModule')) require_once(UPDRAFTPLUS_DIR.'/me
 // Can be removed after a few months
 $potential_options = UpdraftPlus_Options::get_updraft_option('updraft_dropbox');
 if (is_array($potential_options) && isset($potential_options['version']) && isset($potential_options['settings']) && array() === $potential_options['settings']) {
-	// Wipe it, which wil force its re-creation in proper format
+	// Wipe it, which will force its re-creation in proper format
 	UpdraftPlus_Options::delete_updraft_option('updraft_dropbox');
 }
-
 
 class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 
@@ -282,6 +281,7 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 					$this->log('Unexpected HTTP code returned from Dropbox: '.$response['code']." (".serialize($response).")");
 					if ($response['code'] >= 400) {
 						$this->log(sprintf(__('error: failed to upload file to %s (see log file for more)', 'updraftplus'), $file), 'error');
+						$file_success = 0;
 					} else {
 						$this->log(__('did not return the expected response - check your log file for more details', 'updraftplus'), 'warning');
 					}
@@ -317,7 +317,6 @@ class UpdraftPlus_BackupModule_dropbox extends UpdraftPlus_BackupModule {
 					if (preg_match('/Upload with upload_id .* already completed/', $msg)) {
 						$this->log('returned an error, but apparently indicating previous success: '.$msg);
 					} else {
-						$this->log($msg);
 						$this->log(sprintf(__('failed to upload file to %s (see log file for more)', 'updraftplus'), $ufile), 'error');
 						$file_success = 0;
 						if (strpos($msg, 'select/poll returned error') !== false && $this->upload_tick > 0 && time() - $this->upload_tick > 800) {

@@ -521,6 +521,8 @@ class UpdraftPlus_Filesystem_Functions {
 		static $last_logged_time;
 		static $last_saved_time;
 		
+		$jobdata_key = self::get_jobdata_progress_key($file);
+		
 		// Detect a new zip file; reset state
 		if ($file !== $last_file_seen) {
 			$last_file_seen = $file;
@@ -530,10 +532,13 @@ class UpdraftPlus_Filesystem_Functions {
 			$last_saved_time = time();
 		}
 		
-		// We always log the last one for clarity (the log/display looks odd if the last mention of something being unzipped isn't the last). Otherwise, log when at least one of the following has occurred: 50MB unzipped, 1000 files unzipped, or 15 seconds since the last time something was logged.
-		if ($i >= $num_files -1 || $size_written > $last_logged_bytes + 100 * 1048576 || $i > $last_logged_index + 1000 || time() > $last_logged_time + 15) {
+		// Useful for debugging
+		$record_every_indexes = (defined('UPDRAFTPLUS_UNZIP_PROGRESS_RECORD_AFTER_INDEXES') && UPDRAFTPLUS_UNZIP_PROGRESS_RECORD_AFTER_INDEXES > 0) ? UPDRAFTPLUS_UNZIP_PROGRESS_RECORD_AFTER_INDEXES : 1000;
 		
-			$updraftplus->jobdata_set('last_index_'.md5(basename($file)), $i);
+		// We always log the last one for clarity (the log/display looks odd if the last mention of something being unzipped isn't the last). Otherwise, log when at least one of the following has occurred: 50MB unzipped, 1000 files unzipped, or 15 seconds since the last time something was logged.
+		if ($i >= $num_files -1 || $size_written > $last_logged_bytes + 100 * 1048576 || $i > $last_logged_index + $record_every_indexes || time() > $last_logged_time + 15) {
+		
+			$updraftplus->jobdata_set($jobdata_key, array('index' => $i, 'info' => $info, 'size_written' => $size_written));
 			
 			$updraftplus->log(sprintf(__('Unzip progress: %d out of %d files', 'updraftplus').' (%s, %s)', $i+1, $num_files, UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size_written), $info['name']), 'notice-restore');
 			$updraftplus->log(sprintf('Unzip progress: %d out of %d files (%s, %s)', $i+1, $num_files, UpdraftPlus_Manipulation_Functions::convert_numeric_size_to_text($size_written), $info['name']), 'notice');
@@ -547,9 +552,20 @@ class UpdraftPlus_Filesystem_Functions {
 		// Because a lot can happen in 5 seconds, we update the job data more often
 		if (time() > $last_saved_time + 5) {
 			// N.B. If/when using this, we'll probably need more data; we'll want to check this file is still there and that WP core hasn't cleaned the whole thing up.
-			$updraftplus->jobdata_set('last_index_'.md5(basename($file)), $i);
+			$updraftplus->jobdata_set($jobdata_key, array('index' => $i, 'info' => $info, 'size_written' => $size_written));
 			$last_saved_time = time();
 		}
+	}
+	
+	/**
+	 * This method abstracts the calculation for a consistent jobdata key name for the indicated name
+	 *
+	 * @param String $file - the filename; only the basename will be used
+	 *
+	 * @return String
+	 */
+	public static function get_jobdata_progress_key($file) {
+		return 'last_index_'.md5(basename($file));
 	}
 	
 	/**
@@ -575,14 +591,14 @@ class UpdraftPlus_Filesystem_Functions {
 	 *
 	 * @return Boolean|WP_Error True on success, WP_Error on failure.
 	 */
-	public static function unzip_file_go($file, $to, $needed_dirs = array(), $method = 'ziparchive', $starting_index = 0) {
+	private static function unzip_file_go($file, $to, $needed_dirs = array(), $method = 'ziparchive', $starting_index = 0) {
 		global $wp_filesystem, $updraftplus;
 		
 		$class_to_use = ('ziparchive' == $method) ? 'UpdraftPlus_ZipArchive' : 'UpdraftPlus_PclZip';
 
 		if (!class_exists($class_to_use)) require_once(UPDRAFTPLUS_DIR.'/includes/class-zip.php');
 		
-		$updraftplus->log('Unzipping '.basename($file).' to '.$to.' using '.$class_to_use);
+		$updraftplus->log('Unzipping '.basename($file).' to '.$to.' using '.$class_to_use.', starting index '.$starting_index);
 		
 		$z = new $class_to_use;
 
@@ -596,7 +612,7 @@ class UpdraftPlus_Filesystem_Functions {
 		$zopen = $z->open($file, $flags);
 		
 		if (true !== $zopen) {
-			return new WP_Error('incompatible_archive', __('Incompatible Archive.'), array($method.'_error' => $zope));
+			return new WP_Error('incompatible_archive', __('Incompatible Archive.'), array($method.'_error' => $z->last_error));
 		}
 
 		$uncompressed_size = 0;

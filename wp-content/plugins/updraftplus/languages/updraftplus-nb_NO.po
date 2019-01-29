@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-01-31 17:20:08+0000\n"
+"PO-Revision-Date: 2019-01-17 21:34:57+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -353,7 +353,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:158
 msgid "Use ctrl / cmd + press to select several items"
-msgstr ""
+msgstr "Bruk Ctrl/Cmd + museklikk for å velge flere elementer"
 
 #: src/methods/dreamobjects.php:20
 msgid "Closing 1st October 2018"
@@ -663,11 +663,11 @@ msgstr ""
 
 #: src/admin.php:2798
 msgid "Backup / Restore"
-msgstr ""
+msgstr "Backup og gjenoppretting"
 
 #: src/admin.php:663
 msgid "Backup"
-msgstr ""
+msgstr "Backup"
 
 #: src/addons/wp-cli.php:408
 msgid "Latest full backup found; identifier:"
@@ -739,7 +739,7 @@ msgstr ""
 
 #: src/admin.php:671, src/admin.php:2799
 msgid "Migrate / Clone"
-msgstr ""
+msgstr "Migrere og klone"
 
 #: src/admin.php:3036, src/admin.php:3961,
 #: src/templates/wp-admin/settings/existing-backups-table.php:73,
@@ -2882,7 +2882,7 @@ msgstr "Er du sikker på at du vil fjerne %s fra UpdraftPlus?"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:157
 msgid "Deselect"
-msgstr "Opphev valg"
+msgstr "Velg ingen"
 
 #: src/templates/wp-admin/settings/existing-backups-table.php:156
 msgid "Select all"
@@ -7657,7 +7657,7 @@ msgstr "Klarte ikke å opprette filer i backup folderen. Backup avbrutt - sjekk 
 
 #: src/class-updraftplus.php:1796
 msgid "Others"
-msgstr "Andre"
+msgstr "Annet"
 
 #: src/addons/multisite.php:500, src/class-updraftplus.php:1781
 msgid "Uploads"
@@ -7688,4 +7688,4 @@ msgstr "Varsel:"
 #: src/addons/multisite.php:96, src/addons/multisite.php:736,
 #: src/options.php:74
 msgid "UpdraftPlus Backups"
-msgstr "Sikkerhetskopiering"
+msgstr "UpdraftPlus-backup"
