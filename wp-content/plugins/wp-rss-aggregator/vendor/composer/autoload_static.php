@@ -4,9 +4,21 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit76fb642d017d9d3b611d0406aaa162fd
+class ComposerStaticInit0545fe6ed375a2225242ff880484f3bb
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Twig\\' => 5,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
         'P' => 
         array (
             'Psr\\Container\\' => 14,
@@ -24,6 +36,14 @@ class ComposerStaticInit76fb642d017d9d3b611d0406aaa162fd
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -35,28 +55,39 @@ class ComposerStaticInit76fb642d017d9d3b611d0406aaa162fd
         ),
         'Dhii\\Stats\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/stats-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
+            0 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
+            1 => __DIR__ . '/..' . '/dhii/stats-interface/src',
         ),
         'Dhii\\Di\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/di-interface/src',
+            0 => __DIR__ . '/..' . '/dhii/di/src',
             1 => __DIR__ . '/..' . '/dhii/di-abstract/src',
-            2 => __DIR__ . '/..' . '/dhii/di/src',
+            2 => __DIR__ . '/..' . '/dhii/di-interface/src',
         ),
         'Dhii\\Collection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/collections-interface/src',
+            0 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
             1 => __DIR__ . '/..' . '/dhii/collections-abstract-base/src',
-            2 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
+            2 => __DIR__ . '/..' . '/dhii/collections-interface/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'T' => 
+        array (
+            'Twig_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
         ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit76fb642d017d9d3b611d0406aaa162fd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit76fb642d017d9d3b611d0406aaa162fd::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0545fe6ed375a2225242ff880484f3bb::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0545fe6ed375a2225242ff880484f3bb::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit0545fe6ed375a2225242ff880484f3bb::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
