@@ -594,6 +594,11 @@ RB_dumpvar("Skip Akismet spam check: age", (date_timestamp_get(date_create()) -
 		if ( $new_status == $old_status )
 			return;
 
+		if ( 'spam' === $new_status || 'spam' === $old_status ) {
+			// Clear the cache of the "X comments in your spam queue" count on the dashboard.
+			wp_cache_delete( 'akismet_spam_count', 'widget' );
+		}
+
 		# we don't need to record a history item for deleted comments
 		if ( $new_status == 'delete' )
 			return;
