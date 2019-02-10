@@ -1045,4 +1045,32 @@ function rb_add_clock_toolbar_menu() {
 
 add_action('admin_bar_menu', 'rb_add_clock_toolbar_menu', 95);
 
+/*  Add our local system status panel to the administration
+    dashboard "At a Glance" panel.  We only show this if the
+    user is an administrator.  */
+
+function rb_dashboard_system_status() {
+    if (current_user_can("manage_options")) {
+        $atop = exec('top -b -n 1 | fgrep "avail Mem"');
+        if (preg_match("/(\d+)\s+avail\s+Mem/", $atop, $aton)) {
+            $atoc = rb_commas($aton[1]);
+            echo "<p class='ratburger-dashboard-system-status'>" .
+                "Available memory: $atoc kB.</p>\n";
+        }
+    }
+}
+add_action("rightnow_end", "rb_dashboard_system_status", 95);
+
+/*  Return decimal integer argument with delimeters
+    separating commas.  It's up to the caller to remove
+    any sign or decimal part of the number argument
+    before calling and re-attach them to the result.  */
+
+function rb_commas($n, $Thousands = ",") {
+    $text = strrev($n);
+    $text = preg_replace("/(\d\d\d)(?=\d)(?!\d*\.)/",
+                "$1$Thousands", $text);
+    return strrev($text);
+}
+
 /* END RATBURGER LOCAL CODE */
