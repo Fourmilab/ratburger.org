@@ -95,9 +95,9 @@ wp_print_scripts( 'quicktags' );
                                 <span class="switch-selection"></span>
                             </div>
                             <div class="helpDescription subsOptDescriptions"
-                                 data-content="<?php _e( "This option will disable the StCR checkbox or dropdown in you comment form. You should leave it to Yes always.", 'subscribe-reloaded' ); ?>"
+                                 data-content="<?php _e( "This option will disable the StCR checkbox or dropdown in your comment form. You should leave it to Yes always.", 'subscribe-reloaded' ); ?>"
                                  data-placement="right"
-                                 aria-label="<?php _e( "This option will disable the StCR checkbox or dropdown in you comment form. You should leave it to Yes always.", 'subscribe-reloaded' ); ?>">
+                                 aria-label="<?php _e( "This option will disable the StCR checkbox or dropdown in your comment form. You should leave it to Yes always.", 'subscribe-reloaded' ); ?>">
                                 <i class="fas fa-question-circle"></i>
                             </div>
                         </div>
@@ -324,7 +324,7 @@ wp_print_scripts( 'quicktags' );
 
                     <div class="form-group row">
                         <label for="admin_subscribe" class="col-sm-3 col-form-label text-right">
-                            <?php _e( 'Track all subscriptions', 'subscribe-reloaded' ) ?>
+                            <?php _e( 'Let Admin Subscribe', 'subscribe-reloaded' ) ?>
                         </label>
                         <div class="col-sm-7">
                             <div class="switch">
@@ -395,9 +395,9 @@ wp_print_scripts( 'quicktags' );
                                 <span class="switch-selection"></span>
                             </div>
                             <div class="helpDescription subsOptDescriptions"
-                                 data-content="<?php _e( "Let you control the inclusion of the Font Awesome into your site. Disable if you theme already add this into your site.", 'subscribe-reloaded' ); ?>"
+                                 data-content="<?php _e( "Let you control the inclusion of the Font Awesome into your site. Disable if your theme already add this into your site.", 'subscribe-reloaded' ); ?>"
                                  data-placement="right"
-                                 aria-label="<?php _e( "Let you control the inclusion of the Font Awesome into your site. Disable if you theme already add this into your site.", 'subscribe-reloaded' ); ?>">
+                                 aria-label="<?php _e( "Let you control the inclusion of the Font Awesome into your site. Disable if your theme already add this into your site.", 'subscribe-reloaded' ); ?>">
                                 <i class="fas fa-question-circle"></i>
                             </div>
                         </div>

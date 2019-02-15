@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Subscribe to Comments Reloaded\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-17 13:20-0700\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/src\n"
+"POT-Creation-Date: 2019-02-07 08:12:11+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Reedyseth <reedyseth@gmail.com>\n"
 "Language-Team: \n"
@@ -15,6 +15,9 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: bower_components\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: classes/stcr_i18n.php:51 classes/stcr_i18n.php:56
 msgid " "
@@ -74,7 +77,6 @@ msgstr ""
 
 #: classes/stcr_i18n.php:67
 #, fuzzy
-#| msgid "&laquo; Previous"
 msgid "Previous"
 msgstr "&laquo;  قبلی"
 
@@ -96,7 +98,6 @@ msgstr "تنظیمات شما با موفقیت به روز شد."
 #: options/options_template.php:46 options/stcr_notifications.php:57
 #: options/stcr_options.php:65 options/stcr_system.php:114
 #, fuzzy
-#| msgid "There was an error updating the following fields:"
 msgid "There was an error updating the options."
 msgstr "یک خطا در به روزرسانی فیلدهای زیر رخ داد:"
 
@@ -222,8 +223,8 @@ msgid ""
 "Please remember: this operation cannot be undone. Are you sure you want to "
 "proceed?"
 msgstr ""
-"به خاطر داشته باشید این عملیات غیرقابل برگشت است. آیا مطمئنید می خواهید انجام "
-"شود؟"
+"به خاطر داشته باشید این عملیات غیرقابل برگشت است. آیا مطمئنید می خواهید "
+"انجام شود؟"
 
 #: options/panel1-edit-subscription.php:16
 #: options/stcr_manage_subscriptions.php:58
@@ -285,9 +286,9 @@ msgid ""
 msgstr ""
 "اگر می خواهید کادر تیک زدنی را به قسمت دیگری از صفحه ی خود انتقال دهید این "
 "گزینه را غیرفعال نمایید. برای انتقال کادر تیک زدنی به بالای دکمه ی ارسال می "
-"توانید کد زیر را به خط 2355 از فایل Wordpress> WP-includes> comments_template."
-"php اضافه کنید. شماره ی خط شاید عوض شود لذا دنبال تابع با اسم comment_form "
-"بگردید.\n"
+"توانید کد زیر را به خط 2355 از فایل Wordpress> WP-includes> "
+"comments_template.php اضافه کنید. شماره ی خط شاید عوض شود لذا دنبال تابع با "
+"اسم comment_form بگردید.\n"
 "if (function_exists('subscribe_reloaded_show')) subscribe_reloaded_show();"
 
 #: options/stcr_comment_form.php:81
@@ -313,8 +314,8 @@ msgstr "پاسخ های به این دیدگاه"
 
 #: options/stcr_comment_form.php:116 options/stcr_comment_form.php:118
 msgid ""
-"Select the default option for the Checkbox. Be careful! Some users might like "
-"to be subscribed to all the post."
+"Select the default option for the Checkbox. Be careful! Some users might "
+"like to be subscribed to all the post."
 msgstr ""
 "انتخاب پیشفرض برای چک باکس را تعیین کنید. دقت داشته باشید که بازدیدکنندگان "
 "شاید مایل باشند مشترک تمام دیدگاه ها شوند."
@@ -327,8 +328,8 @@ msgstr "اشتراک پیشرفته"
 msgid ""
 "Allow users to choose from different subscription types (all, replies only)."
 msgstr ""
-"به کاربران امکان می دهد گزینه های مختلف اشتراک مثلاً دریافت همه ی دیدگاه ها یا "
-"فقط دریافت پاسخ به دیدگاه های خود را انتخاب نمایند."
+"به کاربران امکان می دهد گزینه های مختلف اشتراک مثلاً دریافت همه ی دیدگاه ها "
+"یا فقط دریافت پاسخ به دیدگاه های خود را انتخاب نمایند."
 
 #: options/stcr_comment_form.php:160
 msgid "Advanced default"
@@ -351,7 +352,8 @@ msgstr "جلوه ی سفارشی برای نوشته ی اشتراک"
 
 #: options/stcr_comment_form.php:189 options/stcr_comment_form.php:191
 msgid "Custom inline CSS to add to the checkbox."
-msgstr "جلوه ی CSS سفارشی که فقط برای خط مربوط به کادر تیک زدنی استفاده می شود."
+msgstr ""
+"جلوه ی CSS سفارشی که فقط برای خط مربوط به کادر تیک زدنی استفاده می شود."
 
 #: options/stcr_comment_form.php:199
 msgid "Custom HTML"
@@ -407,7 +409,8 @@ msgid "Author label"
 msgstr "برچسب مخصوص نویسنده ی نوشته "
 
 #: options/stcr_comment_form.php:313 options/stcr_comment_form.php:315
-msgid "Label shown to authors (and administrators). Allowed tag: [manager_link]"
+msgid ""
+"Label shown to authors (and administrators). Allowed tag: [manager_link]"
 msgstr ""
 "این برچسب به نویسندگان و مدیران نشان داده می شود. تگ های مجاز: [manager_link]"
 
@@ -489,7 +492,6 @@ msgstr "نوشته (شناسه)"
 #: options/stcr_manage_subscriptions.php:196
 #: options/stcr_manage_subscriptions.php:210
 #, fuzzy
-#| msgid "Action:"
 msgid "Actions"
 msgstr "اقدام"
 
@@ -558,10 +560,6 @@ msgstr "صفحه ی مدیریت مجازی"
 
 #: options/stcr_management_page.php:88 options/stcr_management_page.php:90
 #, fuzzy
-#| msgid ""
-#| "Disable the virtual management page if you need to create a <a href="
-#| "\"https://github.com/stcr/subscribe-to-comments-reloaded/wiki/KB#create-a-"
-#| "real-management-page\">real page</a> to make your theme happy."
 msgid ""
 "Disable the virtual management page if you need to create a <a href='https://"
 "github.com/stcr/subscribe-to-comments-reloaded/wiki/KB#create-a-real-"
@@ -630,8 +628,8 @@ msgstr "درخواست ارسال شد"
 
 #: options/stcr_management_page.php:190 options/stcr_management_page.php:192
 msgid ""
-"Thank you note shown after the request here above has been processed. Allowed "
-"tags: [post_title], [post_permalink]"
+"Thank you note shown after the request here above has been processed. "
+"Allowed tags: [post_title], [post_permalink]"
 msgstr ""
 "پیام تشکر پس از تایید شدن درخواست مشروح در بالا! تگ های مجاز: [post_title], "
 "[post_permalink]"
@@ -645,8 +643,8 @@ msgid ""
 "Text shown to those who want to subscribe without commenting. Allowed tags: "
 "[post_title], [post_permalink]"
 msgstr ""
-"این متن به کسانی که می خواهند بدون دیدگاه نویسی مشترک گردند نشان داده می شود. "
-"تگ های مجاز: [post_title], [post_permalink]"
+"این متن به کسانی که می خواهند بدون دیدگاه نویسی مشترک گردند نشان داده می "
+"شود. تگ های مجاز: [post_title], [post_permalink]"
 
 #: options/stcr_management_page.php:241
 msgid "Subscription processed"
@@ -657,8 +655,8 @@ msgid ""
 "Thank you note shown after the subscription request has been processed "
 "(double check-in disabled). Allowed tags: [post_title], [post_permalink]"
 msgstr ""
-"پیام تشکر پس از این که درخواست اشتراک پردازش شد (در حالت غیرفعال بودن نیاز به "
-"تایید ایمیلی). برچسب های مجاز: [post_title], [post_permalink]"
+"پیام تشکر پس از این که درخواست اشتراک پردازش شد (در حالت غیرفعال بودن نیاز "
+"به تایید ایمیلی). برچسب های مجاز: [post_title], [post_permalink]"
 
 #: options/stcr_management_page.php:268
 msgid "Subscription processed (DCI)"
@@ -694,9 +692,6 @@ msgstr "نشانی رایان‌نامه فرستنده"
 
 #: options/stcr_notifications.php:82 options/stcr_notifications.php:84
 #, fuzzy
-#| msgid ""
-#| "Name to use for the \"from\" field when sending a new notification to the "
-#| "user."
 msgid ""
 "Name to use for the 'from' field when sending a new notification to the user."
 msgstr "نام فرستنده هنگام ارسال یادآور جدید به کاربران"
@@ -733,16 +728,12 @@ msgstr "متن پیام یادآور"
 
 #: options/stcr_notifications.php:148 options/stcr_notifications.php:150
 #, fuzzy
-#| msgid ""
-#| "Content of the notification email. Allowed tags: [post_title], "
-#| "[comment_permalink], [comment_author], [comment_content], "
-#| "[post_permalink], [manager_link]"
 msgid ""
 "Content of the notification email. Allowed tags: [post_title], "
 "[comment_permalink], [comment_author], [comment_content], [post_permalink], "
-"[manager_link], [comment_gravatar]<p style='color: #156dc7;'><strong>Note: To "
-"get a default template clear all the content and save the options.</strong></"
-"p>"
+"[manager_link], [comment_gravatar]<p style='color: #156dc7;'><strong>Note: "
+"To get a default template clear all the content and save the options.</"
+"strong></p>"
 msgstr ""
 "محتوای ایمیل یادآور. تگ های مجاز: [post_title], [comment_permalink], "
 "[comment_author], [comment_content], [post_permalink], [manager_link]"
@@ -803,9 +794,6 @@ msgstr "لغو اشتراک با یک کلیک"
 
 #: options/stcr_notifications.php:294 options/stcr_notifications.php:296
 #, fuzzy
-#| msgid ""
-#| "Content of the One Click confirmation. Allowed tags: [post_title], "
-#| "[blog_name]"
 msgid ""
 "Content of the One Click confirmation. Allowed tags: [post_title], "
 "[blog_name]."
@@ -817,7 +805,7 @@ msgstr ""
 
 #: options/stcr_options.php:98 options/stcr_options.php:100
 msgid ""
-"This option will disable the StCR checkbox or dropdown in you comment form. "
+"This option will disable the StCR checkbox or dropdown in your comment form. "
 "You should leave it to Yes always."
 msgstr ""
 
@@ -838,8 +826,8 @@ msgstr ""
 
 #: options/stcr_options.php:140 options/stcr_options.php:142
 msgid ""
-"Delete pending subscriptions (not confirmed) after X days. Zero disables this "
-"feature."
+"Delete pending subscriptions (not confirmed) after X days. Zero disables "
+"this feature."
 msgstr ""
 "اشتراک هایی که بیش از این تعداد روز منتظر تایید مانده و پاسخی نگرفته اند را "
 "حذف کن. عدد 0 به معنای عدم استفاده از این قابلیت است."
@@ -850,9 +838,9 @@ msgstr ""
 
 #: options/stcr_options.php:157 options/stcr_options.php:159
 msgid ""
-"Date format that will be display on the management page. Use <a href='https://"
-"secure.php.net/manual/en/function.date.php#refsect1-function.date-parameters' "
-"target='_blank'>PHP Date Format</a>"
+"Date format that will be display on the management page. Use <a "
+"href='https://secure.php.net/manual/en/function.date.php#refsect1-function."
+"date-parameters' target='_blank'>PHP Date Format</a>"
 msgstr ""
 
 #: options/stcr_options.php:166
@@ -861,9 +849,9 @@ msgstr ""
 
 #: options/stcr_options.php:182 options/stcr_options.php:184
 msgid ""
-"If this option is enable the subscription box will be above the submit button "
-"in your comment form. Use this when your theme is outdated and using the "
-"incorrect WordPress Hooks and the checkbox is not displayed."
+"If this option is enable the subscription box will be above the submit "
+"button in your comment form. Use this when your theme is outdated and using "
+"the incorrect WordPress Hooks and the checkbox is not displayed."
 msgstr ""
 
 #: options/stcr_options.php:192
@@ -883,7 +871,8 @@ msgid "Subscribe authors"
 msgstr "اشتراک مؤلفان"
 
 #: options/stcr_options.php:236 options/stcr_options.php:238
-msgid "Automatically subscribe authors to their own articles (not retroactive)."
+msgid ""
+"Automatically subscribe authors to their own articles (not retroactive)."
 msgstr ""
 "به طور خودکار نویسندگان را مشترک یادداشت هایشان کن ( شامل یادداشت های موجود "
 "از قبل نمی شود )"
@@ -894,8 +883,8 @@ msgstr "فعال کردن ایمیل های HTML"
 
 #: options/stcr_options.php:263 options/stcr_options.php:265
 msgid ""
-"If enabled, will send email messages with content-type = text/html instead of "
-"text/plain"
+"If enabled, will send email messages with content-type = text/html instead "
+"of text/plain"
 msgstr ""
 "اگر فعال شود ما پیام ها را با content-type = text/html به جای text/plain "
 "ایمیل می کنیم."
@@ -910,13 +899,18 @@ msgid ""
 msgstr ""
 "کاربران را مطلع کن اگر یک بازآگاهی یا ارجاع مستقیم به دیدگاه ها اضافه شود."
 
-#: options/stcr_options.php:300 options/stcr_options.php:327
+#: options/stcr_options.php:300
 msgid "Track all subscriptions"
 msgstr "تمام اشتراک ها را رهگیری کن"
 
 #: options/stcr_options.php:317 options/stcr_options.php:319
 msgid "Notify the administrator when users subscribe without commenting."
 msgstr "وقتی کاربران بدون دیدگاه گذاری مشترک می شوند سرپرست را مطلع کن."
+
+#: options/stcr_options.php:327
+#, fuzzy
+msgid "Let Admin Subscribe"
+msgstr "به سرپرست اجازه ی مشترک شدن بده"
 
 #: options/stcr_options.php:344 options/stcr_options.php:346
 msgid "Let the administrator subscribe to comments when logged in."
@@ -938,7 +932,7 @@ msgstr ""
 #: options/stcr_options.php:398 options/stcr_options.php:400
 msgid ""
 "Let you control the inclusion of the Font Awesome into your site. Disable if "
-"you theme already add this into your site."
+"your theme already add this into your site."
 msgstr ""
 
 #: options/stcr_options.php:408
@@ -957,17 +951,16 @@ msgstr "ایجاد"
 
 #: options/stcr_options.php:425
 #, fuzzy
-#| msgid "Generate"
 msgid "Generate New Key"
 msgstr "ایجاد"
 
 #: options/stcr_options.php:430 options/stcr_options.php:432
 msgid ""
-"This Unique Key will be use to send the notification to your subscribers with "
-"more security."
+"This Unique Key will be use to send the notification to your subscribers "
+"with more security."
 msgstr ""
-"این شناسه منحصر بفرد جهت ارسال آگاه سازی ها به مشترکین با امنیت بیشتر استفاده "
-"می شود."
+"این شناسه منحصر بفرد جهت ارسال آگاه سازی ها به مشترکین با امنیت بیشتر "
+"استفاده می شود."
 
 #: options/stcr_options.php:440 options/stcr_options.php:470
 msgid "Reset All Options"
@@ -988,7 +981,6 @@ msgid "<strong>No</strong>  = Only delete the StCR Options."
 msgstr ""
 
 #: options/stcr_support.php:20
-#, php-format
 msgid ""
 "Support the developer, You can donate via <a href=\"%s\"  rel=\"external\" "
 "target=\"_blank\"><i class=\"fab fa-paypal\" aria-hidden=\"true\"></i> "
@@ -997,12 +989,6 @@ msgstr ""
 
 #: options/stcr_support.php:27
 #, fuzzy
-#| msgid ""
-#| "How valuable is the feature offered by this plugin to your visitors? "
-#| "please consider supporting the author if this plugin made your web site "
-#| "better, especially if you are making money out of it. Any donation "
-#| "received will be reinvested in the development of <strong>Subscribe to "
-#| "Comments Reloaded</strong>, and to buy some food for my hungry family."
 msgid ""
 "How valuable is the feature offered by this plugin to your visitors? please "
 "consider supporting the author if this plugin made your web site better, "
@@ -1014,24 +1000,16 @@ msgstr ""
 "قابلیت هایی که توسط این افزونه ارائه شده اند چقدر برای بازدید کنندگان شما "
 "ارزش دارد؟ لطفاً چنانچه این افزونه سایت شما را بهتر کرده است از نویسنده آن "
 "حمایت کنید، به خصوص با پرداخت وجه در قبال آن. هر وجه کمکی که دریافت می شود "
-"دوباره جهت توسعه <strong>Subscribe to Comments Reloaded</strong> سرمایه گذاری "
-"می شود ، و بخش کوچکی از آن نیز صرف خرید غذا برای خانواده ام می شود."
+"دوباره جهت توسعه <strong>Subscribe to Comments Reloaded</strong> سرمایه "
+"گذاری می شود ، و بخش کوچکی از آن نیز صرف خرید غذا برای خانواده ام می شود."
 
 #: options/stcr_support.php:29
 #, fuzzy
-#| msgid "You can help"
 msgid "You can still help"
 msgstr "شما هم می توانید کمک کنید"
 
 #: options/stcr_support.php:30
 #, fuzzy
-#| msgid ""
-#| "If you don't want to donate money, please consider blogging about my "
-#| "plugin with a link to the plugin's page. Please let your readers know what "
-#| "makes your blog better. You can also contribute donating your time: do not "
-#| "hesitate to send me bug reports, your localization files, ideas on how to "
-#| "improve <strong>Subscribe to Comments Reloaded</strong> and so on. "
-#| "Whatever you do, thanks for using my plugin!"
 msgid ""
 "Please consider blogging about my plugin with a link to the plugin's page. "
 "Please let your readers know what makes your blog better. You can also "
@@ -1039,8 +1017,8 @@ msgid ""
 "localization files, ideas on how to improve <strong>Subscribe to Comments "
 "Reloaded</strong> and so on. Whatever you do, thanks for using my plugin!"
 msgstr ""
-"اگر شما قصد پرداخت وجه در قبال این افزونه را ندارید لطفأ با قرار دادن لینک آن "
-"در سایت یا وبلاگ خود و معرفی آن حمایتش کنید؛ شما همچنین به خوانندگان خود "
+"اگر شما قصد پرداخت وجه در قبال این افزونه را ندارید لطفأ با قرار دادن لینک "
+"آن در سایت یا وبلاگ خود و معرفی آن حمایتش کنید؛ شما همچنین به خوانندگان خود "
 "خواهید گفت چگونه بلاگتان بهتر شده است. شما همچنین می توانید برای این افزونه "
 "وقت بگذارید و با ارسال گزارش ایراد ها، فایل های محلی شده و ایده های بهبود "
 "<strong>Subscribe to Comments Reloaded</strong> حمایتش کنید. فارغ از همه این "
@@ -1054,12 +1032,13 @@ msgstr "به تست کنندگان نسخه بتا بپیوندید"
 msgid ""
 "Before a new Update we release a Beta version so that our current users can "
 "give us feedback if they find a bug, If you want to join the tester list you "
-"can add your email <a href='http://eepurl.com/biCk1b' target='_blank'>here</a>"
+"can add your email <a href='http://eepurl.com/biCk1b' target='_blank'>here</"
+"a>"
 msgstr ""
 "قبل از ارسال به روز رسانی جدید افزونه ما یک نسخه بتا توزیع می کنیم بنابراین "
-"کاربران فعلی ما می توانند به ما بازخورد بدهند اگر که ایرادی پیدا کنند، اگر می "
-"خواهید به جمع تست کنندگان بپیوندید شما می توانید ایمیل خود را <a href='http://"
-"eepurl.com/biCk1b' target='_blank'>از اینجا</a> اضافه کنید."
+"کاربران فعلی ما می توانند به ما بازخورد بدهند اگر که ایرادی پیدا کنند، اگر "
+"می خواهید به جمع تست کنندگان بپیوندید شما می توانید ایمیل خود را <a "
+"href='http://eepurl.com/biCk1b' target='_blank'>از اینجا</a> اضافه کنید."
 
 #: options/stcr_support.php:35
 msgid "Vote and show your appreciation"
@@ -1092,7 +1071,6 @@ msgstr ""
 "وردپرس."
 
 #: options/stcr_support.php:43
-#, php-format
 msgid ""
 "The options on the WordPress forum at very limited to share media "
 "information, so I urge you to use GitHub to report any issue, you will get a "
@@ -1155,7 +1133,7 @@ msgstr ""
 msgid "Clean Up Log Archive"
 msgstr ""
 
-#: options/stcr_system.php:203
+#: options/stcr_system.php:202
 msgid ""
 "If you want to clean up the log archive please click the following button"
 msgstr ""
@@ -1191,7 +1169,6 @@ msgid "WordPress Environment"
 msgstr ""
 
 #: options/stcr_system.php:290
-#, php-format
 msgid "%s - We recommend setting memory to at least 64 MB. See: %s"
 msgstr ""
 
@@ -1257,18 +1234,17 @@ msgstr ""
 
 #: options/stcr_system.php:397 options/stcr_system.php:398
 #: options/stcr_system.php:399 options/stcr_system.php:400
-#: options/stcr_system.php:401 options/stcr_system.php:516
-#: options/stcr_system.php:527 options/stcr_system.php:537
+#: options/stcr_system.php:401 options/stcr_system.php:518
+#: options/stcr_system.php:529 options/stcr_system.php:539
 msgid "Not Available"
 msgstr ""
 
+#. translators: %s: SSL connection response
 #: options/stcr_system.php:414
-#, php-format
 msgid "Connection uses %s"
 msgstr ""
 
 #: options/stcr_system.php:431
-#, php-format
 msgid "%s - We recommend a minimum PHP version of 5.6. See: %s"
 msgstr ""
 
@@ -1282,104 +1258,110 @@ msgid ""
 "exist."
 msgstr ""
 
-#: options/stcr_system.php:458
-#, php-format
+#: options/stcr_system.php:460
 msgid "%s - We recommend a minimum cURL version of 7.40."
 msgstr ""
 
-#: options/stcr_system.php:492
-#, php-format
+#: options/stcr_system.php:494
 msgid "%s - We recommend a minimum MySQL version of 5.6. See: %s"
 msgstr ""
 
-#: options/stcr_system.php:492
+#: options/stcr_system.php:494
 msgid "WordPress Requirements"
 msgstr ""
 
-#: options/stcr_system.php:507
-#, php-format
+#: options/stcr_system.php:509
 msgid "Default timezone is %s - it should be UTC"
 msgstr ""
 
-#: options/stcr_system.php:523
-#, php-format
+#: options/stcr_system.php:525
 msgid ""
 "Your server does not have the %s class enabled - HTML/Multipart emails, and "
 "also some extensions, will not work without DOMDocument."
 msgstr ""
 
-#: options/stcr_system.php:534
-#, php-format
+#: options/stcr_system.php:536
 msgid ""
 "Your server does not support the %s function - this is used for file "
 "compression and decompression."
 msgstr ""
 
-#: options/stcr_system.php:551
+#: options/stcr_system.php:553
 msgid "TLS Connection"
 msgstr ""
 
-#: options/stcr_system.php:555
+#: options/stcr_system.php:557
 msgid "TLS Rating"
 msgstr ""
 
-#: options/stcr_system.php:559
+#: options/stcr_system.php:561
 msgid "Server Info"
 msgstr ""
 
-#: options/stcr_system.php:563
+#: options/stcr_system.php:565
 msgid "PHP Version"
 msgstr ""
 
-#: options/stcr_system.php:567
+#: options/stcr_system.php:569
 msgid "PHP Post Max Size"
 msgstr ""
 
-#: options/stcr_system.php:571
+#: options/stcr_system.php:573
 msgid "PHP Max Execution Time"
 msgstr ""
 
-#: options/stcr_system.php:575
+#: options/stcr_system.php:577
 msgid "PHP Max Input Vars"
 msgstr ""
 
-#: options/stcr_system.php:579
+#: options/stcr_system.php:581
 msgid "PHP Max Upload Size"
 msgstr ""
 
-#: options/stcr_system.php:583
+#: options/stcr_system.php:585
 msgid "cURL Version"
 msgstr ""
 
-#: options/stcr_system.php:587
+#: options/stcr_system.php:589
 msgid "MySQL Version"
 msgstr ""
 
-#: options/stcr_system.php:591
+#: options/stcr_system.php:593
 msgid "Default Timezone is UTC"
 msgstr ""
 
-#: options/stcr_system.php:595
+#: options/stcr_system.php:597
 msgid "DOMDocument"
 msgstr ""
 
-#: options/stcr_system.php:599
+#: options/stcr_system.php:601
 msgid "gzip"
 msgstr ""
 
-#: options/stcr_system.php:603
+#: options/stcr_system.php:605
 msgid "GD Graphics Library"
 msgstr ""
 
-#: options/stcr_system.php:627
+#: options/stcr_system.php:629
 #, fuzzy
-#| msgid "Active"
 msgid "Active Plugins"
 msgstr "فعال"
 
-#: options/stcr_system.php:684
+#: options/stcr_system.php:656 options/stcr_system.php:713
+msgid "Visit plugin homepage"
+msgstr ""
+
+#: options/stcr_system.php:665 options/stcr_system.php:722
+msgid "Visit author homepage"
+msgstr ""
+
+#: options/stcr_system.php:669 options/stcr_system.php:726
+msgctxt "by author"
+msgid "by %s"
+msgstr ""
+
+#: options/stcr_system.php:686
 #, fuzzy
-#| msgid "Inactive"
 msgid "Inactive Plugins"
 msgstr "فعال"
 
@@ -1413,7 +1395,6 @@ msgstr ""
 
 #: templates/author.php:97 templates/user.php:115
 #, fuzzy
-#| msgid "Don't subscribe"
 msgid "Unsubscribe"
 msgstr "مشترک نمی شوم"
 
@@ -1422,7 +1403,7 @@ msgid "All comments"
 msgstr "تمام دیدگاه ها"
 
 #: templates/author.php:100 templates/user.php:118
-#: wp_subscribe_reloaded.php:1209
+#: wp_subscribe_reloaded.php:1210
 msgid "Replies to my comments"
 msgstr "فقط دریافت پاسخ دیدگاه های خودم "
 
@@ -1452,7 +1433,6 @@ msgstr "ارسال"
 #: templates/request-management-link.php:171 templates/subscribe.php:150
 #: templates/subscribe.php:178
 #, fuzzy
-#| msgid "email address"
 msgid "Email address is not valid"
 msgstr "نشانی رایان‌نامه فرستنده"
 
@@ -1477,42 +1457,43 @@ msgid "You have request to manage another email address and this is forbidden."
 msgstr ""
 
 #: utils/stcr_manage.php:355 utils/stcr_manage.php:356 utils/stcr_utils.php:347
-#: wp_subscribe_reloaded.php:156
+#: wp_subscribe_reloaded.php:157
 msgid "Manage subscriptions"
 msgstr "مدیریت اشتراک ها"
 
 #: utils/stcr_manage.php:361 utils/stcr_manage.php:362
-#: wp_subscribe_reloaded.php:157
+#: wp_subscribe_reloaded.php:158
 msgid "Comment Form"
 msgstr "فرم دیدگاه‌ها"
 
 #: utils/stcr_manage.php:367 utils/stcr_manage.php:368
-#: wp_subscribe_reloaded.php:158
+#: wp_subscribe_reloaded.php:159
 msgid "Management Page"
 msgstr "صفحه‌ی مدیریت"
 
 #: utils/stcr_manage.php:373 utils/stcr_manage.php:374
-#: wp_subscribe_reloaded.php:159
+#: wp_subscribe_reloaded.php:160
 msgid "Notifications"
 msgstr "آگاه سازی ها"
 
 #: utils/stcr_manage.php:379 utils/stcr_manage.php:380
-#: wp_subscribe_reloaded.php:160 wp_subscribe_reloaded.php:162
+#: wp_subscribe_reloaded.php:161 wp_subscribe_reloaded.php:163
 msgid "Options"
 msgstr "تنظیمات"
 
 #: utils/stcr_manage.php:396 utils/stcr_manage.php:397
-#: wp_subscribe_reloaded.php:161
+#: wp_subscribe_reloaded.php:162
 msgid "Support"
 msgstr " پشتیبانی"
 
 #: utils/stcr_manage.php:408 utils/stcr_manage.php:409
-#: wp_subscribe_reloaded.php:190
+#: wp_subscribe_reloaded.php:191
 msgid "StCR System"
 msgstr ""
 
-#: utils/stcr_manage.php:429 utils/stcr_manage.php:457 utils/stcr_manage.php:484
-#: utils/stcr_manage.php:511 utils/stcr_manage.php:538 utils/stcr_manage.php:565
+#: utils/stcr_manage.php:429 utils/stcr_manage.php:457
+#: utils/stcr_manage.php:484 utils/stcr_manage.php:511
+#: utils/stcr_manage.php:538 utils/stcr_manage.php:565
 #: utils/stcr_manage.php:594
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
@@ -1544,14 +1525,6 @@ msgstr "چند دلار اهدا نمایید!"
 msgid "Important Notice"
 msgstr "نکته مهم"
 
-#: utils/stcr_upgrade.php:120
-msgid ""
-"<strong>Subscribe to Comments Reloaded:</strong> The information in your "
-"database has been sanitized to prevent the raw html messages. <a class="
-"\"dismiss\" href=\"#\">Dismiss.  </a><img class=\"stcr-loading-animation\" "
-"src=\""
-msgstr ""
-
 #: utils/stcr_upgrade.php:175
 msgid ""
 "<strong>Subscribe to Comments Reloaded:</strong> Comment subscription data "
@@ -1567,27 +1540,18 @@ msgid ""
 " It is recommended that you now <strong>deactivate</strong> Subscribe to "
 "Comments to prevent confusion between the two plugins."
 msgstr ""
-"توصیه می شود که شما اکنون  Subscribe to Comments را  <strong>غیرفعال</strong> "
-"کنید تا از مشکلات تداخل دو افزونه در امان باشید."
+"توصیه می شود که شما اکنون  Subscribe to Comments را  <strong>غیرفعال</"
+"strong> کنید تا از مشکلات تداخل دو افزونه در امان باشید."
 
 #: utils/stcr_upgrade.php:176
 msgid ""
-"If you have subscription data from Subscribe to Comments Reloaded < v2.0 that "
-"you want to import, you'll need to import that data manually, as only one "
-"import routine will ever run to prevent data loss."
+"If you have subscription data from Subscribe to Comments Reloaded < v2.0 "
+"that you want to import, you'll need to import that data manually, as only "
+"one import routine will ever run to prevent data loss."
 msgstr ""
-"اگر داده های شما برای افزونه  Subscribe to Comments Reloaded < v2.0 می باشد و "
-"بخواهید داده ها را وارد کنید شما نیاز خواهید داشت به صورت دستی این کار را "
+"اگر داده های شما برای افزونه  Subscribe to Comments Reloaded < v2.0 می باشد "
+"و بخواهید داده ها را وارد کنید شما نیاز خواهید داشت به صورت دستی این کار را "
 "انجام دهید تا مانع از دست دادن داده ها شوید."
-
-#: utils/stcr_upgrade.php:177 utils/stcr_upgrade.php:251
-#: utils/stcr_upgrade.php:400
-msgid ""
-"Please visit <a href=\"options-general.php?page=subscribe-to-comments-"
-"reloaded/options/index.php\">Settings -> Subscribe to Comments</a> to review "
-"your configuration.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img class="
-"\"stcr-loading-animation\" src=\""
-msgstr ""
 
 #: utils/stcr_upgrade.php:250
 msgid ""
@@ -1604,8 +1568,8 @@ msgid ""
 " It is recommended that you now <strong>deactivate</strong> Comment Reply "
 "Notification to prevent confusion between the two plugins."
 msgstr ""
-"توصیه می شود که شما اکنون  Subscribe to Comments را  <strong>غیرفعال</strong> "
-"کنید تا از مشکلات تداخل دو افزونه در امان باشید."
+"توصیه می شود که شما اکنون  Subscribe to Comments را  <strong>غیرفعال</"
+"strong> کنید تا از مشکلات تداخل دو افزونه در امان باشید."
 
 #: utils/stcr_upgrade.php:397
 msgid ""
@@ -1633,10 +1597,10 @@ msgid ""
 "you'll need to import that data manually, as only one import routine will "
 "ever run to prevent data loss."
 msgstr ""
-"اگر داده های اشتراک شما برای افزونه دیگری  Subscribe to Comments یا Subscribe "
-"to Comments Reloaded < v2.0 می باشد و بخواهید داده ها را وارد کنید شما نیاز "
-"خواهید داشت به صورت دستی این کار را انجام دهید تا مانع از دست دادن داده ها "
-"شوید."
+"اگر داده های اشتراک شما برای افزونه دیگری  Subscribe to Comments یا "
+"Subscribe to Comments Reloaded < v2.0 می باشد و بخواهید داده ها را وارد کنید "
+"شما نیاز خواهید داشت به صورت دستی این کار را انجام دهید تا مانع از دست دادن "
+"داده ها شوید."
 
 #: utils/stcr_upgrade.php:399
 msgid ""
@@ -1653,7 +1617,7 @@ msgstr ""
 "url]</code> عوض کنید."
 
 #: utils/stcr_upgrade.php:410 utils/stcr_upgrade.php:504
-#: wp_subscribe_reloaded.php:229
+#: wp_subscribe_reloaded.php:230
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -1674,17 +1638,11 @@ msgid ""
 "stcr/subscribe-to-comments-reloaded/issues\" target=\"_blank\">here</a>."
 msgstr ""
 "اگر به ایراد یا مشکلی برخوردید می توانید آن را  <a href=\"https://github.com/"
-"stcr/subscribe-to-comments-reloaded/issues\" target=\"_blank\">اینجا</a> مطرح "
-"کنید."
+"stcr/subscribe-to-comments-reloaded/issues\" target=\"_blank\">اینجا</a> "
+"مطرح کنید."
 
 #: utils/stcr_upgrade.php:419
 #, fuzzy
-#| msgid ""
-#| "If you want to donate you can do it via <a href=\"\n"
-#| "https://www.paypal.com/cgi-bin/webscr?"
-#| "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
-#| "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
-#| "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
 msgid ""
 "Please consider to make a donation to support the plugin. You can donate via "
 "<i class=\"fab fa-paypal\" aria-hidden=\"true\"></i> <a href=\"\n"
@@ -1698,14 +1656,6 @@ msgstr ""
 "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
 "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
 "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a> اقدام کنید."
-
-#: utils/stcr_upgrade.php:421
-msgid ""
-"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
-"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for detailed "
-"information on plugin changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </"
-"a><img class=\"stcr-loading-animation\" src=\""
-msgstr ""
 
 #: utils/stcr_upgrade.php:432
 msgid ""
@@ -1724,18 +1674,6 @@ msgstr ""
 "این ویرایش شامل تغییرات و اصلاحات بیشماری از قبیل، لغو اشتراک با یک کلیک ، "
 "ویرایشگر متنی پیشرفته جهت ایجاد قالب های ایمیل HTML ، موقعیت چک باکس اشتراک، "
 "و موارد بیشتر است!"
-
-#: utils/stcr_upgrade.php:434 utils/stcr_upgrade.php:449
-#: utils/stcr_upgrade.php:471 utils/stcr_upgrade.php:494
-#: utils/stcr_upgrade.php:515 utils/stcr_upgrade.php:541
-#: utils/stcr_upgrade.php:566 utils/stcr_upgrade.php:592
-#: utils/stcr_upgrade.php:611
-msgid ""
-"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
-"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for a complete "
-"list of changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img class="
-"\"stcr-loading-animation\" src=\""
-msgstr ""
 
 #: utils/stcr_upgrade.php:447
 msgid ""
@@ -1786,15 +1724,15 @@ msgstr ""
 #: utils/stcr_upgrade.php:468 utils/stcr_upgrade.php:491
 msgid ""
 "<strong>New Feature</strong> Now the WordPress Authors can use the "
-"<strong>Subscribe authors</strong> option to autor subscribe to a Custom Post "
-"Type."
+"<strong>Subscribe authors</strong> option to autor subscribe to a Custom "
+"Post Type."
 msgstr ""
 
 #: utils/stcr_upgrade.php:469 utils/stcr_upgrade.php:492
 msgid ""
 "<strong>New Feature</strong> A new field was added under the notification "
-"options to and the management link only by email and not to display it on the "
-"request link page."
+"options to and the management link only by email and not to display it on "
+"the request link page."
 msgstr ""
 
 #: utils/stcr_upgrade.php:484
@@ -1832,13 +1770,6 @@ msgid ""
 "<strong>Improve</strong> Email validation for empty values and using a regex."
 msgstr ""
 
-#: utils/stcr_upgrade.php:528 utils/stcr_upgrade.php:554
-#: utils/stcr_upgrade.php:579 utils/stcr_upgrade.php:605
-#: utils/stcr_upgrade.php:624
-msgid ""
-"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
-msgstr ""
-
 #: utils/stcr_upgrade.php:532
 msgid ""
 "<strong>Fix</strong> Wrong confirmation link when the double check option is "
@@ -1857,15 +1788,9 @@ msgstr ""
 
 #: utils/stcr_upgrade.php:539
 #, fuzzy
-#| msgid ""
-#| "If you want to donate you can do it via <a href=\"\n"
-#| "https://www.paypal.com/cgi-bin/webscr?"
-#| "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
-#| "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
-#| "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
 msgid ""
-"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal\" "
-"aria-hidden=\"true\"></i> <a href=\"\n"
+"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal"
+"\" aria-hidden=\"true\"></i> <a href=\"\n"
 "https://www.paypal.com/cgi-bin/webscr?"
 "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
 "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
@@ -1891,15 +1816,9 @@ msgstr ""
 
 #: utils/stcr_upgrade.php:564
 #, fuzzy
-#| msgid ""
-#| "If you want to donate you can do it via <a href=\"\n"
-#| "https://www.paypal.com/cgi-bin/webscr?"
-#| "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
-#| "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
-#| "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
 msgid ""
-"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal\" "
-"aria-hidden=\"true\"></i> <a href=\"\n"
+"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal"
+"\" aria-hidden=\"true\"></i> <a href=\"\n"
 "https://www.paypal.com/cgi-bin/webscr?"
 "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
 "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
@@ -1929,15 +1848,9 @@ msgstr ""
 #: utils/stcr_upgrade.php:590 utils/stcr_upgrade.php:609
 #: utils/stcr_upgrade.php:629
 #, fuzzy
-#| msgid ""
-#| "If you want to donate you can do it via <a href=\"\n"
-#| "https://www.paypal.com/cgi-bin/webscr?"
-#| "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
-#| "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
-#| "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
 msgid ""
-"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal\" "
-"aria-hidden=\"true\"></i> <a href=\"\n"
+"Help to keep the support alive. You can donate via <i class=\"fab fa-paypal"
+"\" aria-hidden=\"true\"></i> <a href=\"\n"
 "    https://www.paypal.com/cgi-bin/webscr?"
 "cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft"
 "%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF"
@@ -1954,12 +1867,6 @@ msgstr ""
 msgid "You might need to clear you cache !!"
 msgstr ""
 
-#: utils/stcr_upgrade.php:631
-msgid ""
-"Please visit the <a href=\"http://subscribe-reloaded.com/update/stcr-release-"
-"version-"
-msgstr ""
-
 #: utils/stcr_utils.php:172
 msgid "January"
 msgstr ""
@@ -1970,7 +1877,6 @@ msgstr ""
 
 #: utils/stcr_utils.php:174
 #, fuzzy
-#| msgid "Search"
 msgid "March"
 msgstr "جستجو"
 
@@ -2048,7 +1954,6 @@ msgstr ""
 
 #: utils/stcr_utils.php:197
 #, fuzzy
-#| msgid "No"
 msgid "Nov"
 msgstr "نه"
 
@@ -2061,8 +1966,8 @@ msgid ""
 "Notify me of followup comments via e-mail. You can also <a "
 "href='[subscribe_link]'>subscribe</a> without commenting."
 msgstr ""
-"مرا با ایمیل از دیدگاه های آتی این نوشته مطلع کن. همچنین می توانید بدون ارسال "
-"دیدگاه <a href='[subscribe_link]'>مشترک شوید.</a>"
+"مرا با ایمیل از دیدگاه های آتی این نوشته مطلع کن. همچنین می توانید بدون "
+"ارسال دیدگاه <a href='[subscribe_link]'>مشترک شوید.</a>"
 
 #: utils/stcr_utils.php:341
 msgid ""
@@ -2107,9 +2012,9 @@ msgstr ""
 
 #: utils/stcr_utils.php:351
 msgid ""
-"You can follow the discussion on <strong>[post_title]</strong> without having "
-"to leave a comment. Cool, huh? Just enter your email address in the form here "
-"below and you're all set."
+"You can follow the discussion on <strong>[post_title]</strong> without "
+"having to leave a comment. Cool, huh? Just enter your email address in the "
+"form here below and you're all set."
 msgstr ""
 "می تونی بحث درباره <strong>[post_title]</strong> را بدون گذاشتن هیچ دیدگاهی "
 "دنبال کنی. خوشت اومد، هان؟! فقط آدرس ایمیلتو در کادر زیر بنویس و تمام! "
@@ -2177,12 +2082,6 @@ msgstr "لطفاً اشتراک خود در این نوشته را تایید ک
 
 #: utils/stcr_utils.php:362
 #, fuzzy
-#| msgid ""
-#| "You have requested to be notified every time a new comment is added to:\n"
-#| "[post_permalink]\n"
-#| "\n"
-#| "Please confirm your request by clicking on this link:\n"
-#| "[confirm_link]"
 msgid ""
 "You have requested to be notified every time a new comment is added to:\n"
 "<a href='[post_permalink]'>[post_permalink]</a>\n"
@@ -2209,34 +2108,29 @@ msgstr ""
 
 #: utils/stcr_utils.php:365
 #, fuzzy
-#| msgid ""
-#| "You have requested to manage your subscriptions to the articles on "
-#| "[blog_name]. Follow this link to access your personal page:\n"
-#| "[manager_link]"
 msgid ""
 "You have requested to manage your subscriptions to the articles on "
 "[blog_name]. Follow this link to access your personal page:\n"
 "<a href='[manager_link]'>[manager_link]</a>"
 msgstr ""
-"شما درخواست مدیریت اشتراک های خود را در مقالات [blog_name] کرده اید. روی لینک "
-"زیر کلیک نمایید تا به صفحه ی شخصی خود بروید: \n"
+"شما درخواست مدیریت اشتراک های خود را در مقالات [blog_name] کرده اید. روی "
+"لینک زیر کلیک نمایید تا به صفحه ی شخصی خود بروید: \n"
 "[manager_link]"
 
 #: utils/stcr_utils.php:481
 msgid "StCR Notification"
 msgstr "آگاه سازی ها"
 
-#: wp_subscribe_reloaded.php:188
+#: wp_subscribe_reloaded.php:189
 #, fuzzy
-#| msgid "Options"
 msgid "StCR Options"
 msgstr "تنظیمات"
 
-#: wp_subscribe_reloaded.php:1207
+#: wp_subscribe_reloaded.php:1208
 msgid "Don't subscribe"
 msgstr "مشترک نمی شوم"
 
-#: wp_subscribe_reloaded.php:1208
+#: wp_subscribe_reloaded.php:1209
 msgid "All"
 msgstr "دریافت همه دیدگاه های این نوشته"
 
@@ -2244,8 +2138,8 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgstr "حمایت مالی / فنی"
 
 #~ msgid ""
-#~ "You can either <a href=\"%s\">view all the subscriptions</a> or find those "
-#~ "where the"
+#~ "You can either <a href=\"%s\">view all the subscriptions</a> or find "
+#~ "those where the"
 #~ msgstr ""
 #~ "می توانید یا <a href=\"%s\">تمام اشتراک ها را ببینید</a> یا فقط مواردی را "
 #~ "پیدا کنید که "
@@ -2320,11 +2214,11 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 
 #, fuzzy
 #~| msgid ""
-#~| "<p><strong>Note: To get a default template clear all the content and save "
-#~| "the options.</strong></p>"
+#~| "<p><strong>Note: To get a default template clear all the content and "
+#~| "save the options.</strong></p>"
 #~ msgid ""
-#~ "<p style=\"color: #156dc7;\"><strong>Note: To get a default template clear "
-#~ "all the content and save the options.</strong></p>"
+#~ "<p style=\"color: #156dc7;\"><strong>Note: To get a default template "
+#~ "clear all the content and save the options.</strong></p>"
 #~ msgstr ""
 #~ "<p><strong>توجه : برای داشتن یک قالب تمیز، محتوا را پاک کنید و تنظیمات را "
 #~ "ذخیره نمایید.</strong></p>"
@@ -2343,9 +2237,6 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgid "Notify admin"
 #~ msgstr "سرپرست را مطلع کن"
 
-#~ msgid "Let admin subscribe"
-#~ msgstr "به سرپرست اجازه ی مشترک شدن بده"
-
 #~ msgid "days"
 #~ msgstr "روز"
 
@@ -2363,9 +2254,9 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgstr "Subscribe to Comments Reloaded را پشتیبانی کنید"
 
 #~ msgid ""
-#~ "Every contribution that you make is high valuable, so if you consider this "
-#~ "plugin a helpful tool we will use your donation to invest on support and "
-#~ "developing time."
+#~ "Every contribution that you make is high valuable, so if you consider "
+#~ "this plugin a helpful tool we will use your donation to invest on support "
+#~ "and developing time."
 #~ msgstr ""
 #~ "هر گونه مشارکت شما بسیار ارزشمند است، پس چنانچه این افزونه را ارزشمند می "
 #~ "دانید ما از حمایت های مالی شما جهت سرمایه گذاری در پشتیبانی و توسعه "
@@ -2407,9 +2298,9 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ "\"dismiss\" href=\"#\">Got it.  </a><img class=\"stcr-loading-animation\" "
 #~ "src=\""
 #~ msgstr ""
-#~ "<strong>Subscribe to Comments Reloaded:</strong> داده ها در دیتابیس شما به "
-#~ "خوبی تیمار شده اند تا از ایجاد پیغام های ناپخته HTML ممانعت بعمل آید. <a "
-#~ "class=\"dismiss\" href=\"#\">فهمیدم.  </a><img class=\"stcr-loading-"
+#~ "<strong>Subscribe to Comments Reloaded:</strong> داده ها در دیتابیس شما "
+#~ "به خوبی تیمار شده اند تا از ایجاد پیغام های ناپخته HTML ممانعت بعمل آید. "
+#~ "<a class=\"dismiss\" href=\"#\">فهمیدم.  </a><img class=\"stcr-loading-"
 #~ "animation\" src=\""
 
 #~ msgid ""
@@ -2426,8 +2317,8 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgid ""
 #~ "Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
 #~ "comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for "
-#~ "detailed information on plugin changes.<a class=\"dismiss\" href=\"#\">Got "
-#~ "it.  </a><img class=\"stcr-loading-animation\" src=\""
+#~ "detailed information on plugin changes.<a class=\"dismiss\" href=\"#"
+#~ "\">Got it.  </a><img class=\"stcr-loading-animation\" src=\""
 #~ msgstr ""
 #~ "لطفأ <a href=\"https://wordpress.org/plugins/subscribe-to-comments-"
 #~ "reloaded/changelog/\" target=\"_blank\">تغییرات</a> را برای مشاهده جزییات "
@@ -2437,8 +2328,8 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgid ""
 #~ "Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
 #~ "comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for a "
-#~ "complete list of changes.<a class=\"dismiss\" href=\"#\">Got it.  </a><img "
-#~ "class=\"stcr-loading-animation\" src=\""
+#~ "complete list of changes.<a class=\"dismiss\" href=\"#\">Got it.  </"
+#~ "a><img class=\"stcr-loading-animation\" src=\""
 #~ msgstr ""
 #~ "لطفأ <a href=\"https://wordpress.org/plugins/subscribe-to-comments-"
 #~ "reloaded/changelog/\" target=\"_blank\">تغییرات</a> را برای مشاهده کامل "
@@ -2456,8 +2347,8 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ msgstr ""
 #~ "<strong><a href=\"http://comment-mail.com/r/stcr-to-cm/\" target=\"_blank"
 #~ "\">Comment Mail</strong></a> یک افزونه رایگان جدید بر مبنای "
-#~ "<strong>Subscribe to Comments Reloaded</strong> است و شامل تمام قابلیت های "
-#~ "هسته ی StCR می باشد."
+#~ "<strong>Subscribe to Comments Reloaded</strong> است و شامل تمام قابلیت "
+#~ "های هسته ی StCR می باشد."
 
 #~ msgid ""
 #~ "A powerful StCR importer lets you import your StCR settings and "
@@ -2468,20 +2359,20 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 
 #~ msgid ""
 #~ "Need more powerful features to manage your subscriptions but can't wait "
-#~ "for StCR? <a href=\"http://comment-mail.com/r/stcr-to-cm/\" target=\"_blank"
-#~ "\">Take a look at Comment Mail!</a>"
+#~ "for StCR? <a href=\"http://comment-mail.com/r/stcr-to-cm/\" target="
+#~ "\"_blank\">Take a look at Comment Mail!</a>"
 #~ msgstr ""
-#~ "به قابلیت های قدرتمند بیشتری نیاز دارید اما نمی توانید منتظر  StCR بمانید؟ "
-#~ "<a href=\"http://comment-mail.com/r/stcr-to-cm/\" target=\"_blank\">نگاهی "
-#~ "به Comment Mail بیاندازید !</a>"
+#~ "به قابلیت های قدرتمند بیشتری نیاز دارید اما نمی توانید منتظر  StCR "
+#~ "بمانید؟ <a href=\"http://comment-mail.com/r/stcr-to-cm/\" target=\"_blank"
+#~ "\">نگاهی به Comment Mail بیاندازید !</a>"
 
 #~ msgid ""
 #~ "<em>Note: Subscribe to Comments Reloaded remains in active development.</"
 #~ "em><a class=\"dismiss\" href=\"#\">Got it.  </a><img class=\"stcr-loading-"
 #~ "animation\" src=\""
 #~ msgstr ""
-#~ "<em>توجه : Subscribe to Comments Reloaded در توسعه فعال باقی خواهد ماند. </"
-#~ "em><a class=\"dismiss\" href=\"#\">گرفتم  </a><img class=\"stcr-loading-"
+#~ "<em>توجه : Subscribe to Comments Reloaded در توسعه فعال باقی خواهد ماند. "
+#~ "</em><a class=\"dismiss\" href=\"#\">گرفتم  </a><img class=\"stcr-loading-"
 #~ "animation\" src=\""
 
 #~ msgid "StCR Subscription Box Position"
@@ -2562,5 +2453,5 @@ msgstr "دریافت همه دیدگاه های این نوشته"
 #~ "Custom CSS class to associate to the checkbox, if you want to customize "
 #~ "its style."
 #~ msgstr ""
-#~ "کلاس CSS سفارشی برای افزودن به کادر تیک زدنی در صورتی که بخواهید جلوه ی آن "
-#~ "را تغییر دهید."
+#~ "کلاس CSS سفارشی برای افزودن به کادر تیک زدنی در صورتی که بخواهید جلوه ی "
+#~ "آن را تغییر دهید."

@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: subscribe-to-comments-reloaded\n"
-"POT-Creation-Date: 2019-01-17 13:21-0700\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/src\n"
+"POT-Creation-Date: 2019-02-07 08:12:11+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Reedyseth <reedyseth@gmail.com>\n"
 "Language-Team: Ahrale | Atar4U.com <contact@atar4u.com>\n"
@@ -19,6 +20,8 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: includes\n"
+"X-Poedit-SearchPathExcluded-0: bower_components\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #: classes/stcr_i18n.php:51 classes/stcr_i18n.php:56
 msgid " "
@@ -74,7 +77,6 @@ msgstr ""
 
 #: classes/stcr_i18n.php:66
 #, fuzzy
-#| msgid "Next »"
 msgid "Next"
 msgstr "הבא »"
 
@@ -101,7 +103,6 @@ msgstr "ההגדרות שלך עודכנו בהצלחה"
 #: options/options_template.php:46 options/stcr_notifications.php:57
 #: options/stcr_options.php:65 options/stcr_system.php:114
 #, fuzzy
-#| msgid "There was an error updating the following fields:"
 msgid "There was an error updating the options."
 msgstr "היתה שגיאה בעדכון השדות שלהלן:"
 
@@ -485,7 +486,6 @@ msgstr "מזהה פוסט"
 #: options/stcr_manage_subscriptions.php:196
 #: options/stcr_manage_subscriptions.php:210
 #, fuzzy
-#| msgid "Action:"
 msgid "Actions"
 msgstr "פעולה:"
 
@@ -682,9 +682,6 @@ msgstr "כתובת המייל של השולח"
 
 #: options/stcr_notifications.php:82 options/stcr_notifications.php:84
 #, fuzzy
-#| msgid ""
-#| "Name to use for the \"from\" field when sending a new notification to the "
-#| "user."
 msgid ""
 "Name to use for the 'from' field when sending a new notification to the user."
 msgstr "השם לשימוש בשדה \"מאת\" בשליחת הודעה חדשה למשתמש."
@@ -720,10 +717,6 @@ msgstr "הודעת התראה"
 
 #: options/stcr_notifications.php:148 options/stcr_notifications.php:150
 #, fuzzy
-#| msgid ""
-#| "Content of the notification email. Allowed tags: [post_title], "
-#| "[comment_permalink], [comment_author], [comment_content], "
-#| "[post_permalink], [manager_link]"
 msgid ""
 "Content of the notification email. Allowed tags: [post_title], "
 "[comment_permalink], [comment_author], [comment_content], [post_permalink], "
@@ -800,7 +793,7 @@ msgstr ""
 
 #: options/stcr_options.php:98 options/stcr_options.php:100
 msgid ""
-"This option will disable the StCR checkbox or dropdown in you comment form. "
+"This option will disable the StCR checkbox or dropdown in your comment form. "
 "You should leave it to Yes always."
 msgstr ""
 
@@ -884,13 +877,18 @@ msgid ""
 "Notify users when a new trackback or pingback is added to the discussion."
 msgstr "שלח הודעה למשתמשים כאשר נוסף טראקבאק או פינגאק לדיון."
 
-#: options/stcr_options.php:300 options/stcr_options.php:327
+#: options/stcr_options.php:300
 msgid "Track all subscriptions"
 msgstr "מעקב אחר כל הרשמות"
 
 #: options/stcr_options.php:317 options/stcr_options.php:319
 msgid "Notify the administrator when users subscribe without commenting."
 msgstr "הודע למנהל כאשר משתמשים נרשמים ללא כתיבת תגובה."
+
+#: options/stcr_options.php:327
+#, fuzzy
+msgid "Let Admin Subscribe"
+msgstr "אפשר למנהל להירשם"
 
 #: options/stcr_options.php:344 options/stcr_options.php:346
 msgid "Let the administrator subscribe to comments when logged in."
@@ -911,7 +909,7 @@ msgstr ""
 #: options/stcr_options.php:398 options/stcr_options.php:400
 msgid ""
 "Let you control the inclusion of the Font Awesome into your site. Disable if "
-"you theme already add this into your site."
+"your theme already add this into your site."
 msgstr ""
 
 #: options/stcr_options.php:408
@@ -958,7 +956,6 @@ msgid "<strong>No</strong>  = Only delete the StCR Options."
 msgstr ""
 
 #: options/stcr_support.php:20
-#, php-format
 msgid ""
 "Support the developer, You can donate via <a href=\"%s\"  rel=\"external\" "
 "target=\"_blank\"><i class=\"fab fa-paypal\" aria-hidden=\"true\"></i> "
@@ -983,19 +980,11 @@ msgstr ""
 
 #: options/stcr_support.php:29
 #, fuzzy
-#| msgid "You can help"
 msgid "You can still help"
 msgstr "אפשר לעזור"
 
 #: options/stcr_support.php:30
 #, fuzzy
-#| msgid ""
-#| "If you don't want to donate money, please consider blogging about my "
-#| "plugin with a link to the plugin's page. Please let your readers know "
-#| "what makes your blog better. You can also contribute donating your time: "
-#| "do not hesitate to send me bug reports, your localization files, ideas on "
-#| "how to improve <strong>Subscribe to Comments Reloaded</strong> and so on. "
-#| "Whatever you do, thanks for using my plugin!"
 msgid ""
 "Please consider blogging about my plugin with a link to the plugin's page. "
 "Please let your readers know what makes your blog better. You can also "
@@ -1052,7 +1041,6 @@ msgstr ""
 "בוורדפרס."
 
 #: options/stcr_support.php:43
-#, php-format
 msgid ""
 "The options on the WordPress forum at very limited to share media "
 "information, so I urge you to use GitHub to report any issue, you will get a "
@@ -1115,7 +1103,7 @@ msgstr ""
 msgid "Clean Up Log Archive"
 msgstr ""
 
-#: options/stcr_system.php:203
+#: options/stcr_system.php:202
 msgid ""
 "If you want to clean up the log archive please click the following button"
 msgstr ""
@@ -1151,7 +1139,6 @@ msgid "WordPress Environment"
 msgstr ""
 
 #: options/stcr_system.php:290
-#, php-format
 msgid "%s - We recommend setting memory to at least 64 MB. See: %s"
 msgstr ""
 
@@ -1217,18 +1204,17 @@ msgstr ""
 
 #: options/stcr_system.php:397 options/stcr_system.php:398
 #: options/stcr_system.php:399 options/stcr_system.php:400
-#: options/stcr_system.php:401 options/stcr_system.php:516
-#: options/stcr_system.php:527 options/stcr_system.php:537
+#: options/stcr_system.php:401 options/stcr_system.php:518
+#: options/stcr_system.php:529 options/stcr_system.php:539
 msgid "Not Available"
 msgstr ""
 
+#. translators: %s: SSL connection response
 #: options/stcr_system.php:414
-#, php-format
 msgid "Connection uses %s"
 msgstr ""
 
 #: options/stcr_system.php:431
-#, php-format
 msgid "%s - We recommend a minimum PHP version of 5.6. See: %s"
 msgstr ""
 
@@ -1242,116 +1228,109 @@ msgid ""
 "exist."
 msgstr ""
 
-#: options/stcr_system.php:458
-#, php-format
+#: options/stcr_system.php:460
 msgid "%s - We recommend a minimum cURL version of 7.40."
 msgstr ""
 
-#: options/stcr_system.php:492
-#, php-format
+#: options/stcr_system.php:494
 msgid "%s - We recommend a minimum MySQL version of 5.6. See: %s"
 msgstr ""
 
-#: options/stcr_system.php:492
+#: options/stcr_system.php:494
 msgid "WordPress Requirements"
 msgstr ""
 
-#: options/stcr_system.php:507
-#, php-format
+#: options/stcr_system.php:509
 msgid "Default timezone is %s - it should be UTC"
 msgstr ""
 
-#: options/stcr_system.php:523
-#, php-format
+#: options/stcr_system.php:525
 msgid ""
 "Your server does not have the %s class enabled - HTML/Multipart emails, and "
 "also some extensions, will not work without DOMDocument."
 msgstr ""
 
-#: options/stcr_system.php:534
-#, php-format
+#: options/stcr_system.php:536
 msgid ""
 "Your server does not support the %s function - this is used for file "
 "compression and decompression."
 msgstr ""
 
-#: options/stcr_system.php:551
+#: options/stcr_system.php:553
 msgid "TLS Connection"
 msgstr ""
 
-#: options/stcr_system.php:555
+#: options/stcr_system.php:557
 msgid "TLS Rating"
 msgstr ""
 
-#: options/stcr_system.php:559
+#: options/stcr_system.php:561
 msgid "Server Info"
 msgstr ""
 
-#: options/stcr_system.php:563
+#: options/stcr_system.php:565
 msgid "PHP Version"
 msgstr ""
 
-#: options/stcr_system.php:567
+#: options/stcr_system.php:569
 msgid "PHP Post Max Size"
 msgstr ""
 
-#: options/stcr_system.php:571
+#: options/stcr_system.php:573
 msgid "PHP Max Execution Time"
 msgstr ""
 
-#: options/stcr_system.php:575
+#: options/stcr_system.php:577
 msgid "PHP Max Input Vars"
 msgstr ""
 
-#: options/stcr_system.php:579
+#: options/stcr_system.php:581
 msgid "PHP Max Upload Size"
 msgstr ""
 
-#: options/stcr_system.php:583
+#: options/stcr_system.php:585
 msgid "cURL Version"
 msgstr ""
 
-#: options/stcr_system.php:587
+#: options/stcr_system.php:589
 msgid "MySQL Version"
 msgstr ""
 
-#: options/stcr_system.php:591
+#: options/stcr_system.php:593
 msgid "Default Timezone is UTC"
 msgstr ""
 
-#: options/stcr_system.php:595
+#: options/stcr_system.php:597
 msgid "DOMDocument"
 msgstr ""
 
-#: options/stcr_system.php:599
+#: options/stcr_system.php:601
 msgid "gzip"
 msgstr ""
 
-#: options/stcr_system.php:603
+#: options/stcr_system.php:605
 msgid "GD Graphics Library"
 msgstr ""
 
-#: options/stcr_system.php:627
+#: options/stcr_system.php:629
 #, fuzzy
-#| msgid "Active"
 msgid "Active Plugins"
 msgstr "פעיל"
 
-#: options/stcr_system.php:654 options/stcr_system.php:711
+#: options/stcr_system.php:656 options/stcr_system.php:713
 msgid "Visit plugin homepage"
 msgstr ""
 
-#: options/stcr_system.php:663 options/stcr_system.php:720
+#: options/stcr_system.php:665 options/stcr_system.php:722
 msgid "Visit author homepage"
 msgstr ""
 
-#: options/stcr_system.php:667 options/stcr_system.php:724
-#, php-format
+#: options/stcr_system.php:669 options/stcr_system.php:726
 msgctxt "by author"
 msgid "by %s"
 msgstr ""
 
-#: options/stcr_system.php:684
+#: options/stcr_system.php:686
 #, fuzzy
 msgid "Inactive Plugins"
 msgstr "פעיל"
@@ -1386,7 +1365,6 @@ msgstr ""
 
 #: templates/author.php:97 templates/user.php:115
 #, fuzzy
-#| msgid "Don't subscribe"
 msgid "Unsubscribe"
 msgstr "א להירשם"
 
@@ -1396,7 +1374,7 @@ msgid "All comments"
 msgstr "כל התגובות החדשות"
 
 #: templates/author.php:100 templates/user.php:118
-#: wp_subscribe_reloaded.php:1209
+#: wp_subscribe_reloaded.php:1210
 msgid "Replies to my comments"
 msgstr "תגובות להערות שלי"
 
@@ -1450,38 +1428,38 @@ msgid "You have request to manage another email address and this is forbidden."
 msgstr ""
 
 #: utils/stcr_manage.php:355 utils/stcr_manage.php:356 utils/stcr_utils.php:347
-#: wp_subscribe_reloaded.php:156
+#: wp_subscribe_reloaded.php:157
 msgid "Manage subscriptions"
 msgstr "Manage subscriptions"
 
 #: utils/stcr_manage.php:361 utils/stcr_manage.php:362
-#: wp_subscribe_reloaded.php:157
+#: wp_subscribe_reloaded.php:158
 msgid "Comment Form"
 msgstr "טופס תגובה"
 
 #: utils/stcr_manage.php:367 utils/stcr_manage.php:368
-#: wp_subscribe_reloaded.php:158
+#: wp_subscribe_reloaded.php:159
 msgid "Management Page"
 msgstr "עמוד הניהול"
 
 #: utils/stcr_manage.php:373 utils/stcr_manage.php:374
-#: wp_subscribe_reloaded.php:159
+#: wp_subscribe_reloaded.php:160
 msgid "Notifications"
 msgstr "הודעות"
 
 #: utils/stcr_manage.php:379 utils/stcr_manage.php:380
-#: wp_subscribe_reloaded.php:160 wp_subscribe_reloaded.php:162
+#: wp_subscribe_reloaded.php:161 wp_subscribe_reloaded.php:163
 msgid "Options"
 msgstr "אפשרויות"
 
 #: utils/stcr_manage.php:396 utils/stcr_manage.php:397
-#: wp_subscribe_reloaded.php:161
+#: wp_subscribe_reloaded.php:162
 #, fuzzy
 msgid "Support"
 msgstr "פורום התמיכה הרשמי"
 
 #: utils/stcr_manage.php:408 utils/stcr_manage.php:409
-#: wp_subscribe_reloaded.php:190
+#: wp_subscribe_reloaded.php:191
 msgid "StCR System"
 msgstr ""
 
@@ -1518,14 +1496,6 @@ msgstr "תרום קצת!"
 msgid "Important Notice"
 msgstr "הודעה חשובה"
 
-#: utils/stcr_upgrade.php:120
-msgid ""
-"<strong>Subscribe to Comments Reloaded:</strong> The information in your "
-"database has been sanitized to prevent the raw html messages. <a class="
-"\"dismiss\" href=\"#\">Dismiss.  </a><img class=\"stcr-loading-animation\" "
-"src=\""
-msgstr ""
-
 #: utils/stcr_upgrade.php:175
 #, fuzzy
 msgid ""
@@ -1552,15 +1522,6 @@ msgid ""
 msgstr ""
 "אם יש לך נתוני הרשמה מ Subscribe to Comments Reloaded < v2.0 ליבוא, יהיה "
 "צורך לייבא אותם ידנית, כי רק שגרת יבוא אחת תפעל, כדי למנוע אבדן נתונים."
-
-#: utils/stcr_upgrade.php:177 utils/stcr_upgrade.php:251
-#: utils/stcr_upgrade.php:400
-msgid ""
-"Please visit <a href=\"options-general.php?page=subscribe-to-comments-"
-"reloaded/options/index.php\">Settings -> Subscribe to Comments</a> to review "
-"your configuration.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img class="
-"\"stcr-loading-animation\" src=\""
-msgstr ""
 
 #: utils/stcr_upgrade.php:250
 #, fuzzy
@@ -1625,7 +1586,7 @@ msgstr ""
 "בהתאמה."
 
 #: utils/stcr_upgrade.php:410 utils/stcr_upgrade.php:504
-#: wp_subscribe_reloaded.php:229
+#: wp_subscribe_reloaded.php:230
 msgid "Settings"
 msgstr "הגדרות"
 
@@ -1660,14 +1621,6 @@ msgid ""
 "%3abtn_donate_LG%2egif%3aNonHosted\" target=\"_blank\">PayPal</a>."
 msgstr ""
 
-#: utils/stcr_upgrade.php:421
-msgid ""
-"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
-"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for detailed "
-"information on plugin changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </"
-"a><img class=\"stcr-loading-animation\" src=\""
-msgstr ""
-
 #: utils/stcr_upgrade.php:432
 msgid ""
 "<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
@@ -1679,18 +1632,6 @@ msgid ""
 "This version includes many changes and fixes to improve your experience with "
 "the plugin, including One Click Unsubscribe, Rich Text Editor to create HTML "
 "email templates, Subscription Checkbox position, and more!"
-msgstr ""
-
-#: utils/stcr_upgrade.php:434 utils/stcr_upgrade.php:449
-#: utils/stcr_upgrade.php:471 utils/stcr_upgrade.php:494
-#: utils/stcr_upgrade.php:515 utils/stcr_upgrade.php:541
-#: utils/stcr_upgrade.php:566 utils/stcr_upgrade.php:592
-#: utils/stcr_upgrade.php:611
-msgid ""
-"Please visit the <a href=\"https://wordpress.org/plugins/subscribe-to-"
-"comments-reloaded/changelog/\" target=\"_blank\">Changelog</a> for a "
-"complete list of changes.<a class=\"dismiss\" href=\"#\">Dismiss.  </a><img "
-"class=\"stcr-loading-animation\" src=\""
 msgstr ""
 
 #: utils/stcr_upgrade.php:447
@@ -1783,13 +1724,6 @@ msgid ""
 "<strong>Improve</strong> Email validation for empty values and using a regex."
 msgstr ""
 
-#: utils/stcr_upgrade.php:528 utils/stcr_upgrade.php:554
-#: utils/stcr_upgrade.php:579 utils/stcr_upgrade.php:605
-#: utils/stcr_upgrade.php:624
-msgid ""
-"<strong>Subscribe to Comments Reloaded</strong> has been updated to version "
-msgstr ""
-
 #: utils/stcr_upgrade.php:532
 msgid ""
 "<strong>Fix</strong> Wrong confirmation link when the double check option is "
@@ -1869,12 +1803,6 @@ msgstr ""
 msgid "You might need to clear you cache !!"
 msgstr ""
 
-#: utils/stcr_upgrade.php:631
-msgid ""
-"Please visit the <a href=\"http://subscribe-reloaded.com/update/stcr-release-"
-"version-"
-msgstr ""
-
 #: utils/stcr_utils.php:172
 msgid "January"
 msgstr ""
@@ -1885,7 +1813,6 @@ msgstr ""
 
 #: utils/stcr_utils.php:174
 #, fuzzy
-#| msgid "Search"
 msgid "March"
 msgstr "חפש"
 
@@ -1963,7 +1890,6 @@ msgstr ""
 
 #: utils/stcr_utils.php:197
 #, fuzzy
-#| msgid "No"
 msgid "Nov"
 msgstr "לא"
 
@@ -2088,12 +2014,6 @@ msgstr "נא לאשר את ההרשמה שלך ל [post_title]"
 
 #: utils/stcr_utils.php:362
 #, fuzzy
-#| msgid ""
-#| "You have requested to be notified every time a new comment is added to:\n"
-#| "[post_permalink]\n"
-#| "\n"
-#| "Please confirm your request by clicking on this link:\n"
-#| "[confirm_link]"
 msgid ""
 "You have requested to be notified every time a new comment is added to:\n"
 "<a href='[post_permalink]'>[post_permalink]</a>\n"
@@ -2119,10 +2039,6 @@ msgstr ""
 
 #: utils/stcr_utils.php:365
 #, fuzzy
-#| msgid ""
-#| "You have requested to manage your subscriptions to the articles on "
-#| "[blog_name]. Follow this link to access your personal page:\n"
-#| "[manager_link]"
 msgid ""
 "You have requested to manage your subscriptions to the articles on "
 "[blog_name]. Follow this link to access your personal page:\n"
@@ -2137,100 +2053,16 @@ msgstr ""
 msgid "StCR Notification"
 msgstr "הודעות"
 
-#: vendor/bootstrap/dist/js/bootstrap.bundle.min.js:6
-#: vendor/bootstrap/dist/js/bootstrap.min.js:6
-msgid "[data-toggle=\"collapse\"][href=\"#"
-msgstr ""
-
-#: vendor/bootstrap/dist/js/bootstrap.bundle.min.js:6
-#: vendor/bootstrap/dist/js/bootstrap.min.js:6
-msgid "body"
-msgstr ""
-
-#: vendor/bootstrap/dist/js/bootstrap.bundle.min.js:6
-#: vendor/bootstrap/dist/js/bootstrap.min.js:6
-msgid ", "
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:37
-msgid "sEcho"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:37
-msgid "iColumns"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:37
-msgid "sColumns"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:37
-msgid "iDisplayStart"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:37
-msgid "iDisplayLength"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "mDataProp_"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
+#: wp_subscribe_reloaded.php:189
 #, fuzzy
-#| msgid "Search"
-msgid "sSearch_"
-msgstr "חפש"
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "bRegex_"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-#, fuzzy
-#| msgid "Search"
-msgid "bSearchable_"
-msgstr "חפש"
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "bSortable_"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-#, fuzzy
-#| msgid "Search"
-msgid "sSearch"
-msgstr "חפש"
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "bRegex"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "iSortCol_"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:38
-msgid "sSortDir_"
-msgstr ""
-
-#: vendor/datatables/media/js/jquery.dataTables.min.js:39
-#, fuzzy
-#| msgid "Settings"
-msgid "iSortingCols"
-msgstr "הגדרות"
-
-#: wp_subscribe_reloaded.php:188
-#, fuzzy
-#| msgid "Options"
 msgid "StCR Options"
 msgstr "אפשרויות"
 
-#: wp_subscribe_reloaded.php:1207
+#: wp_subscribe_reloaded.php:1208
 msgid "Don't subscribe"
 msgstr "א להירשם"
 
-#: wp_subscribe_reloaded.php:1208
+#: wp_subscribe_reloaded.php:1209
 msgid "All"
 msgstr "הכול"
 
@@ -2323,9 +2155,6 @@ msgstr "הכול"
 
 #~ msgid "Notify admin"
 #~ msgstr "הודע למנהל"
-
-#~ msgid "Let admin subscribe"
-#~ msgstr "אפשר למנהל להירשם"
 
 #~ msgid "days"
 #~ msgstr "ימים"

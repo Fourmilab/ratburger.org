@@ -6,7 +6,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit;
 }
 
-define( __NAMESPACE__.'\\VERSION','190117' );
+define( __NAMESPACE__.'\\VERSION','190214' );
 define( __NAMESPACE__.'\\DEVELOPMENT', true );
 define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
 
@@ -150,6 +150,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
         public function display_admin_header ()
         {
             $slug = "stcr_manage_subscriptions";
+            global $wp_locale;
             $current_page = isset( $_GET['page'] ) ? $_GET['page'] : '';
             // Define the panels
             $array_pages = array(
