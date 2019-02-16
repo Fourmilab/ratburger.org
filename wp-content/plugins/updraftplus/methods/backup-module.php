@@ -271,6 +271,8 @@ abstract class UpdraftPlus_BackupModule {
 
 	/**
 	 * Supplies the list of keys for options to be saved in the backup job.
+	 *
+	 * @return Array
 	 */
 	public function get_credentials() {
 		$keys = array('updraft_ssl_disableverify', 'updraft_ssl_nossl', 'updraft_ssl_useservercerts');

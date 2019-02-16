@@ -59,7 +59,7 @@ if (!class_exists('UpdraftPlus_Remote_Communications')) :
 class UpdraftPlus_Remote_Communications {
 
 	// Version numbers relate to versions of this PHP library only (i.e. it's not a protocol support number, and version numbers of other compatible libraries (e.g. JavaScript) are not comparable)
-	public $version = '1.4.16';
+	public $version = '1.4.17';
 
 	private $key_name_indicator;
 
@@ -646,6 +646,7 @@ class UpdraftPlus_Remote_Communications {
 			} else {
 				$verify = true;
 			}
+			
 			$guzzle_options['verify'] = apply_filters('udrpc_guzzle_verify', $verify);
 
 			if (!empty($http_credentials['username'])) {
@@ -711,6 +712,9 @@ class UpdraftPlus_Remote_Communications {
 
 		$post_options = apply_filters('udrpc_post_options', $post_options, $command, $data, $timeout, $this);
 
+		// Make the memory available - may be useful if the message was large
+		unset($data);
+		
 		try {
 			$post = $this->http_post($post_options);
 		} catch (Exception $e) {

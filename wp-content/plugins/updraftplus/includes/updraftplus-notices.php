@@ -422,7 +422,7 @@ class UpdraftPlus_Notices extends Updraft_Notices {
 	
 		if (!has_filter('updraftplus_com_link') && isset($advert_information['button_link']) && false !== strpos($advert_information['button_link'], '//updraftplus.com')) {
 			$advert_information['button_link'] = trailingslashit($advert_information['button_link']).'?afref='.$this->self_affiliate_id;
-			if (isset($advert_information['campaign'])) $advert_information['button_link'] .= '?utm_source=updraftplus&utm_medium=banner&utm_campaign='.$advert_information['campaign'].'&utm_term=New&utm_content='.$advert_information['campaign'];
+			if (isset($advert_information['campaign'])) $advert_information['button_link'] .= '&utm_source=updraftplus&utm_medium=banner&utm_campaign='.$advert_information['campaign'];
 		}
 
 		include_once(UPDRAFTPLUS_DIR.'/admin.php');

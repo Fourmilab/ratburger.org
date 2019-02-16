@@ -232,6 +232,7 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			case 'us-west-2':
 			case 'eu-west-2':
 			case 'eu-west-3':
+			case 'eu-north-1':
 			case 'ap-southeast-1':
 			case 'ap-southeast-2':
 			case 'ap-northeast-1':
@@ -1026,6 +1027,8 @@ class UpdraftPlus_BackupModule_s3 extends UpdraftPlus_BackupModule {
 			
 				// On this 'first try', we trap this particular condition. So, whatever S3 network call it happens on, we'll eventually get it here on the resumption.
 				if (false !== strpos($e->getMessage(), 'The provided token has expired')) {
+				
+					global $updraftplus;
 				
 					$updraftplus->log($e->getMessage().": Requesting new credentials");
 							

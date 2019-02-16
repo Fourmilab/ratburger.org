@@ -499,7 +499,35 @@ class UpdraftPlus_Admin {
 		// Next, the actions that only come on the UpdraftPlus page
 		if (UpdraftPlus_Options::admin_page() != $pagenow || empty($_REQUEST['page']) || 'updraftplus' != $_REQUEST['page']) return;
 		$this->setup_all_admin_notices_udonly($service);
-		
+
+		/**
+		 * Initialise checkout embed
+		 */
+		global $updraftplus_checkout_embed;
+
+		if (!class_exists('Updraft_Checkout_Embed')) include_once UPDRAFTPLUS_DIR.'/includes/checkout-embed/class-udp-checkout-embed.php';
+
+		// Create an empty list (usefull for testing, thanks to the filter bellow)
+		$checkout_embed_products = array();
+
+		// get products from JSON file.
+		$checkout_embed_product_file = UPDRAFTPLUS_DIR.'/includes/checkout-embed/products.json';
+		if (file_exists($checkout_embed_product_file)) {
+			$checkout_embed_products = json_decode(file_get_contents($checkout_embed_product_file));
+		}
+
+		$checkout_embed_products = apply_filters('updraftplus_checkout_embed_products', $checkout_embed_products);
+
+		// Instanciate Checkout Embed
+		if (!empty($checkout_embed_products)) {
+			$updraftplus_checkout_embed = new Updraft_Checkout_Embed(
+				'updraftplus',                                              // plugin name
+				UpdraftPlus_Options::admin_page_url().'?page=updraftplus', 	// return url
+				$checkout_embed_products,                                   // products list
+				UPDRAFTPLUS_URL.'/includes'                                 // base_url
+			);
+		}
+
 		add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'), 99999);
 
 		$udp_saved_version = UpdraftPlus_Options::get_updraft_option('updraftplus_version');
@@ -966,7 +994,7 @@ class UpdraftPlus_Admin {
 		if (!class_exists('UpdraftPlus_Addon_Autobackup')) {
 			if (defined('UPDRAFTPLUS_NOADS_B')) return;
 		}
-		
+
 		?>
 		<?php
 			if (!class_exists('UpdraftPlus_Addon_Autobackup')) {
@@ -5241,11 +5269,11 @@ ENDHERE;
 	}
 
 	/**
-	 * This function will build and return the UpdraftPlus tempoaray clone version select widget
+	 * This function will build and return the UpdraftPlus tempoaray clone ui widget
 	 *
-	 * @return string - the UpdraftPlus tempoary clone version select widget
+	 * @return string - the UpdraftPlus tempoary clone ui widget
 	 */
-	public function updraftplus_clone_versions() {
+	public function updraftplus_clone_ui_widget() {
 		$output = '<p class="updraftplus-option updraftplus-option-inline php-version">';
 		$output .= '<span class="updraftplus-option-label">'.sprintf(__('%s version:', 'updraftplus'), 'PHP').'</span> ';
 		$output .= $this->output_select_data($this->php_versions, 'php');
@@ -5258,6 +5286,16 @@ ENDHERE;
 		$output .= ' <span class="updraftplus-option-label">'.__('Clone region:', 'updraftplus').'</span> ';
 		$output .= $this->output_select_data($this->regions, 'region');
 		$output .= '</p>';
+		if (defined('UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT') && UPDRAFTPLUS_UPDRAFTCLONE_DEVELOPMENT) {
+			$output .= '<p class="updraftplus-option updraftplus-option-inline updraftclone-branch">';
+			$output .= ' <span class="updraftplus-option-label">UpdraftClone Branch:</span> ';
+			$output .= '<input id="updraftplus_clone_updraftclone_branch" type="text" size="36" name="updraftplus_clone_updraftclone_branch" value="">';
+			$output .= '</p>';
+			$output .= '<p class="updraftplus-option updraftplus-option-inline updraftplus-branch">';
+			$output .= ' <span class="updraftplus-option-label">UpdraftPlus Branch:</span> ';
+			$output .= '<input id="updraftplus_clone_updraftplus_branch" type="text" size="36" name="updraftplus_clone_updraftplus_branch" value="">';
+			$output .= '</p>';
+		}
 		$output .= '<p class="updraftplus-option limit-to-admins">';
 		$output .= '<input type="checkbox" class="updraftplus_clone_admin_login_options" id="" name="updraftplus_clone_admin_login_options" value="1" checked="checked">';
 		$output .= '<label for="updraftplus_clone_admin_login_options" class="updraftplus_clone_admin_login_options_label">'.__('Forbid non-administrators to login to WordPress on your clone', 'updraftplus').'</label>';

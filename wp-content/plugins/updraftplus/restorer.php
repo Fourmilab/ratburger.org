@@ -1900,11 +1900,13 @@ ENDHERE;
 	}
 
 	/**
-	 * First added in UD 1.9.47. We have only ever had reports of cached stuff from WP Super Cache being retained, so, being cautious, we will only clear that for now
+	 * First added in UD 1.9.47.
 	 */
 	public function clear_cache() {
 		// Functions called here need to not assume that the relevant plugin actually exists - they should check for any functions they intend to call, before calling them.
 		$this->clear_cache_wpsupercache();
+		// It should be harmless to just purge the standard directory anyway (it's not backed up by default)
+		if (is_dir(WP_CONTENT_DIR.'/cache')) UpdraftPlus_Filesystem_Functions::remove_local_directory(WP_CONTENT_DIR.'/cache', true);
 	}
 
 	/**

@@ -459,7 +459,20 @@ class UpdraftCentral_Updates_Commands extends UpdraftCentral_Commands {
 				$all_items = get_plugins();
 				break;
 			case 'theme':
-				$all_items = get_themes();
+				if (function_exists('wp_get_themes')) {
+					$themes = wp_get_themes();
+					if (!empty($themes)) {
+						// We make sure that the return key matched the previous
+						// key from "get_themes", otherwise, no updates will be found
+						// even if it does have one. "get_themes" returns the name of the
+						// theme as the key while "wp_get_themes" returns the slug.
+						foreach ($themes as $slug => $theme) {
+							$all_items[$theme->Name] = $theme;
+						}
+					}
+				} else {
+					$all_items = get_themes();
+				}
 				break;
 			default:
 				break;

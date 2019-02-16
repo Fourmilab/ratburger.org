@@ -1940,6 +1940,16 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 }
 
 jQuery(document).ready(function($) {
+	
+	// actioned When the checkout embed is complete
+	$(document).on('udp/checkout/done', function(e, data) {
+		if (data.hasOwnProperty('product') && 'updraftpremium' === data.product && 'complete' === data.status) {
+			$('.premium-upgrade-purchase-success').show();
+			$('.updraft_feat_table').closest('section').hide();
+			$('.updraft_premium_cta__action').hide();
+		}
+	});
+
 	// Advanced settings new menu button listeners
 	$('.expertmode .advanced_settings_container .advanced_tools_button').click(function() {
 		advanced_tool_hide($(this).attr("id"));
@@ -2232,6 +2242,8 @@ jQuery(document).ready(function($) {
 		var php_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_php_options').val();
 		var wp_version = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_wp_options').val();
 		var region = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_region_options').val();
+		var updraftclone_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftclone_branch').val();
+		var updraftplus_branch = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_updraftplus_branch').val();
 		var admin_only = $('.updraftplus_clone_admin_login_options').is(':checked');
 		
 		var options = {
@@ -2243,6 +2255,8 @@ jQuery(document).ready(function($) {
 					wp_version: wp_version,
 					region: region,
 					admin_only: admin_only,
+					updraftclone_branch: ('undefined' === typeof updraftclone_branch) ? '' : updraftclone_branch,
+					updraftplus_branch: ('undefined' === typeof updraftplus_branch) ? '' : updraftplus_branch
 				}
 			}
 		};
@@ -3971,7 +3985,9 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-});
+
+
+}); // End ready Vault
 
 // Next: the encrypted database pluploader
 jQuery(document).ready(function($) {

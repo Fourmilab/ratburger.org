@@ -8,6 +8,9 @@ abstract class UpdraftPlus_RemoteSend {
 
 	protected $php_events = array();
 
+	/**
+	 * Class constructor
+	 */
 	public function __construct() {
 		add_action('updraft_migrate_newdestination', array($this, 'updraft_migrate_newdestination'));
 		add_action('updraft_remote_ping_test', array($this, 'updraft_remote_ping_test'));
@@ -19,6 +22,9 @@ abstract class UpdraftPlus_RemoteSend {
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
 	}
 
+	/**
+	 * Runs upon the WP action plugins_loaded
+	 */
 	public function plugins_loaded() {
 
 		global $updraftplus;
@@ -239,7 +245,8 @@ abstract class UpdraftPlus_RemoteSend {
 			array_push($initial_jobdata, 'remotesend_info', $remotesites[$site_id]);
 
 			// Reduce to 100MB if it was above. Since the user isn't expected to directly manipulate these zip files, the potentially higher number of zip files doesn't matter.
-			if ($split_every > 100) array_push($initial_jobdata, 'split_every', 100);
+			$split_every_key = array_search('split_every', $initial_jobdata) + 1;
+			if ($split_every > 100) $initial_jobdata[$split_every_key] = 100;
 
 		}
 
