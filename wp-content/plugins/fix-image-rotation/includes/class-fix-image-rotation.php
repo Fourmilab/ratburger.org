@@ -94,6 +94,57 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 		public function register_hooks() {
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'filter_wp_handle_upload_prefilter' ), 10, 1 );
 			add_filter( 'wp_handle_upload', array( $this, 'filter_wp_handle_upload' ), 1, 3 );
+			add_action( 'after_plugin_row', array( $this, 'action_after_plugin_row' ), 1, 3 );
+		}
+
+		/**
+		 * Displays status for php-mod exif if enabled or not on server
+		 * This status is displayed in admin area of WP - Plugins List
+		 *
+		 * @since 2.2
+		 *
+		 * @access public
+		 *
+		 * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
+		 *
+		 * @param array  $plugin_data An array of plugin data.
+		 *
+		 * @param string $status Status of the plugin.
+		 *
+		 * @return void
+		 */
+		public function action_after_plugin_row( $plugin_file, $plugin_data, $status ) {
+
+			// exit early if this row does not belong to this plugin.
+			if ( ! isset( $plugin_data['slug'] ) || stristr( plugin_basename( __FILE__ ), DIRECTORY_SEPARATOR, true ) !== $plugin_data['slug'] ) {
+				return;
+			}
+
+			$php_extension = extension_loaded( 'exif' ) ? __( 'php exif module loaded', 'fix-image-rotation' ) : __( 'no php exif module', 'fix-image-rotation' );
+			$exif_callable = is_callable( 'exif_read_data' ) ? __( 'exif_read_data callable', 'fix-image-rotation' ) : __( 'exif_read_data not callable', 'fix-image-rotation' );
+
+			printf(
+				'<style>
+				.exif-status-inline {
+					color: #FFF;
+					font-size: 0.9em;
+					text-transform: uppercase;
+					background-color: #444;
+					padding: 1px 6px;
+					border-radius: 3px;
+					cursor: default;
+				}
+				</style>
+				<tr>
+					<th>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>
+						<span class="exif-status-inline">%s</span> <span class="exif-status-inline">%s</span>
+					</td>
+				</tr>',
+				esc_html( $php_extension ),
+				esc_html( $exif_callable )
+			);
 		}
 
 		/**
@@ -118,7 +169,7 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 		 */
 		public function filter_wp_handle_upload( $file ) {
 			$suffix = substr( $file['file'], strrpos( $file['file'], '.', -1 ) + 1 );
-			if ( in_array( $suffix, array( 'jpg', 'jpeg', 'tiff' ), true ) ) {
+			if ( in_array( strtolower( $suffix ), array( 'jpg', 'jpeg', 'tiff' ), true ) ) {
 				$this->fix_image_orientation( $file['file'] );
 			}
 			return $file;
@@ -140,7 +191,7 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 		 */
 		public function filter_wp_handle_upload_prefilter( $file ) {
 			$suffix = substr( $file['name'], strrpos( $file['name'], '.', -1 ) + 1 );
-			if ( in_array( $suffix, array( 'jpg', 'jpeg', 'tiff' ), true ) ) {
+			if ( in_array( strtolower( $suffix ), array( 'jpg', 'jpeg', 'tiff' ), true ) ) {
 				$this->fix_image_orientation( $file['tmp_name'] );
 			}
 			return $file;
@@ -158,13 +209,13 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 		 * @return void
 		 */
 		public function fix_image_orientation( $file ) {
-			if ( is_callable( 'exif_read_data' ) && ! isset( $this->orientation_fixed[ $file ] ) ) {
+			if ( ! isset( $this->orientation_fixed[ $file ] ) && is_callable( 'exif_read_data' ) ) {
 				$exif = exif_read_data( $file );
 
 				if ( isset( $exif ) && isset( $exif['Orientation'] ) && $exif['Orientation'] > 1 ) {
 
 					// Need it so that image editors are available to us.
-					include_once( ABSPATH . 'wp-admin/includes/image-edit.php' );
+					include_once ABSPATH . 'wp-admin/includes/image-edit.php';
 
 					// Calculate the operations we need to perform on the image.
 					$operations = $this->calculate_flip_and_rotate( $file, $exif );
@@ -193,52 +244,52 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 		 */
 		private function calculate_flip_and_rotate( $file, $exif ) {
 
-			$rotator = false;
-			$flipper = false;
+			$rotator     = false;
+			$flipper     = false;
+			$orientation = 0;
 
 			// Lets switch to the orientation defined in the exif data.
 			switch ( $exif['Orientation'] ) {
 				case 1:
 					// We don't want to fix an already correct image :).
-					$this->orientation_fixed[ $file ]    = true;
+					$this->orientation_fixed[ $file ] = true;
 					return false;
 				case 2:
-					$flipper                             = array( false, true );
+					$flipper = array( false, true );
 					break;
 				case 3:
-					$orientation                         = -180;
-					$rotator                             = true;
+					$orientation = -180;
+					$rotator     = true;
 					break;
 				case 4:
-					$flipper                             = array( true, false );
+					$flipper = array( true, false );
 					break;
 				case 5:
-					$orientation                         = -90;
-					$rotator                             = true;
-					$flipper                             = array( false, true );
+					$orientation = -90;
+					$rotator     = true;
+					$flipper     = array( false, true );
 					break;
 				case 6:
-					$orientation                         = -90;
-					$rotator                             = true;
+					$orientation = -90;
+					$rotator     = true;
 					break;
 				case 7:
-					$orientation                         = -270;
-					$rotator                             = true;
-					$flipper                             = array( false, true );
+					$orientation = -270;
+					$rotator     = true;
+					$flipper     = array( false, true );
 					break;
 				case 8:
 				case 9:
-					$orientation                         = -270;
-					$rotator                             = true;
+					$orientation = -270;
+					$rotator     = true;
 					break;
 				default:
-					$orientation                         = 0;
-					$rotator                             = true;
+					$orientation = 0;
+					$rotator     = true;
 					break;
 			}
 
-			$operations = compact( 'orientation', 'rotator', 'flipper' );
-			return $operations;
+			return compact( 'orientation', 'rotator', 'flipper' );
 		}
 
 		/**
@@ -271,6 +322,7 @@ if ( ! class_exists( 'Fix_Image_Rotation' ) ) {
 
 			// If GD Library is being used, then we need to store metadata to restore later.
 			if ( 'WP_Image_Editor_GD' === get_class( $editor ) ) {
+				include_once ABSPATH . 'wp-admin/includes/image.php';
 				$this->previous_meta[ $file ] = wp_read_image_metadata( $file );
 			}
 
