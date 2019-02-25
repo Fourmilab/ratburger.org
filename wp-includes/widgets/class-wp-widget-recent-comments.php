@@ -23,8 +23,8 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 	 */
 	public function __construct() {
 		$widget_ops = array(
-			'classname' => 'widget_recent_comments',
-			'description' => __( 'Your site&#8217;s most recent comments.' ),
+			'classname'                   => 'widget_recent_comments',
+			'description'                 => __( 'Your site&#8217;s most recent comments.' ),
 			'customize_selective_refresh' => true,
 		);
 		parent::__construct( 'recent-comments', __( 'Recent Comments' ), $widget_ops );
@@ -35,7 +35,7 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 		}
 	}
 
- 	/**
+	/**
 	 * Outputs the default styles for the Recent Comments widget.
 	 *
 	 * @since 2.8.0
@@ -50,8 +50,9 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 		 * @param string $id_base The widget ID.
 		 */
 		if ( ! current_theme_supports( 'widgets' ) // Temp hack #14876
-			|| ! apply_filters( 'show_recent_comments_widget_style', true, $this->id_base ) )
+			|| ! apply_filters( 'show_recent_comments_widget_style', true, $this->id_base ) ) {
 			return;
+		}
 		?>
 		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
 		<?php
@@ -67,8 +68,9 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 	 * @param array $instance Settings for the current Recent Comments widget instance.
 	 */
 	public function widget( $args, $instance ) {
-		if ( ! isset( $args['widget_id'] ) )
+		if ( ! isset( $args['widget_id'] ) ) {
 			$args['widget_id'] = $this->id;
+		}
 
 		$output = '';
 
@@ -78,8 +80,9 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
 		$number = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;
-		if ( ! $number )
+		if ( ! $number ) {
 			$number = 5;
+		}
 
 		/**
 		 * Filters the arguments for the Recent Comments widget.
@@ -92,11 +95,17 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 		 * @param array $comment_args An array of arguments used to retrieve the recent comments.
 		 * @param array $instance     Array of settings for the current widget.
 		 */
-		$comments = get_comments( apply_filters( 'widget_comments_args', array(
-			'number'      => $number,
-			'status'      => 'approve',
-			'post_status' => 'publish'
-		), $instance ) );
+		$comments = get_comments(
+			apply_filters(
+				'widget_comments_args',
+				array(
+					'number'      => $number,
+					'status'      => 'approve',
+					'post_status' => 'publish',
+				),
+				$instance
+			)
+		);
 
 		$output .= $args['before_widget'];
 		if ( $title ) {
@@ -110,22 +119,23 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 			_prime_post_caches( $post_ids, strpos( get_option( 'permalink_structure' ), '%category%' ), false );
 
 			foreach ( (array) $comments as $comment ) {
-                /* RATBURGER LOCAL CODE
-                   Don't show comment in recent comments if it's
-                   a follow of a post.  */
-                global $Ratburger_follow_comment_pattern;
-                if (!preg_match($Ratburger_follow_comment_pattern, $comment->comment_content)) {
-                /* END RATBURGER LOCAL CODE */
+                		/* RATBURGER LOCAL CODE
+                		   Don't show comment in recent comments if it's
+                		   a follow of a post.  */
+                		global $Ratburger_follow_comment_pattern;
+                		if (!preg_match($Ratburger_follow_comment_pattern, $comment->comment_content)) {
+                		/* END RATBURGER LOCAL CODE */
 				$output .= '<li class="recentcomments">';
 				/* translators: comments widget: 1: comment author, 2: post link */
-				$output .= sprintf( _x( '%1$s on %2$s', 'widgets' ),
+				$output .= sprintf(
+					_x( '%1$s on %2$s', 'widgets' ),
 					'<span class="comment-author-link">' . get_comment_author_link( $comment ) . '</span>',
 					'<a href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a>'
 				);
 				$output .= '</li>';
-                /* RATBURGER LOCAL CODE */
-                }
-                /* END RATBURGER LOCAL CODE */
+                		/* RATBURGER LOCAL CODE */
+                		}
+                		/* END RATBURGER LOCAL CODE */
 			}
 		}
 		$output .= '</ul>';
@@ -145,8 +155,8 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 	 * @return array Updated settings to save.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = sanitize_text_field( $new_instance['title'] );
+		$instance           = $old_instance;
+		$instance['title']  = sanitize_text_field( $new_instance['title'] );
 		$instance['number'] = absint( $new_instance['number'] );
 		return $instance;
 	}
@@ -159,7 +169,7 @@ class WP_Widget_Recent_Comments extends WP_Widget {
 	 * @param array $instance Current settings.
 	 */
 	public function form( $instance ) {
-		$title = isset( $instance['title'] ) ? $instance['title'] : '';
+		$title  = isset( $instance['title'] ) ? $instance['title'] : '';
 		$number = isset( $instance['number'] ) ? absint( $instance['number'] ) : 5;
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
