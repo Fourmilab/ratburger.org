@@ -1031,8 +1031,7 @@ add_filter('widget_posts_args', 'rb_select_recent_posts', 10, 1);
 /*  Add a clock to the administration toolbar.  The code below
     includes the placeholder for the clock and invokes the
     JavaScript which updates it.  If the JavaScript is not
-    loaded (which is the case for the administration toolbar),
-    the clock remains blank.  */
+    loaded, the clock remains blank.  */
 
 function rb_add_clock_toolbar_menu() {
     global $wp_admin_bar;
@@ -1042,8 +1041,20 @@ function rb_add_clock_toolbar_menu() {
         'id' => 'rb-toolbar-clock',
         'title' => '<span id="rb_toolbar_clock"></span>'));
 }
-
 add_action('admin_bar_menu', 'rb_add_clock_toolbar_menu', 95);
+
+/*  Enqueue the JavaScript support code for the toolbar clock
+    to be included in both user and administration pages.  We
+    have to do this via an external script enqueued here rather
+    than including the code in the theme's functions.js because
+    that is not loaded for administration pages.  */
+
+function rb_enqueue_toolbar_clock() {
+    wp_enqueue_script("RB_toolbar_clock",
+        get_template_directory_uri() . "/js/rb_toolbar_clock.js");
+}
+add_action("wp_enqueue_scripts", "rb_enqueue_toolbar_clock");
+add_action("admin_enqueue_scripts", "rb_enqueue_toolbar_clock");
 
 /*  Add our local system status panel to the administration
     dashboard "At a Glance" panel.  We only show this if the
@@ -1072,5 +1083,18 @@ function rb_commas($n, $Thousands = ",") {
                 "$1$Thousands", $text);
     return strrev($text);
 }
+
+/*  Enqueue the JavaScript code, which will be embedded into the
+    head of both user and administration pages, which checks if
+    we're running on the "Raw" test server and, if so, modifies
+    the site name in the administration bar at the top to alert
+    the user they're on the test server.  */
+
+function rb_enqueue_check_test_server() {
+    wp_enqueue_script("RB_check_test_server",
+        get_template_directory_uri() . "/js/rb_check_test_server.js");
+}
+add_action("wp_enqueue_scripts", "rb_enqueue_check_test_server");
+add_action("admin_enqueue_scripts", "rb_enqueue_check_test_server");
 
 /* END RATBURGER LOCAL CODE */
