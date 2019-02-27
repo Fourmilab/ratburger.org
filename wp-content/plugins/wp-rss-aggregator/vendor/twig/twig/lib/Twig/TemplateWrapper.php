@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Environment;
+use Twig\Source;
+use Twig\Template;
+
 /**
  * Exposes a template to userland.
  *
@@ -21,11 +25,11 @@ final class Twig_TemplateWrapper
 
     /**
      * This method is for internal use only and should never be called
-     * directly (use Twig_Environment::load() instead).
+     * directly (use Twig\Environment::load() instead).
      *
      * @internal
      */
-    public function __construct(Twig_Environment $env, Twig_Template $template)
+    public function __construct(Environment $env, Template $template)
     {
         $this->env = $env;
         $this->template = $template;
@@ -42,7 +46,7 @@ final class Twig_TemplateWrapper
     {
         // using func_get_args() allows to not expose the blocks argument
         // as it should only be used by internal code
-        return $this->template->render($context, func_num_args() > 1 ? func_get_arg(1) : []);
+        return $this->template->render($context, \func_num_args() > 1 ? func_get_arg(1) : []);
     }
 
     /**
@@ -54,7 +58,7 @@ final class Twig_TemplateWrapper
     {
         // using func_get_args() allows to not expose the blocks argument
         // as it should only be used by internal code
-        $this->template->display($context, func_num_args() >= 1 ? func_get_arg(1) : []);
+        $this->template->display($context, \func_num_args() >= 1 ? func_get_arg(1) : []);
     }
 
     /**
@@ -97,13 +101,13 @@ final class Twig_TemplateWrapper
         ob_start();
         try {
             $this->template->displayBlock($name, $context);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }
 
             throw $e;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }
@@ -126,7 +130,7 @@ final class Twig_TemplateWrapper
     }
 
     /**
-     * @return Twig_Source
+     * @return Source
      */
     public function getSourceContext()
     {

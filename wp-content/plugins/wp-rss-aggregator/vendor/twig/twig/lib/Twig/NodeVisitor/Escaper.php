@@ -9,6 +9,20 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Environment;
+use Twig\Node\AutoEscapeNode;
+use Twig\Node\BlockNode;
+use Twig\Node\BlockReferenceNode;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\ImportNode;
+use Twig\Node\ModuleNode;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+use Twig\NodeTraverser;
+use Twig\NodeVisitor\AbstractNodeVisitor;
+use Twig\NodeVisitor\SafeAnalysisNodeVisitor;
+
 /**
  * Twig_NodeVisitor_Escaper implements output escaping.
  *
@@ -16,7 +30,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
+class Twig_NodeVisitor_Escaper extends AbstractNodeVisitor
 {
     protected $statusStack = [];
     protected $blocks = [];
@@ -27,50 +41,50 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
 
     public function __construct()
     {
-        $this->safeAnalysis = new Twig_NodeVisitor_SafeAnalysis();
+        $this->safeAnalysis = new SafeAnalysisNodeVisitor();
     }
 
-    protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
+    protected function doEnterNode(Node $node, Environment $env)
     {
-        if ($node instanceof Twig_Node_Module) {
-            if ($env->hasExtension('Twig_Extension_Escaper') && $defaultStrategy = $env->getExtension('Twig_Extension_Escaper')->getDefaultStrategy($node->getTemplateName())) {
+        if ($node instanceof ModuleNode) {
+            if ($env->hasExtension('\Twig\Extension\EscaperExtension') && $defaultStrategy = $env->getExtension('\Twig\Extension\EscaperExtension')->getDefaultStrategy($node->getTemplateName())) {
                 $this->defaultStrategy = $defaultStrategy;
             }
             $this->safeVars = [];
             $this->blocks = [];
-        } elseif ($node instanceof Twig_Node_AutoEscape) {
+        } elseif ($node instanceof AutoEscapeNode) {
             $this->statusStack[] = $node->getAttribute('value');
-        } elseif ($node instanceof Twig_Node_Block) {
+        } elseif ($node instanceof BlockNode) {
             $this->statusStack[] = isset($this->blocks[$node->getAttribute('name')]) ? $this->blocks[$node->getAttribute('name')] : $this->needEscaping($env);
-        } elseif ($node instanceof Twig_Node_Import) {
+        } elseif ($node instanceof ImportNode) {
             $this->safeVars[] = $node->getNode('var')->getAttribute('name');
         }
 
         return $node;
     }
 
-    protected function doLeaveNode(Twig_Node $node, Twig_Environment $env)
+    protected function doLeaveNode(Node $node, Environment $env)
     {
-        if ($node instanceof Twig_Node_Module) {
+        if ($node instanceof ModuleNode) {
             $this->defaultStrategy = false;
             $this->safeVars = [];
             $this->blocks = [];
-        } elseif ($node instanceof Twig_Node_Expression_Filter) {
+        } elseif ($node instanceof FilterExpression) {
             return $this->preEscapeFilterNode($node, $env);
-        } elseif ($node instanceof Twig_Node_Print) {
+        } elseif ($node instanceof PrintNode) {
             return $this->escapePrintNode($node, $env, $this->needEscaping($env));
         }
 
-        if ($node instanceof Twig_Node_AutoEscape || $node instanceof Twig_Node_Block) {
+        if ($node instanceof AutoEscapeNode || $node instanceof BlockNode) {
             array_pop($this->statusStack);
-        } elseif ($node instanceof Twig_Node_BlockReference) {
+        } elseif ($node instanceof BlockReferenceNode) {
             $this->blocks[$node->getAttribute('name')] = $this->needEscaping($env);
         }
 
         return $node;
     }
 
-    protected function escapePrintNode(Twig_Node_Print $node, Twig_Environment $env, $type)
+    protected function escapePrintNode(PrintNode $node, Environment $env, $type)
     {
         if (false === $type) {
             return $node;
@@ -82,7 +96,7 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
             return $node;
         }
 
-        $class = get_class($node);
+        $class = \get_class($node);
 
         return new $class(
             $this->getEscaperFilter($type, $expression),
@@ -90,7 +104,7 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
         );
     }
 
-    protected function preEscapeFilterNode(Twig_Node_Expression_Filter $filter, Twig_Environment $env)
+    protected function preEscapeFilterNode(FilterExpression $filter, Environment $env)
     {
         $name = $filter->getNode('filter')->getAttribute('value');
 
@@ -115,7 +129,7 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
 
         if (null === $safe) {
             if (null === $this->traverser) {
-                $this->traverser = new Twig_NodeTraverser($env, [$this->safeAnalysis]);
+                $this->traverser = new NodeTraverser($env, [$this->safeAnalysis]);
             }
 
             $this->safeAnalysis->setSafeVars($this->safeVars);
@@ -124,13 +138,13 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
             $safe = $this->safeAnalysis->getSafe($expression);
         }
 
-        return in_array($type, $safe) || in_array('all', $safe);
+        return \in_array($type, $safe) || \in_array('all', $safe);
     }
 
-    protected function needEscaping(Twig_Environment $env)
+    protected function needEscaping(Environment $env)
     {
-        if (count($this->statusStack)) {
-            return $this->statusStack[count($this->statusStack) - 1];
+        if (\count($this->statusStack)) {
+            return $this->statusStack[\count($this->statusStack) - 1];
         }
 
         return $this->defaultStrategy ? $this->defaultStrategy : false;
@@ -139,10 +153,10 @@ class Twig_NodeVisitor_Escaper extends Twig_BaseNodeVisitor
     protected function getEscaperFilter($type, Twig_NodeInterface $node)
     {
         $line = $node->getTemplateLine();
-        $name = new Twig_Node_Expression_Constant('escape', $line);
-        $args = new Twig_Node([new Twig_Node_Expression_Constant((string) $type, $line), new Twig_Node_Expression_Constant(null, $line), new Twig_Node_Expression_Constant(true, $line)]);
+        $name = new ConstantExpression('escape', $line);
+        $args = new Node([new ConstantExpression((string) $type, $line), new ConstantExpression(null, $line), new ConstantExpression(true, $line)]);
 
-        return new Twig_Node_Expression_Filter($node, $name, $args, $line);
+        return new FilterExpression($node, $name, $args, $line);
     }
 
     public function getPriority()

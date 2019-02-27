@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Node\Node;
+
 /**
  * Represents a template function.
  *
@@ -33,7 +35,7 @@ class Twig_SimpleFunction
             'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
-            'node_class' => 'Twig_Node_Expression_Function',
+            'node_class' => '\Twig\Node\Expression\FunctionExpression',
             'deprecated' => false,
             'alternative' => null,
         ], $options);
@@ -74,14 +76,14 @@ class Twig_SimpleFunction
         return $this->options['needs_context'];
     }
 
-    public function getSafe(Twig_Node $functionArgs)
+    public function getSafe(Node $functionArgs)
     {
         if (null !== $this->options['is_safe']) {
             return $this->options['is_safe'];
         }
 
         if (null !== $this->options['is_safe_callback']) {
-            return call_user_func($this->options['is_safe_callback'], $functionArgs);
+            return \call_user_func($this->options['is_safe_callback'], $functionArgs);
         }
 
         return [];

@@ -9,34 +9,38 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Extension_Profiler extends Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\Profiler\NodeVisitor\ProfilerNodeVisitor;
+use Twig\Profiler\Profile;
+
+class Twig_Extension_Profiler extends AbstractExtension
 {
     private $actives = [];
 
-    public function __construct(Twig_Profiler_Profile $profile)
+    public function __construct(Profile $profile)
     {
         $this->actives[] = $profile;
     }
 
-    public function enter(Twig_Profiler_Profile $profile)
+    public function enter(Profile $profile)
     {
         $this->actives[0]->addProfile($profile);
         array_unshift($this->actives, $profile);
     }
 
-    public function leave(Twig_Profiler_Profile $profile)
+    public function leave(Profile $profile)
     {
         $profile->leave();
         array_shift($this->actives);
 
-        if (1 === count($this->actives)) {
+        if (1 === \count($this->actives)) {
             $this->actives[0]->leave();
         }
     }
 
     public function getNodeVisitors()
     {
-        return [new Twig_Profiler_NodeVisitor_Profiler(get_class($this))];
+        return [new ProfilerNodeVisitor(\get_class($this))];
     }
 
     public function getName()

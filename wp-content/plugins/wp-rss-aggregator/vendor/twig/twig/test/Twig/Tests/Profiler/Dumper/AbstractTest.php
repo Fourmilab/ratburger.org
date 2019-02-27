@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Profiler\Profile;
+
 abstract class Twig_Tests_Profiler_Dumper_AbstractTest extends \PHPUnit\Framework\TestCase
 {
     protected function getProfile()
     {
-        $profile = $this->getMockBuilder('Twig_Profiler_Profile')->disableOriginalConstructor()->getMock();
+        $profile = $this->getMockBuilder('\Twig\Profiler\Profile')->disableOriginalConstructor()->getMock();
 
         $profile->expects($this->any())->method('isRoot')->will($this->returnValue(true));
         $profile->expects($this->any())->method('getName')->will($this->returnValue('main'));
@@ -41,7 +43,7 @@ abstract class Twig_Tests_Profiler_Dumper_AbstractTest extends \PHPUnit\Framewor
         ];
 
         $profile->expects($this->any())->method('getProfiles')->will($this->returnValue($subProfiles));
-        $profile->expects($this->any())->method('getIterator')->will($this->returnValue(new ArrayIterator($subProfiles)));
+        $profile->expects($this->any())->method('getIterator')->will($this->returnValue(new \ArrayIterator($subProfiles)));
 
         return $profile;
     }
@@ -79,11 +81,11 @@ abstract class Twig_Tests_Profiler_Dumper_AbstractTest extends \PHPUnit\Framewor
      * @param string $templateName
      * @param array  $subProfiles
      *
-     * @return Twig_Profiler_Profile
+     * @return Profile
      */
     private function generateProfile($name, $duration, $isTemplate, $type, $templateName, array $subProfiles = [])
     {
-        $profile = $this->getMockBuilder('Twig_Profiler_Profile')->disableOriginalConstructor()->getMock();
+        $profile = $this->getMockBuilder('\Twig\Profiler\Profile')->disableOriginalConstructor()->getMock();
 
         $profile->expects($this->any())->method('isRoot')->will($this->returnValue(false));
         $profile->expects($this->any())->method('getName')->will($this->returnValue($name));
@@ -94,7 +96,7 @@ abstract class Twig_Tests_Profiler_Dumper_AbstractTest extends \PHPUnit\Framewor
         $profile->expects($this->any())->method('getType')->will($this->returnValue($type));
         $profile->expects($this->any())->method('getTemplate')->will($this->returnValue($templateName));
         $profile->expects($this->any())->method('getProfiles')->will($this->returnValue($subProfiles));
-        $profile->expects($this->any())->method('getIterator')->will($this->returnValue(new ArrayIterator($subProfiles)));
+        $profile->expects($this->any())->method('getIterator')->will($this->returnValue(new \ArrayIterator($subProfiles)));
 
         return $profile;
     }

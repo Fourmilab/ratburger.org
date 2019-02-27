@@ -10,14 +10,19 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Node;
+use Twig\Node\NodeOutputInterface;
+
 /**
  * Represents an include node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
+class Twig_Node_Include extends Node implements NodeOutputInterface
 {
-    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $variables = null, $only = false, $ignoreMissing = false, $lineno, $tag = null)
+    public function __construct(AbstractExpression $expr, AbstractExpression $variables = null, $only = false, $ignoreMissing = false, $lineno, $tag = null)
     {
         $nodes = ['expr' => $expr];
         if (null !== $variables) {
@@ -27,7 +32,7 @@ class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
         parent::__construct($nodes, ['only' => (bool) $only, 'ignore_missing' => (bool) $ignoreMissing], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
@@ -49,7 +54,7 @@ class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
         if ($this->getAttribute('ignore_missing')) {
             $compiler
                 ->outdent()
-                ->write("} catch (Twig_Error_Loader \$e) {\n")
+                ->write("} catch (LoaderError \$e) {\n")
                 ->indent()
                 ->write("// ignore missing template\n")
                 ->outdent()
@@ -58,7 +63,7 @@ class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
         }
     }
 
-    protected function addGetTemplate(Twig_Compiler $compiler)
+    protected function addGetTemplate(Compiler $compiler)
     {
         $compiler
              ->write('$this->loadTemplate(')
@@ -71,7 +76,7 @@ class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
          ;
     }
 
-    protected function addTemplateArguments(Twig_Compiler $compiler)
+    protected function addTemplateArguments(Compiler $compiler)
     {
         if (!$this->hasNode('variables')) {
             $compiler->raw(false === $this->getAttribute('only') ? '$context' : '[]');

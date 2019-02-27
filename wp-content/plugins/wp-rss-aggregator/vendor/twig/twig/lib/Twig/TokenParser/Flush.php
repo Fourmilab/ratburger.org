@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Node\FlushNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
 /**
  * Flushes the output to the client.
  *
@@ -16,13 +20,13 @@
  *
  * @final
  */
-class Twig_TokenParser_Flush extends Twig_TokenParser
+class Twig_TokenParser_Flush extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
-        return new Twig_Node_Flush($token->getLine(), $this->getTag());
+        return new FlushNode($token->getLine(), $this->getTag());
     }
 
     public function getTag()

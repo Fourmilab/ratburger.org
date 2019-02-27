@@ -9,16 +9,21 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Extension\AbstractExtension;
+use Twig\NodeVisitor\SandboxNodeVisitor;
+use Twig\Sandbox\SecurityPolicyInterface;
+use Twig\TokenParser\SandboxTokenParser;
+
 /**
  * @final
  */
-class Twig_Extension_Sandbox extends Twig_Extension
+class Twig_Extension_Sandbox extends AbstractExtension
 {
     protected $sandboxedGlobally;
     protected $sandboxed;
     protected $policy;
 
-    public function __construct(Twig_Sandbox_SecurityPolicyInterface $policy, $sandboxed = false)
+    public function __construct(SecurityPolicyInterface $policy, $sandboxed = false)
     {
         $this->policy = $policy;
         $this->sandboxedGlobally = $sandboxed;
@@ -26,12 +31,12 @@ class Twig_Extension_Sandbox extends Twig_Extension
 
     public function getTokenParsers()
     {
-        return [new Twig_TokenParser_Sandbox()];
+        return [new SandboxTokenParser()];
     }
 
     public function getNodeVisitors()
     {
-        return [new Twig_NodeVisitor_Sandbox()];
+        return [new SandboxNodeVisitor()];
     }
 
     public function enableSandbox()
@@ -54,7 +59,7 @@ class Twig_Extension_Sandbox extends Twig_Extension
         return $this->sandboxedGlobally;
     }
 
-    public function setSecurityPolicy(Twig_Sandbox_SecurityPolicyInterface $policy)
+    public function setSecurityPolicy(SecurityPolicyInterface $policy)
     {
         $this->policy = $policy;
     }
@@ -87,7 +92,7 @@ class Twig_Extension_Sandbox extends Twig_Extension
 
     public function ensureToStringAllowed($obj)
     {
-        if ($this->isSandboxed() && is_object($obj)) {
+        if ($this->isSandboxed() && \is_object($obj)) {
             $this->policy->checkMethodAllowed($obj, '__toString');
         }
 

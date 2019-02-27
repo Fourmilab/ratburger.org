@@ -9,6 +9,11 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+
 /**
  * Twig_Node_SandboxedPrint adds a check for the __toString() method
  * when the variable is an object and the sandbox is activated.
@@ -19,13 +24,13 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_SandboxedPrint extends Twig_Node_Print
+class Twig_Node_SandboxedPrint extends PrintNode
 {
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
-            ->write('echo $this->env->getExtension(\'Twig_Extension_Sandbox\')->ensureToStringAllowed(')
+            ->write('echo $this->env->getExtension(\'\Twig\Extension\SandboxExtension\')->ensureToStringAllowed(')
             ->subcompile($this->getNode('expr'))
             ->raw(");\n")
         ;
@@ -36,11 +41,11 @@ class Twig_Node_SandboxedPrint extends Twig_Node_Print
      *
      * This is mostly needed when another visitor adds filters (like the escaper one).
      *
-     * @return Twig_Node
+     * @return Node
      */
-    protected function removeNodeFilter(Twig_Node $node)
+    protected function removeNodeFilter(Node $node)
     {
-        if ($node instanceof Twig_Node_Expression_Filter) {
+        if ($node instanceof FilterExpression) {
             return $this->removeNodeFilter($node->getNode('node'));
         }
 

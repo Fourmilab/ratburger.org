@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-abstract class Twig_Extension implements Twig_ExtensionInterface
+use Twig\Environment;
+use Twig\Extension\ExtensionInterface;
+
+abstract class Twig_Extension implements ExtensionInterface
 {
     /**
      * @deprecated since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead
      */
-    public function initRuntime(Twig_Environment $environment)
+    public function initRuntime(Environment $environment)
     {
     }
 
@@ -61,7 +64,7 @@ abstract class Twig_Extension implements Twig_ExtensionInterface
      */
     public function getName()
     {
-        return get_class($this);
+        return \get_class($this);
     }
 }
 

@@ -484,17 +484,17 @@
     },
     {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.10.0",
-        "version_normalized": "1.10.0.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
+            "reference": "82ebae02209c21113908c229e9883c419720738a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e3d826245268269cd66f8326bd8bc066687b4a19",
-            "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/82ebae02209c21113908c229e9883c419720738a",
+            "reference": "82ebae02209c21113908c229e9883c419720738a",
             "shasum": ""
         },
         "require": {
@@ -503,14 +503,14 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2018-08-06T14:22:27+00:00",
+        "time": "2019-02-06T07:57:58+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.9-dev"
+                "dev-master": "1.11-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Symfony\\Polyfill\\Ctype\\": ""
@@ -549,12 +549,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "3afb492c4d36a3607942ce25824bc1d042928bf8"
+            "reference": "ea371bee8102f28e5d715d6410eb0d46fecf96b4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/3afb492c4d36a3607942ce25824bc1d042928bf8",
-            "reference": "3afb492c4d36a3607942ce25824bc1d042928bf8",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/ea371bee8102f28e5d715d6410eb0d46fecf96b4",
+            "reference": "ea371bee8102f28e5d715d6410eb0d46fecf96b4",
             "shasum": ""
         },
         "require": {
@@ -566,11 +566,11 @@
             "symfony/debug": "^2.7",
             "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
         },
-        "time": "2019-01-14T15:13:59+00:00",
+        "time": "2019-02-27T07:39:35+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.37-dev"
+                "dev-master": "1.38-dev"
             }
         },
         "installation-source": "source",

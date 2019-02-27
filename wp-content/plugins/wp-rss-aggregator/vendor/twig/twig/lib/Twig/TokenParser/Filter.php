@@ -9,37 +9,42 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Node\BlockNode;
+use Twig\Node\Expression\BlockReferenceExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\PrintNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
 /**
  * Filters a section of a template by applying filters.
  *
- * <pre>
- * {% filter upper %}
- *  This text becomes uppercase
- * {% endfilter %}
- * </pre>
+ *   {% filter upper %}
+ *      This text becomes uppercase
+ *   {% endfilter %}
  *
  * @final
  */
-class Twig_TokenParser_Filter extends Twig_TokenParser
+class Twig_TokenParser_Filter extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
         $name = $this->parser->getVarName();
-        $ref = new Twig_Node_Expression_BlockReference(new Twig_Node_Expression_Constant($name, $token->getLine()), null, $token->getLine(), $this->getTag());
+        $ref = new BlockReferenceExpression(new ConstantExpression($name, $token->getLine()), null, $token->getLine(), $this->getTag());
 
         $filter = $this->parser->getExpressionParser()->parseFilterExpressionRaw($ref, $this->getTag());
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
         $body = $this->parser->subparse([$this, 'decideBlockEnd'], true);
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
-        $block = new Twig_Node_Block($name, $body, $token->getLine());
+        $block = new BlockNode($name, $body, $token->getLine());
         $this->parser->setBlock($name, $block);
 
-        return new Twig_Node_Print($filter, $token->getLine(), $this->getTag());
+        return new PrintNode($filter, $token->getLine(), $this->getTag());
     }
 
-    public function decideBlockEnd(Twig_Token $token)
+    public function decideBlockEnd(Token $token)
     {
         return $token->test('endfilter');
     }

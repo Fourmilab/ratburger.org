@@ -9,44 +9,48 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\SyntaxError;
+use Twig\Node\BodyNode;
+use Twig\Node\MacroNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
 /**
  * Defines a macro.
  *
- * <pre>
- * {% macro input(name, value, type, size) %}
- *    <input type="{{ type|default('text') }}" name="{{ name }}" value="{{ value|e }}" size="{{ size|default(20) }}" />
- * {% endmacro %}
- * </pre>
+ *   {% macro input(name, value, type, size) %}
+ *      <input type="{{ type|default('text') }}" name="{{ name }}" value="{{ value|e }}" size="{{ size|default(20) }}" />
+ *   {% endmacro %}
  *
  * @final
  */
-class Twig_TokenParser_Macro extends Twig_TokenParser
+class Twig_TokenParser_Macro extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
+        $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
         $arguments = $this->parser->getExpressionParser()->parseArguments(true, true);
 
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
         $this->parser->pushLocalScope();
         $body = $this->parser->subparse([$this, 'decideBlockEnd'], true);
-        if ($token = $stream->nextIf(Twig_Token::NAME_TYPE)) {
+        if ($token = $stream->nextIf(Token::NAME_TYPE)) {
             $value = $token->getValue();
 
             if ($value != $name) {
-                throw new Twig_Error_Syntax(sprintf('Expected endmacro for macro "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getSourceContext());
+                throw new SyntaxError(sprintf('Expected endmacro for macro "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getSourceContext());
             }
         }
         $this->parser->popLocalScope();
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
-        $this->parser->setMacro($name, new Twig_Node_Macro($name, new Twig_Node_Body([$body]), $arguments, $lineno, $this->getTag()));
+        $this->parser->setMacro($name, new MacroNode($name, new BodyNode([$body]), $arguments, $lineno, $this->getTag()));
     }
 
-    public function decideBlockEnd(Twig_Token $token)
+    public function decideBlockEnd(Token $token)
     {
         return $token->test('endmacro');
     }

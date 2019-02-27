@@ -9,26 +9,33 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\ConditionalExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\GetAttrExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Test\DefinedTest;
+use Twig\Node\Node;
+
 /**
  * Returns the value or the default value when it is undefined or empty.
  *
- * <pre>
  *  {{ var.foo|default('foo item on var is not defined') }}
- * </pre>
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Expression_Filter_Default extends Twig_Node_Expression_Filter
+class Twig_Node_Expression_Filter_Default extends FilterExpression
 {
-    public function __construct(Twig_NodeInterface $node, Twig_Node_Expression_Constant $filterName, Twig_NodeInterface $arguments, $lineno, $tag = null)
+    public function __construct(Twig_NodeInterface $node, ConstantExpression $filterName, Twig_NodeInterface $arguments, $lineno, $tag = null)
     {
-        $default = new Twig_Node_Expression_Filter($node, new Twig_Node_Expression_Constant('default', $node->getTemplateLine()), $arguments, $node->getTemplateLine());
+        $default = new FilterExpression($node, new ConstantExpression('default', $node->getTemplateLine()), $arguments, $node->getTemplateLine());
 
-        if ('default' === $filterName->getAttribute('value') && ($node instanceof Twig_Node_Expression_Name || $node instanceof Twig_Node_Expression_GetAttr)) {
-            $test = new Twig_Node_Expression_Test_Defined(clone $node, 'defined', new Twig_Node(), $node->getTemplateLine());
-            $false = count($arguments) ? $arguments->getNode(0) : new Twig_Node_Expression_Constant('', $node->getTemplateLine());
+        if ('default' === $filterName->getAttribute('value') && ($node instanceof NameExpression || $node instanceof GetAttrExpression)) {
+            $test = new DefinedTest(clone $node, 'defined', new Node(), $node->getTemplateLine());
+            $false = \count($arguments) ? $arguments->getNode(0) : new ConstantExpression('', $node->getTemplateLine());
 
-            $node = new Twig_Node_Expression_Conditional($test, $default, $false, $node->getTemplateLine());
+            $node = new ConditionalExpression($test, $default, $false, $node->getTemplateLine());
         } else {
             $node = $default;
         }
@@ -36,7 +43,7 @@ class Twig_Node_Expression_Filter_Default extends Twig_Node_Expression_Filter
         parent::__construct($node, $filterName, $arguments, $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler->subcompile($this->getNode('node'));
     }

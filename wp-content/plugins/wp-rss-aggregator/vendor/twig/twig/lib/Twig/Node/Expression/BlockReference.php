@@ -10,19 +10,23 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Node;
+
 /**
  * Represents a block call node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
+class Twig_Node_Expression_BlockReference extends AbstractExpression
 {
     /**
-     * @param Twig_Node|null $template
+     * @param Node|null $template
      */
     public function __construct(Twig_NodeInterface $name, $template = null, $lineno, $tag = null)
     {
-        if (is_bool($template)) {
+        if (\is_bool($template)) {
             @trigger_error(sprintf('The %s method "$asString" argument is deprecated since version 1.28 and will be removed in 2.0.', __METHOD__), E_USER_DEPRECATED);
 
             $template = null;
@@ -36,7 +40,7 @@ class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
         parent::__construct($nodes, ['is_defined_test' => false, 'output' => false], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         if ($this->getAttribute('is_defined_test')) {
             $this->compileTemplateCall($compiler, 'hasBlock');
@@ -53,7 +57,7 @@ class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
         }
     }
 
-    private function compileTemplateCall(Twig_Compiler $compiler, $method)
+    private function compileTemplateCall(Compiler $compiler, $method)
     {
         if (!$this->hasNode('template')) {
             $compiler->write('$this');
@@ -75,7 +79,7 @@ class Twig_Node_Expression_BlockReference extends Twig_Node_Expression
         return $compiler;
     }
 
-    private function compileBlockArguments(Twig_Compiler $compiler)
+    private function compileBlockArguments(Compiler $compiler)
     {
         $compiler
             ->raw('(')

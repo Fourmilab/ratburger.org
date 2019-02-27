@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Environment;
+
 class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -16,10 +18,10 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testRandomFunction($value, $expectedInArray)
     {
-        $env = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $env = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
 
         for ($i = 0; $i < 100; ++$i) {
-            $this->assertTrue(in_array(twig_random($env, $value), $expectedInArray, true)); // assertContains() would not consider the type
+            $this->assertTrue(\in_array(twig_random($env, $value), $expectedInArray, true)); // assertContains() would not consider the type
         }
     }
 
@@ -31,7 +33,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
                 ['apple', 'orange', 'citrus'],
             ],
             [// Traversable
-                new ArrayObject(['apple', 'orange', 'citrus']),
+                new \ArrayObject(['apple', 'orange', 'citrus']),
                 ['apple', 'orange', 'citrus'],
             ],
             [// unicode string
@@ -62,51 +64,51 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
         $max = mt_getrandmax();
 
         for ($i = 0; $i < 100; ++$i) {
-            $val = twig_random(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()));
-            $this->assertTrue(is_int($val) && $val >= 0 && $val <= $max);
+            $val = twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+            $this->assertTrue(\is_int($val) && $val >= 0 && $val <= $max);
         }
     }
 
     public function testRandomFunctionReturnsAsIs()
     {
-        $this->assertSame('', twig_random(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()), ''));
-        $this->assertSame('', twig_random(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock(), ['charset' => null]), ''));
+        $this->assertSame('', twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), ''));
+        $this->assertSame('', twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), ['charset' => null]), ''));
 
-        $instance = new stdClass();
-        $this->assertSame($instance, twig_random(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()), $instance));
+        $instance = new \stdClass();
+        $this->assertSame($instance, twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), $instance));
     }
 
     /**
-     * @expectedException Twig_Error_Runtime
+     * @expectedException \Twig\Error\RuntimeError
      */
     public function testRandomFunctionOfEmptyArrayThrowsException()
     {
-        twig_random(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()), []);
+        twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), []);
     }
 
     public function testRandomFunctionOnNonUTF8String()
     {
-        if (!function_exists('iconv') && !function_exists('mb_convert_encoding')) {
+        if (!\function_exists('iconv') && !\function_exists('mb_convert_encoding')) {
             $this->markTestSkipped('needs iconv or mbstring');
         }
 
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
         $twig->setCharset('ISO-8859-1');
 
         $text = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
         for ($i = 0; $i < 30; ++$i) {
             $rand = twig_random($twig, $text);
-            $this->assertTrue(in_array(twig_convert_encoding($rand, 'UTF-8', 'ISO-8859-1'), ['Ä', 'é'], true));
+            $this->assertTrue(\in_array(twig_convert_encoding($rand, 'UTF-8', 'ISO-8859-1'), ['Ä', 'é'], true));
         }
     }
 
     public function testReverseFilterOnNonUTF8String()
     {
-        if (!function_exists('iconv') && !function_exists('mb_convert_encoding')) {
+        if (!\function_exists('iconv') && !\function_exists('mb_convert_encoding')) {
             $this->markTestSkipped('needs iconv or mbstring');
         }
 
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
         $twig->setCharset('ISO-8859-1');
 
         $input = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
@@ -120,8 +122,8 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testCustomEscaper($expected, $string, $strategy)
     {
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
-        $twig->getExtension('Twig_Extension_Core')->setEscaper('foo', 'foo_escaper_for_test');
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig->getExtension('\Twig\Extension\CoreExtension')->setEscaper('foo', 'foo_escaper_for_test');
 
         $this->assertSame($expected, twig_escape_filter($twig, $string, $strategy));
     }
@@ -136,11 +138,11 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException Twig_Error_Runtime
+     * @expectedException \Twig\Error\RuntimeError
      */
     public function testUnknownCustomEscaper()
     {
-        twig_escape_filter(new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock()), 'foo', 'bar');
+        twig_escape_filter(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), 'foo', 'bar');
     }
 
     /**
@@ -148,7 +150,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testTwigFirst($expected, $input)
     {
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
         $this->assertSame($expected, twig_first($twig, $input));
     }
 
@@ -170,7 +172,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testTwigLast($expected, $input)
     {
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
         $this->assertSame($expected, twig_last($twig, $input));
     }
 
@@ -206,7 +208,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
             [$keys, new CoreTestIteratorAggregate($array, $keys)],
             [$keys, new CoreTestIteratorAggregateAggregate($array, $keys)],
             [[], null],
-            [['a'], new SimpleXMLElement('<xml><a></a></xml>')],
+            [['a'], new \SimpleXMLElement('<xml><a></a></xml>')],
         ];
     }
 
@@ -234,7 +236,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
             [false, 4, new CoreTestIterator($array, $keys, true)],
             [false, 4, new CoreTestIteratorAggregateAggregate($array, $keys, true)],
             [false, 1, 1],
-            [true, 'b', new SimpleXMLElement('<xml><a>b</a></xml>')],
+            [true, 'b', new \SimpleXMLElement('<xml><a>b</a></xml>')],
         ];
     }
 
@@ -243,7 +245,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testSliceFilter($expected, $input, $start, $length = null, $preserveKeys = false)
     {
-        $twig = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
         $this->assertSame($expected, twig_slice($twig, $input, $start, $length, $preserveKeys));
     }
 
@@ -260,11 +262,11 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
             [[2, 3], [1, 2, 3, 4], 1, 2],
             [[2, 3], new CoreTestIterator($i, $keys, true), 1, 2],
             [['c' => 3, 'd' => 4], new CoreTestIteratorAggregate($i, $keys, true), 2, null, true],
-            [$i, new CoreTestIterator($i, $keys, true), 0, count($keys) + 10, true],
-            [[], new CoreTestIterator($i, $keys, true), count($keys) + 10],
+            [$i, new CoreTestIterator($i, $keys, true), 0, \count($keys) + 10, true],
+            [[], new CoreTestIterator($i, $keys, true), \count($keys) + 10],
             ['de', 'abcdef', 3, 2],
-            [[], new SimpleXMLElement('<items><item>1</item><item>2</item></items>'), 3],
-            [[], new ArrayIterator([1, 2]), 3],
+            [[], new \SimpleXMLElement('<items><item>1</item><item>2</item></items>'), 3],
+            [[], new \ArrayIterator([1, 2]), 3],
         ];
     }
 }
@@ -274,7 +276,7 @@ function foo_escaper_for_test(Twig_Environment $env, $string, $charset)
     return $string.$charset;
 }
 
-final class CoreTestIteratorAggregate implements IteratorAggregate
+final class CoreTestIteratorAggregate implements \IteratorAggregate
 {
     private $iterator;
 
@@ -289,7 +291,7 @@ final class CoreTestIteratorAggregate implements IteratorAggregate
     }
 }
 
-final class CoreTestIteratorAggregateAggregate implements IteratorAggregate
+final class CoreTestIteratorAggregateAggregate implements \IteratorAggregate
 {
     private $iterator;
 
@@ -318,7 +320,7 @@ final class CoreTestIterator implements Iterator
         $this->arrayKeys = $keys;
         $this->position = 0;
         $this->allowValueAccess = $allowValueAccess;
-        $this->maxPosition = false === $maxPosition ? count($values) + 1 : $maxPosition;
+        $this->maxPosition = false === $maxPosition ? \count($values) + 1 : $maxPosition;
     }
 
     public function rewind()
@@ -332,7 +334,7 @@ final class CoreTestIterator implements Iterator
             return $this->array[$this->key()];
         }
 
-        throw new LogicException('Code should only use the keys, not the values provided by iterator.');
+        throw new \LogicException('Code should only use the keys, not the values provided by iterator.');
     }
 
     public function key()
@@ -344,7 +346,7 @@ final class CoreTestIterator implements Iterator
     {
         ++$this->position;
         if ($this->position === $this->maxPosition) {
-            throw new LogicException(sprintf('Code should not iterate beyond %d.', $this->maxPosition));
+            throw new \LogicException(sprintf('Code should not iterate beyond %d.', $this->maxPosition));
         }
     }
 

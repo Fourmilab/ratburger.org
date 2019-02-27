@@ -9,28 +9,29 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Node\DeprecatedNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
 /**
  * Deprecates a section of a template.
  *
- * <pre>
- * {% deprecated 'The "base.twig" template is deprecated, use "layout.twig" instead.' %}
- *
- * {% extends 'layout.html.twig' %}
- * </pre>
+ *    {% deprecated 'The "base.twig" template is deprecated, use "layout.twig" instead.' %}
+ *    {% extends 'layout.html.twig' %}
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  *
  * @final
  */
-class Twig_TokenParser_Deprecated extends Twig_TokenParser
+class Twig_TokenParser_Deprecated extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
         $expr = $this->parser->getExpressionParser()->parseExpression();
 
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
-        return new Twig_Node_Deprecated($expr, $token->getLine(), $this->getTag());
+        return new DeprecatedNode($expr, $token->getLine(), $this->getTag());
     }
 
     public function getTag()

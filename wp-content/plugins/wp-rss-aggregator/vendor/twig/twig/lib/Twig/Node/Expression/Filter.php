@@ -9,14 +9,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Node_Expression_Filter extends Twig_Node_Expression_Call
+
+use Twig\Compiler;
+use Twig\Node\Expression\CallExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\TwigFilter;
+
+class Twig_Node_Expression_Filter extends CallExpression
 {
-    public function __construct(Twig_NodeInterface $node, Twig_Node_Expression_Constant $filterName, Twig_NodeInterface $arguments, $lineno, $tag = null)
+    public function __construct(Twig_NodeInterface $node, ConstantExpression $filterName, Twig_NodeInterface $arguments, $lineno, $tag = null)
     {
         parent::__construct(['node' => $node, 'filter' => $filterName, 'arguments' => $arguments], [], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $name = $this->getNode('filter')->getAttribute('value');
         $filter = $compiler->getEnvironment()->getFilter($name);
@@ -27,10 +33,10 @@ class Twig_Node_Expression_Filter extends Twig_Node_Expression_Call
         $this->setAttribute('needs_environment', $filter->needsEnvironment());
         $this->setAttribute('needs_context', $filter->needsContext());
         $this->setAttribute('arguments', $filter->getArguments());
-        if ($filter instanceof Twig_FilterCallableInterface || $filter instanceof Twig_SimpleFilter) {
+        if ($filter instanceof Twig_FilterCallableInterface || $filter instanceof TwigFilter) {
             $this->setAttribute('callable', $filter->getCallable());
         }
-        if ($filter instanceof Twig_SimpleFilter) {
+        if ($filter instanceof TwigFilter) {
             $this->setAttribute('is_variadic', $filter->isVariadic());
         }
 

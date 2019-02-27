@@ -9,6 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\LoaderError;
+use Twig\Source;
+
 /**
  * Adds a getSourceContext() method for loaders.
  *
@@ -23,9 +26,9 @@ interface Twig_SourceContextLoaderInterface
      *
      * @param string $name The template logical name
      *
-     * @return Twig_Source
+     * @return Source
      *
-     * @throws Twig_Error_Loader When $name is not found
+     * @throws LoaderError When $name is not found
      */
     public function getSourceContext($name);
 }

@@ -9,14 +9,17 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\TestExpression;
+
 /**
  * Checks if a variable is the same as another one (=== in PHP).
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Expression_Test_Sameas extends Twig_Node_Expression_Test
+class Twig_Node_Expression_Test_Sameas extends TestExpression
 {
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->raw('(')

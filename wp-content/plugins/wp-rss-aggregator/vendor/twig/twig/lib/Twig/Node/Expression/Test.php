@@ -8,7 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Node_Expression_Test extends Twig_Node_Expression_Call
+
+use Twig\Compiler;
+use Twig\Node\Expression\CallExpression;
+use Twig\TwigTest;
+
+class Twig_Node_Expression_Test extends CallExpression
 {
     public function __construct(Twig_NodeInterface $node, $name, Twig_NodeInterface $arguments = null, $lineno)
     {
@@ -20,7 +25,7 @@ class Twig_Node_Expression_Test extends Twig_Node_Expression_Call
         parent::__construct($nodes, ['name' => $name], $lineno);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $name = $this->getAttribute('name');
         $test = $compiler->getEnvironment()->getTest($name);
@@ -28,13 +33,13 @@ class Twig_Node_Expression_Test extends Twig_Node_Expression_Call
         $this->setAttribute('name', $name);
         $this->setAttribute('type', 'test');
         $this->setAttribute('thing', $test);
-        if ($test instanceof Twig_SimpleTest) {
+        if ($test instanceof TwigTest) {
             $this->setAttribute('arguments', $test->getArguments());
         }
-        if ($test instanceof Twig_TestCallableInterface || $test instanceof Twig_SimpleTest) {
+        if ($test instanceof Twig_TestCallableInterface || $test instanceof TwigTest) {
             $this->setAttribute('callable', $test->getCallable());
         }
-        if ($test instanceof Twig_SimpleTest) {
+        if ($test instanceof TwigTest) {
             $this->setAttribute('is_variadic', $test->isVariadic());
         }
 

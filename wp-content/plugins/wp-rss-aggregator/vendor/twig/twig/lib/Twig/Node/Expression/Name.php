@@ -9,7 +9,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Node_Expression_Name extends Twig_Node_Expression
+
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+
+class Twig_Node_Expression_Name extends AbstractExpression
 {
     protected $specialVars = [
         '_self' => '$this',
@@ -22,7 +26,7 @@ class Twig_Node_Expression_Name extends Twig_Node_Expression
         parent::__construct([], ['name' => $name, 'is_defined_test' => false, 'ignore_strict_check' => false, 'always_defined' => false], $lineno);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $name = $this->getAttribute('name');
 

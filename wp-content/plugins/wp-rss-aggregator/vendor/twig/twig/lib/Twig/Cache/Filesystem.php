@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Cache\CacheInterface;
+
 /**
  * Implements a cache on the filesystem.
  *
  * @author Andrew Tch <andrew@noop.lv>
  */
-class Twig_Cache_Filesystem implements Twig_CacheInterface
+class Twig_Cache_Filesystem implements CacheInterface
 {
     const FORCE_BYTECODE_INVALIDATION = 1;
 
@@ -22,8 +24,8 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
     private $options;
 
     /**
-     * @param $directory string The root cache directory
-     * @param $options   int    A set of options
+     * @param string $directory The root cache directory
+     * @param int $options      A set of options
      */
     public function __construct($directory, $options = 0)
     {
@@ -47,16 +49,16 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
 
     public function write($key, $content)
     {
-        $dir = dirname($key);
+        $dir = \dirname($key);
         if (!is_dir($dir)) {
             if (false === @mkdir($dir, 0777, true)) {
                 clearstatcache(true, $dir);
                 if (!is_dir($dir)) {
-                    throw new RuntimeException(sprintf('Unable to create the cache directory (%s).', $dir));
+                    throw new \RuntimeException(sprintf('Unable to create the cache directory (%s).', $dir));
                 }
             }
         } elseif (!is_writable($dir)) {
-            throw new RuntimeException(sprintf('Unable to write in the cache directory (%s).', $dir));
+            throw new \RuntimeException(sprintf('Unable to write in the cache directory (%s).', $dir));
         }
 
         $tmpFile = tempnam($dir, basename($key));
@@ -65,9 +67,9 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
 
             if (self::FORCE_BYTECODE_INVALIDATION == ($this->options & self::FORCE_BYTECODE_INVALIDATION)) {
                 // Compile cached file into bytecode cache
-                if (function_exists('opcache_invalidate')) {
+                if (\function_exists('opcache_invalidate')) {
                     opcache_invalidate($key, true);
-                } elseif (function_exists('apc_compile_file')) {
+                } elseif (\function_exists('apc_compile_file')) {
                     apc_compile_file($key);
                 }
             }
@@ -75,7 +77,7 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
             return;
         }
 
-        throw new RuntimeException(sprintf('Failed to write cache file "%s".', $key));
+        throw new \RuntimeException(sprintf('Failed to write cache file "%s".', $key));
     }
 
     public function getTimestamp($key)

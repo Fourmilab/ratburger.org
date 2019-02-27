@@ -9,12 +9,16 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\LoaderError;
+use Twig\Loader\LoaderInterface;
+use Twig\Source;
+
 /**
  * Loads template from the filesystem.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderInterface, Twig_SourceContextLoaderInterface
+class Twig_Loader_Filesystem implements LoaderInterface, Twig_ExistsLoaderInterface, Twig_SourceContextLoaderInterface
 {
     /** Identifier of the main namespace. */
     const MAIN_NAMESPACE = '__main__';
@@ -73,7 +77,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
      */
     public function setPaths($paths, $namespace = self::MAIN_NAMESPACE)
     {
-        if (!is_array($paths)) {
+        if (!\is_array($paths)) {
             $paths = [$paths];
         }
 
@@ -89,7 +93,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
      * @param string $path      A path where to look for templates
      * @param string $namespace A path namespace
      *
-     * @throws Twig_Error_Loader
+     * @throws LoaderError
      */
     public function addPath($path, $namespace = self::MAIN_NAMESPACE)
     {
@@ -98,7 +102,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
 
         $checkPath = $this->isAbsolutePath($path) ? $path : $this->rootPath.$path;
         if (!is_dir($checkPath)) {
-            throw new Twig_Error_Loader(sprintf('The "%s" directory does not exist ("%s").', $path, $checkPath));
+            throw new LoaderError(sprintf('The "%s" directory does not exist ("%s").', $path, $checkPath));
         }
 
         $this->paths[$namespace][] = rtrim($path, '/\\');
@@ -110,7 +114,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
      * @param string $path      A path where to look for templates
      * @param string $namespace A path namespace
      *
-     * @throws Twig_Error_Loader
+     * @throws LoaderError
      */
     public function prependPath($path, $namespace = self::MAIN_NAMESPACE)
     {
@@ -119,7 +123,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
 
         $checkPath = $this->isAbsolutePath($path) ? $path : $this->rootPath.$path;
         if (!is_dir($checkPath)) {
-            throw new Twig_Error_Loader(sprintf('The "%s" directory does not exist ("%s").', $path, $checkPath));
+            throw new LoaderError(sprintf('The "%s" directory does not exist ("%s").', $path, $checkPath));
         }
 
         $path = rtrim($path, '/\\');
@@ -133,7 +137,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
 
     public function getSource($name)
     {
-        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', get_class($this)), E_USER_DEPRECATED);
+        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', \get_class($this)), E_USER_DEPRECATED);
 
         return file_get_contents($this->findTemplate($name));
     }
@@ -142,13 +146,13 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
     {
         $path = $this->findTemplate($name);
 
-        return new Twig_Source(file_get_contents($path), $name, $path);
+        return new Source(file_get_contents($path), $name, $path);
     }
 
     public function getCacheKey($name)
     {
         $path = $this->findTemplate($name);
-        $len = strlen($this->rootPath);
+        $len = \strlen($this->rootPath);
         if (0 === strncmp($this->rootPath, $path, $len)) {
             return substr($path, $len);
         }
@@ -166,8 +170,8 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
 
         try {
             return false !== $this->findTemplate($name, false);
-        } catch (Twig_Error_Loader $exception) {
-            @trigger_error(sprintf('In %s::findTemplate(), you must accept a second argument that when set to "false" returns "false" instead of throwing an exception. Not supporting this argument is deprecated since version 1.27.', get_class($this)), E_USER_DEPRECATED);
+        } catch (LoaderError $exception) {
+            @trigger_error(sprintf('In %s::findTemplate(), you must accept a second argument that when set to "false" returns "false" instead of throwing an exception. Not supporting this argument is deprecated since version 1.27.', \get_class($this)), E_USER_DEPRECATED);
 
             return false;
         }
@@ -180,7 +184,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
 
     protected function findTemplate($name)
     {
-        $throw = func_num_args() > 1 ? func_get_arg(1) : true;
+        $throw = \func_num_args() > 1 ? func_get_arg(1) : true;
         $name = $this->normalizeName($name);
 
         if (isset($this->cache[$name])) {
@@ -192,14 +196,14 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
                 return false;
             }
 
-            throw new Twig_Error_Loader($this->errorCache[$name]);
+            throw new LoaderError($this->errorCache[$name]);
         }
 
         try {
             $this->validateName($name);
 
             list($namespace, $shortname) = $this->parseName($name);
-        } catch (Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             if (!$throw) {
                 return false;
             }
@@ -214,12 +218,12 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
                 return false;
             }
 
-            throw new Twig_Error_Loader($this->errorCache[$name]);
+            throw new LoaderError($this->errorCache[$name]);
         }
 
         foreach ($this->paths[$namespace] as $path) {
             if (!$this->isAbsolutePath($path)) {
-                $path = $this->rootPath.'/'.$path;
+                $path = $this->rootPath.$path;
             }
 
             if (is_file($path.'/'.$shortname)) {
@@ -237,14 +241,14 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
             return false;
         }
 
-        throw new Twig_Error_Loader($this->errorCache[$name]);
+        throw new LoaderError($this->errorCache[$name]);
     }
 
     protected function parseName($name, $default = self::MAIN_NAMESPACE)
     {
         if (isset($name[0]) && '@' == $name[0]) {
             if (false === $pos = strpos($name, '/')) {
-                throw new Twig_Error_Loader(sprintf('Malformed namespaced template name "%s" (expecting "@namespace/template_name").', $name));
+                throw new LoaderError(sprintf('Malformed namespaced template name "%s" (expecting "@namespace/template_name").', $name));
             }
 
             $namespace = substr($name, 1, $pos - 1);
@@ -264,7 +268,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
     protected function validateName($name)
     {
         if (false !== strpos($name, "\0")) {
-            throw new Twig_Error_Loader('A template name cannot contain NUL bytes.');
+            throw new LoaderError('A template name cannot contain NUL bytes.');
         }
 
         $name = ltrim($name, '/');
@@ -278,7 +282,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
             }
 
             if ($level < 0) {
-                throw new Twig_Error_Loader(sprintf('Looks like you try to load a template outside configured directories (%s).', $name));
+                throw new LoaderError(sprintf('Looks like you try to load a template outside configured directories (%s).', $name));
             }
         }
     }
@@ -286,7 +290,7 @@ class Twig_Loader_Filesystem implements Twig_LoaderInterface, Twig_ExistsLoaderI
     private function isAbsolutePath($file)
     {
         return strspn($file, '/\\', 0, 1)
-            || (strlen($file) > 3 && ctype_alpha($file[0])
+            || (\strlen($file) > 3 && ctype_alpha($file[0])
                 && ':' === substr($file, 1, 1)
                 && strspn($file, '/\\', 2, 1)
             )

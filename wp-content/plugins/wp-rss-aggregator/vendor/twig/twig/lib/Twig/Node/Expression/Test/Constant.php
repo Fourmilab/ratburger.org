@@ -9,20 +9,21 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\TestExpression;
+
 /**
  * Checks if a variable is the exact same value as a constant.
  *
- * <pre>
- *  {% if post.status is constant('Post::PUBLISHED') %}
- *    the status attribute is exactly the same as Post::PUBLISHED
- *  {% endif %}
- * </pre>
+ *    {% if post.status is constant('Post::PUBLISHED') %}
+ *      the status attribute is exactly the same as Post::PUBLISHED
+ *    {% endif %}
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Expression_Test_Constant extends Twig_Node_Expression_Test
+class Twig_Node_Expression_Test_Constant extends TestExpression
 {
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->raw('(')

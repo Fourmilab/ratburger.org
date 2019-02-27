@@ -9,9 +9,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_Node_Expression_Binary_Or extends Twig_Node_Expression_Binary
+
+use Twig\Compiler;
+use Twig\Node\Expression\Binary\AbstractBinary;
+
+class Twig_Node_Expression_Binary_Or extends AbstractBinary
 {
-    public function operator(Twig_Compiler $compiler)
+    public function operator(Compiler $compiler)
     {
         return $compiler->raw('||');
     }

@@ -9,56 +9,60 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\SyntaxError;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Node;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
 /**
  * Imports blocks defined in another template into the current template.
  *
- * <pre>
- * {% extends "base.html" %}
+ *    {% extends "base.html" %}
  *
- * {% use "blocks.html" %}
+ *    {% use "blocks.html" %}
  *
- * {% block title %}{% endblock %}
- * {% block content %}{% endblock %}
- * </pre>
+ *    {% block title %}{% endblock %}
+ *    {% block content %}{% endblock %}
  *
  * @see https://twig.symfony.com/doc/templates.html#horizontal-reuse for details.
  *
  * @final
  */
-class Twig_TokenParser_Use extends Twig_TokenParser
+class Twig_TokenParser_Use extends AbstractTokenParser
 {
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
         $template = $this->parser->getExpressionParser()->parseExpression();
         $stream = $this->parser->getStream();
 
-        if (!$template instanceof Twig_Node_Expression_Constant) {
-            throw new Twig_Error_Syntax('The template references in a "use" statement must be a string.', $stream->getCurrent()->getLine(), $stream->getSourceContext());
+        if (!$template instanceof ConstantExpression) {
+            throw new SyntaxError('The template references in a "use" statement must be a string.', $stream->getCurrent()->getLine(), $stream->getSourceContext());
         }
 
         $targets = [];
         if ($stream->nextIf('with')) {
             do {
-                $name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
+                $name = $stream->expect(Token::NAME_TYPE)->getValue();
 
                 $alias = $name;
                 if ($stream->nextIf('as')) {
-                    $alias = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
+                    $alias = $stream->expect(Token::NAME_TYPE)->getValue();
                 }
 
-                $targets[$name] = new Twig_Node_Expression_Constant($alias, -1);
+                $targets[$name] = new ConstantExpression($alias, -1);
 
-                if (!$stream->nextIf(Twig_Token::PUNCTUATION_TYPE, ',')) {
+                if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
                     break;
                 }
             } while (true);
         }
 
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
-        $this->parser->addTrait(new Twig_Node(['template' => $template, 'targets' => new Twig_Node($targets)]));
+        $this->parser->addTrait(new Node(['template' => $template, 'targets' => new Node($targets)]));
 
-        return new Twig_Node();
+        return new Node();
     }
 
     public function getTag()

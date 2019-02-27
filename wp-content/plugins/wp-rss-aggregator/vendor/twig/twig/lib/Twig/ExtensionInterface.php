@@ -9,6 +9,13 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Environment;
+use Twig\NodeVisitor\NodeVisitorInterface;
+use Twig\TokenParser\TokenParserInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TwigTest;
+
 /**
  * Interface implemented by extension classes.
  *
@@ -23,40 +30,40 @@ interface Twig_ExtensionInterface
      *
      * @deprecated since 1.23 (to be removed in 2.0), implement Twig_Extension_InitRuntimeInterface instead
      */
-    public function initRuntime(Twig_Environment $environment);
+    public function initRuntime(Environment $environment);
 
     /**
      * Returns the token parser instances to add to the existing list.
      *
-     * @return Twig_TokenParserInterface[]
+     * @return TokenParserInterface[]
      */
     public function getTokenParsers();
 
     /**
      * Returns the node visitor instances to add to the existing list.
      *
-     * @return Twig_NodeVisitorInterface[]
+     * @return NodeVisitorInterface[]
      */
     public function getNodeVisitors();
 
     /**
      * Returns a list of filters to add to the existing list.
      *
-     * @return Twig_SimpleFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters();
 
     /**
      * Returns a list of tests to add to the existing list.
      *
-     * @return Twig_SimpleTest[]
+     * @return TwigTest[]
      */
     public function getTests();
 
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return Twig_SimpleFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions();
 

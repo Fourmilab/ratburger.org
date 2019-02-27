@@ -9,19 +9,24 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Node;
+
 /**
  * Represents an import node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Import extends Twig_Node
+class Twig_Node_Import extends Node
 {
-    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $var, $lineno, $tag = null)
+    public function __construct(AbstractExpression $expr, AbstractExpression $var, $lineno, $tag = null)
     {
         parent::__construct(['expr' => $expr, 'var' => $var], [], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
@@ -30,7 +35,7 @@ class Twig_Node_Import extends Twig_Node
             ->raw(' = ')
         ;
 
-        if ($this->getNode('expr') instanceof Twig_Node_Expression_Name && '_self' === $this->getNode('expr')->getAttribute('name')) {
+        if ($this->getNode('expr') instanceof NameExpression && '_self' === $this->getNode('expr')->getAttribute('name')) {
             $compiler->raw('$this');
         } else {
             $compiler

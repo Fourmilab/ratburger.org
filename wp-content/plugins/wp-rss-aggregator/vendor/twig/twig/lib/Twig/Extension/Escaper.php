@@ -9,10 +9,15 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Extension\AbstractExtension;
+use Twig\NodeVisitor\EscaperNodeVisitor;
+use Twig\TokenParser\AutoEscapeTokenParser;
+use Twig\TwigFilter;
+
 /**
  * @final
  */
-class Twig_Extension_Escaper extends Twig_Extension
+class Twig_Extension_Escaper extends AbstractExtension
 {
     protected $defaultStrategy;
 
@@ -28,18 +33,18 @@ class Twig_Extension_Escaper extends Twig_Extension
 
     public function getTokenParsers()
     {
-        return [new Twig_TokenParser_AutoEscape()];
+        return [new AutoEscapeTokenParser()];
     }
 
     public function getNodeVisitors()
     {
-        return [new Twig_NodeVisitor_Escaper()];
+        return [new EscaperNodeVisitor()];
     }
 
     public function getFilters()
     {
         return [
-            new Twig_SimpleFilter('raw', 'twig_raw_filter', ['is_safe' => ['all']]),
+            new TwigFilter('raw', 'twig_raw_filter', ['is_safe' => ['all']]),
         ];
     }
 
@@ -67,7 +72,7 @@ class Twig_Extension_Escaper extends Twig_Extension
         }
 
         if ('name' === $defaultStrategy) {
-            $defaultStrategy = ['Twig_FileExtensionEscapingStrategy', 'guess'];
+            $defaultStrategy = ['\Twig\FileExtensionEscapingStrategy', 'guess'];
         }
 
         $this->defaultStrategy = $defaultStrategy;
@@ -84,8 +89,8 @@ class Twig_Extension_Escaper extends Twig_Extension
     {
         // disable string callables to avoid calling a function named html or js,
         // or any other upcoming escaping strategy
-        if (!is_string($this->defaultStrategy) && false !== $this->defaultStrategy) {
-            return call_user_func($this->defaultStrategy, $name);
+        if (!\is_string($this->defaultStrategy) && false !== $this->defaultStrategy) {
+            return \call_user_func($this->defaultStrategy, $name);
         }
 
         return $this->defaultStrategy;

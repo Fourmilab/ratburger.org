@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\LoaderError;
+use Twig\Loader\LoaderInterface;
+use Twig\Source;
+
 /**
  * Loads a template from an array.
  *
@@ -23,7 +27,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Loader_Array implements Twig_LoaderInterface, Twig_ExistsLoaderInterface, Twig_SourceContextLoaderInterface
+class Twig_Loader_Array implements LoaderInterface, Twig_ExistsLoaderInterface, Twig_SourceContextLoaderInterface
 {
     protected $templates = [];
 
@@ -48,11 +52,11 @@ class Twig_Loader_Array implements Twig_LoaderInterface, Twig_ExistsLoaderInterf
 
     public function getSource($name)
     {
-        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', get_class($this)), E_USER_DEPRECATED);
+        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', \get_class($this)), E_USER_DEPRECATED);
 
         $name = (string) $name;
         if (!isset($this->templates[$name])) {
-            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
+            throw new LoaderError(sprintf('Template "%s" is not defined.', $name));
         }
 
         return $this->templates[$name];
@@ -62,10 +66,10 @@ class Twig_Loader_Array implements Twig_LoaderInterface, Twig_ExistsLoaderInterf
     {
         $name = (string) $name;
         if (!isset($this->templates[$name])) {
-            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
+            throw new LoaderError(sprintf('Template "%s" is not defined.', $name));
         }
 
-        return new Twig_Source($this->templates[$name], $name);
+        return new Source($this->templates[$name], $name);
     }
 
     public function exists($name)
@@ -77,7 +81,7 @@ class Twig_Loader_Array implements Twig_LoaderInterface, Twig_ExistsLoaderInterf
     {
         $name = (string) $name;
         if (!isset($this->templates[$name])) {
-            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
+            throw new LoaderError(sprintf('Template "%s" is not defined.', $name));
         }
 
         return $name.':'.$this->templates[$name];
@@ -87,7 +91,7 @@ class Twig_Loader_Array implements Twig_LoaderInterface, Twig_ExistsLoaderInterf
     {
         $name = (string) $name;
         if (!isset($this->templates[$name])) {
-            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
+            throw new LoaderError(sprintf('Template "%s" is not defined.', $name));
         }
 
         return true;

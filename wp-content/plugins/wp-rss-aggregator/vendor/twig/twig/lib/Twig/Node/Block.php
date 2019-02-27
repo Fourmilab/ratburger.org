@@ -10,19 +10,22 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Node;
+
 /**
  * Represents a block node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Block extends Twig_Node
+class Twig_Node_Block extends Node
 {
     public function __construct($name, Twig_NodeInterface $body, $lineno, $tag = null)
     {
         parent::__construct(['body' => $body], ['name' => $name], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)

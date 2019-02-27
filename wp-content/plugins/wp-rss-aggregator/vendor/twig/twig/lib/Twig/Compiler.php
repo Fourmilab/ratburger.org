@@ -10,6 +10,9 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Environment;
+use Twig\Node\ModuleNode;
+
 /**
  * Compiles a node to PHP code.
  *
@@ -27,7 +30,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     protected $filename;
     private $varNameSalt = 0;
 
-    public function __construct(Twig_Environment $env)
+    public function __construct(Environment $env)
     {
         $this->env = $env;
     }
@@ -45,7 +48,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Returns the environment instance related to this compiler.
      *
-     * @return Twig_Environment
+     * @return Environment
      */
     public function getEnvironment()
     {
@@ -65,8 +68,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Compiles a node.
      *
-     * @param Twig_NodeInterface $node        The node to compile
-     * @param int                $indentation The current indentation
+     * @param int $indentation The current indentation
      *
      * @return $this
      */
@@ -81,7 +83,7 @@ class Twig_Compiler implements Twig_CompilerInterface
         $this->indentation = $indentation;
         $this->varNameSalt = 0;
 
-        if ($node instanceof Twig_Node_Module) {
+        if ($node instanceof ModuleNode) {
             // to be removed in 2.0
             $this->filename = $node->getTemplateName();
         }
@@ -123,7 +125,7 @@ class Twig_Compiler implements Twig_CompilerInterface
      */
     public function write()
     {
-        $strings = func_get_args();
+        $strings = \func_get_args();
         foreach ($strings as $string) {
             $this->source .= str_repeat(' ', $this->indentation * 4).$string;
         }
@@ -170,7 +172,7 @@ class Twig_Compiler implements Twig_CompilerInterface
      */
     public function repr($value)
     {
-        if (is_int($value) || is_float($value)) {
+        if (\is_int($value) || \is_float($value)) {
             if (false !== $locale = setlocale(LC_NUMERIC, '0')) {
                 setlocale(LC_NUMERIC, 'C');
             }
@@ -182,9 +184,9 @@ class Twig_Compiler implements Twig_CompilerInterface
             }
         } elseif (null === $value) {
             $this->raw('null');
-        } elseif (is_bool($value)) {
+        } elseif (\is_bool($value)) {
             $this->raw($value ? 'true' : 'false');
-        } elseif (is_array($value)) {
+        } elseif (\is_array($value)) {
             $this->raw('[');
             $first = true;
             foreach ($value as $key => $v) {
@@ -225,7 +227,7 @@ class Twig_Compiler implements Twig_CompilerInterface
             } else {
                 $this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
             }
-            $this->sourceOffset = strlen($this->source);
+            $this->sourceOffset = \strlen($this->source);
             $this->debugInfo[$this->sourceLine] = $node->getTemplateLine();
 
             $this->lastLine = $node->getTemplateLine();
@@ -262,13 +264,13 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @return $this
      *
-     * @throws LogicException When trying to outdent too much so the indentation would become negative
+     * @throws \LogicException When trying to outdent too much so the indentation would become negative
      */
     public function outdent($step = 1)
     {
         // can't outdent by more steps than the current indentation level
         if ($this->indentation < $step) {
-            throw new LogicException('Unable to call outdent() as the indentation would become negative.');
+            throw new \LogicException('Unable to call outdent() as the indentation would become negative.');
         }
 
         $this->indentation -= $step;

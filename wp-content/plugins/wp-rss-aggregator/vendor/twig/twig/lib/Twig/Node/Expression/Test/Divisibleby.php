@@ -9,18 +9,19 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\TestExpression;
+
 /**
  * Checks if a variable is divisible by a number.
  *
- * <pre>
  *  {% if loop.index is divisible by(3) %}
- * </pre>
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Expression_Test_Divisibleby extends Twig_Node_Expression_Test
+class Twig_Node_Expression_Test_Divisibleby extends TestExpression
 {
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->raw('(0 == ')

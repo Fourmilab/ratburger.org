@@ -10,21 +10,28 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\AssignNameExpression;
+use Twig\Node\ForLoopNode;
+use Twig\Node\IfNode;
+use Twig\Node\Node;
+
 /**
  * Represents a for node.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_For extends Twig_Node
+class Twig_Node_For extends Node
 {
     protected $loop;
 
-    public function __construct(Twig_Node_Expression_AssignName $keyTarget, Twig_Node_Expression_AssignName $valueTarget, Twig_Node_Expression $seq, Twig_Node_Expression $ifexpr = null, Twig_NodeInterface $body, Twig_NodeInterface $else = null, $lineno, $tag = null)
+    public function __construct(AssignNameExpression $keyTarget, AssignNameExpression $valueTarget, AbstractExpression $seq, AbstractExpression $ifexpr = null, Twig_NodeInterface $body, Twig_NodeInterface $else = null, $lineno, $tag = null)
     {
-        $body = new Twig_Node([$body, $this->loop = new Twig_Node_ForLoop($lineno, $tag)]);
+        $body = new Node([$body, $this->loop = new ForLoopNode($lineno, $tag)]);
 
         if (null !== $ifexpr) {
-            $body = new Twig_Node_If(new Twig_Node([$ifexpr, $body]), null, $lineno, $tag);
+            $body = new IfNode(new Node([$ifexpr, $body]), null, $lineno, $tag);
         }
 
         $nodes = ['key_target' => $keyTarget, 'value_target' => $valueTarget, 'seq' => $seq, 'body' => $body];
@@ -35,7 +42,7 @@ class Twig_Node_For extends Twig_Node
         parent::__construct($nodes, ['with_loop' => true, 'ifexpr' => null !== $ifexpr], $lineno, $tag);
     }
 
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
@@ -61,7 +68,7 @@ class Twig_Node_For extends Twig_Node
 
             if (!$this->getAttribute('ifexpr')) {
                 $compiler
-                    ->write("if (is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof Countable)) {\n")
+                    ->write("if (is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof \Countable)) {\n")
                     ->indent()
                     ->write("\$length = count(\$context['_seq']);\n")
                     ->write("\$context['loop']['revindex0'] = \$length - 1;\n")

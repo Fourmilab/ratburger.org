@@ -10,6 +10,10 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use Twig\Compiler;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
+use Twig\Node\Node;
 
 abstract class Twig_Test_NodeTestCase extends TestCase
 {
@@ -23,7 +27,7 @@ abstract class Twig_Test_NodeTestCase extends TestCase
         $this->assertNodeCompilation($source, $node, $environment, $isPattern);
     }
 
-    public function assertNodeCompilation($source, Twig_Node $node, Twig_Environment $environment = null, $isPattern = false)
+    public function assertNodeCompilation($source, Node $node, Environment $environment = null, $isPattern = false)
     {
         $compiler = $this->getCompiler($environment);
         $compiler->compile($node);
@@ -35,14 +39,14 @@ abstract class Twig_Test_NodeTestCase extends TestCase
         }
     }
 
-    protected function getCompiler(Twig_Environment $environment = null)
+    protected function getCompiler(Environment $environment = null)
     {
-        return new Twig_Compiler(null === $environment ? $this->getEnvironment() : $environment);
+        return new Compiler(null === $environment ? $this->getEnvironment() : $environment);
     }
 
     protected function getEnvironment()
     {
-        return new Twig_Environment(new Twig_Loader_Array([]));
+        return new Environment(new ArrayLoader([]));
     }
 
     protected function getVariableGetter($name, $line = false)
@@ -62,7 +66,7 @@ abstract class Twig_Test_NodeTestCase extends TestCase
 
     protected function getAttributeGetter()
     {
-        if (function_exists('twig_template_get_attributes')) {
+        if (\function_exists('twig_template_get_attributes')) {
             return 'twig_template_get_attributes($this, ';
         }
 

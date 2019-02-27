@@ -9,15 +9,19 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Extension\AbstractExtension;
+use Twig\Template;
+use Twig\TwigFunction;
+
 /**
  * @final
  */
-class Twig_Extension_StringLoader extends Twig_Extension
+class Twig_Extension_StringLoader extends AbstractExtension
 {
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('template_from_string', 'twig_template_from_string', ['needs_environment' => true]),
+            new TwigFunction('template_from_string', 'twig_template_from_string', ['needs_environment' => true]),
         ];
     }
 
@@ -30,14 +34,11 @@ class Twig_Extension_StringLoader extends Twig_Extension
 /**
  * Loads a template from a string.
  *
- * <pre>
- * {{ include(template_from_string("Hello {{ name }}")) }}
- * </pre>
+ *     {{ include(template_from_string("Hello {{ name }}")) }}
  *
- * @param Twig_Environment $env      A Twig_Environment instance
- * @param string           $template A template as a string or object implementing __toString()
+ * @param string $template A template as a string or object implementing __toString()
  *
- * @return Twig_Template
+ * @return Template
  */
 function twig_template_from_string(Twig_Environment $env, $template)
 {
