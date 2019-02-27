@@ -4,7 +4,7 @@ Tags: Image Rotation, iPhone
 Requires at least: 3.7
 Requires PHP: 5.6
 Tested up to: 5.1
-Stable tag: 2.2
+Stable tag: 2.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ You can even contribute by adding banner images and logos for the plugin. If you
 2. Adding images of different orientations with this plugin.
 
 == Changelog ==
+
+= 2.2.1 =
+* Remove extra rows below plugin details.
+* Add admin notice if exif extension not loaded or exif_read_data function does not exist or is disabled.
 
 = 2.2 =
 * Adds "PHP EXIF MODULE LOADED" and "EXIF_READ_DATA CALLABLE" below plugin details.
