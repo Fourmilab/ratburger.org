@@ -1,14 +1,13 @@
 === Subscribe To Comments Reloaded ===
-Author: reedyseth
-Contributors: reedyseth, coolmann
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted
+Author: WPKube
+Contributors: WPKube
 Tags: comments, subscribe, subscribe to comments, subscribe to comments reloaded, email, email notification, subscriptions, commenting, reply, reply to comments, post notification, comment notification, automatic comment notification, email signup
 Plugin URI: http://subscribe-reloaded.com/
 Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.1
-Stable tag: 190214
+Stable tag: 190305
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,9 +42,6 @@ Subscribe to Comments Reloaded is a robust plugin that enables commenters to sig
 7. You can always install the latest development version by taking a look at this [Video](https://youtu.be/uQwkBciyFGY)
 
 == Frequently Asked Questions ==
-
-= Where can I give a Donation to support the plugin? =
-Thank you to your contributions the plugin gets better, please go to this [link](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XF86X93FDCGYA&lc=US&item_name=Datasoft%20Engineering&item_number=DI%2dSTCR&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted) to give a PayPal donation.
 
 = Are there any video tutorials? =
 Yeah, I have uploaded a few videos for the following topics:
@@ -104,6 +100,10 @@ Just go to the Options Panel and click the generate button. By generating a new 
 
 == Upgrade Notice ==
 
+= v190305 =
+
+* **Fix** Issue with "Subscribe authors" functionality sending the emails to administrator instead of the post author
+
 = v190214 =
 
 * **Fix** Compatibility with some PHP versions and MySQL. Fixes other minor issues.
@@ -116,6 +116,10 @@ Just go to the Options Panel and click the generate button. By generating a new 
 **Fix** Information that was not been validated on the backened.
 
 == Changelog ==
+
+= v190305 =
+
+* **Fix** Issue with "Subscribe authors" functionality sending the emails to administrator instead of the post author
 
 = v190214 =
 
