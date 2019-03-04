@@ -115,7 +115,10 @@ class rsssl_admin extends rsssl_front_end
          * https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
          * */
 
-        if (get_option('rsssl_flush_rewrite_rules') && get_option('rsssl_flush_rewrite_rules') < strtotime("-1 minute")){
+        $activation_time = get_option('rsssl_flush_rewrite_rules');
+        $more_than_one_minute_ago = $activation_time < strtotime("-1 minute");
+        $less_than_5_minutes_ago = $activation_time > strtotime("-5 minute");
+        if (get_option('rsssl_flush_rewrite_rules') && $more_than_one_minute_ago && $less_than_5_minutes_ago){
             delete_option('rsssl_flush_rewrite_rules');
             add_action('shutdown', 'flush_rewrite_rules');
         }
@@ -262,8 +265,22 @@ class rsssl_admin extends rsssl_front_end
         return $current;
     }
 
+    /*
+     * @Since 3.1
+     *
+     * Check if site uses an htaccess.conf file, used in bitnami installations
+     *
+     */
 
-    //change deprecated function depending on version.
+    public function uses_htaccess_conf() {
+        $htaccess_conf_file = dirname(ABSPATH) . "/conf/htaccess.conf";
+
+        if (is_file($htaccess_conf_file)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function get_sites_bw_compatible()
     {
@@ -382,7 +399,7 @@ class rsssl_admin extends rsssl_front_end
     public function ssl_detected()
     {
         if ($this->site_has_ssl) { ?>
-            <div id="message" class="updated fade notice activate-ssl">
+            <div id="message" class="updated notice activate-ssl">
                 <?php
                   do_action('rsssl_activation_notice_inner');
                 ?>
@@ -394,7 +411,7 @@ class rsssl_admin extends rsssl_front_end
     public function no_ssl_detected()
     {
         if (!$this->site_has_ssl) { ?>
-            <div id="message" class="error fade notice rsssl-notice-certificate">
+            <div id="message" class="error notice rsssl-notice-certificate">
                 <h1><?php echo __("Detected possible certificate issues", "really-simple-ssl"); ?></h1>
                 <p>
                     <?php
@@ -402,7 +419,7 @@ class rsssl_admin extends rsssl_front_end
                     $link_open = '<p><a class="button" target="_blank" href="' . $reload_https_url . '">';
                     $link_close = '</a></p>';
 
-                    printf(__("Really Simple SSL failed to detect a valid SSL certificate. If you do have an SSL certificate, try to reload this page over https by clicking this button: %sReload over https%s. The built-in certificate check will run once daily, to force a new certificate check visit the SSL settings page. ", "really-simple-ssl"), $link_open, $link_close);
+                    printf(__("Really Simple SSL failed to detect a valid SSL certificate. If you do have an SSL certificate, try to reload this page over https by clicking this button: %sReload over https%s The built-in certificate check will run once daily, to force a new certificate check visit the SSL settings page. ", "really-simple-ssl"), $link_open, $link_close);
 
                     $ssl_test_url = "https://www.ssllabs.com/ssltest/";
                     $link_open = '<a target="_blank" href="' . $ssl_test_url . '">';
@@ -566,28 +583,37 @@ class rsssl_admin extends rsssl_front_end
     public function build_domain_list()
     {
         if (!is_multisite()) return;
-        //create list of all activated sites with SSL
-        $this->sites = array();
-        $sites = $this->get_sites_bw_compatible();
-        if ($this->debug) $this->trace_log("building domain list for multisite...");
-        foreach ($sites as $site) {
-            $this->switch_to_blog_bw_compatible($site);
-            $options = get_option('rlrsssl_options');
 
-            $ssl_enabled = FALSE;
-            if (isset($options)) {
-                $site_has_ssl = isset($options['site_has_ssl']) ? $options['site_has_ssl'] : FALSE;
-                $ssl_enabled = isset($options['ssl_enabled']) ? $options['ssl_enabled'] : $site_has_ssl;
+        $this->sites = get_transient('rsssl_domain_list');
+        if (!$this->sites) {
+
+            //create list of all activated sites with SSL
+            $this->sites = array();
+            $nr_of_sites = RSSSL()->rsssl_multisite->get_total_blog_count();
+            $sites = RSSSL()->rsssl_multisite->get_sites_bw_compatible(0, $nr_of_sites);
+
+            if ($this->debug) $this->trace_log("building domain list for multisite...");
+            foreach ($sites as $site) {
+                $this->switch_to_blog_bw_compatible($site);
+                $options = get_option('rlrsssl_options');
+
+                $ssl_enabled = FALSE;
+                if (isset($options)) {
+                    $site_has_ssl = isset($options['site_has_ssl']) ? $options['site_has_ssl'] : FALSE;
+                    $ssl_enabled = isset($options['ssl_enabled']) ? $options['ssl_enabled'] : $site_has_ssl;
+                }
+
+                if (is_plugin_active(rsssl_plugin) && $ssl_enabled) {
+                    if ($this->debug) $this->trace_log("adding: " . home_url());
+                    $this->sites[] = home_url();
+                }
+                restore_current_blog(); //switches back to previous blog, not current, so we have to do it each loop
             }
 
-            if (is_plugin_active(rsssl_plugin) && $ssl_enabled) {
-                if ($this->debug) $this->trace_log("adding: " . home_url());
-                $this->sites[] = home_url();
-            }
-            restore_current_blog(); //switches back to previous blog, not current, so we have to do it each loop
+            set_transient('rsssl_domain_list', $this->sites, HOUR_IN_SECONDS);
+
+            $this->save_options();
         }
-
-        $this->save_options();
     }
 
     /**
@@ -647,8 +673,9 @@ class rsssl_admin extends rsssl_front_end
         if ($this->site_has_ssl) {
             //when one of the used server variables was found, test if the redirect works
 
-            if (RSSSL()->rsssl_server->uses_htaccess() && $this->ssl_type != "NA")
+            if (RSSSL()->rsssl_server->uses_htaccess() && $this->ssl_type != "NA") {
                 $this->test_htaccess_redirect();
+            }
 
             //in a configuration reverse proxy without a set server variable https, add code to wpconfig
             if ($this->do_wpconfig_loadbalancer_fix) {
@@ -1394,7 +1421,7 @@ class rsssl_admin extends rsssl_front_end
 
     public function test_url()
     {
-        $plugin_url = str_replace("http://", "https://", trailingslashit(rsssl_url));;
+        $plugin_url = str_replace("http://", "https://", trailingslashit(rsssl_url));
         $https_home_url = str_replace("http://", "https://", home_url());
 
         //in some case we get a relative url here, so we check that.
@@ -1433,9 +1460,8 @@ class rsssl_admin extends rsssl_front_end
 
     public function removeHtaccessEdit()
     {
-        if (file_exists($this->ABSpath . ".htaccess") && is_writable($this->ABSpath . ".htaccess")) {
-            $htaccess = file_get_contents($this->ABSpath . ".htaccess");
-
+        if (file_exists($this->htaccess_file()) && is_writable($this->htaccess_file())) {
+            $htaccess = file_get_contents($this->htaccess_file());
 
             //if multisite, per site activation and more than one blog remaining on ssl, remove condition for this site only
             //the domain list has been rebuilt already, so current site is already removed.
@@ -1459,7 +1485,7 @@ class rsssl_admin extends rsssl_front_end
             }
 
             $htaccess = preg_replace("/\n+/", "\n", $htaccess);
-            file_put_contents($this->ABSpath . ".htaccess", $htaccess);
+            file_put_contents($this->htaccess_file(), $htaccess);
             $this->save_options();
         } else {
             $this->errors['HTACCESS_NOT_WRITABLE'] = TRUE;
@@ -1469,9 +1495,9 @@ class rsssl_admin extends rsssl_front_end
 
     public function get_htaccess_version()
     {
-        if (!file_exists($this->ABSpath . ".htaccess")) return false;
+        if (!file_exists($this->htaccess_file())) return false;
 
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+        $htaccess = file_get_contents($this->htaccess_file());
         $versionpos = strpos($htaccess, "rsssl_version");
 
         if ($versionpos === false) {
@@ -1505,11 +1531,11 @@ class rsssl_admin extends rsssl_front_end
     public function htaccess_contains_redirect_rules()
     {
 
-        if (!file_exists($this->ABSpath . ".htaccess")) {
+        if (!file_exists($this->htaccess_file()))  {
             return false;
         }
 
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+        $htaccess = file_get_contents($this->htaccess_file());
 
         $needle_old = "RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]";
         $needle_new = "RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]";
@@ -1530,11 +1556,11 @@ class rsssl_admin extends rsssl_front_end
 
     public function contains_rsssl_rules()
     {
-        if (!file_exists($this->ABSpath . ".htaccess")) {
+        if (!file_exists($this->htaccess_file())) {
             return false;
         }
 
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+        $htaccess = file_get_contents($this->htaccess_file());
 
         $check = null;
         preg_match("/BEGIN rlrssslReallySimpleSSL/", $htaccess, $check);
@@ -1574,11 +1600,11 @@ class rsssl_admin extends rsssl_front_end
 
     public function contains_hsts()
     {
-        if (!file_exists($this->ABSpath . ".htaccess")) {
+        if (!file_exists($this->htaccess_file())) {
             $this->trace_log(".htaccess not found in " . $this->ABSpath);
             $result = $this->hsts; //just return the setting.
         } else {
-            $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+            $htaccess = file_get_contents($this->htaccess_file());
 
             preg_match("/Strict-Transport-Security/", $htaccess, $check);
             if (count($check) === 0) {
@@ -1593,7 +1619,7 @@ class rsssl_admin extends rsssl_front_end
 
 
     /**
-     * Adds redirect to https rules to the .htaccess file.
+     * Adds redirect to https rules to the .htaccess file or htaccess.conf on Bitnami.
      *
      * @since  2.0
      *
@@ -1611,7 +1637,7 @@ class rsssl_admin extends rsssl_front_end
         $this->trace_log("checking if .htaccess can or should be edited...");
 
         //does it exist?
-        if (!file_exists($this->ABSpath . ".htaccess")) {
+        if (!file_exists($this->htaccess_file()) ) {
             $this->trace_log(".htaccess not found.");
             return;
         }
@@ -1622,10 +1648,11 @@ class rsssl_admin extends rsssl_front_end
             return;
         }
 
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+         $htaccess = file_get_contents($this->htaccess_file());
+
         if (!$this->htaccess_contains_redirect_rules()) {
 
-            if (!is_writable($this->ABSpath . ".htaccess")) {
+            if (!is_writable($this->htaccess_file())) {
                 //set the wp redirect as fallback, because .htaccess couldn't be edited.
                 if ($this->clicked_activate_ssl()) $this->wp_redirect = true;
                 if (is_multisite()) {
@@ -1647,7 +1674,7 @@ class rsssl_admin extends rsssl_front_end
                 } else {
                     $htaccess = $htaccess . $rules;
                 }
-                file_put_contents($this->ABSpath . ".htaccess", $htaccess);
+                file_put_contents($this->htaccess_file(), $htaccess);
             }
 
         }
@@ -1659,13 +1686,12 @@ class rsssl_admin extends rsssl_front_end
         if (!current_user_can($this->capability)) return;
 
         //does it exist?
-        if (!file_exists($this->ABSpath . ".htaccess")) {
+        if (!file_exists($this->htaccess_file())) {
             $this->trace_log(".htaccess not found.");
             return;
         }
 
-
-        if (!is_writable($this->ABSpath . ".htaccess")) {
+        if (!is_writable($this->htaccess_file())) {
             if ($this->debug) $this->trace_log(".htaccess not writable.");
             return;
         }
@@ -1676,7 +1702,7 @@ class rsssl_admin extends rsssl_front_end
             return;
         }
 
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+        $htaccess = file_get_contents($this->htaccess_file());
         $htaccess = preg_replace("/#\s?BEGIN\s?rlrssslReallySimpleSSL.*?#\s?END\s?rlrssslReallySimpleSSL/s", "", $htaccess);
         $htaccess = preg_replace("/\n+/", "\n", $htaccess);
 
@@ -1689,7 +1715,7 @@ class rsssl_admin extends rsssl_front_end
         } else {
             $htaccess = $htaccess . $rules;
         }
-        file_put_contents($this->ABSpath . ".htaccess", $htaccess);
+        file_put_contents($this->htaccess_file(), $htaccess);
 
     }
 
@@ -1856,7 +1882,7 @@ class rsssl_admin extends rsssl_front_end
         $screen = get_current_screen();
         if ( $screen->parent_base === 'edit' ) return;
         ?>
-        <div id="message" class="error fade notice">
+        <div id="message" class="error notice">
             <h1><?php echo __("System detection encountered issues", "really-simple-ssl"); ?></h1>
 
             <?php if ($this->wpconfig_siteurl_not_fixed) { ?>
@@ -1928,7 +1954,7 @@ class rsssl_admin extends rsssl_front_end
 
     public function has_well_known_needle()
     {
-        $htaccess = file_get_contents($this->ABSpath . ".htaccess");
+        $htaccess = file_get_contents($this->htaccess_file());
 
         $well_known_needle = ".well-known";
 
@@ -1949,7 +1975,7 @@ class rsssl_admin extends rsssl_front_end
         if (!$this->review_notice_shown && get_option('rsssl_activation_timestamp') && get_option('rsssl_activation_timestamp') < strtotime("-1 month")) {
             add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_review'));
             ?>
-            <div id="message" class="updated fade notice is-dismissible rlrsssl-review">
+            <div id="message" class="updated notice is-dismissible rlrsssl-review">
                 <p><?php printf(__('Hi, you have been using Really Simple SSL for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s.', 'really-simple-ssl'),'<a href="https://really-simple-ssl.com/contact" target="_blank">','</a>'); ?></p>
                 <i>- Rogier</i>
                 <?php //Inline style because the main.css stylesheet is only included on Really Simple SSL admin pages.?>
@@ -1985,7 +2011,7 @@ class rsssl_admin extends rsssl_front_end
 
             add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_htaccess'));
             ?>
-            <div id="message" class="error fade notice is-dismissible rlrsssl-htaccess">
+            <div id="message" class="error notice is-dismissible rlrsssl-htaccess">
                 <p>
                     <?php echo __("You do not have a 301 redirect to https active in the settings. For SEO purposes it is advised to use 301 redirects. You can enable a 301 redirect in the settings.", "really-simple-ssl"); ?>
                     <a href="<?php echo admin_url('options-general.php?page=rlrsssl_really_simple_ssl')?>"><?php echo __("View settings page", "really-simple-ssl"); ?></a>
@@ -1996,7 +2022,7 @@ class rsssl_admin extends rsssl_front_end
 
         if (isset($this->errors["DEACTIVATE_FILE_NOT_RENAMED"])) {
             ?>
-            <div id="message" class="error fade notice is-dismissible rlrsssl-fail">
+            <div id="message" class="error notice is-dismissible rlrsssl-fail">
                 <h1>
                     <?php _e("Major security issue!", "really-simple-ssl"); ?>
                 </h1>
@@ -2018,7 +2044,7 @@ class rsssl_admin extends rsssl_front_end
 
             add_action('admin_print_footer_scripts', array($this, 'insert_dismiss_success'));
             ?>
-            <div id="message" class="updated fade notice is-dismissible rlrsssl-success">
+            <div id="message" class="updated notice is-dismissible rlrsssl-success">
                 <p>
                     <?php _e("SSL activated!", "really-simple-ssl"); ?>&nbsp;
                     <?php _e("Don't forget to change your settings in Google Analytics and Webmaster tools.", "really-simple-ssl");
@@ -2040,7 +2066,7 @@ class rsssl_admin extends rsssl_front_end
                 //pre WooCommerce 2.5
                 if (isset($this->plugin_conflict["WOOCOMMERCE_FORCEHTTP"]) && $this->plugin_conflict["WOOCOMMERCE_FORCEHTTP"] && isset($this->plugin_conflict["WOOCOMMERCE_FORCESSL"]) && $this->plugin_conflict["WOOCOMMERCE_FORCESSL"]) {
                     ?>
-                    <div id="message" class="error fade notice"><p>
+                    <div id="message" class="error notice"><p>
                             <?php _e("Really Simple SSL has a conflict with another plugin.", "really-simple-ssl"); ?>
                             <br>
                             <?php _e("The force http after leaving checkout in WooCommerce will create a redirect loop.", "really-simple-ssl"); ?>
@@ -2398,9 +2424,9 @@ class rsssl_admin extends rsssl_front_end
                                                 _e("WordPress redirect", "really-simple-ssl");
 
                                         } elseif (RSSSL()->rsssl_server->uses_htaccess() && (!is_multisite() || !RSSSL()->rsssl_multisite->is_per_site_activated_multisite_subfolder_install())) {
-                                            if (is_writable($this->ABSpath . ".htaccess")) {
+                                            if (is_writable($this->htaccess_file())) {
                                                 _e("Enable a .htaccess redirect or WordPress redirect in the settings to create a 301 redirect.", "really-simple-ssl");
-                                            } elseif (!is_writable($this->ABSpath . ".htaccess")) {
+                                            } elseif (!is_writable($this->htaccess_file())) {
                                                 _e(".htaccess is not writable. Set 301 WordPress redirect, or set the .htaccess manually if you want to redirect in .htaccess.", "really-simple-ssl");
                                             } else {
                                                 _e("Https redirect cannot be set in the .htaccess. Set the .htaccess redirect manually or enable WordPress redirect in the settings.", "really-simple-ssl");
@@ -2731,7 +2757,27 @@ class rsssl_admin extends rsssl_front_end
                 </td>
                 <td></td>
             </tr>
+            <?php
+            /**
+            ?>
+            <tr>
+
+            <td><?php echo (defined('rsssl_pro_path')) ? $this->img("success") : $this->img("warning"); ?></td>
+            <td>
+            <?php
+                $link_open = '<a target="_blank" href="' . $this->pro_url . '">';
+                $link_close = '</a>';
+
+                _e('Content Security Policy violation reporting not enabled.', "really-simple-ssl");
+                echo "&nbsp;";
+                printf(__("To enable, %sget Premium%s ", "really-simple-ssl"), $link_open, $link_close);
+
+            ?>
+            </td>
+            </tr>
+            **/?>
         </table>
+
 
 
         <?php
@@ -3007,9 +3053,9 @@ class rsssl_admin extends rsssl_front_end
         RSSSL()->rsssl_help->get_help_tip(__("A .htaccess redirect is faster. Really Simple SSL detects the redirect code that is most likely to work (99% of websites), but this is not 100%. Make sure you know how to regain access to your site if anything goes wrong!", "really-simple-ssl"));
         echo $comment;
 
-        if ($this->htaccess_redirect && (!is_writable($this->ABSpath . ".htaccess") || !$this->htaccess_test_success)) {
+        if ($this->htaccess_redirect && (!is_writable($this->htaccess_file()) || !$this->htaccess_test_success)) {
             echo "<br><br>";
-            if (!is_writable($this->ABSpath . ".htaccess")) _e("The .htaccess file is not writable. Add these lines to your .htaccess manually, or set 644 writing permissions", "really-simple-ssl");
+            if (!is_writable($this->htaccess_file())) _e("The .htaccess file is not writable. Add these lines to your .htaccess manually, or set 644 writing permissions", "really-simple-ssl");
             if (!$this->htaccess_test_success) _e("The .htaccess redirect rules that were selected by this plugin failed in the test. The following redirect rules were tested:", "really-simple-ssl");
             echo "<br><br>";
             if ($this->ssl_type != "NA") {
@@ -3066,7 +3112,7 @@ class rsssl_admin extends rsssl_front_end
         </label>
         <?php
         RSSSL()->rsssl_help->get_help_tip(__("If you want to customize the Really Simple SSL .htaccess, you need to prevent Really Simple SSL from rewriting it. Enabling this option will do that.", "really-simple-ssl"));
-        if (!$this->do_not_edit_htaccess && !is_writable($this->ABSpath . ".htaccess")) _e(".htaccess is currently not writable.", "really-simple-ssl");
+        if (!$this->do_not_edit_htaccess && !is_writable($this->htaccess_file())) _e(".htaccess is currently not writable.", "really-simple-ssl");
     }
 
     /**
@@ -3329,6 +3375,39 @@ class rsssl_admin extends rsssl_front_end
             set_transient('rsssl_testpage', $filecontents, 600);
         }
         return $filecontents;
+    }
+
+    /**
+     *
+     * @return string
+     *
+     * since 3.1
+     *
+     * Determine dirname to show in admin_notices() in really-simple-ssl-pro.php to show a warning when free folder has been renamed
+     */
+
+    public function get_current_rsssl_free_dirname() {
+        return basename( __DIR__ );
+    }
+
+    /**
+     * @return string
+     *
+     * since 3.1
+     *
+     * Determine the htaccess file. This can be either the regular .htaccess file, or an htaccess.conf file on bitnami installations.
+     *
+     *
+     */
+
+    public function htaccess_file() {
+        if ($this->uses_htaccess_conf()) {
+            $htaccess_file = realpath(dirname(ABSPATH) . "/conf/htaccess.conf");
+        } else {
+            $htaccess_file = $this->ABSpath . ".htaccess";
+        }
+
+        return $htaccess_file;
     }
 
 } //class closure

@@ -4,9 +4,9 @@ Donate link: https://www.paypal.me/reallysimplessl
 Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, TLS, security, secure socket layers, HSTS
 Requires at least: 4.2
 License: GPL2
-Tested up to: 5.0
+Tested up to: 5.1
 Requires PHP: 5.4
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -21,7 +21,7 @@ To keep it lightweight, the options are kept to a minimum. The entire site will 
 
 Always backup before you go! If you do not have a sound backup policy, start having one! See [our recommendations](https://really-simple-ssl.com/knowledge-base/backing-up-your-site/).
 
-Really Simple SSL is on [GitHub](https://github.com/rlankhorst/really-simple-ssl) as well!
+Any code suggestions? We're on [GitHub](https://github.com/rlankhorst/really-simple-ssl) as well!
 
 = Love Really Simple SSL? =
 Hopefully this plugin save you some hours of work. If you want to support the continuing development of this plugin, you might consider buying the [premium](https://www.really-simple-ssl.com/pro/), which includes
@@ -79,6 +79,12 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 3.1.4 =
+* Tweak: added support for Bitnami/AWS htaccess.conf file
+* Tweak: multisite blog count now only counts public sites
+* Tweak: changed rewrite rules flush time to 1-5 minutes
+* Tweak: improved multisite site count
+
 = 3.1.3 =
 * Tweak: no longer shows notices on Gutenberg edit screens
 * Tweak: updated Google Analytics with link to SSL settings page
