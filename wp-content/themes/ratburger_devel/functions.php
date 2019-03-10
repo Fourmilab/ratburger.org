@@ -574,6 +574,7 @@ function ratburger_meta_widget_items() {
     echo '<li><a href="/index.php/privacy/">Privacy</a></li>';
     echo '<li><a href="https://twitter.com/Ratburger_org" target="_blank">Twitter</a></li>';
     echo '<li><a href="/index.php/podcasts/">Podcasts</a></li>';
+    echo '<li><a href="/index.php/video-theatre/">Video Theatre</a></li>';
     echo '<li><a href="/index.php/statistics/">Access Statistics</a></li>';
 }
 
