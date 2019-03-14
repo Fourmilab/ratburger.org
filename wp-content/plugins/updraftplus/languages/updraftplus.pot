@@ -1612,27 +1612,27 @@ msgstr ""
 msgid "%s download: failed: file not found"
 msgstr ""
 
-#: src/addons/onedrive.php:677, src/udaddons/updraftplus-addons.php:943
+#: src/addons/onedrive.php:677, src/udaddons/updraftplus-addons.php:951
 msgid "An error response was received; HTTP code:"
 msgstr ""
 
-#: src/addons/onedrive.php:690, src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:956, src/udaddons/updraftplus-addons.php:969
+#: src/addons/onedrive.php:690, src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:964, src/udaddons/updraftplus-addons.php:977
 msgid "This most likely means that you share a webserver with a hacked website that has been used in previous attacks."
 msgstr ""
 
-#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:956, src/udaddons/updraftplus-addons.php:969
+#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:964, src/udaddons/updraftplus-addons.php:977
 msgid "To remove any block, please go here."
 msgstr ""
 
-#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:956
+#: src/addons/onedrive.php:690, src/udaddons/updraftplus-addons.php:964
 msgid "Your IP address:"
 msgstr ""
 
-#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:969
+#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:977
 msgid "UpdraftPlus.com has responded with 'Access Denied'."
 msgstr ""
 
-#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:969
+#: src/addons/onedrive.php:710, src/includes/updraftplus-login.php:55, src/methods/updraftvault.php:697, src/udaddons/updraftplus-addons.php:977
 msgid "It appears that your web server's IP Address (%s) is blocked."
 msgstr ""
 
@@ -4576,7 +4576,7 @@ msgstr ""
 msgid "Allow only administrators to log in"
 msgstr ""
 
-#: src/includes/updraftplus-login.php:57, src/methods/updraftvault.php:699, src/udaddons/updraftplus-addons.php:974
+#: src/includes/updraftplus-login.php:57, src/methods/updraftvault.php:699, src/udaddons/updraftplus-addons.php:982
 msgid "UpdraftPlus.Com returned a response which we could not understand (data: %s)"
 msgstr ""
 
@@ -5673,7 +5673,7 @@ msgstr ""
 msgid "Refresh current status"
 msgstr ""
 
-#: src/methods/updraftvault.php:673, src/udaddons/updraftplus-addons.php:873
+#: src/methods/updraftvault.php:673, src/udaddons/updraftplus-addons.php:881
 msgid "You need to supply both an email address and a password"
 msgstr ""
 
@@ -5681,11 +5681,11 @@ msgstr ""
 msgid "You do not currently have any UpdraftPlus Vault quota"
 msgstr ""
 
-#: src/methods/updraftvault.php:726, src/methods/updraftvault.php:741, src/udaddons/updraftplus-addons.php:1015
+#: src/methods/updraftvault.php:726, src/methods/updraftvault.php:741, src/udaddons/updraftplus-addons.php:1023
 msgid "UpdraftPlus.Com returned a response, but we could not understand it"
 msgstr ""
 
-#: src/methods/updraftvault.php:732, src/udaddons/updraftplus-addons.php:1004
+#: src/methods/updraftvault.php:732, src/udaddons/updraftplus-addons.php:1012
 msgid "Your email address was valid, but your password was not recognised by UpdraftPlus.Com."
 msgstr ""
 
@@ -5693,11 +5693,11 @@ msgstr ""
 msgid "If you have forgotten your password, then go here to change your password on updraftplus.com."
 msgstr ""
 
-#: src/methods/updraftvault.php:735, src/udaddons/updraftplus-addons.php:1008
+#: src/methods/updraftvault.php:735, src/udaddons/updraftplus-addons.php:1016
 msgid "You entered an email address that was not recognised by UpdraftPlus.Com"
 msgstr ""
 
-#: src/methods/updraftvault.php:738, src/udaddons/updraftplus-addons.php:1011
+#: src/methods/updraftvault.php:738, src/udaddons/updraftplus-addons.php:1019
 msgid "Your email address and password were not recognised by UpdraftPlus.Com"
 msgstr ""
 
@@ -7409,31 +7409,31 @@ msgstr ""
 msgid "To maintain your access to support, please renew."
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:485, src/udaddons/updraftplus-addons.php:579
+#: src/udaddons/updraftplus-addons.php:493, src/udaddons/updraftplus-addons.php:587
 msgid "Errors occurred:"
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:898
+#: src/udaddons/updraftplus-addons.php:906
 msgid "We failed to successfully connect to UpdraftPlus.Com"
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:900
+#: src/udaddons/updraftplus-addons.php:908
 msgid "UpdraftPlus.Com responded, but we did not understand the response"
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:972
+#: src/udaddons/updraftplus-addons.php:980
 msgid "No response data was received. This usually indicates a network connectivity issue (e.g. an outgoing firewall or overloaded network) between this site and UpdraftPlus.com."
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1004
+#: src/udaddons/updraftplus-addons.php:1012
 msgid "Go here to re-enter your password."
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1005
+#: src/udaddons/updraftplus-addons.php:1013
 msgid "If you have forgotten your password "
 msgstr ""
 
-#: src/udaddons/updraftplus-addons.php:1005
+#: src/udaddons/updraftplus-addons.php:1013
 msgid "go here to change your password on updraftplus.com."
 msgstr ""
 

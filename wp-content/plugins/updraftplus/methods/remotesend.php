@@ -383,6 +383,9 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 	 * @return Array - an array of options
 	 */
 	public function updraftplus_clone_remotesend_options($opts) {
+	
+		// Don't call self::log() - this then requests options (to get the label), causing an infinite loop.
+	
 		global $updraftplus;
 		if (empty($updraftplus_admin)) include_once(UPDRAFTPLUS_DIR.'/admin.php');
 		
@@ -406,12 +409,12 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 		$response = $updraftplus->get_updraftplus_clone()->clone_info_poll($params);
 
 		if (!isset($response['status']) || 'success' != $response['status']) {
-			$this->log("UpdraftClone migration information poll failed with code: " . $response['code']);
+			$updraftplus->log("UpdraftClone migration information poll failed with code: " . $response['code']);
 			return $opts;
 		}
 
 		if (!isset($response['data']) || !isset($response['data']['url']) || !isset($response['data']['key'])) {
-			$this->log("UpdraftClone migration information poll unexpected return information with code:" . $response['code']);
+			$updraftplus->log("UpdraftClone migration information poll unexpected return information with code:" . $response['code']);
 			return $opts;
 		}
 
@@ -419,7 +422,7 @@ class UpdraftPlus_Addons_RemoteStorage_remotesend extends UpdraftPlus_RemoteStor
 		$clone_key = json_decode($response['data']['key'], true);
 
 		if (empty($clone_url) || empty($clone_key)) {
-			$this->log("UpdraftClone migration information not found (probably still provisioning): will poll again in 60");
+			$updraftplus->log("UpdraftClone migration information not found (probably still provisioning): will poll again in 60");
 			UpdraftPlus_Job_Scheduler::reschedule(60);
 			UpdraftPlus_Job_Scheduler::record_still_alive();
 			die;

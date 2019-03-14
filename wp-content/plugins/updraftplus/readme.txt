@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.1
-Stable tag: 1.16.7
+Stable tag: 1.16.8
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -57,7 +57,7 @@ The free version of UpdraftPlus works just fine, but if you need more features a
 * Multisite/multi-network compatible
 * Backs up non WP files and databases to multiple remote destinations
 * More storage destinations (e.g. OneDrive, BackBlaze, Azure, SFTP) and multiple destinations
-* Database encrpytion
+* Database encryption
 * Advanced reporting
 * Supports WP-CLI
 * Free dedicated expert support
@@ -81,7 +81,7 @@ A temporary clone is an instant copy of this website, running on our servers. Yo
 * Fast: Takes just the time needed to create a backup and send it.
 * Flexible: If you want, test upgrading to a different PHP or WP version.
 
-To create a temporary clone you need: 1) credit in your account and 2) to connect to your account, below. You can buy UpdraftClone tokens <a href="https://updraftplus.com/shop/updraftclone-tokens/">from our shop, here</a>. 
+To create a temporary clone you need: 1) credit in your account and 2) to connect to your account. You can buy UpdraftClone tokens <a href="https://updraftplus.com/shop/updraftclone-tokens/">from our shop, here</a>. 
 
 = Are you multi-lingual? Can you translate? =
 
@@ -131,7 +131,7 @@ To find out more, why not take a look at our comparison page. UpdraftPremium is 
 
 = How do I install UpdraftPlus? =
 
-Here are the installation guidelines from our <a href="https://updraftplus.com/download/">YouTube channel</a>.
+Here are the installation guidelines from our <a href="https://www.youtube.com/watch?v=7ReY7Z19h2I">YouTube channel</a> or from <a href="https://updraftplus.com/download/">our website</a>.
 
 = Where are your other FAQs, other than the few found here? =
 
@@ -166,7 +166,12 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.6.x of the free version correspond to changes made in 2.16.6.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.8.x of the free version correspond to changes made in 2.16.8.x of the paid version.
+
+= 1.16.8 - 13/Mar/2019 =
+
+* FIX: If requesting clone credentials that were not ready, the loop could rapidly repeat instead of waiting the intended time
+* TWEAK: Some background updates checks (paid versions) that were intended to be suppressed, weren't being.
 
 = 1.16.7 - 11/Mar/2019 = 
 
@@ -801,4 +806,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.7: Add support for bucket-specific application keys in Backblaze (Premium); added the ability to take incremental backups via UpdraftCentral; Dropbox authorisation setting getting lost after saving UpdraftPlus settings in the free version. A recommended updated for all.
+* 1.16.8: Add some performance improvements regarding clones and updates. A recommended updated for all.
