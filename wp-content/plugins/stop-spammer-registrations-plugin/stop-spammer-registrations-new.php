@@ -112,6 +112,21 @@ function ss_init() {
 
 				return;
 			}
+            /* RATBURGER LOCAL CODE
+               If the user is logged in, check how long they have been a
+               member (days since user_registered).  If the user has been
+               registered more than a week, we assume they're a member in
+               good standing and bypass all of the spam checking.  This
+               avoids irritating members who happen to post something that
+               looks like spam. */
+            if (((date_timestamp_get(date_create()) -
+                   date_timestamp_get(date_create(
+                     wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7) {
+//RB_dumpvar("Disable spam check: age", (date_timestamp_get(date_create()) -
+//  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
+                return;
+            }
+            /* END RATBURGER LOCAL CODE */
 		}
 	}
 // user is not logged in - we can do checks
@@ -166,8 +181,8 @@ function ss_init() {
                 (((date_timestamp_get(date_create()) -
                    date_timestamp_get(date_create(
                      wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7)) {
-//RB_dumpvar("Skip spam check: age", (date_timestamp_get(date_create()) -
-//  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
+RB_dumpvar("OBSOLETE Skip spam check: age", (date_timestamp_get(date_create()) -
+  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
                 return;
             }
             /* END RATBURGER LOCAL CODE */
