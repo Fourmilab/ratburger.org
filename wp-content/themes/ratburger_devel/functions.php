@@ -575,6 +575,9 @@ function ratburger_meta_widget_items() {
     echo '<li><a href="https://twitter.com/Ratburger_org" target="_blank">Twitter</a></li>';
     echo '<li><a href="/index.php/podcasts/">Podcasts</a></li>';
     echo '<li><a href="/index.php/video-theatre/">Video Theatre</a></li>';
+    if (is_user_logged_in()) {
+        echo '<li><a href="/index.php/second-life-clubhouse/">Second Life Clubhouse</a></li>';
+    }
     echo '<li><a href="/index.php/statistics/">Access Statistics</a></li>';
 }
 
