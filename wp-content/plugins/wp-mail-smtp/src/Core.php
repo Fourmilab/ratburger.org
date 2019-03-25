@@ -52,12 +52,6 @@ class Core {
 		// Awesome Motive Notifications.
 		add_action( 'plugins_loaded', array( $this, 'init_notifications' ) );
 
-		// Recommendations.
-		if ( ! class_exists( '\WPMailSMTP\TGM_Plugin_Activation', false ) ) {
-			require_once __DIR__ . '/TGMPA.php';
-		}
-		add_action( 'wpms_tgmpa_register', array( $this, 'init_recommendations' ) );
-
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
@@ -201,90 +195,6 @@ class Core {
 		if ( ! isset( $notification ) ) {
 			$notification = new AM_Notification( 'smtp', WPMS_PLUGIN_VER );
 		}
-	}
-
-	/**
-	 * Recommend WPForms Lite using TGM Activation.
-	 *
-	 * @since 1.3.0
-	 * @since 1.4.0 Display to site admins only.
-	 */
-	public function init_recommendations() {
-
-		// Recommend only fot site admins who can install plugins.
-		if ( ! is_super_admin() ) {
-			return;
-		}
-
-		// Recommend only for new installs.
-		if ( ! $this->is_new_install() ) {
-			return;
-		}
-
-		// Specify a plugin that we want to recommend.
-		$plugins = apply_filters(
-			'wp_mail_smtp_core_recommendations_plugins',
-			array(
-				array(
-					'name'        => 'Contact Form by WPForms',
-					'slug'        => 'wpforms-lite',
-					'required'    => false,
-					'is_callable' => 'wpforms', // This will target the Pro version as well, not only the one from WP.org repository.
-				),
-			)
-		);
-
-		/*
-		 * Array of configuration settings.
-		 */
-		$config = apply_filters(
-			'wp_mail_smtp_core_recommendations_config',
-			array(
-				'id'           => 'wp-mail-smtp',
-				// Unique ID for hashing notices for multiple instances of TGMPA.
-				'menu'         => 'wp-mail-smtp-install-plugins',
-				// Menu slug.
-				'parent_slug'  => 'plugins.php',
-				// Parent menu slug.
-				'capability'   => 'manage_options',
-				// Capability needed to view plugin install page, should be a capability associated with the parent menu used.
-				'has_notices'  => true,
-				// Show admin notices or not.
-				'dismissable'  => true,
-				// If false, a user cannot dismiss the nag message.
-				'dismiss_msg'  => '',
-				// If 'dismissable' is false, this message will be output at top of nag.
-				'is_automatic' => false,
-				// Automatically activate plugins after installation or not.
-				'message'      => '',
-				// Message to output right before the plugins table.
-				'strings'      => array(
-					'page_title'                      => esc_html__( 'Install Recommended Plugin', 'wp-mail-smtp' ),
-					'menu_title'                      => esc_html__( 'Recommended', 'wp-mail-smtp' ),
-					/* translators: 1: plugin name(s). */
-					'notice_can_install_recommended'  => _n_noop(
-						'Thanks for installing WP Mail SMTP. We also recommend using %1$s. It\'s the best drag & drop form builder, has over 1 million active installs, and over 2000+ 5 star ratings.',
-						'Thanks for installing WP Mail SMTP. We also recommend using %1$s. It\'s the best drag & drop form builder, has over 1 million active installs, and over 2000+ 5 star ratings.',
-						'wp-mail-smtp'
-					),
-					/* translators: 1: plugin name(s). */
-					'notice_can_activate_recommended' => _n_noop(
-						'Thanks for installing WP Mail SMTP. We also recommend using %1$s. It\'s the best drag & drop form builder, has over 1 million active installs, and over 2000+ 5 star ratings.',
-						'Thanks for installing WP Mail SMTP. We also recommend using %1$s. It\'s the best drag & drop form builder, has over 1 million active installs, and over 2000+ 5 star ratings.',
-						'wp-mail-smtp'
-					),
-					'install_link'                    => _n_noop( 'Install WPForms Now', 'Begin installing plugins', 'wp-mail-smtp' ),
-					'activate_link'                   => _n_noop( 'Activate WPForms', 'Begin activating plugins', 'wp-mail-smtp' ),
-					'return'                          => esc_html__( 'Return to Recommended Plugin Installer', 'wp-mail-smtp' ),
-					/* translators: 1: dashboard link. */
-					'complete'                        => esc_html__( 'The recommended plugin was installed and activated successfully. %1$s', 'wp-mail-smtp' ),
-					'notice_cannot_install_activate'  => esc_html__( 'There is one recommended plugin to install, update or activate.', 'wp-mail-smtp' ),
-					'nag_type'                        => 'notice-info',
-				),
-			)
-		);
-
-		\WPMailSMTP\tgmpa( (array) $plugins, (array) $config );
 	}
 
 	/**
