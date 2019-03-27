@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.1
-Stable tag: 190305
+Stable tag: 190325
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,24 +98,18 @@ Just go to the Options Panel and click the generate button. By generating a new 
 6. Check the number of subscribers in your posts.
 7. Manage the subscriptions on the Frontend Side.
 
-== Upgrade Notice ==
-
-= v190305 =
-
-* **Fix** Issue with "Subscribe authors" functionality sending the emails to administrator instead of the post author
-
-= v190214 =
-
-* **Fix** Compatibility with some PHP versions and MySQL. Fixes other minor issues.
-
-= v190117 =
-
-* **Upgrade** The backend interface to make the UX simpler for the user and Add option to get information of your WordPress System. Improve Logging with PHP errors catching.
-
-= v180225 =
-**Fix** Information that was not been validated on the backened.
-
 == Changelog ==
+
+= v190325 =
+
+* **New** Shortcode for manage page content (to be used on non-virtual management page). The shortcode is [stcr_management_page]
+* **Rewrite** New method for downloading system information file
+* **Fix** The admin panel CSS and JavaScript files now load only on StCR pages
+* **Fix** Tooltips not showing up on System options page
+* **Fix** Conflict with MailChimp for WP plugin (comment filter received echo instead of return which caused the issue)
+* **Fix** Issue with select/deselect all on management page
+* **Tweak** The MySQL requirements info on the system page now uses WordPress requirements
+* **Tweak** The post author will no longer be notified of his/her own comments
 
 = v190305 =
 

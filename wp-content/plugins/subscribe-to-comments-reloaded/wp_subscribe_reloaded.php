@@ -6,7 +6,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit;
 }
 
-define( __NAMESPACE__.'\\VERSION','190305' );
+define( __NAMESPACE__.'\\VERSION','190325' );
 define( __NAMESPACE__.'\\DEVELOPMENT', true );
 define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
 
@@ -51,7 +51,11 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                 // Add subscriptions for tests
 //                $this->add_manual_subs( 50, 18,'Y', 'dev', 30);
             }
+
+            add_shortcode( 'stcr_management_page', array( $this, 'management_page_sc' ) );
+
 		}
+
 		// end __construct
         public function add_manual_subs( $iterations = 1 ,$post_id, $status = 'Y', $email_prefix = 'dev', $last_id_subs = 0 )
         {
@@ -144,6 +148,9 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                             "generate_system_report" => "stcr_recreate_file"
                         )
                 );
+
+                add_action( 'admin_init', array( $this, 'sysinfo_download' ) );
+
             }
         }
 
@@ -343,10 +350,16 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 
 			// If the case, notify the author
 			if ( get_option( 'subscribe_reloaded_notify_authors', 'no' ) == 'yes' ) {
+                
                 $post_author_id = get_post_field( 'post_author', $info->comment_post_ID );
                 $post_author_data = get_userdata( $post_author_id );
                 $post_author_email = $post_author_data->user_email;
-                $this->notify_user( $info->comment_post_ID, $post_author_email, $_comment_ID );
+
+                // send email to author unless the author made the comment
+                if ( $info->comment_author_email != $post_author_email ) {
+                    $this->notify_user( $info->comment_post_ID, $post_author_email, $_comment_ID );
+                }
+
 			}
 
 			return $_comment_ID;
@@ -1240,7 +1253,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                 $output .= "<!-- BEGIN: subscribe to comments reloaded -->" . $html_to_show . "<!-- END: subscribe to comments reloaded -->";
 			}
 
-			echo $output . $submit_field;
+			return $output . $submit_field;
 		} // end subscribe_reloaded_show
 
 		public function setUserCoookie() {
@@ -1255,5 +1268,18 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 				setcookie( 'comment_author_email_' . COOKIEHASH, $subscribe_to_comments_clean_email, time() + 1209600, '/' );
 			}
 		}
+
+        /**
+         * Management page shortcode
+         *
+         * @since 190325
+         */
+        public function management_page_sc() {
+
+            $data = $this->subscribe_reloaded_manage();
+            return $data[0]->post_content;
+
+        }
+
 	} // end of class declaration
 }

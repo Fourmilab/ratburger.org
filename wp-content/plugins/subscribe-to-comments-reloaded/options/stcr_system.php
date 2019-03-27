@@ -211,29 +211,11 @@ else {
 
                     <div class="form-group row">
                         <label for="generate_system_info" class="col-sm-3 col-form-label text-right">
-                            <?php _e( 'Generate System Info File', 'subscribe-reloaded' ) ?></label>
+                            <?php _e( 'Download System Info File', 'subscribe-reloaded' ) ?></label>
                         <div class="col-sm-7">
-                            <?php
-                                $nonceName = "generate_system_report";
-                                $nonce = wp_create_nonce( $nonceName );
-                            ?>
-                            <button id="generate_system_info" readonly="readonly"
-                                    class="generate_system_info btn btn-third subscribe-form-button"
-                                    <?php echo "data-nonce='{$nonce}|{$nonceName}'"  ?>>
-                                <?php _e( 'Generate', 'subscribe-reloaded' ); ?>
-                            </button>
-                            <span class="generate_spinner stcr-hidden"><i class="fas fa-play-circle"></i></span>
-                            <a class="download_report btn btn-download subscribe-form-button stcr-hidden" href="#">
+                            <a class="download_report btn btn-download subscribe-form-button" href="#">
                                 <?php _e( 'Download', 'subscribe-reloaded' ); ?>
                             </a>
-                            <div style="height: 10px;"></div>
-                            <div class="alert alert-danger stcr-hidden stcr-alert-box download_report_error" role="alert">
-                                <p><?php _e('Please verify that you have the correct file permissions. WordPress System Info File could not be created !', 'subscribe-reloaded' );?>
-                                </p>
-                                <p style="font-weight: bold;"><?php _e(  "Path: ", "subscribe-reloaded"); ?>
-                                    <span class="file-path" style="font-family: 'Courier New'"></span>
-                                </p>
-                            </div>
                         </div>
                     </div>
 
@@ -472,33 +454,14 @@ else {
                             $stcr_system_information['Server Environment']["cURL Version"] = 'cURL is not available';
                         }
 
-                        // Check MySQL Version
-                        if ( ! $wpdb->use_mysqli )
-                        {
-                            $ver = mysqli_get_server_info( $wpdb->dbh );
-                        }
-                        else
-                        {
-                            if( function_exists( 'mysql_get_server_info' ) )
-                            {
-                                $ver = mysql_get_server_info();
-                            }
-                        }
-
-                        if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) )
-                        {
-                            $MySQLSVersion = $wpdb->db_version();
-
-                            if ( version_compare( $MySQLSVersion, '5.6', '<' ) )
-                            {
-                                $MySQLSVersion = '<div class="system-error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '%s - We recommend a minimum MySQL version of 5.6. See: %s', 'subscribe-reloaded' ), esc_html( $MySQLSVersion ), '<a href="https://wordpress.org/about/requirements/" target="_blank">' . __( 'WordPress Requirements', 'subscribe-reloaded' ) . '</a>' ) . '</div>';
-                                $stcr_system_information['Server Environment']["MySQL Version"] = sprintf( '%s - We recommend a minimum MySQL version of 5.6. See: %s', esc_html( $MySQLSVersion ), '<a href="https://wordpress.org/about/requirements/" target="_blank">WordPress Requirements</a>' );
-                            }
-                            else
-                            {
-                                $MySQLSVersion = '<div class="system-success">' . esc_html( $MySQLSVersion ) . '</div>';
-                                $stcr_system_information['Server Environment']["MySQL Version"] = $wpdb->db_version();
-                            }
+                        // check MySQL version
+                        global $wp_version, $required_mysql_version;
+                        if ( version_compare( $wpdb->db_version(), $required_mysql_version, '<' ) ) {
+                            $MySQLSVersion = '<div class="system-error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( '<strong>ERROR</strong>: WordPress %1$s requires MySQL %2$s or higher' ), $wp_version, $required_mysql_version ) . '</div>';
+                            $stcr_system_information['Server Environment']["MySQL Version"] = $wpdb->db_version();
+                        } else {
+                            $MySQLSVersion = '<div class="system-success">' . $wpdb->db_version() . '</div>';
+                            $stcr_system_information['Server Environment']["MySQL Version"] = $wpdb->db_version();
                         }
 
                         // Get the Timezone
@@ -745,6 +708,12 @@ else {
                     <input class="reportPath" type="hidden" name="reportPath" value="<?php echo $reportPath; ?>">
                     <textarea class="reportData stcr-hidden" readonly name="reportPath" ><?php echo serialize( $stcr_system_information ); ?></textarea>
                 </form>
+
+                <form name="stcr_sysinfo_form" class="stcr-hidden" action="<?php echo esc_url( admin_url( 'admin.php?page=stcr_system' ) ); ?>" method="post">
+                    <input type="hidden" name="stcr_sysinfo_action" value="download_sysinfo" />
+                    <textarea name="stcr_sysinfo" readonly><?php echo serialize( $stcr_system_information ); ?></textarea>
+                </form>
+
             </div>
 
             <div class="col-md-3">
@@ -768,9 +737,11 @@ else {
 //global $wp_subscribe_reloaded;
 // Tell WP that we are going to use a resource.
 $wp_subscribe_reloaded->stcr->utils->register_script_to_wp( "stcr-system-info", "stcr_system.js", "includes/js/admin");
+$wp_subscribe_reloaded->stcr->utils->register_script_to_wp( "stcr-subs-options", "subs_options.js", "includes/js/admin");
 // Includes the Panel JS resource file as well as the JS text domain translations.
 //$wp_subscribe_reloaded->stcr->stcr_i18n->stcr_localize_script( "stcr-system-info", "stcr_i18n", $wp_subscribe_reloaded->stcr->stcr_i18n->get_js_subs_translation() );
 // Enqueue the JS File
 $wp_subscribe_reloaded->stcr->utils->enqueue_script_to_wp( "stcr-system-info" );
+$wp_subscribe_reloaded->stcr->utils->enqueue_script_to_wp( "stcr-subs-options" );
 
 ?>
