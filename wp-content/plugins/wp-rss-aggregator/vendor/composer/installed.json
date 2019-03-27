@@ -19,7 +19,7 @@
         },
         "time": "2017-02-14T19:40:03+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Interop\\Container\\": "src/Interop/Container/"
@@ -52,7 +52,7 @@
         },
         "time": "2016-05-16T07:42:22+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Interop\\Container\\": "src/"
@@ -92,7 +92,7 @@
         },
         "time": "2016-11-10T19:29:24+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Collection\\": "src/"
@@ -136,7 +136,7 @@
         },
         "time": "2016-11-10T15:09:37+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Collection\\": "src/"
@@ -179,7 +179,7 @@
         },
         "time": "2016-11-16T14:45:08+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Collection\\": "src/"
@@ -230,7 +230,7 @@
         },
         "time": "2017-02-03T13:33:48+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Di\\": "src/"
@@ -282,7 +282,7 @@
         },
         "time": "2017-02-02T18:30:06+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Di\\": "src/"
@@ -328,7 +328,7 @@
         },
         "time": "2017-02-02T13:12:09+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Di\\": "src/"
@@ -372,7 +372,7 @@
         },
         "time": "2016-11-10T18:55:43+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Stats\\": "src/"
@@ -413,7 +413,7 @@
         },
         "time": "2016-11-10T15:38:37+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Dhii\\Stats\\": "src/"
@@ -549,12 +549,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "ea371bee8102f28e5d715d6410eb0d46fecf96b4"
+            "reference": "4f9d21fbcee167662330c12ae74cd922234bad24"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/ea371bee8102f28e5d715d6410eb0d46fecf96b4",
-            "reference": "ea371bee8102f28e5d715d6410eb0d46fecf96b4",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/4f9d21fbcee167662330c12ae74cd922234bad24",
+            "reference": "4f9d21fbcee167662330c12ae74cd922234bad24",
             "shasum": ""
         },
         "require": {
@@ -566,7 +566,7 @@
             "symfony/debug": "^2.7",
             "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
         },
-        "time": "2019-02-27T07:39:35+00:00",
+        "time": "2019-02-25T08:38:34+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

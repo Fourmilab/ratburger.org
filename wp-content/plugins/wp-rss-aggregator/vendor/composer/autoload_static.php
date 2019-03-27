@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf863e81b820c8b6030ee7817e9830c58
+class ComposerStaticInit3f8da02c8fe4fc53ceb94aa6d8d76a7b
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -55,20 +55,20 @@ class ComposerStaticInitf863e81b820c8b6030ee7817e9830c58
         ),
         'Dhii\\Stats\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
-            1 => __DIR__ . '/..' . '/dhii/stats-interface/src',
+            0 => __DIR__ . '/..' . '/dhii/stats-interface/src',
+            1 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
         ),
         'Dhii\\Di\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/di/src',
+            0 => __DIR__ . '/..' . '/dhii/di-interface/src',
             1 => __DIR__ . '/..' . '/dhii/di-abstract/src',
-            2 => __DIR__ . '/..' . '/dhii/di-interface/src',
+            2 => __DIR__ . '/..' . '/dhii/di/src',
         ),
         'Dhii\\Collection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
+            0 => __DIR__ . '/..' . '/dhii/collections-interface/src',
             1 => __DIR__ . '/..' . '/dhii/collections-abstract-base/src',
-            2 => __DIR__ . '/..' . '/dhii/collections-interface/src',
+            2 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
         ),
     );
 
@@ -85,9 +85,9 @@ class ComposerStaticInitf863e81b820c8b6030ee7817e9830c58
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf863e81b820c8b6030ee7817e9830c58::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf863e81b820c8b6030ee7817e9830c58::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf863e81b820c8b6030ee7817e9830c58::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3f8da02c8fe4fc53ceb94aa6d8d76a7b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3f8da02c8fe4fc53ceb94aa6d8d76a7b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit3f8da02c8fe4fc53ceb94aa6d8d76a7b::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
