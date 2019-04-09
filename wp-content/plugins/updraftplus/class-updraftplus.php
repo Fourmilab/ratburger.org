@@ -2976,7 +2976,7 @@ class UpdraftPlus {
 	 * @param Boolean $allow_email - if this is false, then no email will be sent
 	 * @param Boolean $force_abort - set to indicate that the user is manually aborting the backup
 	 */
-	private function backup_finish($do_cleanup, $allow_email, $force_abort = false) {
+	public function backup_finish($do_cleanup, $allow_email, $force_abort = false) {
 
 		if (!empty($this->semaphore)) $this->semaphore->unlock();
 

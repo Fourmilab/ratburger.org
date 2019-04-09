@@ -4436,15 +4436,15 @@ ENDHERE;
 	public function prepare_restore() {
 
 		global $updraftplus;
+
+		// on restore start job_id is empty but if we needed file system permissions or this is a resumption then we have already started a job so reuse it
+		$restore_job_id = empty($_REQUEST['job_id']) ? false : $_REQUEST['job_id'];
+
+		// Set up nonces, log files etc.
+		$updraftplus->initiate_restore_job($restore_job_id);
 		
 		// If this is the start of a restore then get the restore data from the posted data and put it into jobdata.
 		if (isset($_REQUEST['action']) && 'updraft_restore' == $_REQUEST['action']) {
-
-			// on restore start job_id is empty but if we needed file system permissions then we have already started a job so reuse it
-			$restore_job_id = empty($_REQUEST['job_id']) ? false : $_REQUEST['job_id'];
-
-			// Set up nonces, log files etc.
-			$updraftplus->initiate_restore_job($restore_job_id);
 			
 			if (empty($restore_job_id)) {
 				$jobdata_to_save = array();
