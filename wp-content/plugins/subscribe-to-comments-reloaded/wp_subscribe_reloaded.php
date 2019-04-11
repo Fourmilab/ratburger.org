@@ -6,7 +6,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit;
 }
 
-define( __NAMESPACE__.'\\VERSION','190325' );
+define( __NAMESPACE__.'\\VERSION','190412' );
 define( __NAMESPACE__.'\\DEVELOPMENT', true );
 define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
 
@@ -49,7 +49,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
             if ( DEVELOPMENT )
             {
                 // Add subscriptions for tests
-//                $this->add_manual_subs( 50, 18,'Y', 'dev', 30);
+				// $this->add_manual_subs( 50, 18,'Y', 'dev', 30);
             }
 
             add_shortcode( 'stcr_management_page', array( $this, 'management_page_sc' ) );
@@ -340,25 +340,39 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 					);
 				}
 
+				// post author info
+				$post_author_id = get_post_field( 'post_author', $info->comment_post_ID );
+				$post_author_data = get_userdata( $post_author_id );
+				$post_author_email = $post_author_data->user_email;
+				$post_author_notified = false;
+
+				// notify subscribers
 				foreach ( $subscriptions as $a_subscription ) {
-					// Skip the user who posted this new comment
+					
+					// skip comment author
 					if ( $a_subscription->email != $info->comment_author_email ) {
+						
+						// notify the user
 						$this->notify_user( $info->comment_post_ID, $a_subscription->email, $_comment_ID );
+
+						// post author notified?
+						if ( $a_subscription->email == $post_author_email ) {
+							$post_author_notified = true;
+						}
+
 					}
+					
 				}
-			}
 
-			// If the case, notify the author
-			if ( get_option( 'subscribe_reloaded_notify_authors', 'no' ) == 'yes' ) {
-                
-                $post_author_id = get_post_field( 'post_author', $info->comment_post_ID );
-                $post_author_data = get_userdata( $post_author_id );
-                $post_author_email = $post_author_data->user_email;
+				// Notify author
+				if ( ! $post_author_notified && get_option( 'subscribe_reloaded_notify_authors', 'no' ) == 'yes' ) {
+					
+					// send email to author unless the author made the comment
+					if ( $info->comment_author_email != $post_author_email ) {
+						$this->notify_user( $info->comment_post_ID, $post_author_email, $_comment_ID );
+					}
 
-                // send email to author unless the author made the comment
-                if ( $info->comment_author_email != $post_author_email ) {
-                    $this->notify_user( $info->comment_post_ID, $post_author_email, $_comment_ID );
-                }
+				}
 
 			}
 
@@ -1142,7 +1156,15 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 		/**
 		 * Displays the checkbox to allow visitors to subscribe
 		 */
-		function subscribe_reloaded_show($submit_field = '') {
+		function subscribe_reloaded_show($submit_field = '' ) {
+
+			// echo on action
+			// return on filter
+			$echo = false;
+			if ( doing_action( 'comment_form' ) ) {
+				$echo = true;
+			}
+
 			global $post, $wp_subscribe_reloaded;
 			$checkbox_subscription_type = null;
             $_comment_ID = null;
@@ -1240,8 +1262,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 			// Check for the Comment Form location
 			if( get_option('subscribe_reloaded_stcr_position') == 'yes' ) {
 				$output .= "<style type='text/css'>.stcr-hidden{display: none !important;}</style>";
-				$output .= "<script type='text/javascript'>$(document).ready(function($){var stcr_form=$('div.stcr-form');stcr_form.prevUntil('form').each(function(){var $this=$(this);if($this.find(':input[type=\"submit\"]').length){stcr_form.remove(),$this.before(stcr_form);$('div.stcr-form').removeClass('stcr-hidden');return false;}})});
-</script>";
+				$output .= "<script type='text/javascript'>jQuery(document).ready(function($){var stcr_form=$('div.stcr-form');stcr_form.prevUntil('form').each(function(){var _this=$(this);if(_this.find(':input[type=\"submit\"]').length){stcr_form.remove(),_this.before(stcr_form);$('div.stcr-form').removeClass('stcr-hidden');return false;}})});</script>";
 				$output .= "<div class='stcr-form stcr-hidden'>";
                 $output .= "<!-- Subscribe to Comments Reloaded version ". $wp_subscribe_reloaded->stcr->current_version . " -->";
                 $output .= "<!-- BEGIN: subscribe to comments reloaded -->" . $html_to_show . "<!-- END: subscribe to comments reloaded -->";
@@ -1253,7 +1274,12 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                 $output .= "<!-- BEGIN: subscribe to comments reloaded -->" . $html_to_show . "<!-- END: subscribe to comments reloaded -->";
 			}
 
-			return $output . $submit_field;
+			if ( $echo ) {
+				echo $output . $submit_field;
+			} else {
+				return $output . $submit_field;
+			}
+
 		} // end subscribe_reloaded_show
 
 		public function setUserCoookie() {
