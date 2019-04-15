@@ -149,7 +149,12 @@ Hello, this is the BuddyPress Legacy stylesheet.
 	color: #555;
 	font-family: inherit;
 	font-size: medium;
+    /* RATBURGER LOCAL CODE
+       Increase default height of group post composition box.
 	height: 2.2em;
+    */
+	height: 12em !important;
+    /* END RATBURGER LOCAL CODE */
 	line-height: 1.4;
 	padding: 6px;
 	width: 100%;
@@ -544,7 +549,12 @@ body.activity-permalink #buddypress div.activity-comments div.acomment-content {
 	color: #555;
 	font-family: inherit;
 	font-size: 100%;
+    /* RATBURGER LOCAL CODE
+       Increase default height of group comment composition box.
 	height: 60px;
+    */
+    height: 10em;
+    /* END RATBURGER LOCAL CODE */
 	padding: 0;
 	margin: 0;
 	width: 100%;
