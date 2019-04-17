@@ -562,7 +562,7 @@ class UpdraftPlus_Admin {
 		}
 
 		if (isset($_POST['action']) && 'updraft_wipesettings' == $_POST['action'] && isset($_POST['nonce']) && UpdraftPlus_Options::user_can_manage()) {
-			if (wp_verify_nonce($_POST['nonce'], 'updraftplus-wipe-setting-nonce')) $this->updraft_wipe_settings();
+			if (wp_verify_nonce($_POST['nonce'], 'updraftplus-wipe-setting-nonce')) $this->wipe_settings();
 		}
 	}
 
@@ -5013,7 +5013,7 @@ ENDHERE;
 	 * @param  boolean $wipe_all_settings Set to true as default as we want to remove all options, set to false if calling from UpdraftCentral, as we do not want to remove the UpdraftCentral key or we will lose connection to the site.
 	 * @return boolean
 	 */
-	public function updraft_wipe_settings($wipe_all_settings = true) {
+	public function wipe_settings($wipe_all_settings = true) {
 		
 		global $updraftplus;
 

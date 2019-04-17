@@ -152,8 +152,6 @@ class UpdraftPlus {
 	/**
 	 * Enables automatic updates for the plugin.
 	 *
-	 * Enables automatic updates for the plugin..
-	 *
 	 * @access public
 	 * @see __construct
 	 * @internal uses auto_update_plugin filter

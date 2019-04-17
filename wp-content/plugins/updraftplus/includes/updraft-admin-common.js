@@ -1,6 +1,6 @@
 /**
  * Send an action over AJAX. A wrapper around jQuery.ajax. In future, all consumers can be reviewed to simplify some of the options, where there is historical cruft.
- * N.B. updraft_iframe_modal() below uses the Ajax URL for the iframe's src attribute
+ * N.B. updraft_iframe_modal() below uses the AJAX URL for the iframe's src attribute
  *
  * @param {string}   action   - the action to send
  * @param {*}        data     - data to send
