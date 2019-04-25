@@ -4,38 +4,66 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df
+class ComposerStaticInit612105272fdcc9d91a19df6d72150aaa
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        'bbf73f3db644d3dced353b837903e74c' => __DIR__ . '/..' . '/php-di/php-di/src/DI/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
+            'Twig\\Extensions\\' => 16,
             'Twig\\' => 5,
         ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
+        'R' => 
+        array (
+            'RebelCode\\Wpra\\Core\\' => 20,
+        ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Psr\\Container\\' => 14,
+            'PhpDocReader\\' => 13,
         ),
         'I' => 
         array (
+            'Invoker\\' => 8,
             'Interop\\Container\\' => 18,
         ),
         'D' => 
         array (
+            'Dhii\\Validation\\' => 16,
+            'Dhii\\Util\\String\\' => 17,
+            'Dhii\\Util\\Normalization\\' => 24,
+            'Dhii\\Transformer\\' => 17,
             'Dhii\\Stats\\' => 11,
+            'Dhii\\Output\\' => 12,
+            'Dhii\\Iterator\\' => 14,
+            'Dhii\\I18n\\' => 10,
+            'Dhii\\Factory\\' => 13,
+            'Dhii\\Exception\\' => 15,
             'Dhii\\Di\\' => 8,
+            'Dhii\\Data\\Container\\' => 20,
             'Dhii\\Collection\\' => 16,
+            'DI\\' => 3,
+        ),
+        'B' => 
+        array (
+            'Barryvdh\\Composer\\' => 18,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twig\\Extensions\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twig/extensions/src',
+        ),
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
@@ -44,19 +72,77 @@ class ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'RebelCode\\Wpra\\Core\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'PhpDocReader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/phpdoc-reader/src/PhpDocReader',
+        ),
+        'Invoker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/invoker/src',
         ),
         'Interop\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
             1 => __DIR__ . '/..' . '/container-interop/service-provider/src',
         ),
+        'Dhii\\Validation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/validation-interface/src',
+            1 => __DIR__ . '/..' . '/dhii/validation-abstract/src',
+            2 => __DIR__ . '/..' . '/dhii/validation-base/src',
+        ),
+        'Dhii\\Util\\String\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/stringable-interface/src',
+        ),
+        'Dhii\\Util\\Normalization\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/normalization-helper-base/src',
+        ),
+        'Dhii\\Transformer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/transformer-interface/src',
+        ),
         'Dhii\\Stats\\' => 
         array (
             0 => __DIR__ . '/..' . '/dhii/stats-interface/src',
             1 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
+        ),
+        'Dhii\\Output\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/output-renderer-interface/src',
+            1 => __DIR__ . '/..' . '/dhii/output-renderer-abstract/src',
+            2 => __DIR__ . '/..' . '/dhii/output-renderer-base/src',
+        ),
+        'Dhii\\Iterator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/iterator-helper-base/src',
+        ),
+        'Dhii\\I18n\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/i18n-interface/src',
+            1 => __DIR__ . '/..' . '/dhii/i18n-helper-base/src',
+        ),
+        'Dhii\\Factory\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/factory-interface/src',
+        ),
+        'Dhii\\Exception\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/exception-interface/src',
+            1 => __DIR__ . '/..' . '/dhii/exception/src',
         ),
         'Dhii\\Di\\' => 
         array (
@@ -64,20 +150,43 @@ class ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df
             1 => __DIR__ . '/..' . '/dhii/di-abstract/src',
             2 => __DIR__ . '/..' . '/dhii/di/src',
         ),
+        'Dhii\\Data\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dhii/container-helper-base/src',
+        ),
         'Dhii\\Collection\\' => 
         array (
             0 => __DIR__ . '/..' . '/dhii/collections-interface/src',
             1 => __DIR__ . '/..' . '/dhii/collections-abstract-base/src',
             2 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
         ),
+        'DI\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/php-di/src/DI',
+        ),
+        'Barryvdh\\Composer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rebelcode/composer-cleanup-plugin/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
         'T' => 
         array (
+            'Twig_Extensions_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/extensions/lib',
+            ),
             'Twig_' => 
             array (
                 0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
+        ),
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
             ),
         ),
     );
@@ -85,9 +194,9 @@ class ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit807e9fb4c93a6d1c8a8ad11ef9bab6df::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit612105272fdcc9d91a19df6d72150aaa::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit612105272fdcc9d91a19df6d72150aaa::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit612105272fdcc9d91a19df6d72150aaa::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
