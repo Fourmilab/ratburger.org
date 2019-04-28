@@ -6,7 +6,7 @@ if ( ! function_exists( 'add_action' ) ) {
 	exit;
 }
 
-define( __NAMESPACE__.'\\VERSION','190412' );
+define( __NAMESPACE__.'\\VERSION','190426' );
 define( __NAMESPACE__.'\\DEVELOPMENT', true );
 define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
 
@@ -49,7 +49,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
             if ( DEVELOPMENT )
             {
                 // Add subscriptions for tests
-				// $this->add_manual_subs( 50, 18,'Y', 'dev', 30);
+				//$this->add_manual_subs( 10000, 18,'Y', 'dev', 30);
             }
 
             add_shortcode( 'stcr_management_page', array( $this, 'management_page_sc' ) );
@@ -161,13 +161,13 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
             $current_page = isset( $_GET['page'] ) ? $_GET['page'] : '';
             // Define the panels
             $array_pages = array(
-                "stcr_manage_subscriptions" => __( 'Manage subscriptions', 'subscribe-reloaded' ),
-                "stcr_comment_form"         => __( 'Comment Form', 'subscribe-reloaded' ),
-                "stcr_management_page"      => __( 'Management Page', 'subscribe-reloaded' ),
-                "stcr_notifications"        => __( 'Notifications', 'subscribe-reloaded' ),
-                "stcr_options"              => __( 'Options', 'subscribe-reloaded' ),
-                "stcr_support"              => __( 'Support', 'subscribe-reloaded' ),
-                "stcr_system"               => __( 'Options', 'subscribe-reloaded' )
+                "stcr_manage_subscriptions" => __( 'Manage subscriptions', 'subscribe-to-comments-reloaded' ),
+                "stcr_comment_form"         => __( 'Comment Form', 'subscribe-to-comments-reloaded' ),
+                "stcr_management_page"      => __( 'Management Page', 'subscribe-to-comments-reloaded' ),
+                "stcr_notifications"        => __( 'Notifications', 'subscribe-to-comments-reloaded' ),
+                "stcr_options"              => __( 'Options', 'subscribe-to-comments-reloaded' ),
+                "stcr_support"              => __( 'Support', 'subscribe-to-comments-reloaded' ),
+                "stcr_system"               => __( 'Options', 'subscribe-to-comments-reloaded' )
             );
 
 
@@ -193,9 +193,9 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                                                   '. $page_desc .'
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                  <a class="dropdown-item" href="admin.php?page=' . $page . '">'. __("StCR Options", "subscribe-reloaded") .'</a>
+                                                  <a class="dropdown-item" href="admin.php?page=' . $page . '">'. __("StCR Options", 'subscribe-to-comments-reloaded') .'</a>
                                                   <div class="dropdown-divider"></div>
-                                                  <a class="dropdown-item" href="admin.php?page=stcr_system">'. __("StCR System", "subscribe-reloaded") .'</a>
+                                                  <a class="dropdown-item" href="admin.php?page=stcr_system">'. __("StCR System", 'subscribe-to-comments-reloaded') .'</a>
                                                 </div>';
                                     }
                                     elseif (  $page == "stcr_system" )
@@ -226,7 +226,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 		 * Load localization files
 		 */
 		function subscribe_reloaded_load_plugin_textdomain() {
-			load_plugin_textdomain( 'subscribe-reloaded', FALSE,  SLUG . "/langs/" );
+			load_plugin_textdomain( 'subscribe-to-comments-reloaded', FALSE,  SLUG . "/langs/" );
 		}
 
 		/*
@@ -234,7 +234,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 		 */
 		public function plugin_settings_link( $links, $file ) {
 			if ( $file == 'subscribe-to-comments-reloaded/subscribe-to-comments-reloaded.php' ) {
-				$links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'admin.php?page=stcr_options' ), __( 'Settings', 'subscribe-reloaded' ) );
+				$links['settings'] = sprintf( '<a href="%s"> %s </a>', admin_url( 'admin.php?page=stcr_options' ), __( 'Settings', 'subscribe-to-comments-reloaded' ) );
 			}
 
 			return $links;
@@ -645,7 +645,7 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                 if (function_exists('qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage')) {
                     $manager_page_title = qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage($manager_page_title);
                 } else {
-                    $manager_page_title = __($manager_page_title, 'subscribe-reloaded');
+                    $manager_page_title = $manager_page_title;
                 }
 
                 $posts[] =
@@ -1198,15 +1198,15 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
                 "$user_link?" . $post_permalink;
 
 			if ( $wp_subscribe_reloaded->stcr->is_user_subscribed( $post->ID, '', 'C' ) ) {
-				$html_to_show          = str_replace(
+				$html_to_show = str_replace(
 					'[manager_link]', $user_link,
-					__( html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_subscribed_waiting_label', "Your subscription to this post needs to be confirmed. <a href='[manager_link]'>Manage your subscriptions</a>." ) ), ENT_QUOTES, 'UTF-8' ), 'subscribe-reloaded' )
+					html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_subscribed_waiting_label', __( "Your subscription to this post needs to be confirmed. <a href='[manager_link]'>Manage your subscriptions</a>.", 'subscribe-to-comments-reloaded' ) ) ), ENT_QUOTES, 'UTF-8' )
 				);
 				$show_subscription_box = false;
 			} elseif ( $wp_subscribe_reloaded->stcr->is_user_subscribed( $post->ID, '' ) ) {
-				$html_to_show          = str_replace(
+				$html_to_show = str_replace(
 					'[manager_link]', $user_link ,
-					__( html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_subscribed_label', "You are subscribed to this post. <a href='[manager_link]'>Manage</a> your subscriptions." ) ), ENT_QUOTES, 'UTF-8' ), 'subscribe-reloaded' )
+					html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_subscribed_label', __( "You are subscribed to this post. <a href='[manager_link]'>Manage</a> your subscriptions.", 'subscribe-to-comments-reloaded' ) ) ), ENT_QUOTES, 'UTF-8' )
 				);
 				$show_subscription_box = false;
 			}
@@ -1215,16 +1215,17 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 				if ( get_option( 'subscribe_reloaded_admin_subscribe', 'no' ) == 'no' ) {
 					$show_subscription_box = false;
 				}
+				$html_to_show .= ' ';
 				$html_to_show .= str_replace(
 					'[manager_link]', $manager_link,
-					__( html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_author_label', "You can <a href='[manager_link]'>manage the subscriptions</a> of this post." ) ), ENT_QUOTES, 'UTF-8' ), 'subscribe-reloaded' )
+					html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_author_label', __( "You can <a href='[manager_link]'>manage the subscriptions</a> of this post.", 'subscribe-to-comments-reloaded' ) ) ), ENT_QUOTES, 'UTF-8' )
 				);
 			}
 
 			if ( $show_subscription_box ) {
 				$checkbox_label        = str_replace(
 					'[subscribe_link]', "$manager_link&amp;sra=s&amp;srsrc=f",
-					__( html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_checkbox_label', "Notify me of followup comments via e-mail. You can also <a href='[subscribe_link]'>subscribe</a> without commenting." ) ), ENT_QUOTES, 'UTF-8' ), 'subscribe-reloaded' )
+					html_entity_decode( stripslashes( get_option( 'subscribe_reloaded_checkbox_label', __( "Notify me of followup comments via e-mail. You can also <a href='[subscribe_link]'>subscribe</a> without commenting.", 'subscribe-to-comments-reloaded' ) ) ), ENT_QUOTES, 'UTF-8' )
 				);
 				$checkbox_inline_style = get_option( 'subscribe_reloaded_checkbox_inline_style', 'width:30px' );
 				if ( ! empty( $checkbox_inline_style ) ) {
@@ -1243,9 +1244,9 @@ if(!class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded'))	{
 					$checkbox_field = "<input$checkbox_inline_style type='checkbox' name='subscribe-reloaded' id='subscribe-reloaded' value='$checkbox_subscription_type'" . ( ( get_option( 'subscribe_reloaded_checked_by_default', 'no' ) == 'yes' ) ? " checked='checked'" : '' ) . " />";
 				} else {
 					$checkbox_field = "<select name='subscribe-reloaded' id='subscribe-reloaded'>
-								<option value='none' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '0' ) ? "selected='selected'" : '' ) . ">" . __( "Don't subscribe", 'subscribe-reloaded' ) . "</option>
-								<option value='yes' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '1' ) ? "selected='selected'" : '' ) . ">" . __( "All", 'subscribe-reloaded' ) . "</option>
-								<option value='replies' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '2' ) ? "selected='selected'" : '' ) . ">" . __( "Replies to my comments", 'subscribe-reloaded' ) . "</option>
+								<option value='none' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '0' ) ? "selected='selected'" : '' ) . ">" . __( "Don't subscribe", 'subscribe-to-comments-reloaded' ) . "</option>
+								<option value='yes' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '1' ) ? "selected='selected'" : '' ) . ">" . __( "All", 'subscribe-to-comments-reloaded' ) . "</option>
+								<option value='replies' " . ( ( get_option( 'subscribe_reloaded_default_subscription_type' ) === '2' ) ? "selected='selected'" : '' ) . ">" . __( "Replies to my comments", 'subscribe-to-comments-reloaded' ) . "</option>
 							</select>";
 				}
 				if ( empty( $checkbox_html_wrap ) ) {

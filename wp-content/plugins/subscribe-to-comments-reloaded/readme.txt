@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.1
-Stable tag: 190412
+Stable tag: 190426
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,16 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+
+= v190426 = 
+* **New** Info on the amount of subscribers and subscriptions added in WP admin > StCR > StCR System
+* **Fix** Text domain (for translations) has been changed to the correct domain (from subscribe-reloaded to subscribe-to-comments-reloaded)
+* **Fix** Issue with undefined is_rtl function
+* **Fix** Missing blank space between sentences (below comment form when subscribed)
+* **Fix** Undefined variable notices for $order_status and $order_dt
+* **Fix** Temporarily hidden an unused option in StCR > Management Page to avoid confusion. 
+* **Fix** Removed localization for non textual strings
+* **Fix** Fixed incorrectly localized textual strings
 
 = v190412 =
 
