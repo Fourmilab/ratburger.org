@@ -1441,6 +1441,7 @@ function updraft_downloader(base, backup_timestamp, what, whicharea, set_content
  * @returns Mixed parsed JSON object. Will only return if parsing is successful (otherwise, will throw)
  */
 function ud_parse_json(json_mix_str) {
+
 	// Here taking first and last char in variable, because these are used more than once in this function
 	var first_char = json_mix_str.charAt(0);
 	var last_char = json_mix_str.charAt(json_mix_str.length - 1);
@@ -1450,7 +1451,7 @@ function ud_parse_json(json_mix_str) {
 		var result = JSON.parse(json_mix_str);
 		return result;
 	} catch (e) {
-		console.log("UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse");
+		console.log('UpdraftPlus: Exception when trying to parse JSON (1) - will attempt to fix/re-parse based upon first/last curly brackets');
 		console.log(json_mix_str);
 	}
 
@@ -1462,12 +1463,43 @@ function ud_parse_json(json_mix_str) {
 		var json_str = json_mix_str.slice(json_start_pos, json_last_pos + 1);
 		try {
 			var parsed = JSON.parse(json_str);
-			console.log("UpdraftPlus: JSON re-parse successful");
+			console.log('UpdraftPlus: JSON re-parse successful');
 			return parsed;
 		} catch (e) {
-			 console.log("UpdraftPlus: Exception when trying to parse JSON (2)");
-			 // Throw it again, so that our function works just like JSON.parse() in its behaviour.
-			 throw e;
+			console.log('UpdraftPlus: Exception when trying to parse JSON (2) - will attempt to fix/re-parse based upon bracket counting');
+			 
+			var cursor = json_start_pos;
+			var open_count = 0;
+			var last_character = '';
+			var inside_string = false;
+			
+			// Don't mistake this for a real JSON parser. Its aim is to improve the odds in real-world cases seen, not to arrive at universal perfection.
+			while ((open_count > 0 || cursor == json_start_pos) && cursor <= json_last_pos) {
+				
+				var current_character = json_mix_str.charAt(cursor);
+				
+				if (!inside_string && '{' == current_character) {
+					open_count++;
+				} else if (!inside_string && '}' == current_character) {
+					open_count--;
+				} else if ('"' == current_character && '\\' != last_character) {
+					inside_string = inside_string ? false : true;
+				}
+					
+				last_character = current_character;
+				cursor++;
+			}
+			console.log("Started at cursor="+json_start_pos+", ended at cursor="+cursor+" with result following:");
+			console.log(json_mix_str.substring(json_start_pos, cursor));
+			
+			try {
+				var parsed = JSON.parse(json_mix_str.substring(json_start_pos, cursor));
+				console.log('UpdraftPlus: JSON re-parse successful');
+				return parsed;
+			} catch (e) {
+				// Throw it again, so that our function works just like JSON.parse() in its behaviour.
+				throw e;
+			}
 		}
 	}
 

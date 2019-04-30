@@ -67,16 +67,21 @@ class UpdraftPlus_Filesystem_Functions {
 			$build_url .= '&'.$k.'='.$v;
 		}
 		
-		$credentials = request_filesystem_credentials($build_url, '', false, false);
 		
-		WP_Filesystem($credentials);
-		
-		if ($wp_filesystem->errors->get_error_code()) {
-			echo '<p><em><a href="'.apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/asked-ftp-details-upon-restorationmigration-updates/").'" target="_blank">'.__('Why am I seeing this?', 'updraftplus').'</a></em></p>';
-			foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
-			exit;
+		if (false === ($credentials = request_filesystem_credentials($build_url, '', false, false))) exit;
+
+		if (!WP_Filesystem($credentials)) {
+
+			$updraftplus->log("Filesystem credentials are required for WP_Filesystem");
+			
+			request_filesystem_credentials($build_url, '', true, false);
+			
+			if ($wp_filesystem->errors->get_error_code()) {
+				echo '<p><em><a href="' . apply_filters('updraftplus_com_link', "https://updraftplus.com/faqs/asked-ftp-details-upon-restorationmigration-updates/") . '" target="_blank">' . __('Why am I seeing this?', 'updraftplus') . '</a></em></p>';
+				foreach ($wp_filesystem->errors->get_error_messages() as $message) show_message($message);
+				exit;
+			}
 		}
-		
 	}
 	
 	/**

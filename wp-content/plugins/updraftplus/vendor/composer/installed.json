@@ -646,8 +646,8 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.8.49",
-        "version_normalized": "2.8.49.0",
+        "version": "v2.8.50",
+        "version_normalized": "2.8.50.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/event-dispatcher.git",
@@ -708,8 +708,8 @@
     },
     {
         "name": "symfony/process",
-        "version": "v3.4.25",
-        "version_normalized": "3.4.25.0",
+        "version": "v3.4.26",
+        "version_normalized": "3.4.26.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
