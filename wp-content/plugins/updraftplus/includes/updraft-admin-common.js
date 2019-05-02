@@ -222,7 +222,12 @@ function updraft_remote_storage_tabs_setup() {
 	});
 	
 	var servicecheckbox = jQuery('.updraft_servicecheckbox');
-	if (typeof servicecheckbox.labelauty === 'function') { servicecheckbox.labelauty(); }
+	if (typeof servicecheckbox.labelauty === 'function') {
+		servicecheckbox.labelauty();
+		var $vault_label = jQuery('label[for=updraft_servicecheckbox_updraftvault]');
+		var $vault_info = jQuery('<div class="udp-info"><span class="info-trigger">?</span><div class="info-content-wrapper"><div class="info-content">'+updraftlion.updraftvault_info+'</div></div></div>');
+		$vault_label.append($vault_info);
+	}
 	
 }
 

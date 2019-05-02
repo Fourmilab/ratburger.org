@@ -3,7 +3,7 @@ Contributors: Backup with UpdraftPlus, DavidAnderson, DNutbourne, aporter, snigh
 Tags: backup, restore, database backup, wordpress backup, cloud backup, s3, dropbox, google drive, onedrive, ftp, backups
 Requires at least: 3.2
 Tested up to: 5.2
-Stable tag: 1.16.13
+Stable tag: 1.16.14
 Author URI: https://updraftplus.com
 Donate link: https://david.dw-perspective.org.uk/donate
 License: GPLv3 or later
@@ -166,10 +166,12 @@ Unfortunately not; since this is free software, there’s no warranty and no gua
 
 The <a href="https://updraftplus.com/news/">UpdraftPlus backup blog</a> is the best place to learn in more detail about any important changes.
 
-N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.12.x of the free version correspond to changes made in 2.16.12.x of the paid version.
+N.B. Paid versions of UpdraftPlus Backup / Restore have a version number which is 1 higher in the first digit, and has an extra component on the end, but the changelog below still applies. i.e. changes listed for 1.16.14.x of the free version correspond to changes made in 2.16.14.x of the paid version.
 
-= 1.16.13 - 29/Apr/2019 =
+= 1.16.14 - 30/Apr/2019 =
 
+* TWEAK: Make UpdraftVault trial more discoverable
+* TWEAK: Fix stray JavaScript in the short-lived version 1.16.13
 * TWEAK: Add support to translation updates
 * TWEAK: Add WP 5.2 support in UpdraftClone
 * TWEAK: Prevent PHP notice in remotesend method
@@ -846,4 +848,4 @@ Furthermore, reliance upon any non-English translation is at your own risk. Updr
 We recognise and thank the following for code and/or libraries used and/or modified under the terms of their open source licences; see: https://updraftplus.com/acknowledgements/
 
 == Upgrade Notice ==
-* 1.16.13: Various small tweaks and improvements. A recommended update for all.
+* 1.16.14: Various small tweaks and improvements. A recommended update for all.

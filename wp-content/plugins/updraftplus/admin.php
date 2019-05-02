@@ -582,11 +582,11 @@ class UpdraftPlus_Admin {
 	 * Runs upon the WP action admin_print_footer_scripts if an entitled user is on the main WP dashboard page
 	 */
 	public function admin_index_print_footer_scripts() {
+		if (time() < UpdraftPlus_Options::get_updraft_option('dismissed_clone_php_notices_until', 0)) return;
 		?>
 		<script>
 			jQuery(document).ready(function($) {
 				if ($('#dashboard-widgets #dashboard_php_nag').length < 1) return;
-				if (time() < UpdraftPlus_Options::get_updraft_option('dismissed_clone_php_notices_until', 0)) return;
 				$('#dashboard-widgets #dashboard_php_nag .button-container').before('<div class="updraft-ad-container"><a href="<?php echo UpdraftPlus_Options::admin_page_url(); ?>?page=updraftplus&amp;tab=migrate#updraft-navtab-migrate-content"><?php echo esc_js(__('You can test running your site on a different PHP (or WordPress) version using UpdraftClone credits.', 'updraftplus')); ?></a> (<a href="#" onclick="jQuery(\'.updraft-ad-container\').slideUp(); jQuery.post(ajaxurl, {action: \'updraft_ajax\', subaction: \'dismiss_clone_php_notice\', nonce: \'<?php echo wp_create_nonce('updraftplus-credentialtest-nonce'); ?>\' });return false;"> <?php _e('Dismiss notice', 'updraftplus'); ?></a>)</div>');
 			});
 		</script>
@@ -747,7 +747,7 @@ class UpdraftPlus_Admin {
 	 */
 	public function admin_enqueue_scripts() {
 
-		global $updraftplus, $wp_locale;
+		global $updraftplus, $wp_locale, $updraftplus_checkout_embed;
 		
 		$enqueue_version = $updraftplus->use_unminified_scripts() ? $updraftplus->version.'.'.time() : $updraftplus->version;
 		$min_or_not = $updraftplus->use_unminified_scripts() ? '' : '.min';
@@ -789,6 +789,13 @@ class UpdraftPlus_Admin {
 		}
 		$remote_storage_options_and_templates = UpdraftPlus_Storage_Methods_Interface::get_remote_storage_options_and_templates();
 		$main_tabs = $this->get_main_tabs_array();
+
+		$checkout_embed_5gb_trial_attribute = '';
+
+		if (is_a($updraftplus_checkout_embed, 'Updraft_Checkout_Embed')) {
+			$checkout_embed_5gb_trial_attribute = $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb') ? 'data-embed-checkout="'.apply_filters('updraftplus_com_link', $updraftplus_checkout_embed->get_product('updraftplus-vault-storage-5-gb', UpdraftPlus_Options::admin_page_url().'?page=updraftplus&tab=settings')).'"' : '';
+		}
+
 		wp_localize_script('updraft-admin-common', 'updraftlion', array(
 			'tab' => empty($_GET['tab']) ? 'backups' : $_GET['tab'],
 			'sendonlyonwarnings' => __('Send a report only when there are warnings/errors', 'updraftplus'),
@@ -960,6 +967,12 @@ class UpdraftPlus_Admin {
 			'files_new_backup' => __('Include your files in the backup', 'updraftplus'),
 			'files_incremental_backup' => __('File backup options', 'updraftplus'),
 			'ajax_restore_invalid_response' => __('Restore error: HTML was detected in the response. You may have a security module on your webserver blocking the restoration operation.', 'updraftplus'),
+			'updraftvault_info' => '<h3>'.__('Try UpdraftVault!', 'updraftplus').'</h3>'
+				.'<p>'.__('UpdraftVault is our remote storage which works seamlessly with UpdraftPlus.', 'updraftplus')
+				.'	<a href="'.apply_filters('updraftplus_com_link', 'https://updraftplus.com/updraftvault/').'" target="_blank">'.__('Find out more here.', 'updraftplus').'</a>'
+				.'</p>'
+				.'<p><a href="'.apply_filters('updraftplus_com_link', $updraftplus->get_url('shop_vault_5')).'" target="_blank" '.$checkout_embed_5gb_trial_attribute.' class="button button-primary">'.__('Try it - 1 month for $1!', 'updraftplus').'</a></p>'
+
 		));
 	}
 	
@@ -3858,7 +3871,7 @@ class UpdraftPlus_Admin {
 	public function show_double_warning($text, $extraclass = '', $echo = true) {
 
 		$ret = "<div class=\"error updraftplusmethod $extraclass\"><p>$text</p></div>";
-		$ret .= "<p class=\"double-warning\">$text</p>";
+		$ret .= "<div class=\"notice error below-h2\"><p>$text</p></div>";
 
 		if ($echo) echo $ret;
 		return $ret;
