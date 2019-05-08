@@ -87,9 +87,13 @@ add_action('save_post', 'rawhtml_save_postdata');
 
 /* Adds a custom section to the "advanced" Post and Page edit screens */
 function rawhtml_add_custom_box() {
-  //WP 2.5+
-  if( function_exists( 'add_meta_box' )) { 
-  	foreach( array('post', 'page') as $type ) {
+  //WP 3.0+
+  if( function_exists('add_meta_box') && function_exists('post_type_supports') ) {
+  	$types = get_post_types(array('show_ui' => true, 'show_in_menu' => true), 'names');
+  	foreach( $types as $type ) {
+  		if ( !post_type_supports($type, 'editor') ) {
+  			continue;
+	    }
 	    add_meta_box( 'rawhtml_meta_box', 'Raw HTML', 'rawhtml_meta_box', $type, 'side' );
     }
   }
@@ -130,39 +134,35 @@ function rawhtml_meta_box(){
 }
 
 /* Saves post metadata */
-function rawhtml_save_postdata( $post_id ){
-  // verify this came from the our screen and with proper authorization,
-  // because save_post can be triggered at other times
-  
-  if ( !isset($_POST['rawhtml_nonce']) ){
-	return $post_id;
-  }
-  
-  if ( !wp_verify_nonce( $_POST['rawhtml_nonce'], plugin_basename(RAWHTML_PLUGIN_FILE) )) {
-    return $post_id;
-  }
+function rawhtml_save_postdata($post_id) {
+	// Verify this came from the our screen and with proper authorization,
+	// because save_post can be triggered at other times
 
-  if ( 'page' == $_POST['post_type'] ) {
-    if ( !current_user_can( 'edit_page', $post_id ))
-      return $post_id;
-  } else {
-    if ( !current_user_can( 'edit_post', $post_id ))
-      return $post_id;
-  }
-  
-  // OK, we're authenticated: we need to find and save the data
-  $fields = rawhtml_get_settings_fields();
-  $new_settings = array();
-  foreach ( $fields as $field ){	
-  	  if ( !empty($_POST['rawhtml_'.$field]) ){
-		$new_settings[$field] = true;
-	  } else {
-		$new_settings[$field] = false;
-	  };
-  }
-  rawhtml_save_post_settings($post_id, $new_settings);
+	if ( !isset($_POST['rawhtml_nonce']) ) {
+		return $post_id;
+	}
 
-  return true;
+	if ( !wp_verify_nonce($_POST['rawhtml_nonce'], plugin_basename(RAWHTML_PLUGIN_FILE)) ) {
+		return $post_id;
+	}
+
+	if ( !current_user_can('edit_post', $post_id) ) {
+		return $post_id;
+	}
+
+	// OK, we're authenticated: we need to find and save the data
+	$fields = rawhtml_get_settings_fields();
+	$new_settings = array();
+	foreach ($fields as $field) {
+		if ( !empty($_POST['rawhtml_' . $field]) ) {
+			$new_settings[$field] = true;
+		} else {
+			$new_settings[$field] = false;
+		};
+	}
+	rawhtml_save_post_settings($post_id, $new_settings);
+
+	return true;
 }
 
 //Add our panel to the "Screen Options" box
@@ -330,7 +330,7 @@ function rawhtml_default_settings_panel(){
 		$esc_field = esc_attr($field);
 		$output .= sprintf(
 			'<label for="rawhtml_default-%s" style="line-height: 20px;">
-				<input type="checkbox" name="rawhtml_default-%s" id="rawhtml_default-%s"%s>
+				<input type="checkbox" name="rawhtml_default-%s" id="rawhtml_default-%s" %s>
 				%s
 			</label><br>',
 			$esc_field,

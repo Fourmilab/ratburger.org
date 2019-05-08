@@ -27,6 +27,9 @@ function wsh_extract_exclusions($text, $keep_tags = false){
 		array('@<!--raw' . $shortcode_flag . '-->@i', '<!--/raw-->')
 	);
 
+	$is_excerpt_stripping_enabled = !defined('RAW_HTML_KEEP_RAW_IN_EXCERPTS')
+		|| !constant('RAW_HTML_KEEP_RAW_IN_EXCERPTS');
+
 	foreach ($tags as $tag_pair){
 		list($start_regex, $end_tag) = $tag_pair;
 		
@@ -46,7 +49,12 @@ function wsh_extract_exclusions($text, $keep_tags = false){
 			//extract the content between the tags
 			$content = substr($text, $content_start,$fin-$content_start);
 			
-			if ( (array_search('get_the_excerpt', $wp_current_filter) !== false) || (array_search('the_excerpt', $wp_current_filter) !== false) ){
+			if ( $is_excerpt_stripping_enabled
+				&& (
+					(array_search('get_the_excerpt', $wp_current_filter) !== false)
+					||  (array_search('the_excerpt', $wp_current_filter) !== false)
+				)
+			){
 				//Strip out the raw blocks when displaying an excerpt
 				$replacement = '';
 			} else {

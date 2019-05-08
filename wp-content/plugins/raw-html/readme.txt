@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: posts, formatting, javascript, html, css, code, disable
 Requires at least: 2.8
-Tested up to: 4.9
-Stable tag: 1.5.1
+Tested up to: 5.2
+Stable tag: 1.6
 
 Lets you use raw HTML or any other code in your posts. You can also disable smart quotes and other automatic formatting on a per-post basis.
 
@@ -50,7 +50,17 @@ By default, shortcodes that are inside [raw] tags will not work. They will just 
 
 [raw]This [shortcode] won't work.[/raw]`
 
+**Preserving `[raw]` code in excerpts**
+
+By default, the plugin will automatically remove any code that's inside `[raw]...[/raw]` tags from post excerpts. You can prevent that by adding the following line to `wp-config.php`:
+
+`define('RAW_HTML_KEEP_RAW_IN_EXCERPTS', true);`
+
+This will ensure that the plugin doesn't strip `[raw]` blocks from automatically generated excerpts. 
+
 **Notes**
+
+This plugin doesn't fully support the Gutenberg editor. It will only work with the classic post editor.
 
 Some features of Raw HTML will only work for users who have the "unfiltered_html" capability. In a normal WordPress install that includes the Editor and Administrator roles. In a Multisite install, only the Super Admin has this capability by default.
 
@@ -79,6 +89,11 @@ Open to the post editor and click the "Screen Options" button in the top-right p
 
 
 == Changelog ==
+
+= 1.6 =
+* Added a way to preserve `[raw]` blocks in post excerpts.
+* Enabled the "Raw HTML" metabox for custom post types.
+* Tested up to WP 5.2 (only with the Classic Editor).
 
 = 1.5.1 = 
 * Added limited support for the page builder included with GoodLayers themes (e.g. Mediso).
