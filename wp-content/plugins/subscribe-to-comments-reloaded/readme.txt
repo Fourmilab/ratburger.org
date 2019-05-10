@@ -6,8 +6,8 @@ Plugin URI: http://subscribe-reloaded.com/
 Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
-Tested up to: 5.1
-Stable tag: 190426
+Tested up to: 5.2
+Stable tag: 190510
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,11 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+
+= v190510 =
+* **New** Option to only enable the functionality for blog posts ( option named "Enable only for blog posts" located in WP admin > StCR > StCR Options)
+* **Tweak** Info on subscriber and subscriptions amount moved into separate table
+* **Fix** Text domain
 
 = v190426 = 
 * **New** Info on the amount of subscribers and subscriptions added in WP admin > StCR > StCR System

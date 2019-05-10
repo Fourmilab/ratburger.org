@@ -2,12 +2,12 @@
 /**
  * Plugin Name:       Subscribe to Comments Reloaded
  * Description:       Subscribe to Comments Reloaded is a robust plugin that enables commenters to sign up for e-mail notifications. It includes a full-featured subscription manager that your commenters can use to unsubscribe to certain posts or suspend all notifications.
- * Version:           190426
+ * Version:           190510
  * Author:            WPKube
  * Author URI:        http://wpkube.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       subscribe-reloaded
+ * Text Domain:       subscribe-to-comments-reloaded
  * Domain Path:       /langs
  */
 
