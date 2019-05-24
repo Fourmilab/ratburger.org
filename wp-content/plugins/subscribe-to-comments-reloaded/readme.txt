@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.2
-Stable tag: 190510
+Stable tag: 190523
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,9 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+
+= v190523 =
+* **Fix** Remove the old system information functionality
 
 = v190510 =
 * **New** Option to only enable the functionality for blog posts ( option named "Enable only for blog posts" located in WP admin > StCR > StCR Options)
