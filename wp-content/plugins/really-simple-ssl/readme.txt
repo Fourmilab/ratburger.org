@@ -2,11 +2,11 @@
 Contributors: RogierLankhorst, markwolters
 Donate link: https://www.paypal.me/reallysimplessl
 Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, TLS, security, secure socket layers, HSTS
-Requires at least: 4.2
+Requires at least: 4.6
 License: GPL2
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 3.1.5
+Stable tag: 3.2.1
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -24,7 +24,7 @@ Always backup before you go! If you do not have a sound backup policy, start hav
 Any code suggestions? We're on [GitHub](https://github.com/rlankhorst/really-simple-ssl) as well!
 
 = Love Really Simple SSL? =
-Hopefully this plugin save you some hours of work. If you want to support the continuing development of this plugin, you might consider buying the [premium](https://www.really-simple-ssl.com/pro/), which includes
+Hopefully this plugin saves you some hours of work. If you want to support the continuing development of this plugin, you might consider buying the [premium](https://www.really-simple-ssl.com/pro/), which includes
 some cool features.
 = Pro features =
 * The mixed content scan, which shows you what you have to do if you don't have the green lock yet
@@ -40,6 +40,8 @@ some cool features.
 * All incoming requests are redirected to https. Default with an internal WordPress redirect, but you can also enable a .htaccess redirect.
 * The site url and home url are changed to https.
 * Your insecure content is fixed by replacing all http:// urls with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
+
+Check out other plugins developed by Really Simple Plugins as well: [Complianz](https://wordpress.org/plugins/complianz-gdpr/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
 
 [contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. Really Simple SSL is developed by [Really Simple Plugins](https://www.really-simple-plugins.com).
 
@@ -79,6 +81,16 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 3.2.1 =
+* Fix: fixed a bug in the regex pattern to update existing update count
+
+= 3.2 =
+* Added update counter to Settings/SSL menu item if recommended settings aren't enabled yet
+* Added WP-CLI support
+* Tweak: made some dashboard items dismissible
+* Tweak: added link on multisite networkwide activation notice to switch function hook to fix conversions hanging on 0%
+* Tweak: required WordPress version now 4.6 because of get_networks() version
+
 = 3.1.5 =
 * Fix: fixed a bug where having an open_basedir defined showed PHP warnings when using htaccess.conf
 
