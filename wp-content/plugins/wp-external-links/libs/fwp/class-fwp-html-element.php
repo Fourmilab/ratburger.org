@@ -5,10 +5,8 @@
  * @package  FWP
  * @category WordPress Library
  * @version  1.0.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WPRun-WordPress-Development
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ 
+ * @link     https://www.webfactoryltd.com/
  */
 class FWP_HTML_Element_1x0x0
 {

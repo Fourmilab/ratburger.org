@@ -1,26 +1,28 @@
-=== WP External Links (nofollow new tab seo) ===
-Contributors: freelancephp
-Tags: links, new window, new tab, external links, nofollow, follow, seo, noopener, noreferrer, internal links, icon, target, _blank, wpmu
-Requires at least: 4.2.0
-Tested up to: 4.8.3
-Stable tag: 2.2.0
+=== External Links - nofollow, noopener & new window ===
+Contributors: WebFactory, UnderConstructionPage, googlemapswidget, securityninja, wpreset
+Tags: new window, new tab, external links, nofollow, noopener, follow, dofollow, seo, noreferrer, internal links, target, links, link, internal link, external link
+Requires at least: 4.2
+Tested up to: 5.2
+Requires PHP: 5.3
+Stable tag: 2.3
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage external and internal links: open in new window or tab, add "nofollow", "noopener", font icons and more. SEO friendly.
-
+Manage internal & external links: open in a new window or tab, control nofollow & noopener. SEO friendly.
 
 == Description ==
 
-Manage external and internal links on your site.
+**Manage all external & internal links on your site**. Control icons, nofollow, noopener and if links open in new window or new tab.
 
-> <strong>=== NEW: Version 2 ===</strong><br>
-> WPEL plugin was completely rebuilt and has lots of new features, like "noopener", font icons, internal links options and WPMU settings.
+= NEW: Version 2 =
+WP External Links plugin was completely rebuilt in v2 and has lots of new features, like "noopener", font icons, internal links options and full WPMU support.
 
 = Features =
 * Manage external and internal links 
 * Open links in new window or tab
-* Add "follow" or "nofollow"
-* Add "noopener" and "noreferrer" (for security)
-* Add link icons (font icons: font awesome, dashicons)
+* Add follow or nofollow (for SEO)
+* Add noopener and noreferrer (for security)
+* Add link icons (FontAwesome and Dashicons)
 * Set other attributes like title and CSS classes
 * Scan complete page (or just posts, comments, widgets)
 * SEO friendly
@@ -38,19 +40,7 @@ After activating you can set all options for external and internal links on the 
 The plugin filters the output and changes the links on the fly. The real contents (posts, pages, widget etcetera) will not be changed in the database.
 When deactivating the plugin, all contents will be the same as it was before.
 
-= Requirements =
-* PHP version 5.3 or up
-* WordPress version 4.2 or up
-
-If you want support for older versions of PHP or WordPress then download and install [version 1.81](https://downloads.wordpress.org/plugin/wp-external-links.1.81.zip) of this plugin.
-
-= Sources =
-* [Documentation](http://wordpress.org/extend/plugins/wp-external-links/other_notes/)
-* [FAQ](http://wordpress.org/extend/plugins/wp-external-links/faq/)
-* [Github](https://github.com/freelancephp/WP-External-Links)
-
-> <strong>Like this plugin?</strong><br>
-> [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links) to support the development of this plugin.
+**Like the plugin?** [Rate it](http://wordpress.org/support/view/plugin-reviews/wp-external-links) to support the development.
 
 
 == Installation ==
@@ -153,7 +143,7 @@ Add this JavaScript code to your site:
     });
 });`
 
-= How to open f.e. PDF files in a new window? =
+= How to open PDF files in a new window? =
 
 Use some JavaScript code for opening PDF files in a new window:
 
@@ -181,14 +171,11 @@ Here are some suggestions on solving the problem:
 1. Use `wpel_apply_settings`-filter to ignore complete post, pages, categories etc
 
 
-[Do you have a question? Please ask me](http://www.finewebdev.comcontact/)
-
-
 == Screenshots ==
 
 1. Link Icons
-1. Admin Settings Page
-1. WPMU Network Settings Page
+2. Admin Settings Page
+3. WPMU Network Settings Page
 
 
 == Documentation ==
@@ -255,6 +242,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.3 =
+ * 2019-06-14
+ * bug fixes
+ * 40,000 installations hit on 2018-03-13
 
 = 2.2.0 =
  * Added option ignore links by classes
@@ -416,8 +408,8 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 * Added option for setting title-attribute
 * Added option for excluding filtering certain external links
 * Added Admin help tooltips using jQuery Tipsy Plugin
-* Reorginized files and refactored code to PHP5 (no support for PHP4)
-* Added WP built-in meta box functionallity (using the `WP_Meta_Box_Page` Class)
+* Reorganized files and refactored code to PHP5 (no support for PHP4)
+* Added WP built-in meta box functionality (using the `WP_Meta_Box_Page` Class)
 * Reorganized saving options and added Ajax save method (using the `WP_Option_Forms` Class)
 * Removed Regexp and using phpQuery
 * Choose menu position for this plugin (see "Screen Options")
@@ -437,7 +429,7 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 * Fixed PHP / WP notices
 
 = 0.32 =
-* For jQuery uses live() function so also opens dynamicly created links in given target
+* For jQuery uses live() function so also opens dynamiclly created links in given target
 * Fixed bug of changing `<abbr>` tag
 * Small cosmetical adjustments
 

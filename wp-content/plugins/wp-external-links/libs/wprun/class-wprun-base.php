@@ -9,10 +9,8 @@
  * @package  WPRun
  * @category WordPress Library
  * @version  1.0.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WPRun-WordPress-Development
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ * @author   WebFactory Ltd
+ * @link     https://www.webfactoryltd.com/
  */
 abstract class WPRun_Base_1x0x0
 {

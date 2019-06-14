@@ -4,10 +4,8 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.2.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WP-External-Links
+ * @version  2.3
+ * @link     https://www.webfactoryltd.com/
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  *
  * @var array $vars
@@ -15,6 +13,17 @@
  */
 ?>
 <h2><?php _e( 'Support', 'wp-external-links' ); ?></h2>
+
+<h3><?php _e( 'Exclude or include by data-attribute', 'wp-external-links' ) ?></h3>
+<p>
+    <?php _e( 'The <code>data-wpel-link</code> attribute can be set on links and forces the plugin to treat those links that way.', 'wp-external-links' ); ?>
+</p>
+<ul>
+    <li><?php _e( 'Links with <code>data-wpel-link="internal"</code> will be treated as internal links.', 'wp-external-links' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="external"</code> will be treated as external links.', 'wp-external-links' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="exclude"</code> will be treated as excluded links (which have their own settings or will be treated as internal links).', 'wp-external-links' ); ?></li>
+    <li><?php _e( 'Links with <code>data-wpel-link="ignore"</code> will be completely ignored by this plugin.', 'wp-external-links' ); ?></li>
+</ul>
 
 <h3><?php _e( 'Documentation', 'wp-external-links' ); ?></h3>
 <p><?php _e( 'Take a look at the <a href="#" data-wpel-help>help section</a> for documentation', 'wp-external-links' ); ?></p>
@@ -26,8 +35,8 @@
 <p><?php _e( 'When you experience problems using this plugin please look if your problem was <a href="https://wordpress.org/support/plugin/wp-external-links" target="_blank">already reported</a>.', 'wp-external-links' ); ?></p>
 
 <h3><?php _e( 'Send your issue', 'wp-external-links' ); ?></h3>
-<p><?php _e( 'If it wasn\'t yet reported then you can <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">send your problem</a>.', 'wp-external-links' ); ?>
-    <?php _e( 'Please after reporting send me the following technical information <a href="http://www.finewebdev.com/contact" target="_blank">by mail</a>. That will make it easier to solve the problem.', 'wp-external-links' ); ?>
+<p><?php _e( 'If it wasn\'t yet reported then you should <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">post your problem</a>.', 'wp-external-links' ); ?>
+    <?php _e( 'If you don\'t like posting publically <a href="mailto:support@webfactoryltd.com?subject=WP%20External%20Links">email us</a> and make sure you copy/past the technical information displayed below. Without it we can\'t help you.', 'wp-external-links' ); ?>
 </p>
 <p>
     <button class="button js-wpel-copy"><?php _e( 'Copy Technical Info', 'wp-external-links' ); ?></button>

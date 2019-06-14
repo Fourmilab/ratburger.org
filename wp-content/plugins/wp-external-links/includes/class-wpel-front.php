@@ -4,10 +4,8 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.2.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WP-External-Links
+ * @version  2.3
+ * @link     https://www.webfactoryltd.com/
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPEL_Front extends WPRun_Base_1x0x0
@@ -276,7 +274,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         if ( $title_format ) {
             $title = $link->get_attr( 'title' );
             $text = $link->get_content();
-            $new_title = str_replace( array( '{title}', '{text}' ), array( esc_attr( $title ), esc_attr( $text ) ), $title_format );
+            $new_title = str_replace( array( '{title}', '{text}', '{text_clean}' ), array( esc_attr( $title ), esc_attr( $text ), esc_attr( strip_tags( $text ) ) ), $title_format );
 
             if ( $new_title ) {
                 $link->set_attr( 'title', $new_title );

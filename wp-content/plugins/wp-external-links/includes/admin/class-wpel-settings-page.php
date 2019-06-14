@@ -4,10 +4,8 @@
  *
  * @package  WPEL
  * @category WordPress Plugin
- * @version  2.2.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WP-External-Links
+ * @version  2.3
+ * @link     https://www.webfactoryltd.com/
  * @license  Dual licensed under the MIT and GPLv2+ licenses
  */
 final class WPEL_Settings_Page extends WPRun_Base_1x0x0
@@ -48,7 +46,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             ),
             'internal-links' => array(
                 'title'     => __( 'Internal Links', 'wp-external-links' ),
-                'icon'      => '<i class="fa fa-square-o" aria-hidden="true"></i>',
+                'icon'      => '<i class="fa fa-link" aria-hidden="true"></i>',
                 'fields'    => $fields_objects[ 'internal-links' ],
             ),
             'excluded-links' => array(
@@ -206,6 +204,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
     protected function add_help_tabs()
     {
         $screen = get_current_screen();
+        return;
 
         $screen->add_help_tab( array(
             'id'        => 'under-construction',

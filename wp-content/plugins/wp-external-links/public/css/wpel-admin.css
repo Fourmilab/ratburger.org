@@ -99,7 +99,7 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     content: "\f14c";
 }
 .wpel-settings-page-internal-links form:before {
-    content: "\f096";
+    content: "\f0c1";
 }
 .wpel-settings-page-excluded-links form:before {
     content: "\f14d";
@@ -124,4 +124,11 @@ a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
     content: "\f128";
 }
 
+.wrap h2.nav-tab-wrapper {
+  padding-top: 20px;
+}
 
+#rating-notice {
+  display: inline-block;
+  padding: 15px;
+}

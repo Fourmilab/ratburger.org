@@ -5,10 +5,8 @@
  * @package  FWP
  * @category WordPress Library
  * @version  1.0.0
- * @author   Victor Villaverde Laan
- * @link     http://www.finewebdev.com
- * @link     https://github.com/freelancephp/WPRun-WordPress-Development
- * @license  Dual licensed under the MIT and GPLv2+ licenses
+ 
+ * @link     https://www.webfactoryltd.com/
  */
 abstract class FWP_Plugin_Base_1x0x0 extends WPRun_Base_1x0x0
 {
@@ -53,6 +51,22 @@ abstract class FWP_Plugin_Base_1x0x0 extends WPRun_Base_1x0x0
             , false
             , $this->get_plugin_dir( $plugin_data[ 'DomainPath' ] )
         );
+    }
+
+    /**
+     * Action for "admin_action_wpel_dismiss_notice"
+     */
+    protected function action_admin_action_wpel_dismiss_notice()
+    {
+      update_option( 'wpel-notice-dismissed-rate', true );
+
+      if ( !empty( $_GET['redirect'] ) ) {
+        wp_safe_redirect( $_GET['redirect'] );
+      } else {
+        wp_safe_redirect( admin_url() );
+      }
+  
+      exit;
     }
 
     /**

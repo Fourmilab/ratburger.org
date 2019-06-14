@@ -1,26 +1,16 @@
 <?php
 /**
- * WP External Links Plugin
- *
- * @package  WPEL
- * @category WordPress Plugin
- * @version  2.2.0
- * @author   Victor Villaverde Laan
- * @link     https://wordpress.org/plugins/wp-external-links/
- * @link     https://github.com/freelancephp/WP-External-Links
- * @license  Dual licensed under the MIT and GPLv2+ licenses
- *
- * @wordpress-plugin
  * Plugin Name:    WP External Links
- * Version:        2.2.0
+ * Version:        2.3
  * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
- * Description:    Open external links in a new tab or window, adding "nofollow" and "noopener", set font icon, SEO friendly options and more.
- * Author:         Victor Villaverde Laan
- * Author URI:     http://www.finewebdev.com
+ * Description:    Open external links in a new tab or window, control "nofollow" and "noopener", set font icon; SEO friendly.
+ * Author:         WebFactory Ltd
+ * Author URI:     https://www.webfactoryltd.com/
  * License:        Dual licensed under the MIT and GPLv2+ licenses
  * Text Domain:    wp-external-links
- * Domain Path:    /languages
  */
+ 
+ 
 if ( ! function_exists( 'wpel_init' ) ):
 
     function wpel_init()
@@ -87,6 +77,3 @@ if ( ! function_exists( 'wpel_init' ) ):
     wpel_init();
 
 endif;
-
-
-/*?>*/
