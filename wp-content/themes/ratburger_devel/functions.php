@@ -1045,7 +1045,9 @@ function rb_on_probation() {
 
 /*  Add override to query string used to obtain list of
     posts for the "Recent Posts" widget to use our date
-    criterion rather than a fixed number of posts.  */
+    criterion rather than a fixed number of posts.  We
+    also allow logged-in users to see private posts,
+    while guests can see only published posts.  */
 
 function rb_select_recent_posts($a) {
     return array(
@@ -1055,11 +1057,25 @@ function rb_select_recent_posts($a) {
                              ),
         'posts_per_page'      => -1,
         'no_found_rows'       => true,
-        'post_status'         => 'publish',
+        'post_status'         => is_user_logged_in() ?
+            array('publish', 'private') : 'publish',
         'ignore_sticky_posts' => true
                 );
 }
 add_filter('widget_posts_args', 'rb_select_recent_posts', 10, 1);
+
+/*  In the "Recent Comments" widget, we allow users who are
+    logged in to see comments on private posts as well as
+    published posts.  Guests will see only comments on
+    published posts.  */
+
+function rb_select_recent_comments($a) {
+    if (is_user_logged_in()) {
+        $a['post_status'] = array('publish', 'private');
+    }
+    return $a;
+}
+add_filter('widget_comments_args', 'rb_select_recent_comments', 10, 1);
 
 /*  Add a clock to the administration toolbar.  The code below
     includes the placeholder for the clock and invokes the
