@@ -3,7 +3,7 @@ Contributors: whiteshadow
 Tags: posts, formatting, javascript, html, css, code, disable
 Requires at least: 2.8
 Tested up to: 5.2
-Stable tag: 1.6
+Stable tag: 1.6.1
 
 Lets you use raw HTML or any other code in your posts. You can also disable smart quotes and other automatic formatting on a per-post basis.
 
@@ -89,6 +89,9 @@ Open to the post editor and click the "Screen Options" button in the top-right p
 
 
 == Changelog ==
+
+= 1.6.1 =
+* Fixed a conflict with the "AMP Stories" plugin. This fix may also help with current or future conflicts with other plugins that remove the default post filters.
 
 = 1.6 =
 * Added a way to preserve `[raw]` blocks in post excerpts.

@@ -39,7 +39,7 @@ function maybe_convert_smilies($content){
 }
 
 // Disable default filters and add our conditional filters
-function rawhtml_add_conditional_filters(){
+function rawhtml_add_conditional_filters($param = null){
 	static $filters_added = false;
 	static $filters = array(
 		'the_content' => array(
@@ -60,24 +60,135 @@ function rawhtml_add_conditional_filters(){
 	// This way there's less of a chance that Raw HTML will accidentally apply a filter
 	// that another plugin has removed (e.g. via "remove_filter('the_content', 'wpautop')").
 	if ( $filters_added || !isset($filters[current_filter()]) ) {
-		return;
+		return $param;
 	}
 
 	foreach ( $filters as $tag => $functions ){
 		foreach ( $functions as $func => $priority ){
 			if ( remove_filter($tag, $func, $priority) ){
-				add_filter( $tag, 'maybe_'.$func, $priority - 1 );
+				add_filter( $tag, 'maybe_'.$func, $priority );
 			};
 		}
 	}
 
 	$filters_added = true;
+	return $param;
+}
+
+class wsRawHtmlWrappedFilter {
+	/**
+	 * @var string
+	 */
+	private $callback;
+
+	public function __construct($callback) {
+		$this->callback = $callback;
+	}
+
+	/**
+	 * Apply $callback to $content unless it's been disabled for the current post.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	public function maybe_apply($content) {
+		$func = $this->callback;
+
+		global $post;
+		if ( !isset($post, $post->ID) ) {
+			return $func($content);
+		}
+
+		$settings = rawhtml_get_post_settings($post->ID);
+		if ( $settings['disable_' . $func] ) {
+			return $content;
+		} else {
+			return  $func($content);
+		}
+	}
+}
+
+class wsRawHtmlFilterInterceptor {
+	private $filters = array(
+		'the_content' => array(
+			'wpautop' => 10,
+			'wptexturize' => 10,
+			'convert_chars' => 10,
+			'convert_smilies' => 20,
+		),
+		'the_excerpt' => array(
+			'wpautop' => 10,
+			'wptexturize' => 10,
+			'convert_chars' => 10,
+			'convert_smilies' => 20,
+		),
+	);
+
+	private $wrapped_handlers = array();
+
+	public function __construct() {
+		// Since WP 4.7.0 it's possible to add/remove callbacks to the current filter or action.
+		// This means we can add the conditional filters right before the default filters would run,
+		// which improves our ability to detect if any of the default filters have been removed
+		// by someone else. For example, do_blocks() removes wpautop() in the_content (priority: 9).
+		foreach($this->filters as $tag => $functions) {
+			add_filter($tag, array($this, 'wrap_filters'), 9, 1);
+		}
+	}
+
+	public function wrap_filters($content = '') {
+		$tag = current_filter();
+		if ( !isset($this->filters[$tag]) ) {
+			return $content;
+		}
+
+		//Find any filters that still need to be wrapped.
+		global $wp_filter;
+		foreach($this->filters[$tag] as $callback => $priority) {
+			if ( !isset($wp_filter[$tag][$priority][$callback]['function']) ) {
+				continue;
+			}
+
+			$current_callback = $wp_filter[$tag][$priority][$callback]['function'];
+			if ( is_string($current_callback) && ($current_callback === $callback) ) {
+				// Wrap the default callback in a conditional handler.
+				$handler = $this->get_handler($callback);
+
+				// We must update the whole list of callbacks instead of just the 'function'
+				// member of a specific callback because $wp_filter[tag] is not a real array
+				// but a class that implements ArrayAccess (update happens via offsetSet).
+				$callback_list = $wp_filter[$tag][$priority];
+				$callback_list[$callback]['function'] = array($handler, 'maybe_apply');
+				$wp_filter[$tag][$priority] = $callback_list;
+			}
+		}
+
+		return $content;
+	}
+
+	/**
+	 * @param string $callback
+	 * @return wsRawHtmlWrappedFilter
+	 */
+	private function get_handler($callback) {
+		if ( !isset($this->wrapped_handlers[$callback]) ) {
+			$this->wrapped_handlers[$callback] = new wsRawHtmlWrappedFilter($callback);
+		}
+		return $this->wrapped_handlers[$callback];
+	}
 }
 
 // Performance optimization: Start watching for content filters only after everything has
 // been loaded and parsed. Running on every hook before that would be a waste.
 function rawhtml_add_filter_initializer() {
-	add_action('all', 'rawhtml_add_conditional_filters');
+	if ( class_exists('WP_Hook', false) ) {
+		global $wsh_raw_interceptor;
+		if ( !isset($wsh_raw_interceptor) ) {
+			$wsh_raw_interceptor = new wsRawHtmlFilterInterceptor();
+		}
+	} else {
+		add_action('all', 'rawhtml_add_conditional_filters');
+	}
 }
 add_action('parse_query', 'rawhtml_add_filter_initializer', 1000, 0);
 
@@ -328,6 +439,7 @@ function rawhtml_default_settings_panel(){
  	$output = '<div class="metabox-prefs">';
 	foreach($fields as $field => $legend){
 		$esc_field = esc_attr($field);
+		/** @noinspection HtmlUnknownAttribute */
 		$output .= sprintf(
 			'<label for="rawhtml_default-%s" style="line-height: 20px;">
 				<input type="checkbox" name="rawhtml_default-%s" id="rawhtml_default-%s" %s>
@@ -367,6 +479,3 @@ function rawhtml_save_new_defaults($params){
 	//Store the new defaults
 	rawhtml_set_default_settings($defaults);
 }
-
-
-?>
