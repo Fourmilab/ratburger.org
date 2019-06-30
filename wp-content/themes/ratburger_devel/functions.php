@@ -635,6 +635,10 @@ function RB_me() {
     return get_current_user_id() == 2;
 }
 
+function RB_chef() {
+    return get_current_user_id() == 1;
+}
+
 
 function RB_mdumpvar($label, $var) {
     if (RB_me()) {
@@ -1042,6 +1046,53 @@ add_action('init', 'rb_custom_oembed_providers');
 function rb_on_probation() {
     return !bp_current_user_can('edit_posts');
 }
+
+/*  When sending a User Approval E-mail to administrators
+    from the New User Approve plug-in, modify the composed
+    message text to include the IP address from which the
+    user registered the account.  This allows easier vetting
+    of new sign-ups against spam databases.  */
+
+function rb_add_IP_address_to_user_approve_Email($message,
+    $user_login, $user_email) {
+
+    return str_replace(") has",
+                       ") IP " . $_SERVER['REMOTE_ADDR'] .
+                                 " has", $message);
+}
+
+add_filter("new_user_approve_request_approval_message",
+           "rb_add_IP_address_to_user_approve_Email", 10, 3);
+
+/*  Include a column with the IP address from which the user
+    registered the account on the Pending accounts page in
+    the Administrator dashboard.  */
+
+function rb_bp_members_signup_columns() {
+    return array(
+        'cb'         => '<input type="checkbox" />',
+        'username'   => __( 'Username',    'buddypress' ),
+        'name'       => __( 'Name',        'buddypress' ),
+        'email'      => __( 'Email',       'buddypress' ),
+        'ip_addr'    => __( 'IP Address',  'ratburger'  ),
+        'registered' => __( 'Registered',  'buddypress' ),
+        'date_sent'  => __( 'Last Sent',   'buddypress' ),
+        'count_sent' => __( 'Emails Sent', 'buddypress' )
+    );
+}
+
+add_filter("bp_members_signup_columns", "rb_bp_members_signup_columns");
+
+function rb_bp_members_signup_custom_column($value, $column_name, $signup_object) {
+    if ($column_name == "ip_addr") {
+        //  Why do we need to do this?  Because $signup_object->id is a cruel joke
+        $usr = get_user_by("login", $signup_object->user_login);
+        $ip = get_user_meta($usr->ID, 'signup_ip', true);
+        echo $ip;
+    }
+}
+
+add_filter("bp_members_signup_custom_column", "rb_bp_members_signup_custom_column", 10, 3);
 
 /*  Add override to query string used to obtain list of
     posts for the "Recent Posts" widget to use our date
