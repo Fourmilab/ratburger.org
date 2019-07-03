@@ -84,7 +84,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 		public function like( $id , $key, $user_id, $author_id = 0 ) {
 
 			// Check for exclusion
-			if ( $this->core->exclude_user( $user_id ) ) return;
+			if ( $this->core->exclude_user( $user_id ) || ! is_user_logged_in() ) return;
 
 			switch ( $key ) {
 				case '_liked':
@@ -99,7 +99,6 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 					$author_id 	= $this->bp_get_auhtor_id($id);
 					break;
 			}
-
 
 			if ( $user_id != $author_id ){
 
@@ -155,7 +154,7 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 		public function unlike( $id , $key, $user_id, $author_id = 0 ) {
 
 			// Check for exclusion
-			if ( $this->core->exclude_user( $user_id ) ) return;
+			if ( $this->core->exclude_user( $user_id ) || ! is_user_logged_in() ) return;
 
 			switch ( $key ) {
 				case '_liked':

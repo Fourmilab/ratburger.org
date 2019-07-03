@@ -187,7 +187,7 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 					count(date_time) AS counts
 					FROM %s
 					GROUP BY labels
-					DESC LIMIT %d",
+					ASC LIMIT %d",
 					$this->wpdb->prefix . $table,
 					30
 				);
@@ -195,11 +195,9 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 			$result = $this->wpdb->get_results( $query );
 
 			if( empty( $result ) ) {
-				$result->labels = $result->counts = array();
-			} else {
-				krsort( $result );
+				$result->labels = $result->counts = NULL;
 			}
-			
+
 			return $result;
 		}
 

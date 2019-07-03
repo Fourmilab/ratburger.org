@@ -160,14 +160,15 @@ if( ! function_exists( 'wp_ulike_put_posts' ) ){
 		}
 
 		//return by position
-		if($position=='bottom')
-		return $content . $button;
-		else if($position=='top')
-		return $button . $content;
-		else if($position=='top_bottom')
-		return $button . $content . $button;
-		else
-		return $content . $button;
+		if( $position=='bottom' ) {
+			return $content . $button;
+		} elseif( $position=='top' ) {
+			return $button . $content;
+		} elseif( $position=='top_bottom' ) {
+			return $button . $content . $button;
+		} else {
+			return $content . $button;
+		}
 	}
 	if (wp_ulike_get_setting( 'wp_ulike_posts', 'auto_display' ) == '1') {
 		add_filter('the_content', 'wp_ulike_put_posts');
@@ -196,20 +197,27 @@ if( ! function_exists( 'wp_ulike_get_posts_microdata' ) ){
 	 * @return string
 	 */
 	function wp_ulike_get_posts_microdata(){
-		$get_ulike_count = get_post_meta(get_the_ID(), '_liked', true);
-		if(!is_singular() || !wp_ulike_get_setting( 'wp_ulike_posts', 'google_rich_snippets') || $get_ulike_count == 0) return;
-        $post_meta 		= '<meta itemprop="name" content="' . get_the_title() . '" />';
-        $post_meta 		.= apply_filters( 'wp_ulike_extra_structured_data', NULL );
-		$post_meta 		.= '<span itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="' . get_the_author() . '" /></span>';
-        $post_meta 		.= '<meta itemprop="datePublished" content="' . get_post_time('c') . '" />';
-		$ratings_meta 	= '<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">';
+		global $post;
+		$get_ulike_count = get_post_meta( $post->ID, '_liked', true );
+		// Check data output
+		if( !is_singular() || !wp_ulike_get_setting( 'wp_ulike_posts', 'google_rich_snippets') || $get_ulike_count == 0 ) {
+			return;
+		}
+		// Post meta structure
+		$post_meta  = '<meta itemprop="name" content="' . the_title_attribute( 'echo=0' ) . '" />';
+		$post_meta .= apply_filters( 'wp_ulike_extra_structured_data', NULL );
+		$post_meta .= '<span itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="' . esc_attr( get_the_author() ) . '" /></span>';
+		$post_meta .= '<meta itemprop="datePublished" content="' . esc_attr( get_post_time('c') ) . '" />';
+		// Rating meta structure
+		$ratings_meta  = '<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">';
 		$ratings_meta	.= '<meta itemprop="bestRating" content="5" />';
-		$ratings_meta 	.= '<meta itemprop="worstRating" content="1" />';
-		$ratings_meta 	.= '<meta itemprop="ratingValue" content="'. wp_ulike_get_rating_value(get_the_ID()) .'" />';
-		$ratings_meta 	.= '<meta itemprop="ratingCount" content="' . $get_ulike_count . '" />';
-		$ratings_meta 	.= '</span>';
-		$itemtype 		= apply_filters( 'wp_ulike_remove_microdata_post_meta', false );
-        return apply_filters( 'wp_ulike_generate_google_structured_data', ( $itemtype ? $ratings_meta : ( $post_meta . $ratings_meta ) ) );
+		$ratings_meta .= '<meta itemprop="worstRating" content="1" />';
+		$ratings_meta .= '<meta itemprop="ratingValue" content="'. wp_ulike_get_rating_value( $post->ID ) .'" />';
+		$ratings_meta .= '<meta itemprop="ratingCount" content="' . $get_ulike_count . '" />';
+		$ratings_meta .= '</span>';
+		// Return value
+		$itemtype  = apply_filters( 'wp_ulike_remove_microdata_post_meta', false );
+		return apply_filters( 'wp_ulike_generate_google_structured_data', ( $itemtype ? $ratings_meta : ( $post_meta . $ratings_meta ) ) );
 	}
 	add_filter( 'wp_ulike_posts_microdata', 'wp_ulike_get_posts_microdata');
 }
@@ -229,19 +237,18 @@ if( ! function_exists( 'wp_ulike_put_comments' ) ){
 	function wp_ulike_put_comments( $content ) {
 		//auto display position
 		$position = wp_ulike_get_setting( 'wp_ulike_comments', 'auto_display_position');
-
 		//add wp_ulike_comments function
 		$button = wp_ulike_comments('put');
-
 		//return by position
-		if($position=='bottom')
-		return $content . $button;
-		else if($position=='top')
-		return $button . $content;
-		else if($position=='top_bottom')
-		return $button . $content . $button;
-		else
-		return $content . $button;
+		if( $position=='bottom' ){
+			return $content . $button;
+		} elseif( $position=='top' ){
+			return $button . $content;
+		} elseif( $position=='top_bottom' ){
+			return $button . $content . $button;
+		} else {
+			return $content . $button;
+		}
 	}
 
 	if ( wp_ulike_get_setting( 'wp_ulike_comments', 'auto_display' ) == '1'  && ! is_admin() ) {
@@ -733,6 +740,45 @@ if( defined( 'BP_VERSION' ) ) {
 	}
   END RATBURGER LOCAL CODE */
 
+	if( ! function_exists( 'wp_ulike_notification_filters' ) ){
+		/**
+		 * Add ulike notifications to initial buddyPress filters
+		 *
+		 * @return void
+		 */
+		function wp_ulike_notification_filters(){
+			$notifications = array(
+				array(
+					'id'       => 'wp_ulike_activityliked_action',
+					'label'    => __( 'New activity liked', WP_ULIKE_SLUG ),
+					'position' => 340,
+				),
+				array(
+					'id'       => 'wp_ulike_commentliked_action',
+					'label'    => __( 'New comment liked', WP_ULIKE_SLUG ),
+					'position' => 345,
+				),
+				array(
+					'id'       => 'wp_ulike_liked_action',
+					'label'    => __( 'New post liked', WP_ULIKE_SLUG ),
+					'position' => 355,
+				),
+				array(
+					'id'       => 'wp_ulike_topicliked_action',
+					'label'    => __( 'New topic liked', WP_ULIKE_SLUG ),
+					'position' => 365,
+				)
+			);
+
+			foreach ( $notifications as $notification ) {
+				if( ! wp_ulike_bbp_is_component_exist( $notification['id'] ) ){
+					continue;
+				}
+				bp_nouveau_notifications_register_filter( $notification );
+			}
+		}
+		add_action( 'bp_nouveau_notifications_init_filters', 'wp_ulike_notification_filters' );
+	}
 
 	if( ! function_exists( 'wp_ulike_seen_bp_notifications' ) ){
 		/**
@@ -796,6 +842,7 @@ if( ! function_exists( 'wp_ulike_put_bbpress' ) && function_exists( 'is_bbpress'
   Other Plugins
 *******************************************************/
 
+// My Cred Plugin
 if( defined( 'myCRED_VERSION' ) ){
 	if( ! function_exists( 'wp_ulike_register_myCRED_hook' ) ){
 		/**
@@ -834,6 +881,7 @@ if( defined( 'myCRED_VERSION' ) ){
 	}
 }
 
+// Ultimate Member plugin
 if ( defined( 'ultimatemember_version' ) ) {
 	if( ! function_exists( 'wp_ulike_add_custom_profile_tab' ) ){
 		/**
@@ -944,4 +992,40 @@ if ( defined( 'ultimatemember_version' ) ) {
 		}
 		add_action('um_profile_content_wp-ulike-comments_default', 'wp_ulike_comments_um_profile_content');
 	}
+}
+
+// Litespeed cache plugin
+if( ! function_exists( 'wp_ulike_purge_litespeed_cache' ) && method_exists( 'LiteSpeed_Cache_API', 'purge_post' ) ){
+	/**
+	 * Purge litespeed post cache
+	 *
+	 * @param integer $ID
+	 * @param string $type
+	 * @return void
+	 */
+	function wp_ulike_purge_litespeed_cache( $ID, $type ){
+		if( $type === '_liked' ){
+			LiteSpeed_Cache_API::purge_post( $ID ) ;
+		}
+	}
+	add_action( 'wp_ulike_after_process', 'wp_ulike_purge_litespeed_cache'	, 10, 2 );
+}
+
+// w3 total cache plugin
+if( ! function_exists( 'wp_ulike_purge_w3_total_cache' ) && function_exists( 'w3tc_pgcache_flush_post' ) ){
+	/**
+	 * Purge w3 total post cache
+	 *
+	 * @param integer $ID
+	 * @param string $type
+	 * @return void
+	 */
+	function wp_ulike_purge_w3_total_cache( $ID, $type ){
+		if( $type === '_liked' ){
+			w3tc_pgcache_flush_post( $ID );
+		} else {
+			w3tc_pgcache_flush();
+		}
+	}
+	add_action( 'wp_ulike_after_process', 'wp_ulike_purge_w3_total_cache'	, 10, 2 );
 }
