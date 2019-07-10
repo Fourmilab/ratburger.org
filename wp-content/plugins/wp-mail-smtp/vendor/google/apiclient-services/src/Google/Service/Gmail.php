@@ -30,7 +30,7 @@
  */
 class Google_Service_Gmail extends Google_Service
 {
-  /** Read, send, delete, and manage your email. */
+  /** Read, compose, send, and permanently delete all your email from Gmail. */
   const MAIL_GOOGLE_COM =
       "https://mail.google.com/";
   /** Manage drafts and send emails. */
@@ -85,6 +85,7 @@ class Google_Service_Gmail extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'gmail/v1/users/';
+    $this->batchPath = 'batch/gmail/v1';
     $this->version = 'v1';
     $this->serviceName = 'gmail';
 
@@ -619,6 +620,16 @@ class Google_Service_Gmail extends Google_Service
                   'required' => true,
                 ),
               ),
+            ),'getLanguage' => array(
+              'path' => '{userId}/settings/language',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'userId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
             ),'getPop' => array(
               'path' => '{userId}/settings/pop',
               'httpMethod' => 'GET',
@@ -651,6 +662,16 @@ class Google_Service_Gmail extends Google_Service
               ),
             ),'updateImap' => array(
               'path' => '{userId}/settings/imap',
+              'httpMethod' => 'PUT',
+              'parameters' => array(
+                'userId' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'updateLanguage' => array(
+              'path' => '{userId}/settings/language',
               'httpMethod' => 'PUT',
               'parameters' => array(
                 'userId' => array(
