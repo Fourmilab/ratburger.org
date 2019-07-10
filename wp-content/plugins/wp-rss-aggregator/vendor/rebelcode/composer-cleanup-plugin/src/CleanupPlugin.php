@@ -1,6 +1,6 @@
 <?php
 
-namespace Barryvdh\Composer;
+namespace RebelCode\Composer;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;

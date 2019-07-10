@@ -302,7 +302,8 @@
             "container",
             "dependency injection",
             "di"
-        ]
+        ],
+        "abandoned": "dhii/containers"
     },
     {
         "name": "dhii/di-abstract",
@@ -1563,34 +1564,34 @@
     },
     {
         "name": "rebelcode/composer-cleanup-plugin",
-        "version": "v0.1",
-        "version_normalized": "0.1.0.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/RebelCode/composer-cleanup-plugin.git",
-            "reference": "9ed7e8f303e581be765a389d5cd123f26de48dfe"
+            "reference": "d035eb045eeb88b5029c2974e14e328f250ff25a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/RebelCode/composer-cleanup-plugin/zipball/9ed7e8f303e581be765a389d5cd123f26de48dfe",
-            "reference": "9ed7e8f303e581be765a389d5cd123f26de48dfe",
+            "url": "https://api.github.com/repos/RebelCode/composer-cleanup-plugin/zipball/d035eb045eeb88b5029c2974e14e328f250ff25a",
+            "reference": "d035eb045eeb88b5029c2974e14e328f250ff25a",
             "shasum": ""
         },
         "require": {
             "composer-plugin-api": "^1.0"
         },
-        "time": "2018-12-05T13:50:48+00:00",
+        "time": "2019-05-29T12:49:11+00:00",
         "type": "composer-plugin",
         "extra": {
             "branch-alias": {
                 "dev-master": "0.1-dev"
             },
-            "class": "Barryvdh\\Composer\\CleanupPlugin"
+            "class": "RebelCode\\Composer\\CleanupPlugin"
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
-                "Barryvdh\\Composer\\": "src/"
+                "RebelCode\\Composer\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -1657,7 +1658,7 @@
             },
             {
                 "name": "Gert de Pagter",
-                "email": "backendtea@gmail.com"
+                "email": "BackEndTea@gmail.com"
             }
         ],
         "description": "Symfony polyfill for ctype functions",
@@ -1728,17 +1729,17 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.39.1",
-        "version_normalized": "1.39.1.0",
+        "version": "v1.41.0",
+        "version_normalized": "1.41.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec"
+            "reference": "575cd5028362da591facde1ef5d7b94553c375c9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec",
-            "reference": "23e7b6f0cfa1d7ba3de69f30d8e05cf957412fec",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/575cd5028362da591facde1ef5d7b94553c375c9",
+            "reference": "575cd5028362da591facde1ef5d7b94553c375c9",
             "shasum": ""
         },
         "require": {
@@ -1750,11 +1751,11 @@
             "symfony/debug": "^2.7",
             "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
         },
-        "time": "2019-04-16T17:12:57+00:00",
+        "time": "2019-05-14T11:59:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.39-dev"
+                "dev-master": "1.41-dev"
             }
         },
         "installation-source": "dist",

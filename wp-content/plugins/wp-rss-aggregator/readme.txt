@@ -1,11 +1,11 @@
 === WP RSS Aggregator ===
-Contributors: RebelCode, jeangalea, markzahra, Mekku, xedin.unknown, romlytvynenko
+Contributors: RebelCode, jeangalea, markzahra, Mekku, xedin.unknown
 Plugin URI: https://www.wprssaggregator.com
 Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
-Tested up to: 5.1.1
-Requires PHP: 5.4 or higher
-Stable tag: 4.13.2
+Tested up to: 5.2.2
+Requires PHP: 5.4
+Stable tag: 4.14
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -17,28 +17,19 @@ WP RSS Aggregator is the original and best plugin for importing, merging and dis
 == Automatically import RSS feeds & display them on your site ==
 
 * No limit on the number of sources to import from.
+* Manage all your sources from a single page.
 * No limit on the number of items to import.
-* Automate each feed's import with individual or global schedules.
-* Multiple [templates](https://kb.wprssaggregator.com/article/457-templates) to display items across your site.
-* Choose to show, hide and/or link the author, source and publish date for every template.
-* Show or hide pagination on your templates, and display specific pages.
-* Use our [wp-rss-aggregator] [shortcode](https://kb.wprssaggregator.com/article/54-how-to-use-the-shortcode-to-display-feed-items) or [Gutenberg block](https://kb.wprssaggregator.com/article/454-displaying-imported-items-block-gutenberg) to display items.
+* Automate each feed's import with unique or global schedules.
+* Customisable [templates](https://kb.wprssaggregator.com/article/457-templates) with various styling options.
+* Built-in [shortcode](https://kb.wprssaggregator.com/article/54-how-to-use-the-shortcode-to-display-feed-items) and [block](https://kb.wprssaggregator.com/article/454-displaying-imported-items-block-gutenberg) to display items.
 * Feed auto-discovery (add sources without the exact RSS feed URL).
-* Open YouTube, DailyMotion and Vimeo videos directly.
-* Limit the number of feed items stored for better performance.
-* Limit the number of feed items fetched per import for better performance.
-* Create a custom RSS feed from imported items to use elsewhere.
+* Youtube importing using just a channel or user URL.
+* Playable Youtube videos directly on your site.
+* Limit the items stored and fetched for better performance.
+* Create a custom RSS feed from imported items.
 * Extendable via action and filter hooks.
 
 [Click here to learn more about the free WP RSS Aggregator plugin.](https://www.wprssaggregator.com/extension/core-plugin/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_learn_more&utm_content=learn_more)
-
-== NEW SINCE v4.13: Templates, gutenberg block, improved logs ==
-
-Create as many [templates](https://kb.wprssaggregator.com/article/457-templates) as you need to display feed items in different ways across your site. Be it on the homepage, in a sidebar, or in the footer, you can specify which template to use and which sources to display in each individual area.
-
-Our brand new [gutenberg block](https://kb.wprssaggregator.com/article/454-displaying-imported-items-block-gutenberg) ensures seamless integration with WordPress. Choose the template to use and the sources to display, then you're all set (plus a few other customisation options). If you are using the classic WordPress editor, we've got you covered. Click on the WP RSS Aggregator button in the TinyMCE editor to open our shortcode modal. It has all the same options as the block, ensuring that no functionality is lost no matter what you use.
-
-[Debug logs](https://kb.wprssaggregator.com/article/110-error-logs-system-information) are an important part of any site. From time to time, some feeds may have problems that are hard to find. With our new and improved logging system we are reducing the time it takes to find the problem and making it easier to figure out the best solution.
 
 == Who is the plugin for?? ==
 
@@ -46,6 +37,7 @@ Importing and displaying RSS feeds is helpful for many types of sites:
 
 * Curate news, videos and more from the top sources in your niche.
 * Add related posts from other sites to your site.
+* Share Youtube videos anywhere on your site.
 * Curate job, real estate or other listings for your market or niche.
 * Embed videos from other sources (Youtube) to engage more visitors.
 * Aggregate podcast episodes related to your hobby or profession.
@@ -56,7 +48,7 @@ For example...
 
 * [WP News Desk](http://wpnewsdesk.com/) curates WordPress news, tutorials and more from over 100 trusted sources.
 * [Travel Blogger Community](http://travelbloggercommunity.com/) does something similar to share blog posts from well-known travellers.
-* [Crypto Headlines](https://cryptoheadlines.com/youtube-videos/) shares Youtube videos from popular Youtubers.
+* [Crypto Headlines](https://cryptoheadlines.com/youtube-videos/)' videos page shares Youtube videos from popular Youtubers in the Crypto world.
 * [Euro Finance Blogs](https://eurofinanceblogs.com/) curates content on investment, personal finance and early retirement.
 
 Browse through our [**Showcase**](https://www.wprssaggregator.com/showcase/) to see how WP RSS Aggregator is being put to great use on a large variety of WordPress sites.
@@ -78,36 +70,20 @@ Importing RSS feeds alone won't improve your site's SEO, however, if you curate 
 
 *Quick note: Please don't steal other people's work; give credit where it's due.*
 
-== Premium add-ons to import full or partial posts ==
+== Premium add-ons for additional functionality ==
 
-Import RSS feeds as WordPress Posts (or any other post type). You can then use your theme, a page builder, or a tool like Toolset to display the content anywhere you want, just the way you want it.
+WP RSS Aggregator can be extended through a set of [premium add-ons](https://www.wprssaggregator.com/extensions/) that are also available as part of our discounted [pricing plans](https://www.wprssaggregator.com/pricing/).
 
-Our **[Advanced Feeds Bundle](https://www.wprssaggregator.com/extension/advanced-feeds-bundle/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_afb_link&utm_content=afb_link)** ([demo](http://demo.wprssaggregator.com/)) consists of 3 powerful add-ons:
+* **[Templates](https://www.wprssaggregator.com/extension/templates/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_f2p_link&utm_content=f2p_link)** offers premium template types including the fully customisable Grid as well as an Excerpts & Thumbnails template that take your block or shortcake displays to a whole new level!
+* **[Feed to Post](https://www.wprssaggregator.com/extension/feed-to-post/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_f2p_link&utm_content=f2p_link)** is the most powerful add-on available, enabling you to import items as Posts or any other custom post type. It includes options such as automatically assigning post type, post status, categories, tags, images, authors and much more.
+* **[Full Text RSS Feeds](https://www.wprssaggregator.com/extension/full-text-rss-feeds/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_ftr_link&utm_content=ftr_link)** takes Feed to Post to the next level by connecting it to our premium full text service. This helps bring in content from sources that don't provide it in their RSS feeds.
+* **[Keyword Filtering](https://www.wprssaggregator.com/extension/keyword-filtering/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_kf_link&utm_content=kf_link)** enables you to filter the content imported from any source based on keywords, phrases and/or tags.
+* **[Categories](https://www.wprssaggregator.com/extension/categories/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_cat_link&utm_content=cat_link)** provides a simple way to categorise your sources and keep them organised.
+* **[WordAi](https://www.wprssaggregator.com/extension/wordai/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_cat_link&utm_content=cat_link)** and **[Spinner Chief](https://www.wprssaggregator.com/extension/spinnerchief/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_cat_link&utm_content=cat_link)** integrate the Feed to Post add-on with the respective 3rd-party content spinning services.
 
-* **[Feed to Post](https://www.wprssaggregator.com/extension/feed-to-post/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_f2p_link&utm_content=f2p_link)**
-* **[Full Text RSS Feeds](https://www.wprssaggregator.com/extension/full-text-rss-feeds/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_ftr_link&utm_content=ftr_link)**
-* **[Keyword Filtering](https://www.wprssaggregator.com/extension/keyword-filtering/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_kf_link&utm_content=kf_link)**
+Here's a closer look at what the Feed to Post add-on offers:
 
 [youtube https://www.youtube.com/watch?v=-2z_bNws2MM]
-
-Here's a quick look at what these add-ons can offer:
-
-* Import Posts as Drafts (to edit or approve) or set them to Publish automatically.
-* Automatically assign categories and/or tags to imported posts.
-* Import all media within the content and automatically set featured images.
-* Import the original author's details or assign another user as the author.
-* Automatically add you own custom content before or after imported posts.
-* Custom field mapping to map the data you want to where you need it.
-* Exclude unwanted elements from the original source with extraction rules.
-* Import only the items you want with specific keyword, phrase and tag filters.
-* Connect to our premium full text service to import the full content from sources that are missing text, images and more in the original feeds.
-
-== Other add-Ons ==
-
-* **[Excerpts & Thumbnails](https://www.wprssaggregator.com/extension/excerpts-thumbnails/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_et_link&utm_content=et_link)**
-* **[Categories](https://www.wprssaggregator.com/extension/categories/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_cat_link&utm_content=cat_link)**
-
-The above two add-ons enable you to enhance the typical feeds list that you can create with our shortcode or block templates. They also form part of our [Simple Feeds Bundle](https://www.wprssaggregator.com/extension/simple-feeds-bundle/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_afb_link&utm_content=afb_link).
 
 == We stand behind what we build ==
 
@@ -151,14 +127,14 @@ Method 1:
 > 2. Click the "Add New" button.
 > 3. Search for "WP RSS Aggregator".
 > 4. When found, click on the "Install" button, then hit the "Activate" button once it has installed.
-> 5. Go to the RSS Aggregator menu item, then set up your [feed sources](https://docs.wprssaggregator.com/adding-a-feed-source-importing-as-feed-items/), [templates](https://kb.wprssaggregator.com/article/457-templates) [general settings](https://docs.wprssaggregator.com/general-plugin-settings/).
+> 5. Go to the RSS Aggregator menu item, then set up your [feed sources](https://docs.wprssaggregator.com/adding-a-feed-source-importing-as-feed-items/), [templates](https://kb.wprssaggregator.com/article/457-templates) and [general settings](https://docs.wprssaggregator.com/general-plugin-settings/).
 
 Method 2:
 
 > 1. Click on the "Download" button above.
 > 2. Upload the wp-rss-aggregator.zip file to your site's `/wp-content/plugins/` directory via FTP.
 > 3. Activate the WP RSS Aggregator plugin from the 'Plugins' section in your dashboard.
-> 4. Go to the RSS Aggregator menu item, then set up your [feed sources](https://docs.wprssaggregator.com/adding-a-feed-source-importing-as-feed-items/), [templates](https://kb.wprssaggregator.com/article/457-templates) [general settings](https://docs.wprssaggregator.com/general-plugin-settings/).
+> 4. Go to the RSS Aggregator menu item, then set up your [feed sources](https://docs.wprssaggregator.com/adding-a-feed-source-importing-as-feed-items/), [templates](https://kb.wprssaggregator.com/article/457-templates) and [general settings](https://docs.wprssaggregator.com/general-plugin-settings/).
 
 *DISPLAYING THE FEED ITEMS*
 
@@ -283,12 +259,54 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 == Changelog ==
 
-= 4.13.2 (2018-05-14) =
-* Added: A custom Twig extension for WordPress-based i18n.
-* Changed: Now correctly requiring WordPress version 4.8 or later.
-* Changed: Improved the JS architecture to allow addons to extend the UI.
-* Changed: The deactivation poll will now be shown only 50% of the time, randomly.
-* Fixed: The time ago format for the list template was not respecting the WordPress timezone setting.
-* Fixed: HTML in log messages were breaking the Debugging page.
-* Fixed: The feed items were not being explicitly sorted, which could lead to unsorted items.
-* Removed: The polyfill for the `gettext()` function.
+= 4.14 (2019-07-09) =
+**Added**
+* YouTube channel URLs are now supported.
+* Items imported from YouTube are detected and their embed links are saved.
+* Embedded YouTube videos can now be shown in a lightbox.
+* New option to enable or disable the plugin's logging.
+* New option to set the log age, in days, for daily truncation.
+* Image URLs are detected and saved in feed item meta, to be used by templates that can show images.
+* Feed item excerpts are now imported, to be used by templates that can show excerpts.
+* Activating or pausing feed sources from the Feed Sources page is now asynchronous.
+* Deleting feed items from the Feed Sources page is now asynchronous.
+* New plugin-wide error handling to prevent site locks, with the option to deactivate the plugin and its addons.
+* Feed sources that are missing their respective cron are detected and fixed while on the Feed Sources page.
+* Added tooltips to various links and controls in the feed source list page.
+* Import errors are now asynchronously added to the error icon in the feed sources list page.
+
+**Changed**
+* Previewing a template no longer requires saving the template.
+* Redesigned the feed sources page to be more compact and informative at a glance.
+* The imported item count in the feed sources page is now a link to that feed's imported items.
+* Improved the responsive styling of the feed sources list table.
+* The custom feed now uses the Atom 1.0 standard.
+* Improved the detection of cron scheduling failures, prevent feeds from appearing to be stuck.
+* Converted log section in the debugging page to use the new module system.
+* Some options were renamed to be consistent across various plugin pages.
+* Improved the wording, description and tooltip of the "Import order" option.
+* Added better error handling during image file creation when using the GD extension.
+* Rewrote the unique item title checking logic to be faster and more accurate.
+* Now suppressing "non-numeric value encountered" warnings from SimplePie.
+* Increased the time by which the plugin detects stuck feeds to 2 minutes.
+* The addon licensing registration system has been partially converted to the new module system.
+
+**Fixed**
+* The default template could not be saved with a particular combination of settings.
+* The age limit setting was incorrectly being copied to feed sources.
+* Fixed links in templates not opening in new tabs under certain conditions.
+* Non image files are no longer wrongly downloaded, cached and treated as images.
+* The unique titles option caused a PHP warning when enabled.
+* Fixed use of previously cached version scripts and styles for the Templates page.
+* Fixed pagination not working correctly when no item limit is set.
+* Fixed the "Set links as no follow" option not having any effect.
+* An empty limit for the number of items in a template silently defaults to 5 items.
+* The name of the user was being shown as the author for feed items that had no author.
+* Fixed the "property on non-object" error on the Licensing settings page for new addons.
+* On some sites, multiple default templates are constantly being created.
+* The default template is auto-created is corrupted data. An update procedure will now fix this data.
+
+**Removed**
+* Removed old secure reset code.
+* The "View items" row action link in the Feed Sources page has been removed.
+* Removed the "Edit" bulk action from the feed sources list page.

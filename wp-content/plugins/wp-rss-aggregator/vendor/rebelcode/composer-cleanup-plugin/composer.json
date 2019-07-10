@@ -18,13 +18,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Barryvdh\\Composer\\": "src/"
+            "RebelCode\\Composer\\": "src/"
         }
     },
     "extra": {
         "branch-alias": {
             "dev-master": "0.1-dev"
         },
-        "class": "Barryvdh\\Composer\\CleanupPlugin"
+        "class": "RebelCode\\Composer\\CleanupPlugin"
     }
 }

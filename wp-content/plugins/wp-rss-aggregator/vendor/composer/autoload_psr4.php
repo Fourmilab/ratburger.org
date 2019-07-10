@@ -10,6 +10,7 @@ return array(
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'RebelCode\\Wpra\\Core\\' => array($baseDir . '/src'),
+    'RebelCode\\Composer\\' => array($vendorDir . '/rebelcode/composer-cleanup-plugin/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'PhpDocReader\\' => array($vendorDir . '/php-di/phpdoc-reader/src/PhpDocReader'),
@@ -29,5 +30,4 @@ return array(
     'Dhii\\Data\\Container\\' => array($vendorDir . '/dhii/container-helper-base/src'),
     'Dhii\\Collection\\' => array($vendorDir . '/dhii/collections-interface/src', $vendorDir . '/dhii/collections-abstract-base/src', $vendorDir . '/dhii/collections-abstract/src'),
     'DI\\' => array($vendorDir . '/php-di/php-di/src/DI'),
-    'Barryvdh\\Composer\\' => array($vendorDir . '/rebelcode/composer-cleanup-plugin/src'),
 );
