@@ -25,9 +25,6 @@
     <li><?php _e( 'Links with <code>data-wpel-link="ignore"</code> will be completely ignored by this plugin.', 'wp-external-links' ); ?></li>
 </ul>
 
-<h3><?php _e( 'Documentation', 'wp-external-links' ); ?></h3>
-<p><?php _e( 'Take a look at the <a href="#" data-wpel-help>help section</a> for documentation', 'wp-external-links' ); ?></p>
-
 <h3><?php _e( 'FAQ', 'wp-external-links' ); ?></h3>
 <p><?php _e( 'On the <a href="https://wordpress.org/plugins/wp-external-links/faq/" target="_blank">FAQ page</a> you can find some additional tips & trics.', 'wp-external-links' ); ?></p>
 
@@ -35,8 +32,8 @@
 <p><?php _e( 'When you experience problems using this plugin please look if your problem was <a href="https://wordpress.org/support/plugin/wp-external-links" target="_blank">already reported</a>.', 'wp-external-links' ); ?></p>
 
 <h3><?php _e( 'Send your issue', 'wp-external-links' ); ?></h3>
-<p><?php _e( 'If it wasn\'t yet reported then you should <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">post your problem</a>.', 'wp-external-links' ); ?>
-    <?php _e( 'If you don\'t like posting publically <a href="mailto:support@webfactoryltd.com?subject=WP%20External%20Links">email us</a> and make sure you copy/past the technical information displayed below. Without it we can\'t help you.', 'wp-external-links' ); ?>
+<p><?php _e( 'If the issue wasn\'t reported yet then you should <a href="https://wordpress.org/support/plugin/wp-external-links#postform" target="_blank">post your problem</a>. <b>Our average response time is 2 hours, and we reply to every message!</b>', 'wp-external-links' ); ?>
+    <?php _e( '<br>Make sure you copy/past the technical information displayed below. Without it we can\'t help you.', 'wp-external-links' ); ?>
 </p>
 <p>
     <button class="button js-wpel-copy"><?php _e( 'Copy Technical Info', 'wp-external-links' ); ?></button>

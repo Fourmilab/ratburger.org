@@ -4,7 +4,7 @@ Tags: new window, new tab, external links, nofollow, noopener, follow, dofollow,
 Requires at least: 4.2
 Tested up to: 5.2
 Requires PHP: 5.3
-Stable tag: 2.3
+Stable tag: 2.32
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.32 =
+ * 2019-07-09
+ * security fixes
 
 = 2.3 =
  * 2019-06-14

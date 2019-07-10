@@ -50,8 +50,7 @@ class FWP_Debug_1x0x0 extends WPRun_Base_1x0x0
         if ( function_exists( $func ) || !is_callable( $func, true ) ) {
             return;
         }
-
-        eval( 'function '. $func .'( $entry, $title = "" ) { FWP_Debug_1x0x0::log( $entry, $title ); }' );
+        
     }
 
     /**

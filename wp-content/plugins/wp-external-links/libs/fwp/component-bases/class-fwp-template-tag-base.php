@@ -56,7 +56,7 @@ abstract class FWP_Template_Tag_Base_1x0x0 extends WPRun_Base_1x0x0
         $func_code .= '    return call_user_func_array( $callable, func_get_args() );';
         $func_code .= '}';
 
-        eval( $func_code );
+        
     }
 
 }
