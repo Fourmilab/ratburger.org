@@ -3,7 +3,7 @@ Contributors: wpforms, jaredatch, smub, slaFFik
 Tags: smtp, wp mail smtp, wordpress smtp, gmail smtp, sendgrid smtp, mailgun smtp, mail, mailer, phpmailer, wp_mail, email, mailgun, sengrid, gmail, wp smtp
 Requires at least: 4.9
 Tested up to: 5.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 Requires PHP: 5.3
 
 The most popular WordPress SMTP and PHP Mailer plugin. Trusted by over 1 million sites.
@@ -194,6 +194,9 @@ By all means please contact us to discuss features or options you'd like to see 
 6. Send a Test Email
 
 == Changelog ==
+
+= 1.5.1 - 2019-07-12 =
+* Fixed: Duplicated emails sent to the first recipient in a loop (and others not receiving their emails).
 
 = 1.5.0 - 2019-07-09 =
 * Added: Loсo plugin support.
@@ -447,47 +450,3 @@ By all means please contact us to discuss features or options you'd like to see 
 
 = 0.1 =
 * Initial approach, copying the wp_mail function and replacing it
-
-== Upgrade Notice ==
-
-= 0.10.1 =
-Addition of Pepipost and cleanup of admin page.
-
-= 0.10.0 =
-Addition of Pepipost and cleanup of admin page.
-
-= 0.9.6 =
-Minor security fix, sanitize test email address.
-
-= 0.9.5 =
-Minor security fix, hat tip JD Grimes.
-
-= 0.9.4 =
-Improvement to the test email function, very low priority update.
-
-= 0.9.3 =
-Fixing reported issue with passing by reference.
-
-= 0.9.2 =
-Removing the deprecation notice.
-
-= 0.9.1 =
-Test mail functionality was broken on upgrade to 3.2, now restored.
-
-= 0.9.0 =
-Low priority upgrade. Improves the appearance of the options page.
-
-= 0.8.7 =
-Very low priority update. Fixes a bug that causes a spurious error during activation.
-
-= 0.8.6 =
-Low priority update. The Settings link was still broken in 0.8.5.
-
-= 0.8.5 =
-Minor bugfix correcting the Settings link bug introduced in 0.8.4. Very low priority update.
-
-= 0.8.4 =
-Minor bugfix for users using constants. Another very low priority upgrade. Apologies for the version creep.
-
-= 0.8.3 =
-Minor bugfix for users using constants. Very low priority upgrade.

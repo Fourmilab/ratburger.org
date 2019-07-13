@@ -290,7 +290,7 @@ class Settings extends PageAbstract {
 						'strong' => array(),
 					)
 				),
-				esc_url( wp_mail_smtp()->get_upgrade_link( 'settings-license' ) )
+				esc_url( wp_mail_smtp()->get_upgrade_link( 'general-license-key' ) )
 			);
 			?>
 		</p>
@@ -405,7 +405,7 @@ class Settings extends PageAbstract {
 							'strong' => array(),
 						)
 					),
-					'https://wpmailsmtp.com/pricing-lite/?utm_source=WordPress&utm_medium=settings-cta&utm_campaign=plugin'
+					esc_url( wp_mail_smtp()->get_upgrade_link( 'general-cta' ) )
 				);
 				?>
 			</p>

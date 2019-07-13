@@ -578,7 +578,7 @@ class About extends PageAbstract {
 			<div class="wp-mail-smtp-admin-about-section wp-mail-smtp-admin-about-section-hero">
 				<div class="wp-mail-smtp-admin-about-section-hero-main no-border">
 					<h3 class="call-to-action centered">
-						<a href="https://wpmailsmtp.com/pricing?utm_source=WordPress&utm_medium=about-page&utm_campaign=smtpplugin&discount=LITEUPGRADE" target="_blank" rel="noopener noreferrer">
+						<a href="<?php echo esc_url( wp_mail_smtp()->get_upgrade_link( 'lite-vs-pro' ) ); ?>" target="_blank" rel="noopener noreferrer">
 							<?php \esc_html_e( 'Get WP Mail SMTP Pro Today and Unlock all of these Powerful Features', 'wp-mail-smtp' ); ?>
 						</a>
 					</h3>

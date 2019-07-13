@@ -547,9 +547,10 @@ class Core {
 	}
 
 	/**
-	 * Overwrite default PhpMailer with out MailCatcher.
+	 * Overwrite default PhpMailer with our MailCatcher.
 	 *
 	 * @since 1.0.0
+	 * @since 1.5.0 Throw external PhpMailer exceptions, inherits default WP behavior.
 	 *
 	 * @param null $obj PhpMailer object to override with own implementation.
 	 *
@@ -635,13 +636,40 @@ class Core {
 	 * Upgrade link used within the various admin pages.
 	 *
 	 * @since 1.5.0
+	 * @since 1.5.1 Support all UTM params.
 	 *
-	 * @param string $medium utm_medium URL parameter.
+	 * @param array|string $utm Array of UTM params, or if string provided - utm_content URL parameter.
 	 *
-	 * @return string.
+	 * @return string
 	 */
-	public function get_upgrade_link( $medium = 'link' ) {
+	public function get_upgrade_link( $utm ) {
 
-		return apply_filters( 'wp_mail_smtp_core_get_upgrade_link', 'https://wpmailsmtp.com/lite-upgrade/?discount=LITEUPGRADE&amp;utm_source=WordPress&amp;utm_medium=' . sanitize_key( apply_filters( 'wp_mail_smtp_core_get_upgrade_link_medium', $medium ) ) . '&amp;utm_campaign=liteplugin' );
+		// Defaults.
+		$source   = 'WordPress';
+		$medium   = 'plugin-settings';
+		$campaign = 'liteplugin';
+		$content  = 'general';
+
+		if ( is_array( $utm ) ) {
+			if ( isset( $utm['source'] ) ) {
+				$source = $utm['source'];
+			}
+			if ( isset( $utm['medium'] ) ) {
+				$medium = $utm['medium'];
+			}
+			if ( isset( $utm['campaign'] ) ) {
+				$campaign = $utm['campaign'];
+			}
+			if ( isset( $utm['content'] ) ) {
+				$content = $utm['content'];
+			}
+		} elseif ( is_string( $utm ) ) {
+			$content = $utm;
+		}
+
+		return apply_filters(
+			'wp_mail_smtp_core_get_upgrade_link',
+			'https://wpmailsmtp.com/lite-upgrade/?utm_source=' . esc_attr( $source ) . '&utm_medium=' . esc_attr( $medium ) . '&utm_campaign=' . esc_attr( $campaign ) . '&utm_content=' . esc_attr( $content )
+		);
 	}
 }

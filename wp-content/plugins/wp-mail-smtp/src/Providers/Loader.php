@@ -78,7 +78,6 @@ class Loader {
 	 * Get the provider options, if exists.
 	 *
 	 * @since 1.0.0
-	 * @since 1.5.0 Init the Option class for a provider only once and store it for future reuse.
 	 *
 	 * @param string $provider
 	 *
@@ -86,13 +85,7 @@ class Loader {
 	 */
 	public function get_options( $provider ) {
 
-		static $options = array();
-
-		if ( empty( $options[ $provider ] ) ) {
-			$options[ $provider ] = $this->get_entity( $provider, 'Options' );
-		}
-
-		return $options[ $provider ];
+		return $this->get_entity( $provider, 'Options' );
 	}
 
 	/**
@@ -131,7 +124,6 @@ class Loader {
 	 * Get the provider mailer, if exists.
 	 *
 	 * @since 1.0.0
-	 * @since 1.5.0 Init the Mailer class for a provider only once and store it for future reuse.
 	 *
 	 * @param string      $provider
 	 * @param MailCatcher $phpmailer
@@ -140,8 +132,6 @@ class Loader {
 	 */
 	public function get_mailer( $provider, $phpmailer ) {
 
-		static $providers = array();
-
 		if (
 			$phpmailer instanceof MailCatcher ||
 			$phpmailer instanceof \PHPMailer
@@ -149,11 +139,7 @@ class Loader {
 			$this->phpmailer = $phpmailer;
 		}
 
-		if ( empty( $providers[ $provider ] ) ) {
-			$providers[ $provider ] = $this->get_entity( $provider, 'Mailer' );
-		}
-
-		return $providers[ $provider ];
+		return $this->get_entity( $provider, 'Mailer' );
 	}
 
 	/**
