@@ -12,7 +12,7 @@
 namespace Twig\Sandbox;
 
 /**
- * Interface that all security policy classes must implements.
+ * Interfaces that all security policy classes must implements.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */

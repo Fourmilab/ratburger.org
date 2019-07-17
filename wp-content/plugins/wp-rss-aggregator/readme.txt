@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 4.14
+Stable tag: 4.15
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -259,54 +259,23 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 == Changelog ==
 
-= 4.14 (2019-07-09) =
+= 4.15 (2019-07-16) =
+
 **Added**
-* YouTube channel URLs are now supported.
-* Items imported from YouTube are detected and their embed links are saved.
-* Embedded YouTube videos can now be shown in a lightbox.
-* New option to enable or disable the plugin's logging.
-* New option to set the log age, in days, for daily truncation.
-* Image URLs are detected and saved in feed item meta, to be used by templates that can show images.
-* Feed item excerpts are now imported, to be used by templates that can show excerpts.
-* Activating or pausing feed sources from the Feed Sources page is now asynchronous.
-* Deleting feed items from the Feed Sources page is now asynchronous.
-* New plugin-wide error handling to prevent site locks, with the option to deactivate the plugin and its addons.
-* Feed sources that are missing their respective cron are detected and fixed while on the Feed Sources page.
-* Added tooltips to various links and controls in the feed source list page.
-* Import errors are now asynchronously added to the error icon in the feed sources list page.
+- New error handling for catchable PHP7 `Throwable` errors.
+- New option to enable feed caching for better performance.
+- New option to import source name and URL for each item individually.
+- The custom feed now includes source info for every item.
 
 **Changed**
-* Previewing a template no longer requires saving the template.
-* Redesigned the feed sources page to be more compact and informative at a glance.
-* The imported item count in the feed sources page is now a link to that feed's imported items.
-* Improved the responsive styling of the feed sources list table.
-* The custom feed now uses the Atom 1.0 standard.
-* Improved the detection of cron scheduling failures, prevent feeds from appearing to be stuck.
-* Converted log section in the debugging page to use the new module system.
-* Some options were renamed to be consistent across various plugin pages.
-* Improved the wording, description and tooltip of the "Import order" option.
-* Added better error handling during image file creation when using the GD extension.
-* Rewrote the unique item title checking logic to be faster and more accurate.
-* Now suppressing "non-numeric value encountered" warnings from SimplePie.
-* Increased the time by which the plugin detects stuck feeds to 2 minutes.
-* The addon licensing registration system has been partially converted to the new module system.
+- Improved some exception messages to better indicate the cause of certain problems.
+- Re-organized settings into multiple tabs.
+- Added the current site URL to the custom feed URL option's label.
 
 **Fixed**
-* The default template could not be saved with a particular combination of settings.
-* The age limit setting was incorrectly being copied to feed sources.
-* Fixed links in templates not opening in new tabs under certain conditions.
-* Non image files are no longer wrongly downloaded, cached and treated as images.
-* The unique titles option caused a PHP warning when enabled.
-* Fixed use of previously cached version scripts and styles for the Templates page.
-* Fixed pagination not working correctly when no item limit is set.
-* Fixed the "Set links as no follow" option not having any effect.
-* An empty limit for the number of items in a template silently defaults to 5 items.
-* The name of the user was being shown as the author for feed items that had no author.
-* Fixed the "property on non-object" error on the Licensing settings page for new addons.
-* On some sites, multiple default templates are constantly being created.
-* The default template is auto-created is corrupted data. An update procedure will now fix this data.
-
-**Removed**
-* Removed old secure reset code.
-* The "View items" row action link in the Feed Sources page has been removed.
-* Removed the "Edit" bulk action from the feed sources list page.
+- Feed sources had image importing wrongly enabled by default.
+- Downloading the debug log triggered an error.
+- The custom feed self URL ignored the settings and was incorrect.
+- Items in the custom feed had a missing `rel` attribute for their `<link>` element.
+- Fixed placement of WordPress notices on the Templates List and Edit page.
+- Fixed WordPress notices disappearing after moving between Templates list and edit page.

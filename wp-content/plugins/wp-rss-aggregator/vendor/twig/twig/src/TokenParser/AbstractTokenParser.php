@@ -20,9 +20,6 @@ use Twig\Parser;
  */
 abstract class AbstractTokenParser implements TokenParserInterface
 {
-    /**
-     * @var Parser
-     */
     protected $parser;
 
     public function setParser(Parser $parser)

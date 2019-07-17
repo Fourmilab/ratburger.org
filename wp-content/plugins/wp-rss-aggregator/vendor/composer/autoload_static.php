@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit398a449c81413d5745fdf6885411adea
+class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -675,7 +675,6 @@ class ComposerStaticInit398a449c81413d5745fdf6885411adea
         'Twig\\Node\\EmbedNode' => __DIR__ . '/..' . '/twig/twig/src/Node/EmbedNode.php',
         'Twig\\Node\\Expression\\AbstractExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/AbstractExpression.php',
         'Twig\\Node\\Expression\\ArrayExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/ArrayExpression.php',
-        'Twig\\Node\\Expression\\ArrowFunctionExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/ArrowFunctionExpression.php',
         'Twig\\Node\\Expression\\AssignNameExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/AssignNameExpression.php',
         'Twig\\Node\\Expression\\Binary\\AbstractBinary' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Binary/AbstractBinary.php',
         'Twig\\Node\\Expression\\Binary\\AddBinary' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Binary/AddBinary.php',
@@ -775,7 +774,6 @@ class ComposerStaticInit398a449c81413d5745fdf6885411adea
         'Twig\\Test\\NodeTestCase' => __DIR__ . '/..' . '/twig/twig/src/Test/NodeTestCase.php',
         'Twig\\Token' => __DIR__ . '/..' . '/twig/twig/src/Token.php',
         'Twig\\TokenParser\\AbstractTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/AbstractTokenParser.php',
-        'Twig\\TokenParser\\ApplyTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/ApplyTokenParser.php',
         'Twig\\TokenParser\\AutoEscapeTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/AutoEscapeTokenParser.php',
         'Twig\\TokenParser\\BlockTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/BlockTokenParser.php',
         'Twig\\TokenParser\\DeprecatedTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/DeprecatedTokenParser.php',
@@ -1029,10 +1027,10 @@ class ComposerStaticInit398a449c81413d5745fdf6885411adea
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit398a449c81413d5745fdf6885411adea::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit398a449c81413d5745fdf6885411adea::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit398a449c81413d5745fdf6885411adea::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit398a449c81413d5745fdf6885411adea::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -58,7 +58,7 @@ class SetNode extends Node implements NodeCaptureInterface
         } else {
             if ($this->getAttribute('capture')) {
                 $compiler
-                    ->write("ob_start(function () { return ''; });\n")
+                    ->write("ob_start();\n")
                     ->subcompile($this->getNode('values'))
                 ;
             }
