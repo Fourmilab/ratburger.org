@@ -5,12 +5,12 @@ Plugin URI: https://stopspammers.io/
 Description: Stop WordPress Spam
 Author: Bryan Hadaway
 Author URI: https://calmestghost.com/
-Version: 2019
+Version: 2019.1
 License: https://www.gnu.org/licenses/gpl.html
 */
 
 // networking requires a couple of globals
-define( 'SS_VERSION', '2019' );
+define( 'SS_VERSION', '2019.1' );
 define( 'SS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'SS_PLUGIN_FILE', plugin_dir_path( __FILE__ ) );
 define( 'SS_PLUGIN_DATA', plugin_dir_path( __FILE__ ) . 'data/' );
@@ -186,7 +186,7 @@ RB_dumpvar("OBSOLETE Skip spam check: age", (date_timestamp_get(date_create()) -
                 return;
             }
             /* END RATBURGER LOCAL CODE */
-// remove_filter( 'pre_user_login', ss_user_reg_filter, 1);
+// remove_filter( 'pre_user_login', 'ss_user_reg_filter', 1 );
 // sfs_debug_msg('email or author '.print_r($post,true));
 			$reason = ss_check_white();
 			if ( $reason !== false ) {
@@ -239,12 +239,7 @@ RB_dumpvar("OBSOLETE Skip spam check: age", (date_timestamp_get(date_create()) -
 					$reason  = be_load( $add, ss_get_ip(), $stats, $options );
 					if ( $reason !== false ) {
 // need to log a passed hit on post here
-/* RATBURGER LOCAL CODE
-   Fix unquoted function name in remove_filter
-						remove_filter( 'pre_user_login', ss_user_reg_filter, 1 );
-*/
 						remove_filter( 'pre_user_login', 'ss_user_reg_filter', 1 );
-/* END RATBURGER LOCAL CODE */
 						ss_log_bad( ss_get_ip(), $reason, $add[1], $add );
 
 						return;
@@ -717,12 +712,7 @@ function ss_user_reg_filter( $user_login ) {
 	$post['author'] = $user_login;
 	$post['addon']  = 'chkRegister'; // not really an add-on - but may be moved out when working
 	if ( $options['filterregistrations'] != 'Y' ) {
-/* RATBURGER LOCAL CODE
-   Fix quoting of function name in remove_filter
-		remove_filter( 'pre_user_login', ss_user_reg_filter, 1 );
-*/
 		remove_filter( 'pre_user_login', 'ss_user_reg_filter', 1 );
-/* END RATBURGER LOCAL CODE */
 		sfs_errorsonoff( 'off' );
 
 		return $user_login;
