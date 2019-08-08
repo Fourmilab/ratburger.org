@@ -88,9 +88,19 @@ function twentysixteen_entry_date() {
 
 	$time_string = sprintf( $time_string,
 		esc_attr( get_the_date( 'c' ) ),
-		get_the_date(),
+        /* RATBURGER LOCAL CODE
+           Show time of post after publication date.
+        get_the_date(),
+        */
+        get_the_date() . " " . get_the_time(),
+        /* END RATBURGER LOCAL CODE */
 		esc_attr( get_the_modified_date( 'c' ) ),
-		get_the_modified_date()
+        /* RATBURGER LOCAL CODE
+           Show time of post after publication date.
+        get_the_modified_date()
+        */
+        get_the_modified_date() . " " . get_the_modified_time()
+        /* END RATBURGER LOCAL CODE */
 	);
 
 	printf( '<span class="posted-on"><span class="screen-reader-text">%1$s </span><a href="%2$s" rel="bookmark">%3$s</a></span>',
