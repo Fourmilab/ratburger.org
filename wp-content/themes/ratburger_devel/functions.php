@@ -1197,4 +1197,49 @@ function rb_enqueue_check_test_server() {
 add_action("wp_enqueue_scripts", "rb_enqueue_check_test_server");
 add_action("admin_enqueue_scripts", "rb_enqueue_check_test_server");
 
+/*  When a post is about to be inserted in the database make
+    sure its title is not blank.  If the title is blank, revert
+    to draft and issue an error message to the author/editor.  */
+
+function rb_check_blank_post_title($data, $postarr) {
+    if (is_array($data) &&
+        ($data["post_status"] == "publish" ||
+         $data["post_status"] == "private") &&
+        preg_match("/^\s*$/", $data["post_title"])) {
+        $data["post_status"] = "draft";
+        update_option("rb_post_blank_title", "empty_title");
+    }
+
+    return $data;
+}
+add_filter("wp_insert_post_data", "rb_check_blank_post_title", 10, 2);
+
+/*  If post title was empty, don't show post published message(s)
+
+function rb_remove_post_error_messages($messages) {
+    if (get_option("rb_post_blank_title")) {
+        return array();         // Return void message array
+    } else {
+        return $messages;
+    }
+}
+add_filter("post_updated_messages", "rb_remove_post_error_messages");
+
+/*  Display error message for blank title in post.  */
+
+function rb_show_empty_title_error() {
+    $screen = get_current_screen();
+    if ($screen->id != "post") {
+        return;
+    }
+    if (!get_option("rb_post_blank_title")) {
+        return;
+    }
+    echo '<div class="error"><p>' .
+         esc_html__("Post title is blank.  Please enter a title for the post.", "RB" ) .
+         "</p></div>";
+    delete_option("rb_post_blank_title");
+}
+add_action("admin_notices", "rb_show_empty_title_error");
+
 /* END RATBURGER LOCAL CODE */
