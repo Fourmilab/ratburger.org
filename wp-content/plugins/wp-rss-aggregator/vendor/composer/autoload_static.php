@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
+class ComposerStaticInit454b25077a61c37d434b6b16c544309d
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -545,11 +545,13 @@ class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
         'RebelCode\\Wpra\\Core\\Licensing\\Addon' => __DIR__ . '/../..' . '/src/Licensing/Addon.php',
         'RebelCode\\Wpra\\Core\\Licensing\\LicenseStatus' => __DIR__ . '/../..' . '/src/Licensing/LicenseStatus.php',
         'RebelCode\\Wpra\\Core\\Logger\\ClearableLoggerInterface' => __DIR__ . '/../..' . '/src/Logger/ClearableLoggerInterface.php',
-        'RebelCode\\Wpra\\Core\\Logger\\ConditionalLogger' => __DIR__ . '/../..' . '/src/Logger/ConditionalLogger.php',
         'RebelCode\\Wpra\\Core\\Logger\\FeedLoggerDataSet' => __DIR__ . '/../..' . '/src/Logger/FeedLoggerDataSet.php',
+        'RebelCode\\Wpra\\Core\\Logger\\FeedLoggerInterface' => __DIR__ . '/../..' . '/src/Logger/FeedLoggerInterface.php',
         'RebelCode\\Wpra\\Core\\Logger\\LogReaderInterface' => __DIR__ . '/../..' . '/src/Logger/LogReaderInterface.php',
         'RebelCode\\Wpra\\Core\\Logger\\LoggerUtilsTrait' => __DIR__ . '/../..' . '/src/Logger/LoggerUtilsTrait.php',
+        'RebelCode\\Wpra\\Core\\Logger\\ProblemLogger' => __DIR__ . '/../..' . '/src/Logger/ProblemLogger.php',
         'RebelCode\\Wpra\\Core\\Logger\\WpdbLogger' => __DIR__ . '/../..' . '/src/Logger/WpdbLogger.php',
+        'RebelCode\\Wpra\\Core\\Logger\\WpraLogger' => __DIR__ . '/../..' . '/src/Logger/WpraLogger.php',
         'RebelCode\\Wpra\\Core\\ModularModule' => __DIR__ . '/../..' . '/src/ModularModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\AddonsModule' => __DIR__ . '/../..' . '/src/Modules/AddonsModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\AssetsModule' => __DIR__ . '/../..' . '/src/Modules/AssetsModule.php',
@@ -567,11 +569,13 @@ class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
         'RebelCode\\Wpra\\Core\\Modules\\ImporterModule' => __DIR__ . '/../..' . '/src/Modules/ImporterModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\LicensingModule' => __DIR__ . '/../..' . '/src/Modules/LicensingModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\LoggerModule' => __DIR__ . '/../..' . '/src/Modules/LoggerModule.php',
+        'RebelCode\\Wpra\\Core\\Modules\\LoremModule' => __DIR__ . '/../..' . '/src/Modules/LoremModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\ModuleInterface' => __DIR__ . '/../..' . '/src/Modules/ModuleInterface.php',
         'RebelCode\\Wpra\\Core\\Modules\\ParsedownModule' => __DIR__ . '/../..' . '/src/Modules/ParsedownModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\RestApiModule' => __DIR__ . '/../..' . '/src/Modules/RestApiModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\SettingsModule' => __DIR__ . '/../..' . '/src/Modules/SettingsModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\TwigModule' => __DIR__ . '/../..' . '/src/Modules/TwigModule.php',
+        'RebelCode\\Wpra\\Core\\Modules\\UpsellModule' => __DIR__ . '/../..' . '/src/Modules/UpsellModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\WpModule' => __DIR__ . '/../..' . '/src/Modules/WpModule.php',
         'RebelCode\\Wpra\\Core\\Plugin' => __DIR__ . '/../..' . '/src/Plugin.php',
         'RebelCode\\Wpra\\Core\\Query\\AbstractWpQueryIterator' => __DIR__ . '/../..' . '/src/Query/AbstractWpQueryIterator.php',
@@ -606,6 +610,7 @@ class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
         'RebelCode\\Wpra\\Core\\Util\\IteratorDelegateTrait' => __DIR__ . '/../..' . '/src/Util/IteratorDelegateTrait.php',
         'RebelCode\\Wpra\\Core\\Util\\MergedIterator' => __DIR__ . '/../..' . '/src/Util/MergedIterator.php',
         'RebelCode\\Wpra\\Core\\Util\\NormalizeWpPostCapableTrait' => __DIR__ . '/../..' . '/src/Util/NormalizeWpPostCapableTrait.php',
+        'RebelCode\\Wpra\\Core\\Util\\NullFunction' => __DIR__ . '/../..' . '/src/Util/NullFunction.php',
         'RebelCode\\Wpra\\Core\\Util\\PaginatedIterator' => __DIR__ . '/../..' . '/src/Util/PaginatedIterator.php',
         'RebelCode\\Wpra\\Core\\Util\\ParseArgsWithSchemaCapableTrait' => __DIR__ . '/../..' . '/src/Util/ParseArgsWithSchemaCapableTrait.php',
         'RebelCode\\Wpra\\Core\\Util\\SanitizeIdCommaListCapableTrait' => __DIR__ . '/../..' . '/src/Util/SanitizeIdCommaListCapableTrait.php',
@@ -1027,10 +1032,10 @@ class ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit2a3a9815e4e052480cff9d68c42d23a2::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit454b25077a61c37d434b6b16c544309d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit454b25077a61c37d434b6b16c544309d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit454b25077a61c37d434b6b16c544309d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit454b25077a61c37d434b6b16c544309d::$classMap;
 
         }, null, ClassLoader::class);
     }

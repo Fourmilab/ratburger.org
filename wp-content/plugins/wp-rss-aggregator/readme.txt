@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 4.15
+Stable tag: 4.15.1
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -259,23 +259,22 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 == Changelog ==
 
-= 4.15 (2019-07-16) =
+= 4.15.1 (2019-08-14) =
 
 **Added**
-- New error handling for catchable PHP7 `Throwable` errors.
-- New option to enable feed caching for better performance.
-- New option to import source name and URL for each item individually.
-- The custom feed now includes source info for every item.
+- New link to the custom feed in the "Custom Feed" settings page.
 
 **Changed**
-- Improved some exception messages to better indicate the cause of certain problems.
-- Re-organized settings into multiple tabs.
-- Added the current site URL to the custom feed URL option's label.
+- Updated the logging system to no longer cause VaultPress to trigger false positive warnings.
+- The date format in the custom feed now uses the "RFC3339 Extended" format.
 
 **Fixed**
-- Feed sources had image importing wrongly enabled by default.
-- Downloading the debug log triggered an error.
-- The custom feed self URL ignored the settings and was incorrect.
-- Items in the custom feed had a missing `rel` attribute for their `<link>` element.
-- Fixed placement of WordPress notices on the Templates List and Edit page.
-- Fixed WordPress notices disappearing after moving between Templates list and edit page.
+- Items with the same title were not being imported even when "Unique titles only" was turned off.
+- Items with future dates where marked as "scheduled" by WordPress.
+- The custom feed's "Content-Type" header was set for RSS 2.0 instead of Atom.
+- Imported images were not being deleted from the media library when the imported item is deleted.
+- PHP notice for "undefined index enclosure" when a feed cannot be fetched.
+- Deprecation notice on PHP 7.2 or later for "each" function.
+- Warnings when the `wprss_log` function is used incorrectly.
+- PHP notice for "property of non-object" when using YoastSEO.
+- After using the Templates add-on, images would continue to be imported after the add-on was deactivated.
