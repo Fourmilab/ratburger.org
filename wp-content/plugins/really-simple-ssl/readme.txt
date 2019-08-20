@@ -6,7 +6,7 @@ Requires at least: 4.6
 License: GPL2
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 3.2.3
+Stable tag: 3.2.5
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -30,9 +30,10 @@ some cool features.
 * The mixed content scan, which shows you what you have to do if you don't have the green lock yet
 * The option to enable HTTP Strict Transport Security
 * The option to configure your site for the HSTS preload list
+* Advanced security headers for additional security
 * Mixed Content Fixer for the back-end
-* More detailed feedback on the configuration page.
-* Certificate expiration check: get an email when your SSL certificate is about to expire.
+* More detailed feedback on the configuration page
+* Certificate expiration check: get an email when your SSL certificate is about to expire
 * Premium support
 
 = What does the plugin actually do =
@@ -81,6 +82,15 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 3.2.5 =
+* Fixed type in trace_log() function call
+
+= 3.2.4 =
+* Improved and added dashboard notices
+* Improved debug logging
+* Added option to dismiss all Really Simple SSL notices
+* Fixed a bug where other plugins buttons had their style reset
+
 = 3.2.3 =
 * Added right-to-left text support
 * Show a plusone behind the notice that generated it
@@ -90,7 +100,7 @@ Yes. There is a dedicated network settings page where you can switch between net
 * Added site health notice
 
 = 3.2.2 =
-* Fix: some single sites setup were having issues with multisite files being include.
+* Fix: some single sites setup were having issues with multisite files being included.
 
 = 3.2.1 =
 * Fix: error in regex, cause a fatal error in cases where a plus one already was showing in the settings menu
