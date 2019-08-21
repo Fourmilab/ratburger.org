@@ -7,11 +7,11 @@ use WPMailSMTP\Options;
 use WPMailSMTP\WP;
 
 /**
- * Class Misc is part of Area, displays different plugin-related settings of the plugin (not related to emails).
+ * Class MiscTab is part of Area, displays different plugin-related settings of the plugin (not related to emails).
  *
  * @since 1.0.0
  */
-class Misc extends PageAbstract {
+class MiscTab extends PageAbstract {
 	/**
 	 * @var string Slug of a tab.
 	 */
@@ -45,7 +45,7 @@ class Misc extends PageAbstract {
 			<!-- Section Title -->
 			<div class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-content wp-mail-smtp-clear section-heading no-desc" id="wp-mail-smtp-setting-row-email-heading">
 				<div class="wp-mail-smtp-setting-field">
-					<h2><?php esc_html_e( 'General', 'wp-mail-smtp' ); ?></h2>
+					<h2><?php echo $this->get_title(); ?></h2>
 				</div>
 			</div>
 
@@ -98,6 +98,54 @@ class Misc extends PageAbstract {
 					<label for="wp-mail-smtp-setting-am_notifications_hidden">
 						<?php esc_html_e( 'Check this if you would like to hide plugin announcements and update details.', 'wp-mail-smtp' ); ?>
 					</label>
+				</div>
+			</div>
+
+			<!-- Hide Email Delivery Errors -->
+			<div id="wp-mail-smtp-setting-row-email_delivery_errors_hidden"
+				class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-checkbox wp-mail-smtp-clear">
+				<div class="wp-mail-smtp-setting-label">
+					<label for="wp-mail-smtp-setting-email_delivery_errors_hidden">
+						<?php esc_html_e( 'Hide Email Delivery Errors', 'wp-mail-smtp' ); ?>
+					</label>
+				</div>
+				<div class="wp-mail-smtp-setting-field">
+					<?php
+					$is_hard_disabled = has_filter( 'wp_mail_smtp_admin_is_error_delivery_notice_enabled' ) && ! wp_mail_smtp()->get_admin()->is_error_delivery_notice_enabled();
+					?>
+					<?php if ( $is_hard_disabled ) : ?>
+						<input type="checkbox" disabled checked id="wp-mail-smtp-setting-email_delivery_errors_hidden">
+					<?php else : ?>
+						<input name="wp-mail-smtp[general][email_delivery_errors_hidden]" type="checkbox" value="true"
+							<?php checked( true, $options->get( 'general', 'email_delivery_errors_hidden' ) ); ?>
+							id="wp-mail-smtp-setting-email_delivery_errors_hidden">
+					<?php endif; ?>
+
+					<label for="wp-mail-smtp-setting-email_delivery_errors_hidden">
+						<?php esc_html_e( 'Check this if you would like to hide warnings alerting of email delivery errors.', 'wp-mail-smtp' ); ?>
+					</label>
+
+					<?php if ( $is_hard_disabled ) : ?>
+						<p class="desc">
+							<?php
+							printf( /* translators: %s - filter that was used to disabled. */
+								esc_html__( 'Email Delivery Errors were disabled using a %s filter.', 'wp-mail-smtp' ),
+								'<code>wp_mail_smtp_admin_is_error_delivery_notice_enabled</code>'
+							);
+							?>
+						</p>
+					<?php else : ?>
+						<p class="desc">
+							<?php
+							echo wp_kses(
+								__( '<strong>This is not recommended</strong> and should only be done for staging or development sites.', 'wp-mail-smtp' ),
+								array(
+									'strong' => true,
+								)
+							);
+							?>
+						</p>
+					<?php endif; ?>
 				</div>
 			</div>
 

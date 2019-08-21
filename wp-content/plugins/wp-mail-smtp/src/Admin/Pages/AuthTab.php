@@ -6,11 +6,11 @@ use WPMailSMTP\Options;
 use WPMailSMTP\Providers\AuthAbstract;
 
 /**
- * Class Auth.
+ * Class AuthTab.
  *
  * @since 1.0.0
  */
-class Auth {
+class AuthTab {
 
 	/**
 	 * @var string Slug of a tab.

@@ -24,6 +24,10 @@ class ComposerStaticInit84925637ca46a89b245a3fe4d9646ae4
             'Wikimedia\\Composer\\' => 19,
             'WPMailSMTP\\' => 11,
         ),
+        'S' => 
+        array (
+            'SendinBlue\\Client\\' => 18,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -63,6 +67,10 @@ class ComposerStaticInit84925637ca46a89b245a3fe4d9646ae4
         'WPMailSMTP\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'SendinBlue\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sendinblue/api-v3-sdk/lib',
         ),
         'Psr\\Log\\' => 
         array (

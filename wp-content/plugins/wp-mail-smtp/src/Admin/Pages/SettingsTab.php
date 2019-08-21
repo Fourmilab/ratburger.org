@@ -8,11 +8,11 @@ use WPMailSMTP\Options;
 use WPMailSMTP\WP;
 
 /**
- * Class Settings is part of Area, displays general settings of the plugin.
+ * Class SettingsTab is part of Area, displays general settings of the plugin.
  *
  * @since 1.0.0
  */
-class Settings extends PageAbstract {
+class SettingsTab extends PageAbstract {
 
 	/**
 	 * Settings constructor.
@@ -206,7 +206,8 @@ class Settings extends PageAbstract {
 						<?php foreach ( wp_mail_smtp()->get_providers()->get_options_all() as $provider ) : ?>
 
 							<div class="wp-mail-smtp-mailer wp-mail-smtp-mailer-<?php echo esc_attr( $provider->get_slug() ); ?> <?php echo $mailer === $provider->get_slug() ? 'active' : ''; ?>">
-								<div class="wp-mail-smtp-mailer-image">
+
+								<div class="wp-mail-smtp-mailer-image <?php echo $provider->is_recommended() ? 'is-recommended' : ''; ?>">
 									<img src="<?php echo esc_url( $provider->get_logo_url() ); ?>"
 										alt="<?php echo esc_attr( $provider->get_title() ); ?>">
 								</div>
@@ -236,11 +237,29 @@ class Settings extends PageAbstract {
 
 					<div class="wp-mail-smtp-mailer-option wp-mail-smtp-mailer-option-<?php echo esc_attr( $provider->get_slug() ); ?> <?php echo $mailer === $provider->get_slug() ? 'active' : 'hidden'; ?>">
 
-						<!-- Mailer Option Title -->
+						<!-- Mailer Title/Notice/Description -->
 						<?php $provider_desc = $provider->get_description(); ?>
 						<div class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-content wp-mail-smtp-clear section-heading <?php echo empty( $provider_desc ) ? 'no-desc' : ''; ?>" id="wp-mail-smtp-setting-row-email-heading">
 							<div class="wp-mail-smtp-setting-field">
 								<h2><?php echo $provider->get_title(); ?></h2>
+
+								<?php
+								$provider_edu_notice = $provider->get_notice( 'educational' );
+								$is_dismissed        = (bool) get_user_meta( get_current_user_id(), "wp_mail_smtp_notice_educational_for_{$provider->get_slug()}_dismissed", true );
+								if ( ! empty( $provider_edu_notice ) && ! $is_dismissed ) :
+									?>
+									<p class="inline-notice inline-edu-notice"
+										data-notice="educational"
+										data-mailer="<?php echo esc_attr( $provider->get_slug() ); ?>">
+										<a href="#" title="<?php esc_attr_e( 'Dismiss this notice', 'wp-mail-smtp' ); ?>"
+											class="wp-mail-smtp-mailer-notice-dismiss js-wp-mail-smtp-mailer-notice-dismiss">
+											<span class="dashicons dashicons-dismiss"></span>
+										</a>
+
+										<?php echo $provider_edu_notice; ?>
+									</p>
+								<?php endif; ?>
+
 								<?php if ( ! empty( $provider_desc ) ) : ?>
 									<p class="desc"><?php echo $provider_desc; ?></p>
 								<?php endif; ?>
