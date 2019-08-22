@@ -79,6 +79,11 @@ $table_prefix  = 'wp_';
  */
 define('WP_DEBUG', false);
 
+/* RATBURGER LOCAL CODE
+   Disable all auto-updates. */
+define('AUTOMATIC_UPDATER_DISABLED', true);     // Disables all remote updates
+/* END RATBURGER LOCAL CODE */
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
