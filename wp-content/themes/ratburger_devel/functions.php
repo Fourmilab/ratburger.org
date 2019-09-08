@@ -1242,4 +1242,15 @@ function rb_show_empty_title_error() {
 }
 add_action("admin_notices", "rb_show_empty_title_error");
 
+/*  Display both published and private posts in dashboard.  */
+
+function rb_show_published_private_dashboard($query_args) {
+    if ($query_args["post_status"] == "publish") {
+        $query_args["post_status"] = array("publish", "private");
+    }
+    return $query_args;
+}
+
+add_filter("dashboard_recent_posts_query_args", "rb_show_published_private_dashboard");
+
 /* END RATBURGER LOCAL CODE */
