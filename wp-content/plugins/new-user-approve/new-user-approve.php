@@ -43,7 +43,13 @@ class pw_new_user_approve {
 
 		// Actions
 		add_action( 'wp_loaded', array( $this, 'admin_loaded' ) );
+        /* RATBURGER LOCAL CODE
+           Disable the plug-in's status message in the Dashboard.  It
+           shouldn't be seen by non-administrators and it only confuses
+           administrators who don't know where it came from or what the
+           numbers it shows mean.
 		add_action( 'rightnow_end', array( $this, 'dashboard_stats' ) );
+           END RATBURGER LOCAL CODE */
 		add_action( 'user_register', array( $this, 'delete_new_user_approve_transient' ), 11 );
 		add_action( 'new_user_approve_approve_user', array( $this, 'delete_new_user_approve_transient' ), 11 );
 		add_action( 'new_user_approve_deny_user', array( $this, 'delete_new_user_approve_transient' ), 11 );
