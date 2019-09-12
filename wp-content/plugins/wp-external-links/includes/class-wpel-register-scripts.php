@@ -37,7 +37,7 @@ final class WPEL_Register_Scripts extends WPRun_Base_1x0x0
         // set style font awesome icons
         wp_register_style(
             'font-awesome'
-            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
+            , 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
             , array()
             , $plugin_version
         );

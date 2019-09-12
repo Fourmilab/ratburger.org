@@ -4,11 +4,11 @@ Tags: new window, new tab, external links, nofollow, noopener, follow, dofollow,
 Requires at least: 4.2
 Tested up to: 5.2
 Requires PHP: 5.3
-Stable tag: 2.32
+Stable tag: 2.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage internal & external links: open in a new window or tab, control nofollow & noopener. SEO friendly.
+Manage internal & external links: open in new window or tab, control nofollow & noopener. SEO friendly.
 
 == Description ==
 
@@ -243,6 +243,12 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.35 =
+ * 2019-09-12
+ * FontAwesome updated to 4.7 with 41 new icons
+ * bug fix: ship anchor URLs (#anchor)
+ * bug fix: don't match domain if the name is contained in the URL
+ 
 = 2.32 =
  * 2019-07-09
  * security fixes

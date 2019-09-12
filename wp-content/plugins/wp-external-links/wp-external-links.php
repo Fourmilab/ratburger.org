@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:    WP External Links
- * Version:        2.32
+ * Version:        2.35
  * Plugin URI:     https://wordpress.org/plugins/wp-external-links/
  * Description:    Open external links in a new tab or window, control "nofollow" and "noopener", set font icon; SEO friendly.
  * Author:         WebFactory Ltd

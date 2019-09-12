@@ -200,8 +200,10 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $is_excluded = $link->is_exclude() || $this->is_excluded_url( $url );
         $is_internal = $link->is_internal() || ( $this->is_internal_url( $url ) && ! $this->is_included_url( $url ) ) || ( $is_excluded && $excludes_as_internal_links );
         $is_external = $link->is_external() || ( ! $is_internal && ! $is_excluded );
-
-        if ( $is_external ) {
+        
+        if (strpos($url,'#') === 0) {
+            // skip anchors
+        } else if ( $is_external ) {
             $link->set_external();
             $this->apply_link_settings( $link, 'external-links' );
         } else if ( $is_internal ) {
@@ -399,11 +401,14 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         // is internal
-        $url_without_protocol = substr( home_url( '', 'http' ), 5 ); // strip "http:"
-
-        if ( false !== strpos( $url, $url_without_protocol )
-                || false !== strpos( $url, home_url( '' ) )
-                || false !== strpos( $url, home_url( '', 'https' ) ) ) {
+        $url_without_protocol = preg_replace('#^http(s)?://#', '', home_url( '' ));
+        $clean_home_url = preg_replace('/^www\./', '', $url_without_protocol);
+        
+        if ( 0 === strpos( $url, 'http://'.$clean_home_url )
+          || 0 === strpos( $url, 'https://'.$clean_home_url )
+          || 0 === strpos( $url, 'http://www.'.$clean_home_url )
+          || 0 === strpos( $url, 'https://www.'.$clean_home_url )
+        ) {
             return true;
         }
 
