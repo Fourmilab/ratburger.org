@@ -2,8 +2,8 @@
 Developer: Michael VanDeMar (michael@endlesspoetry.com)
 Tags: security, login, login form
 Requires at least: 3.6
-Tested up to: 4.9.6
-Stable Tag: 1.7.1
+Tested up to: 5.2.3
+Stable Tag: 1.8.1
 
 Limits the number of login attempts from a given IP range within a certain time period.
 
@@ -25,6 +25,15 @@ via the Options panel. Administrators can release locked out IP ranges manually 
 Enjoy.
 
 == Change Log ==
+
+ ver. 1.8.1 30-Sep-2019
+
+ - adding missing ./languages folder
+
+ ver. 1.8 30-Sep-2019
+
+ - fixed issues with internationalization, added .pot file
+ - changed the credit link to default to not showing
 
  ver. 1.7.1 13-Sep-2016
 
