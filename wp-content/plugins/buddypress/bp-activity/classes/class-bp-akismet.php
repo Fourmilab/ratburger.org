@@ -386,32 +386,9 @@ class BP_Akismet {
 
 		// Build data package for Akismet.
 		$activity_data = BP_Akismet::build_akismet_data_package( $activity );
-        /* RATBURGER LOCAL CODE
-           If the user is logged in, check how long they have
-           been a member (days since user_registered).  If the
-           user has been registered more than a week, we assume
-           they're a member in good standing and skip the
-           Akismet spam checking.  This avoids irritating
-           members who happen to post something that looks like
-           spam. */
-        $RB_check_akismet = TRUE;
-        if (($activity_data['user_ID'] != 0) &&
-            (((date_timestamp_get(date_create()) -
-               date_timestamp_get(date_create(
-                 wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7)) {
-//RB_dumpvar("Skip BP Akismet spam check: age", (date_timestamp_get(date_create()) -
-//  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
-            $activity_data['bp_as_result'] = 'false';
-            $RB_check_akismet = FALSE;
-        }
-        if ($RB_check_akismet) {
-        /* END RATBURGER LOCAL CODE */
 
 		// Check with Akismet to see if this is spam.
 		$activity_data = $this->send_akismet_request( $activity_data, 'check', 'spam' );
-        /* RATBURGER LOCAL CODE */
-        }
-        /* END RATBURGER LOCAL CODE */
 
 		// Record this item.
 		$this->last_activity = $activity;
