@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 4.15.1
+Stable tag: 4.15.2
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -259,22 +259,22 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 == Changelog ==
 
-= 4.15.1 (2019-08-14) =
+= 4.15.2 (2019-10-03) =
 
 **Added**
-- New link to the custom feed in the "Custom Feed" settings page.
+- Links and integrations with Lorem for custom developer work.
 
 **Changed**
-- Updated the logging system to no longer cause VaultPress to trigger false positive warnings.
-- The date format in the custom feed now uses the "RFC3339 Extended" format.
+- The default logging type is now "debug".
+- Feeds are now sorted alphabetically by default.
 
 **Fixed**
-- Items with the same title were not being imported even when "Unique titles only" was turned off.
-- Items with future dates where marked as "scheduled" by WordPress.
-- The custom feed's "Content-Type" header was set for RSS 2.0 instead of Atom.
-- Imported images were not being deleted from the media library when the imported item is deleted.
-- PHP notice for "undefined index enclosure" when a feed cannot be fetched.
-- Deprecation notice on PHP 7.2 or later for "each" function.
-- Warnings when the `wprss_log` function is used incorrectly.
-- PHP notice for "property of non-object" when using YoastSEO.
-- After using the Templates add-on, images would continue to be imported after the add-on was deactivated.
+- Multisite installations only allowed the main site to have activated licenses.
+- License notices now only appear on the main site if the site is a multisite network.
+- Blacklist items would occassionally be saved without a permalink.
+- Older versions of add-ons triggered errors when trying to log messages with the default log type.
+- Fixed checkbox legacy display options not saving correctly.
+- A saved empty useragent string in the settings caused the internal default to not be used.
+- The certificate path option was not defaulting correctly.
+- Media thumbnail images were not being detected properly.
+- An invalid feed would trigger false positive errors on fetch.
