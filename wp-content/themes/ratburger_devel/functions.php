@@ -1253,4 +1253,10 @@ function rb_show_published_private_dashboard($query_args) {
 
 add_filter("dashboard_recent_posts_query_args", "rb_show_published_private_dashboard");
 
+/*  Automatically turn contents of posts which look like
+    valid URLs into clickable links.  Note that the built-in
+    function make_clickable() is compatible with the function
+    expected by the the_content filter.  */
+add_filter('the_content', 'make_clickable');
+
 /* END RATBURGER LOCAL CODE */
