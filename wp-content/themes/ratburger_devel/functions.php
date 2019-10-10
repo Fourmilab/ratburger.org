@@ -1257,6 +1257,6 @@ add_filter("dashboard_recent_posts_query_args", "rb_show_published_private_dashb
     valid URLs into clickable links.  Note that the built-in
     function make_clickable() is compatible with the function
     expected by the the_content filter.  */
-add_filter('the_content', 'make_clickable');
+add_filter('the_content', 'make_clickable', 20);
 
 /* END RATBURGER LOCAL CODE */
