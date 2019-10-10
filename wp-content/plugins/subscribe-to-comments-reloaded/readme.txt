@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.2
-Stable tag: 190529
+Stable tag: 191009
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,15 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+
+= v191009 =
+* **Fix** Issue with post slug being displayed instead of the post title on unsubscribe
+* **Fix** HTML validation error in subscribe template
+* **Fix** Fix German translation "Nicht abonnieren"
+* **Fix** Fix import data from Subscribe Reloaded by Mark Jaquith
+* **Fix** Issue with using double quotes in options
+* **Tweak** Show a message to the comment author to check his email to confirm subscription
+* **Tweak** Performance improvement for error logging
 
 = v190529 =
 * **Fix** Issue with being unable to dismiss admin notices shown by StCR
