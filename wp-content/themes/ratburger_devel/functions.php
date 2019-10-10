@@ -557,6 +557,7 @@ function ratburger_filter_tiny_mce_before_init( $options ) {
  
     $options['extended_valid_elements'] .= 'pre[class|id|style]';
     $options['custom_elements']         .= 'pre[class|id|style]';
+//RB_dumpvar("Post", $options['plugins']);
     return $options;
 }
 
@@ -1258,5 +1259,33 @@ add_filter("dashboard_recent_posts_query_args", "rb_show_published_private_dashb
     function make_clickable() is compatible with the function
     expected by the the_content filter.  */
 add_filter('the_content', 'make_clickable', 20);
+
+/*  Suppress automatic linking of URLs which will be embedded
+    (such as YouTube) when pasted into the TinyMCE comment
+    editor provided by the tinymce-comment-field plug-in.  The
+    default automatic linking breaks embedding and the user must
+    manually remove the link to enable embedding.  We suppress
+    the automatic linking by a two step process: first enable
+    the TinyMCE "paste" plug-in, then supply a call-back for the
+    "paste_preprocess" hook in the plug-in which removes the
+    unwanted link around URLs we wish to embed.  */
+
+function RB_filter_teeny_mce_before_init($options) {
+    $options['paste_preprocess'] =
+            "function(pl, o) {
+                if (o.content.match(/https?:\/\/((m|www)\.)?youtube\.com\/watch\?/i) ||
+                    o.content.match(/https?:\/\/((m|www)\.)?youtube\.com\/playlist\?/i) ||
+                    o.content.match(/https?:\/\/youtu\.be\//i)) {
+                    o.content = o.content.replace(/<a\s+href=[^>]*>/, '');
+                    o.content = o.content.replace(/<\/a>/, '');
+                }
+            }";
+    $options['plugins'] = str_replace("lists,fullscreen",
+                                      "lists,paste,fullscreen",
+                                      $options['plugins']);
+    return $options;
+}
+
+add_filter('teeny_mce_before_init', 'RB_filter_teeny_mce_before_init');
 
 /* END RATBURGER LOCAL CODE */
