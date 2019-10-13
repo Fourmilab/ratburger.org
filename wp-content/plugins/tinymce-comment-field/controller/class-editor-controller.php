@@ -54,12 +54,53 @@ class TMCECF_EditorController {
                                        'tinymce' => array('height' => $height, 'directionality' => $text_direction,
                                                           'content_css' => $content_css)));
         */
+/* The following commented-out code is experimental code
+   which invokes wp_editor() with the same arguments used
+   when editing main Posts instead of the "teeny" mode
+   used by default by the tinymce-comment-field plug-in.
+   I put this in with the goal of providing consistency
+   between Post and comment editing, and also getting
+   real-time embeds of media (for example, links to
+   YouTube and Twitter) working for comments as it does
+   for posts.  The code only invokes the alternative editor
+   for my account (RB_me()), leaving comment editing unchanged
+   for all other users.
+
+   The result of the testing was that the editor seemed to
+   work correctly, but despite everything I tried, the
+   automatic embedding of media was simply ignored.  My guess
+   is that some optional JavaScript required by TinyMCE to
+   make this work is not being loaded, but I haven't figured
+   out what is going on.
+
+   For the moment, I am going to carry this code around
+   commented out so, if I have further insights into the
+   problem or come across additional clues I can re-enable it
+   for further experiments.
+
+if (RB_me()) {
+        wp_editor('', 'comment',
+                  array('textarea_rows' => 15,
+                        'teeny' => false,
+                        'quicktags' => true,
+                        'media_buttons' => true,
+                        'default_editor' => 'tinymce',
+                        '_content_editor_dfw' => true,
+                        'drag_drop_upload'    => true,
+                        'tinymce' => array('height' => $height,
+                                           'directionality' => $text_direction,
+                                           'content_css' => $content_css)));
+} else {
+*/
         wp_editor('', 'comment', array('textarea_rows' => 15, 'teeny' => true,
                                        'quicktags' => true,
                                        'media_buttons' => true,
 				       'default_editor' => 'tinymce',
                                        'tinymce' => array('height' => $height, 'directionality' => $text_direction,
                                                           'content_css' => $content_css)));
+/*
+}
+*/
         /* END RATBURGER LOCAL CODE */        
         $comment_editor = ob_get_contents();
         ob_end_clean();
