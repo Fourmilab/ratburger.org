@@ -202,25 +202,6 @@ class Akismet {
 		do_action( 'akismet_comment_check_response', $response );
 
 		$commentdata['comment_as_submitted'] = array_intersect_key( $comment, self::$comment_as_submitted_allowed_keys );
-                /* RATBURGER LOCAL CODE
-                   If the user is logged in, check how long they have been a
-                   member (days since user_registered).  If the user has been
-                  registered more than a week, we assume they're a member in
-                  good standing and ignore the results of the spam checking.  This
-                  avoids irritating members who happen to post something that
-                  looks like spam. */
-                if ($response[1] == 'true') {
-RB_dumpvar("Akismet flagged comment as spam", $comment);
-                    if (($comment['user_ID'] != 0) &&
-                        (((date_timestamp_get(date_create()) -
-                           date_timestamp_get(date_create(
-                             wp_get_current_user()->user_registered))) / DAY_IN_SECONDS) > 7)) {
-RB_dumpvar("Skip Akismet spam check: age", (date_timestamp_get(date_create()) -
-  date_timestamp_get(date_create(wp_get_current_user()->user_registered))) / DAY_IN_SECONDS);
-                        $response[1] = 'false';
-                    }
-                }
-                /* END RATBURGER LOCAL CODE */
 		$commentdata['akismet_result']       = $response[1];
 
 		if ( isset( $response[0]['x-akismet-pro-tip'] ) )
