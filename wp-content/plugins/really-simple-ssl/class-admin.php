@@ -1157,9 +1157,9 @@ class rsssl_admin extends rsssl_front_end
 
     public function save_options()
     {
-        delete_transient('rsssl_plusone_count');
+	    delete_transient('rsssl_plusone_count');
 
-        //any options added here should also be added to function options_validate()
+	    //any options added here should also be added to function options_validate()
         $options = array(
             'site_has_ssl' => $this->site_has_ssl,
             'hsts' => $this->hsts,
@@ -1178,10 +1178,7 @@ class rsssl_admin extends rsssl_front_end
             'dismiss_all_notices' => $this->dismiss_all_notices,
 
         );
-
         update_option('rlrsssl_options', $options);
-
-
     }
 
     /**
@@ -2363,7 +2360,7 @@ class rsssl_admin extends rsssl_front_end
         if (isset($_POST['type'])) {
 	        $dismiss_type = sanitize_title( $_POST['type'] );
 	        update_option( "rsssl_".$dismiss_type."_dismissed", true );
-	        delete_transient( 'rsssl_plusone_count' );
+            delete_transient( 'rsssl_plusone_count' );
         }
         wp_die(); // this is required to terminate immediately and return a proper response
     }
@@ -2793,7 +2790,6 @@ class rsssl_admin extends rsssl_front_end
         $output = $func();
 
         if (!isset($notice['output'][$output])) {
-            error_log('Output index not set');
             return;
         }
 
@@ -2836,8 +2832,9 @@ class rsssl_admin extends rsssl_front_end
 
     public function count_plusones(){
         if (!current_user_can('manage_options')) return 0;
+
         $count = get_transient('rsssl_plusone_count');
-        if (!$count) {
+        if ($count===FALSE) {
             $count = 0;
 
 	        $options = get_option('rlrsssl_options');
@@ -3912,9 +3909,11 @@ class rsssl_admin extends rsssl_front_end
                 ?>
 
                 $(function() {
-                        if (document.location.href.indexOf('&highlight=' + setting_name) > -1 ) {
+                    if(typeof setting_name !== 'undefined' && setting_name != '') {
+                        if (document.location.href.indexOf('&highlight=' + setting_name) > -1) {
                             $('#rsssl-maybe-highlight-' + setting_name).closest('tr').addClass('rsssl-highlight');
                         }
+                    }
                 });
             });
         </script>
