@@ -25,8 +25,16 @@ function xyz_link_twap_future_to_publish($new_status, $old_status, $post){
 	$get_post_meta=get_post_meta($postid,"xyz_twap",true);
 	
 	$post_twitter_permission=get_option('xyz_twap_twpost_permission');
-	if(isset($_POST['xyz_twap_twpost_permission']))
+	if(isset($_POST['xyz_twap_twpost_permission'])){
 		$post_twitter_permission=$_POST['xyz_twap_twpost_permission'];
+		if ( (isset($_POST['xyz_twap_twpost_permission']) && isset($_POST['xyz_twap_twpost_image_permission'])) )
+		{
+			$futToPubDataArray=array( 'xyz_twap_twpost_permission'	=>	$_POST['xyz_twap_twpost_permission'],
+					'xyz_twap_twpost_image_permission'	=>	$_POST['xyz_twap_twpost_image_permission'],
+					'xyz_twap_twmessage'	=>	$_POST['xyz_twap_twmessage']);
+			update_post_meta($postid, "xyz_twap_future_to_publish", $futToPubDataArray);
+		}
+	}
 	else
 	{
 		if ($post_twitter_permission == 1) {
@@ -66,12 +74,17 @@ foreach ($carr  as $cstyps ) {
 function xyz_twap_link_publish($post_ID) {
 	$_POST_CPY=$_POST;
 	$_POST=stripslashes_deep($_POST);
-	
-	
+	$post_twitter_image_permission=0;$messagetopost='';
+	$get_post_meta_future_data=get_post_meta($post_ID,"xyz_twap_future_to_publish",true);
 	$post_twitter_permission=get_option('xyz_twap_twpost_permission');
 	if(isset($_POST['xyz_twap_twpost_permission']))
 		$post_twitter_permission=$_POST['xyz_twap_twpost_permission'];
-	
+	elseif(!empty($get_post_meta_future_data) && get_option('xyz_twap_default_selection_edit')==2 )///select values from post meta
+	{
+		$post_twitter_permission=$get_post_meta_future_data['xyz_twap_twpost_permission'];
+		$post_twitter_image_permission=$get_post_meta_future_data['xyz_twap_twpost_image_permission'];
+		$messagetopost=$get_post_meta_future_data['xyz_twap_twmessage'];
+	}
 	if ($post_twitter_permission != 1) {
 		$_POST=$_POST_CPY;
 		return ;
@@ -79,14 +92,6 @@ function xyz_twap_link_publish($post_ID) {
 		$_POST=$_POST_CPY;
 		return;
 	}
-	
-	
-	
-	
-	$get_post_meta=get_post_meta($post_ID,"xyz_twap",true);
-	if($get_post_meta!=1)
-		add_post_meta($post_ID, "xyz_twap", "1");
-
 	global $current_user;
 	wp_get_current_user();
 	//$af=get_option('xyz_twap_af');
@@ -98,11 +103,12 @@ function xyz_twap_link_publish($post_ID) {
 	$twid=get_option('xyz_twap_tw_id');
 	$taccess_token=get_option('xyz_twap_current_twappln_token');
 	$taccess_token_secret=get_option('xyz_twap_twaccestok_secret');
+	if ($messagetopost=='')
 	$messagetopost=get_option('xyz_twap_twmessage');
 	if(isset($_POST['xyz_twap_twmessage']))
 		$messagetopost=$_POST['xyz_twap_twmessage'];
 
-
+	if ($post_twitter_image_permission==0)
 	$post_twitter_image_permission=get_option('xyz_twap_twpost_image_permission');
 	if(isset($_POST['xyz_twap_twpost_image_permission']))
 		$post_twitter_image_permission=$_POST['xyz_twap_twpost_image_permission'];
@@ -119,16 +125,13 @@ function xyz_twap_link_publish($post_ID) {
 	if ($postpp->post_status == 'publish')
 	{
 		$posttype=$postpp->post_type;
-				
 		if ($posttype=="page")
 		{
-
 			$xyz_twap_include_pages=get_option('xyz_twap_include_pages');	
 			if($xyz_twap_include_pages==0)
 			{
 				$_POST=$_POST_CPY;return;
 			}
-			
 		}
 			
 		else if($posttype=="post")
@@ -179,6 +182,9 @@ function xyz_twap_link_publish($post_ID) {
 			
 		}
 
+		$get_post_meta=get_post_meta($post_ID,"xyz_twap",true);
+		if($get_post_meta!=1)
+			add_post_meta($post_ID, "xyz_twap", "1");
 		include_once ABSPATH.'wp-admin/includes/plugin.php';
 		$pluginName = 'bitly/bitly.php';
 		
@@ -440,6 +446,8 @@ function xyz_twap_link_publish($post_ID) {
 			
 				$substring=$final_str;
 			}
+ 		 /* if (strlen($substring)>$tw_max_len)
+                	$substring=substr($substring, 0, $tw_max_len-3)."...";*/
 
 			$twobj = new TWAPTwitterOAuth(array( 'consumer_key' => $tappid, 'consumer_secret' => $tappsecret, 'user_token' => $taccess_token, 'user_secret' => $taccess_token_secret,'curl_ssl_verifypeer'   => false));
 			$tw_publish_status='';

@@ -111,7 +111,7 @@ jQuery(document).ready(function() {
 		twap_get_categorylist(1);
 		});
 	
-	twap_get_categorylist(1);
+	twap_get_categorylist(1);twap_get_categorylist(2);
 	jQuery('#category-all').on("click",'input[name="post_category[]"]',function() {
 		twap_get_categorylist(1);
 				});
@@ -119,22 +119,42 @@ jQuery(document).ready(function() {
 	jQuery('#category-pop').on("click",'input[type="checkbox"]',function() {
 		twap_get_categorylist(2);
 				});
+	/////////gutenberg category selection
+	jQuery(document).on('change', 'input[type="checkbox"]', function() {
+		twap_get_categorylist(2);
+				});
 });
 
 function twap_get_categorylist(val)
 {
+	var flag=true;
 	var cat_list="";var chkdArray=new Array();var cat_list_array=new Array();
 	var posttype="<?php echo get_post_type() ;?>";
 	if(val==1){
 	 jQuery('input[name="post_category[]"]:checked').each(function() {
-		 cat_list+=this.value+",";
+		 cat_list+=this.value+",";flag=false;
 		});
 	}else if(val==2)
 	{
 		jQuery('#category-pop input[type="checkbox"]:checked').each(function() {
-			
-			cat_list+=this.value+",";
+			cat_list+=this.value+",";flag=false;
 		});
+		jQuery('.editor-post-taxonomies__hierarchical-terms-choice input[type="checkbox"]:checked').each(function() { //gutenberg category checkbox
+			cat_list+=this.value+",";flag=false;
+		});
+		if(flag){
+		<?php
+		if (isset($_GET['post']))
+			$postid=intval($_GET['post']);
+		if (isset($GLOBALS['edit_flag']) && $GLOBALS['edit_flag']==1 && !empty($postid)){
+			$defaults = array('fields' => 'ids');
+			$categ_arr=wp_get_post_categories( $postid, $defaults );
+			$categ_str=implode(',', $categ_arr);
+			?>
+			cat_list+='<?php echo $categ_str; ?>';
+					<?php }?> flag=false;
+			
+		}
 	}
 	 if (cat_list.charAt(cat_list.length - 1) == ',') {
 		 cat_list = cat_list.substr(0, cat_list.length - 1);
@@ -184,7 +204,25 @@ function inArray(needle, haystack) {
 <input type="hidden" name="cat_list" id="cat_list" value="">
 <input type="hidden" name="xyz_twap_post" id="xyz_twap_post" value="0" >
 	<tr id="xyz_twMetabox"><td colspan="2" >
-<?php  if(get_option('xyz_twap_twpost_permission')==1) {?>
+<?php  if(get_option('xyz_twap_twpost_permission')==1) {
+	$postid=0;
+if (isset($_GET['post']))
+	$postid=intval($_GET['post']);
+$post_permission=1;
+$get_post_meta_future_data='';
+if (get_option('xyz_twap_default_selection_edit')==2 && isset($GLOBALS['edit_flag']) && $GLOBALS['edit_flag']==1 && !empty($postid))
+	$get_post_meta_future_data=get_post_meta($postid,"xyz_twap_future_to_publish",true);
+	if (!empty($get_post_meta_future_data)&& isset($get_post_meta_future_data['xyz_twap_twpost_permission']))
+	{
+		$post_permission=$get_post_meta_future_data['xyz_twap_twpost_permission'];
+		$post_twitter_image_permission=$get_post_meta_future_data['xyz_twap_twpost_image_permission'];
+		$messagetopost=$get_post_meta_future_data['xyz_twap_twmessage'];
+	}
+	else {
+		$post_twitter_image_permission=get_option('xyz_twap_twpost_image_permission');
+		$messagetopost=get_option('xyz_twap_twmessage');
+	}
+?>
 <table class="xyz_twap_meta_acclist_table"><!-- TW META -->
 
 
@@ -199,8 +237,8 @@ function inArray(needle, haystack) {
 		<td class="xyz_twap_pleft15" width="60%">Enable auto publish posts to my twitter account
 		</td>
 		<td  class="switch-field">
-		<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_1" value="1" checked/>Yes</label>
-		<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_0" value="0" />No</label>
+		<label id="xyz_twap_twpost_permission_yes"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_1" value="1" <?php  if($post_permission==1) echo 'checked';?>/>Yes</label>
+		<label id="xyz_twap_twpost_permission_no"><input type="radio" name="xyz_twap_twpost_permission" id="xyz_twap_twpost_permission_0" value="0" <?php  if($post_permission==0) echo 'checked';?>/>No</label>
 	</td>
 	</tr>
 	
@@ -209,10 +247,10 @@ function inArray(needle, haystack) {
 		</td>
 		<td><select id="xyz_twap_twpost_image_permission" name="xyz_twap_twpost_image_permission">
 				<option value="0"
-				<?php  if(get_option('xyz_twap_twpost_image_permission')==0) echo 'selected';?>>
+				<?php  if($post_twitter_image_permission==0) echo 'selected';?>>
 					No</option>
 				<option value="1"
-				<?php  if(get_option('xyz_twap_twpost_image_permission')==1) echo 'selected';?>>Yes</option>
+				<?php  if($post_twitter_image_permission==1) echo 'selected';?>>Yes</option>
 		</select>
 		</td>
 	</tr>
@@ -247,7 +285,7 @@ function inArray(needle, haystack) {
 		</select> </td></tr>
 		
 		<tr id="twmftarea_twap"><td>&nbsp;</td><td>
-		<textarea id="xyz_twap_twmessage"  name="xyz_twap_twmessage" style="height:80px !important;" ><?php echo esc_textarea(get_option('xyz_twap_twmessage'));?></textarea>
+		<textarea id="xyz_twap_twmessage"  name="xyz_twap_twmessage" style="height:80px !important;" ><?php echo esc_textarea($messagetopost);?></textarea>
 	</td></tr>
 	
 	</table>
@@ -268,7 +306,7 @@ function inArray(needle, haystack) {
 		var xyz_twap_default_selection_edit="<?php echo esc_html(get_option('xyz_twap_default_selection_edit'));?>";
 		if(xyz_twap_default_selection_edit=="")
 			xyz_twap_default_selection_edit=0;
-		if(xyz_twap_default_selection_edit==1)
+		if(xyz_twap_default_selection_edit==1 || xyz_twap_default_selection_edit==2)
 			return;
 		jQuery('#xyz_twap_twpost_permission_0').attr('checked',true);
 		displaycheck_twap();

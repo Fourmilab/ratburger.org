@@ -49,7 +49,6 @@ $xyz_twap_notice = wp_nonce_url($xyz_twap_notice,'twap-shw');
 	<a class="button" style="background-color:#3b5998;color:white;margin-right:4px;margin-left:100px;margin-top: 25px;" href="http://www.facebook.com/sharer/sharer.php?u=https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/" target="_blank">Facebook</a>
 	<a class="button" style="background-color:#00aced;color:white;margin-right:4px;margin-left:20px;margin-top: 25px;" href="http://twitter.com/share?url=https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/&text='.$sharelink_text_tw.'" target="_blank">Twitter</a>
 	<a class="button" style="background-color:#007bb6;color:white;margin-right:4px;margin-left:20px;margin-top: 25px;" href="http://www.linkedin.com/shareArticle?mini=true&url=https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/" target="_blank">LinkedIn</a>
-	<a class="button" style="background-color:#dd4b39;color:white;margin-right:4px;margin-left:20px;margin-top: 25px;" href="https://plus.google.com/share?&hl=en&url=https://xyzscripts.com/wordpress-plugins/twitter-auto-publish/" target="_blank">google+</a>
 	</div>
 	
 	

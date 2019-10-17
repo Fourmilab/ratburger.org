@@ -87,7 +87,7 @@ if(isset($_POST['twit']))
 	}
 	elseif($tmessagetopost=="" && $tposting_permission==1)
 	{
-		$tms6="Please fill mssage format for posting.";
+		$tms6="Please fill message format for posting.";
 		$terf=1;
 	}
 	else
@@ -491,11 +491,12 @@ function dethide_twap(id)
 
 				<tr valign="top">
 
-					<td scope="row" colspan="1" width="50%">Default selection of auto publish while editing posts/pages/custom post types
+					<td scope="row" colspan="1" width="50%">Auto publish on editing posts/pages/custom post types
 					</td>
-				<td  class="switch-field">
-					<label id="xyz_twap_default_selection_edit_yes"><input type="radio" name="xyz_twap_default_selection_edit" value="1" <?php  if($xyz_twap_default_selection_edit==1) echo 'checked';?>/>Enabled</label>
-					<label id="xyz_twap_default_selection_edit_no"><input type="radio" name="xyz_twap_default_selection_edit" value="0" <?php  if($xyz_twap_default_selection_edit==0) echo 'checked';?>/>Disabled</label>
+				<td>
+					<input type="radio" name="xyz_twap_default_selection_edit" value="1" <?php  if($xyz_twap_default_selection_edit==1) echo 'checked';?>/>Enabled
+					<br/><input type="radio" name="xyz_twap_default_selection_edit" value="0" <?php  if($xyz_twap_default_selection_edit==0) echo 'checked';?>/>Disabled
+					<br/><input type="radio" name="xyz_twap_default_selection_edit" value="2" <?php  if($xyz_twap_default_selection_edit==2) echo 'checked';?>/>Use settings from post creation or post updation
 				</td>
 				</tr>
 
@@ -626,7 +627,7 @@ jQuery(document).ready(function() {
    XyzTwapToggleRadio(xyz_twap_cat_all,'xyz_twap_include_categories'); 
   
 
-   var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_default_selection_edit','xyz_twap_peer_verification','xyz_twap_premium_version_ads'];
+   var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_peer_verification','xyz_twap_premium_version_ads'];
 
    jQuery.each(toggle_element_ids, function( index, value ) {
 		   checkedval= jQuery("input[name='"+value+"']:checked").val();
@@ -691,7 +692,7 @@ function xyz_twap_show_postCategory(val)
 	else
 		jQuery('#selPostCat').show();
 }
-var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_default_selection_edit','xyz_twap_peer_verification','xyz_credit_link','xyz_twap_premium_version_ads','xyz_twap_include_categories'];
+var toggle_element_ids=['xyz_twap_twpost_image_permission','xyz_twap_twpost_permission','xyz_twap_include_pages','xyz_twap_include_posts','xyz_twap_peer_verification','xyz_credit_link','xyz_twap_premium_version_ads','xyz_twap_include_categories'];
 
 jQuery.each(toggle_element_ids, function( index, value ) {
 	jQuery("#"+value+"_no").click(function(){

@@ -31,7 +31,6 @@ if(get_option('xyz_twap_premium_version_ads')==1){?>
 <h3 class="xyz_twap_inner_head">Follow Us </h3>
    <a target="_blank" href="http://facebook.com/xyzscripts" class="xyz_home_fbook"></a>
    <a target="_blank" href="http://twitter.com/xyzscripts" class="xyz_home_twitt"></a>
-   <a target="_blank" href="https://plus.google.com/+Xyzscripts/" class="xyz_home_gplus"></a>
  <a style="margin-right:0px;" target="_blank" href="https://www.linkedin.com/company/xyzscripts" class="xyz_home_linkedin"></a>
 </div>
 
@@ -145,7 +144,7 @@ type="text" placeholder="Email" value="<?php    echo $current_user->user_email; 
 <p class="xyz_plugin_head">Our Plugins : </p>
 
     <a target="_blank"  href="https://wordpress.org/plugins/social-media-auto-publish/"><span>1</span>Social Media Auto Publish</a>
-    <a target="_blank"  href="https://wordpress.org/plugins/facebook-auto-publish/"><span>2</span>WP Facebook Auto Publish</a>
+    <a target="_blank"  href="https://wordpress.org/plugins/facebook-auto-publish/"><span>2</span>WP2Social Auto Publish</a>
     <a target="_blank"  href="https://wordpress.org/plugins/twitter-auto-publish/"><span>3</span>WP Twitter Auto Publish</a>
     <a target="_blank"  href="https://wordpress.org/plugins/linkedin-auto-publish/"><span>4</span>WP to LinkedIn Auto Publish</a>
     <a target="_blank"  href="https://wordpress.org/plugins/insert-html-snippet/"><span>5</span>Insert HTML Snippet</a>
