@@ -10,6 +10,7 @@ return array(
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'RebelCode\\Wpra\\Core\\' => array($baseDir . '/src'),
+    'RebelCode\\Entities\\' => array($baseDir . '/lib/Entities'),
     'RebelCode\\Composer\\' => array($vendorDir . '/rebelcode/composer-cleanup-plugin/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),

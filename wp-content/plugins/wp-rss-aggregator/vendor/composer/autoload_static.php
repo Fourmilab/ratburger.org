@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
+class ComposerStaticInit78c9546730fedf778e75f7ce2d8c83db
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -24,6 +24,7 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'R' => 
         array (
             'RebelCode\\Wpra\\Core\\' => 20,
+            'RebelCode\\Entities\\' => 19,
             'RebelCode\\Composer\\' => 19,
         ),
         'P' => 
@@ -72,6 +73,10 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'RebelCode\\Entities\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/lib/Entities',
         ),
         'RebelCode\\Composer\\' => 
         array (
@@ -463,6 +468,19 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'RebelCode\\Composer\\CleanupPlugin' => __DIR__ . '/..' . '/rebelcode/composer-cleanup-plugin/src/CleanupPlugin.php',
         'RebelCode\\Composer\\CleanupRules' => __DIR__ . '/..' . '/rebelcode/composer-cleanup-plugin/src/CleanupRules.php',
+        'RebelCode\\Entities\\Api\\EntityInterface' => __DIR__ . '/../..' . '/lib/Entities/Api/EntityInterface.php',
+        'RebelCode\\Entities\\Api\\PropertyInterface' => __DIR__ . '/../..' . '/lib/Entities/Api/PropertyInterface.php',
+        'RebelCode\\Entities\\Api\\SchemaInterface' => __DIR__ . '/../..' . '/lib/Entities/Api/SchemaInterface.php',
+        'RebelCode\\Entities\\Api\\StoreInterface' => __DIR__ . '/../..' . '/lib/Entities/Api/StoreInterface.php',
+        'RebelCode\\Entities\\Entity' => __DIR__ . '/../..' . '/lib/Entities/Entity.php',
+        'RebelCode\\Entities\\Properties\\AbstractDecoratorProperty' => __DIR__ . '/../..' . '/lib/Entities/Properties/AbstractDecoratorProperty.php',
+        'RebelCode\\Entities\\Properties\\CallbackDecoratorProperty' => __DIR__ . '/../..' . '/lib/Entities/Properties/CallbackDecoratorProperty.php',
+        'RebelCode\\Entities\\Properties\\CallbackProperty' => __DIR__ . '/../..' . '/lib/Entities/Properties/CallbackProperty.php',
+        'RebelCode\\Entities\\Properties\\DefaultingProperty' => __DIR__ . '/../..' . '/lib/Entities/Properties/DefaultingProperty.php',
+        'RebelCode\\Entities\\Properties\\Property' => __DIR__ . '/../..' . '/lib/Entities/Properties/Property.php',
+        'RebelCode\\Entities\\Schemas\\Schema' => __DIR__ . '/../..' . '/lib/Entities/Schemas/Schema.php',
+        'RebelCode\\Entities\\Stores\\ArrayStore' => __DIR__ . '/../..' . '/lib/Entities/Stores/ArrayStore.php',
+        'RebelCode\\Entities\\Stores\\EntityStore' => __DIR__ . '/../..' . '/lib/Entities/Stores/EntityStore.php',
         'RebelCode\\Wpra\\Core\\Container\\ModuleContainer' => __DIR__ . '/../..' . '/src/Container/ModuleContainer.php',
         'RebelCode\\Wpra\\Core\\Container\\WpFilterContainer' => __DIR__ . '/../..' . '/src/Container/WpFilterContainer.php',
         'RebelCode\\Wpra\\Core\\Container\\WpraContainer' => __DIR__ . '/../..' . '/src/Container/WpraContainer.php',
@@ -474,11 +492,11 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\Data\\Collections\\CollectionInterface' => __DIR__ . '/../..' . '/src/Data/Collections/CollectionInterface.php',
         'RebelCode\\Wpra\\Core\\Data\\Collections\\NullCollection' => __DIR__ . '/../..' . '/src/Data/Collections/NullCollection.php',
         'RebelCode\\Wpra\\Core\\Data\\Collections\\TwigTemplateCollection' => __DIR__ . '/../..' . '/src/Data/Collections/TwigTemplateCollection.php',
-        'RebelCode\\Wpra\\Core\\Data\\Collections\\WpPostCollection' => __DIR__ . '/../..' . '/src/Data/Collections/WpPostCollection.php',
         'RebelCode\\Wpra\\Core\\Data\\CompositeDataSet' => __DIR__ . '/../..' . '/src/Data/CompositeDataSet.php',
         'RebelCode\\Wpra\\Core\\Data\\DataSetInterface' => __DIR__ . '/../..' . '/src/Data/DataSetInterface.php',
         'RebelCode\\Wpra\\Core\\Data\\DelegatorDataSet' => __DIR__ . '/../..' . '/src/Data/DelegatorDataSet.php',
         'RebelCode\\Wpra\\Core\\Data\\DeprefixingDataSet' => __DIR__ . '/../..' . '/src/Data/DeprefixingDataSet.php',
+        'RebelCode\\Wpra\\Core\\Data\\EntityDataSet' => __DIR__ . '/../..' . '/src/Data/EntityDataSet.php',
         'RebelCode\\Wpra\\Core\\Data\\MaskingDataSet' => __DIR__ . '/../..' . '/src/Data/MaskingDataSet.php',
         'RebelCode\\Wpra\\Core\\Data\\MergedDataSet' => __DIR__ . '/../..' . '/src/Data/MergedDataSet.php',
         'RebelCode\\Wpra\\Core\\Data\\PrefixingDataSet' => __DIR__ . '/../..' . '/src/Data/PrefixingDataSet.php',
@@ -493,14 +511,19 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\Database\\NullTable' => __DIR__ . '/../..' . '/src/Database/NullTable.php',
         'RebelCode\\Wpra\\Core\\Database\\TableInterface' => __DIR__ . '/../..' . '/src/Database/TableInterface.php',
         'RebelCode\\Wpra\\Core\\Database\\WpdbTable' => __DIR__ . '/../..' . '/src/Database/WpdbTable.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Items\\ImportedItemsCollection' => __DIR__ . '/../..' . '/src/Entities/Feeds/Items/ImportedItemsCollection.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Items\\WpPostFeedItem' => __DIR__ . '/../..' . '/src/Entities/Feeds/Items/WpPostFeedItem.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Items\\WpPostFeedItemCollection' => __DIR__ . '/../..' . '/src/Entities/Feeds/Items/WpPostFeedItemCollection.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Sources\\WpPostFeedSource' => __DIR__ . '/../..' . '/src/Entities/Feeds/Sources/WpPostFeedSource.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Sources\\WpPostFeedSourceCollection' => __DIR__ . '/../..' . '/src/Entities/Feeds/Sources/WpPostFeedSourceCollection.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Templates\\BuiltInFeedTemplate' => __DIR__ . '/../..' . '/src/Entities/Feeds/Templates/BuiltInFeedTemplate.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Templates\\WpPostFeedTemplate' => __DIR__ . '/../..' . '/src/Entities/Feeds/Templates/WpPostFeedTemplate.php',
-        'RebelCode\\Wpra\\Core\\Entities\\Feeds\\Templates\\WpPostFeedTemplateCollection' => __DIR__ . '/../..' . '/src/Entities/Feeds/Templates/WpPostFeedTemplateCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Collections\\FeedItemCollection' => __DIR__ . '/../..' . '/src/Entities/Collections/FeedItemCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Collections\\FeedSourceCollection' => __DIR__ . '/../..' . '/src/Entities/Collections/FeedSourceCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Collections\\FeedTemplateCollection' => __DIR__ . '/../..' . '/src/Entities/Collections/FeedTemplateCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Collections\\ImportedItemsCollection' => __DIR__ . '/../..' . '/src/Entities/Collections/ImportedItemsCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Collections\\WpEntityCollection' => __DIR__ . '/../..' . '/src/Entities/Collections/WpEntityCollection.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Properties\\SanitizedProperty' => __DIR__ . '/../..' . '/src/Entities/Properties/SanitizedProperty.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Properties\\TimestampProperty' => __DIR__ . '/../..' . '/src/Entities/Properties/TimestampProperty.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Properties\\WpFtImageUrlProperty' => __DIR__ . '/../..' . '/src/Entities/Properties/WpFtImageUrlProperty.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Properties\\WpPostEntityProperty' => __DIR__ . '/../..' . '/src/Entities/Properties/WpPostEntityProperty.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Properties\\WpraSourceDefaultProperty' => __DIR__ . '/../..' . '/src/Entities/Properties/WpraSourceDefaultProperty.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Stores\\BuiltInTemplateStore' => __DIR__ . '/../..' . '/src/Entities/Stores/BuiltInTemplateStore.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Stores\\WpOptionsArrayStore' => __DIR__ . '/../..' . '/src/Entities/Stores/WpOptionsArrayStore.php',
+        'RebelCode\\Wpra\\Core\\Entities\\Stores\\WpPostStore' => __DIR__ . '/../..' . '/src/Entities/Stores/WpPostStore.php',
         'RebelCode\\Wpra\\Core\\ErrorHandler' => __DIR__ . '/../..' . '/src/ErrorHandler.php',
         'RebelCode\\Wpra\\Core\\Handlers\\AbstractSavePostHandler' => __DIR__ . '/../..' . '/src/Handlers/AbstractSavePostHandler.php',
         'RebelCode\\Wpra\\Core\\Handlers\\AddCapabilitiesHandler' => __DIR__ . '/../..' . '/src/Handlers/AddCapabilitiesHandler.php',
@@ -572,6 +595,7 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\Modules\\LoremModule' => __DIR__ . '/../..' . '/src/Modules/LoremModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\ModuleInterface' => __DIR__ . '/../..' . '/src/Modules/ModuleInterface.php',
         'RebelCode\\Wpra\\Core\\Modules\\ParsedownModule' => __DIR__ . '/../..' . '/src/Modules/ParsedownModule.php',
+        'RebelCode\\Wpra\\Core\\Modules\\PolyLangCompatModule' => __DIR__ . '/../..' . '/src/Modules/PolyLangCompatModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\RestApiModule' => __DIR__ . '/../..' . '/src/Modules/RestApiModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\SettingsModule' => __DIR__ . '/../..' . '/src/Modules/SettingsModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\TwigModule' => __DIR__ . '/../..' . '/src/Modules/TwigModule.php',
@@ -607,6 +631,7 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\Twig\\Extensions\\I18n\\I18nTransTokenParser' => __DIR__ . '/../..' . '/src/Twig/Extensions/I18n/I18nTransTokenParser.php',
         'RebelCode\\Wpra\\Core\\Twig\\Extensions\\I18n\\WpI18nExtension' => __DIR__ . '/../..' . '/src/Twig/Extensions/I18n/WpI18nExtension.php',
         'RebelCode\\Wpra\\Core\\Twig\\Extensions\\WpraExtension' => __DIR__ . '/../..' . '/src/Twig/Extensions/WpraExtension.php',
+        'RebelCode\\Wpra\\Core\\Util\\CallbackIterator' => __DIR__ . '/../..' . '/src/Util/CallbackIterator.php',
         'RebelCode\\Wpra\\Core\\Util\\IteratorDelegateTrait' => __DIR__ . '/../..' . '/src/Util/IteratorDelegateTrait.php',
         'RebelCode\\Wpra\\Core\\Util\\MergedIterator' => __DIR__ . '/../..' . '/src/Util/MergedIterator.php',
         'RebelCode\\Wpra\\Core\\Util\\NormalizeWpPostCapableTrait' => __DIR__ . '/../..' . '/src/Util/NormalizeWpPostCapableTrait.php',
@@ -614,6 +639,12 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
         'RebelCode\\Wpra\\Core\\Util\\PaginatedIterator' => __DIR__ . '/../..' . '/src/Util/PaginatedIterator.php',
         'RebelCode\\Wpra\\Core\\Util\\ParseArgsWithSchemaCapableTrait' => __DIR__ . '/../..' . '/src/Util/ParseArgsWithSchemaCapableTrait.php',
         'RebelCode\\Wpra\\Core\\Util\\SanitizeIdCommaListCapableTrait' => __DIR__ . '/../..' . '/src/Util/SanitizeIdCommaListCapableTrait.php',
+        'RebelCode\\Wpra\\Core\\Util\\SanitizerInterface' => __DIR__ . '/../..' . '/src/Util/SanitizerInterface.php',
+        'RebelCode\\Wpra\\Core\\Util\\Sanitizers\\BoolSanitizer' => __DIR__ . '/../..' . '/src/Util/Sanitizers/BoolSanitizer.php',
+        'RebelCode\\Wpra\\Core\\Util\\Sanitizers\\CallbackSanitizer' => __DIR__ . '/../..' . '/src/Util/Sanitizers/CallbackSanitizer.php',
+        'RebelCode\\Wpra\\Core\\Util\\Sanitizers\\EquivalenceSanitizer' => __DIR__ . '/../..' . '/src/Util/Sanitizers/EquivalenceSanitizer.php',
+        'RebelCode\\Wpra\\Core\\Util\\Sanitizers\\IntSanitizer' => __DIR__ . '/../..' . '/src/Util/Sanitizers/IntSanitizer.php',
+        'RebelCode\\Wpra\\Core\\Util\\Sanitizers\\PhpFilterSanitizer' => __DIR__ . '/../..' . '/src/Util/Sanitizers/PhpFilterSanitizer.php',
         'RebelCode\\Wpra\\Core\\Wp\\Asset\\AbstractAsset' => __DIR__ . '/../..' . '/src/Wp/Asset/AbstractAsset.php',
         'RebelCode\\Wpra\\Core\\Wp\\Asset\\AssetInterface' => __DIR__ . '/../..' . '/src/Wp/Asset/AssetInterface.php',
         'RebelCode\\Wpra\\Core\\Wp\\Asset\\ScriptAsset' => __DIR__ . '/../..' . '/src/Wp/Asset/ScriptAsset.php',
@@ -1032,10 +1063,10 @@ class ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0a9906e044288a89ce7d4c5685e9efc0::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit78c9546730fedf778e75f7ce2d8c83db::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit78c9546730fedf778e75f7ce2d8c83db::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit78c9546730fedf778e75f7ce2d8c83db::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit78c9546730fedf778e75f7ce2d8c83db::$classMap;
 
         }, null, ClassLoader::class);
     }

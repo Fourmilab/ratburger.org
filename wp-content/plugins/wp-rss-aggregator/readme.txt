@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.2.2
 Requires PHP: 5.4
-Stable tag: 4.15.2
+Stable tag: 4.16
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -259,22 +259,13 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 == Changelog ==
 
-= 4.15.2 (2019-10-03) =
-
-**Added**
-- Links and integrations with Lorem for custom developer work.
+= 4.16 (2019-10-31) =
 
 **Changed**
-- The default logging type is now "debug".
-- Feeds are now sorted alphabetically by default.
+- Overhauled the data set system with a more robust entity system.
+- Various database optimizations for better performance.
 
 **Fixed**
-- Multisite installations only allowed the main site to have activated licenses.
-- License notices now only appear on the main site if the site is a multisite network.
-- Blacklist items would occassionally be saved without a permalink.
-- Older versions of add-ons triggered errors when trying to log messages with the default log type.
-- Fixed checkbox legacy display options not saving correctly.
-- A saved empty useragent string in the settings caused the internal default to not be used.
-- The certificate path option was not defaulting correctly.
-- Media thumbnail images were not being detected properly.
-- An invalid feed would trigger false positive errors on fetch.
+- Incompatibility with other plugins that use similar import/export mechanisms.
+- Incompatibility with PolyLang, causing the block and shortcode to show no feed items.
+- Timeout and infinite loop when saving a feed source.
