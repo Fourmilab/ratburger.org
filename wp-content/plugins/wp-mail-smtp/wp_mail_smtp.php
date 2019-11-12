@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP Mail SMTP
- * Version: 1.7.0
+ * Version: 1.7.1
  * Plugin URI: https://wpmailsmtp.com/
  * Description: Reconfigures the <code>wp_mail()</code> function to use Gmail/Mailgun/SendGrid/SMTP instead of the default <code>mail()</code> and creates an options page to manage the settings.
  * Author: WPForms
@@ -31,6 +31,8 @@
 
 /*
 define( 'WPMS_ON', true ); // True turns on the whole constants support and usage, false turns it off.
+
+define( 'WPMS_DO_NOT_SEND', true ); // Or false, in that case constant is ignored.
 
 define( 'WPMS_MAIL_FROM', 'mail@example.com' );
 define( 'WPMS_MAIL_FROM_FORCE', true ); // True turns it on, false turns it off.
@@ -140,7 +142,7 @@ if ( ! function_exists( 'wp_mail_smtp_check_pro_loading_allowed' ) ) {
 }
 
 if ( ! defined( 'WPMS_PLUGIN_VER' ) ) {
-	define( 'WPMS_PLUGIN_VER', '1.7.0' );
+	define( 'WPMS_PLUGIN_VER', '1.7.1' );
 }
 if ( ! defined( 'WPMS_PHP_VER' ) ) {
 	define( 'WPMS_PHP_VER', '5.3.6' );
