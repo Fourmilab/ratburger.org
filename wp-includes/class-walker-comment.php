@@ -161,7 +161,7 @@ class Walker_Comment extends Walker {
 	 * @see Walker::start_el()
 	 * @see wp_list_comments()
 	 * @global int        $comment_depth
-	 * @global WP_Comment $comment
+	 * @global WP_Comment $comment       Global comment object.
 	 *
 	 * @param string     $output  Used to append additional content. Passed by reference.
 	 * @param WP_Comment $comment Comment data object.
@@ -282,8 +282,8 @@ class Walker_Comment extends Walker {
 				echo get_avatar( $comment, $args['avatar_size'] );}
 			?>
 			<?php
-				/* translators: %s: comment author link */
 				printf(
+					/* translators: %s: Comment author link. */
 					__( '%s <span class="says">says:</span>' ),
 					sprintf( '<cite class="fn">%s</cite>', get_comment_author_link( $comment ) )
 				);
@@ -296,7 +296,7 @@ class Walker_Comment extends Walker {
 
 		<div class="comment-meta commentmetadata"><a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
 			<?php
-				/* translators: 1: comment date, 2: comment time */
+				/* translators: 1: Comment date, 2: Comment time. */
 				printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
 			?>
 				</a>
@@ -401,16 +401,17 @@ class Walker_Comment extends Walker {
                         		/* END RATBURGER LOCAL CODE */ ?>
 						<?php
 						if ( 0 != $args['avatar_size'] ) {
-							echo get_avatar( $comment, $args['avatar_size'] );}
-                        				/* RATBURGER LOCAL CODE */
+							echo get_avatar( $comment, $args['avatar_size'] );
+						}
+							/* RATBURGER LOCAL CODE */
                             				if ($rb_cwrap) {
                                 				echo('</a>');
                             				}
                         				/* END RATBURGER LOCAL CODE */
 						?>
 						<?php
-							/* translators: %s: comment author link */
 							printf(
+								/* translators: %s: Comment author link. */
 								__( '%s <span class="says">says:</span>' ),
 								sprintf( '<b class="fn">%s</b>', get_comment_author_link( $comment ) )
 							);
@@ -426,7 +427,7 @@ class Walker_Comment extends Walker {
 							/* END RATBURGER LOCAL CODE */ ?>
 							<time datetime="<?php comment_time( 'c' ); ?>">
 								<?php
-									/* translators: 1: comment date, 2: comment time */
+									/* translators: 1: Comment date, 2: Comment time. */
 									printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
 								?>
 							</time>
