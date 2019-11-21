@@ -171,6 +171,26 @@ abstract class WPEL_Link_Fields_Base extends FWP_Settings_Section_Base_1x0x0
         );
     }
 
+    protected function show_rel_sponsored( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Add <code>"sponsored"</code>', 'wp-external-links' )
+            , '1'
+            , ''
+        );
+    }
+
+    protected function show_rel_ugc( array $args )
+    {
+        $this->get_html_fields()->check_with_label(
+            $args[ 'key' ]
+            , __( 'Add <code>"ugc"</code>', 'wp-external-links' )
+            , '1'
+            , ''
+        );
+    }
+
     protected function show_title( array $args )
     {
         $this->get_html_fields()->text( $args[ 'key' ], array(

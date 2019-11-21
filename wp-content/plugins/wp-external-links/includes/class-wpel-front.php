@@ -270,6 +270,16 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             $link->add_to_attr( 'rel', 'noreferrer' );
         }
 
+        // add "sponsored"
+        if ( $this->opt( 'rel_sponsored', $type ) ) {
+            $link->add_to_attr( 'rel', 'sponsored' );
+        }
+
+        // add "ugc"
+        if ( $this->opt( 'rel_ugc', $type ) ) {
+            $link->add_to_attr( 'rel', 'ugc' );
+        }
+
         // set title
         $title_format = $this->opt( 'title', $type );
 

@@ -58,6 +58,14 @@ final class WPEL_Register_Scripts extends WPRun_Base_1x0x0
             , $plugin_version
         );
 
+        // set admin global style
+        wp_register_style(
+            'wpel-admin-global-style'
+            , plugins_url( '/public/css/wpel-admin-global.css', WPEL_Plugin::get_plugin_file() )
+            , array()
+            , $plugin_version
+        );
+
         // set wpel admin script
         wp_register_script(
             'wpel-admin-script'

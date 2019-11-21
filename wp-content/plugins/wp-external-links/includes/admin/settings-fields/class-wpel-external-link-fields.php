@@ -34,6 +34,16 @@ final class WPEL_External_Link_Fields extends WPEL_Link_Fields_Base
                 'class'         => 'wpel-no-label wpel-hidden',
                 'default_value' => '1',
             ),
+            'rel_sponsored' => array(
+                'label'         => '',
+                'class'         => 'wpel-no-label wpel-hidden',
+                'default_value' => '0',
+            ),
+            'rel_ugc' => array(
+                'label'         => '',
+                'class'         => 'wpel-no-label wpel-hidden',
+                'default_value' => '0',
+            )
         );
 
         $fields = array_merge(

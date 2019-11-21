@@ -125,9 +125,15 @@ final class WPEL_Network_Page extends WPRun_Base_1x0x0
      */
     protected function action_admin_enqueue_scripts()
     {
-        wp_enqueue_style( 'font-awesome' );
-        wp_enqueue_style( 'wpel-admin-style' );
-        wp_enqueue_script( 'wpel-admin-script' );
+        $current_screen = get_current_screen();
+        
+        if($current_screen->id == 'toplevel_page_wpel-network-settings-page-network' || $current_screen->id == 'settings_page_wpel-network-settings-page-network'){
+            wp_enqueue_style( 'font-awesome' );
+            wp_enqueue_style( 'wpel-admin-style' );
+            wp_enqueue_script( 'wpel-admin-script' );
+        }
+        
+        wp_enqueue_style( 'wpel-admin-global-style' );
     }
 
     /**

@@ -17,20 +17,6 @@
 }
 
 /**
- * Menu Icon 
- */
-
-a.toplevel_page_wpel-settings-page .wp-menu-image:before {
-    font-family: FontAwesome;
-    content:  '\f14c';
-}
-
-a.toplevel_page_wpel-network-settings-page .wp-menu-image:before {
-    font-family: FontAwesome;
-    content:  '\f14c';
-}
-
-/**
  * Tabs 
  */
 
