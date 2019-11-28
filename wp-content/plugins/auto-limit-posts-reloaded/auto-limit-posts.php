@@ -193,7 +193,7 @@ function alpr_replace_content($content)
                    Expand shortcodes in paragraphs of the excerpt.
                 echo $paragraphcut[0];
                 */
-                echo do_shortcode($paragraphcut[0]);
+                echo make_clickable(do_shortcode($paragraphcut[0]));
 				/* Remove void paragraphs from the end of $paragraphcut */
 
 				while ((count($paragraphcut) > 0)
@@ -205,7 +205,7 @@ function alpr_replace_content($content)
 				/* Include first *two* paragraphs of content, if present. */
 				if (count($paragraphcut) > 1) {
 					echo "</p>";
-					echo do_shortcode($paragraphcut[1]);
+					echo make_clickable(do_shortcode($paragraphcut[1]));
 				}
 				
 				// Only append continuation and link if we trimmed content
