@@ -1288,4 +1288,88 @@ function RB_filter_teeny_mce_before_init($options) {
 
 add_filter('teeny_mce_before_init', 'RB_filter_teeny_mce_before_init');
 
+/*  Fix links within posts and comments to open in a new
+    tab/window.  This code accomplishes what the WP External
+    Links plug-in attempts to do, but falls short.  Given the
+    body of a post or comment, each link (<a> tag) is located
+    and analysed.  If it already contains a target= attribute,
+    and the target is "_blank", nothing need be done.  If the
+    target is different, the link was probably pasted in as
+    HTML from another source, and contains targets relevant to
+    the source site, not us, so we replace the target with
+    "_blank".  If there is no target at all, we add one at
+    the end of the link tag, again specifying "_blank".  This
+    is done regardless of whether the link is internal or
+    external to the site.  */
+
+function RB_fix_link_targets($ctext) {
+    /*  Process all links embedded in the comment text, even
+        if they span multiple lines.  Extract link body.  */
+
+    return preg_replace_callback("|(<a\s+)([^>]*)(>)|im",
+        function($m) {
+
+            /*  If the link contains a target attribute,
+                extract the target name.  */
+
+            if (preg_match("|(^.*target=['\"])(\w*)(['\"].*$)|im",
+                    $m[2], $tgt)) {
+
+                /*  If the target is "_blank", this link is
+                    already set to open in a new tab/window:
+                    return it unmodified.  */
+
+                if ($tgt[2] == "_blank") {
+                    return $m[0];
+                }
+
+                /*  This link contains a target= attribute
+                    but the target isn't "_blank".  This is
+                    probably a link pasted in as part of HTML
+                    from another site.  Replace the target with
+                    "_blank" so it opens in a new tab/window here.  */
+
+
+                return $m[1] . $tgt[1] . "_blank" . $tgt[3] . $m[3];
+            }
+
+            /*  This link has no target= attribute.  Add a
+                target="_blank" at the end of the link.  */
+
+            return $m[1] . $m[2] . ' target="_blank"' . $m[3];
+        },
+        $ctext, -1);
+}
+
+//  Process links in comment body text
+
+function RB_open_comment_links_in_new_tab($ctext, $cobj = null) {
+    if ($cobj !== null) {       // Only process before display
+
+        /*  Process all links embedded in the comment body.  */
+
+        $ctext = RB_fix_link_targets($ctext);
+    }
+    return $ctext;
+}
+
+   add_filter("comment_text", "RB_open_comment_links_in_new_tab", 97, 2);
+
+//  Process links in post body text
+
+function RB_open_post_links_in_new_tab($ptext) {
+    global $post;
+
+    if (in_the_loop() && is_main_query() &&
+        ($post->post_type == "post")) {
+
+        /*  Process all links embedded in the post body.  */
+
+        $ptext = RB_fix_link_targets($ptext);
+    }
+    return $ptext;
+}
+
+   add_filter("the_content", "RB_open_post_links_in_new_tab", 97);
+
 /* END RATBURGER LOCAL CODE */

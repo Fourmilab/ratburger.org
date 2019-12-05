@@ -83,19 +83,19 @@ function alpr_replace_content($content)
 				}
 				echo $alpr_post_ending; // Add limited ending
 				// Add link if link text exists
-				/* RATBURGER LOCAL CODE
-				   Disable this share so it doesn't happen even if accidentally enabled
+                /* RATBURGER LOCAL CODE
+                   Disable this share so it doesn't happen even if accidentally enabled
 				if ($alpr_post_linktext != "" && $alpr_share == "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>" ;
 				}
-				*/
+                */
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
-					/* RATBURGER LOCAL CODE
-					   Disable id='alpr'.  It's a duplicate
+                    /* RATBURGER LOCAL CODE
+                       Disable id='alpr'.  It's a duplicate
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-					*/
+                    */
 					echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-					/* END RATBURGER LOCAL CODE */
+                    /* END RATBURGER LOCAL CODE */
 				}
 				echo "</p>";
 			}
@@ -154,19 +154,19 @@ function alpr_replace_content($content)
 				
 				echo $alpr_post_ending; // Add limited ending
 				// Add link if link text exists
-				/* RATBURGER LOCAL CODE
-				   Disable this share so it doesn't happen even if accidentally enabled
+                /* RATBURGER LOCAL CODE
+                   Disable this share so it doesn't happen even if accidentally enabled
 				if ($alpr_post_linktext != "" && $alpr_share == "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
 				}
-				*/
+                */
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
-					/* RATBURGER LOCAL CODE
-                                  	   Remove id='alpr' which causes duplicate	
+                    /* RATBURGER LOCAL CODE
+                       Remove id='alpr' which causes duplicate
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-					*/
+                    */
 					echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-					/* END RATBURGER LOCAL CODE */
+                    /* END RATBURGER LOCAL CODE */
 				}
 				echo "</p>";
 			}
@@ -187,54 +187,48 @@ function alpr_replace_content($content)
 			$ismoretag2 = explode('-->', (isset($ismoretag[1]) ? $ismoretag[1] : null));
 			
 			
-			if ($ismoretag2[0] != "more") {
+                        if ($ismoretag2[0] != "more") {
                 /* RATBURGER LOCAL CODE
                    Output excerpt of two paragraphs, not just one.
                    Expand shortcodes in paragraphs of the excerpt.
                 echo $paragraphcut[0];
                 */
-                echo make_clickable(do_shortcode($paragraphcut[0]));
-				/* Remove void paragraphs from the end of $paragraphcut */
+                echo RB_fix_link_targets(make_clickable(do_shortcode($paragraphcut[0])));
 
-				while ((count($paragraphcut) > 0)
-					&& (trim($paragraphcut[count($paragraphcut) - 1]) === '')) {
-// error_log('Trimmed element ' . count($paragraphcut) . ' (' . $paragraphcut[count($paragraphcut) - 1] . ')');
-					array_splice($paragraphcut, count($paragraphcut) - 1);
-				} 
+                /* Remove void paragraphs from the end of $paragraphcut */
 
-				/* Include first *two* paragraphs of content, if present. */
-				if (count($paragraphcut) > 1) {
-					echo "</p>";
-					echo make_clickable(do_shortcode($paragraphcut[1]));
+                while ((count($paragraphcut) > 0)
+                        && (trim($paragraphcut[count($paragraphcut) - 1]) === '')) {
+                        array_splice($paragraphcut, count($paragraphcut) - 1);
+                }
+
+                /* Include first *two* paragraphs of content, if present. */
+                if (count($paragraphcut) > 1) {
+                        echo "</p>";
+                    echo RB_fix_link_targets(make_clickable(do_shortcode($paragraphcut[1])));
+                }
+
+                // Only append continuation and link if we trimmed content
+                if (count($paragraphcut) > 2) {
+                /* END RATBURGER LOCAL CODE */
+                echo $alpr_post_ending;
+                /* RATBURGER LOCAL CODE
+                   Disable this share so it doesn't happen even if accidentally enabled
+				if ($alpr_post_linktext != "" && $alpr_share == "on"){
+					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
 				}
-				
-				// Only append continuation and link if we trimmed content
-/*
-if (count($paragraphcut) == 3) {
-error_log(print_r(count($paragraphcut), true));
-error_log($paragraphcut[2]);
-}
-*/
-				if (count($paragraphcut) > 2) {
-					/* END RATBURGER LOCAL CODE */
-					echo $alpr_post_ending;
-					/* RATBURGER LOCAL CODE
-					   Disable this share so it doesn't happen even if accidentally enabled
-					if ($alpr_post_linktext != "" && $alpr_share == "on"){
-						echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>";
-					}
-					*/
-					if ($alpr_post_linktext != "" && $alpr_share != "on"){
-						/* RATBURGER LOCAL CODE
-						   Remove id='alpr' which causes validation fail due to duplicate
-						echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-						*/
-						echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
-						/* END RATBURGER LOCAL CODE */
-					}
-				/* RATBURGER LOCAL CODE */
+                */
+				if ($alpr_post_linktext != "" && $alpr_share != "on"){
+                    /* RATBURGER LOCAL CODE
+                       Remove id='alpr' which causes validation fail due to duplicate
+                    echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+                    */
+                    echo " <a style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a>" ;
+                    /* END RATBURGER LOCAL CODE */
 				}
-				/* END RATBURGER LOCAL CODE */
+                /* RATBURGER LOCAL CODE */
+                }
+                /* END RATBURGER LOCAL CODE */
 				echo "</p>";
 			}
 			else {
