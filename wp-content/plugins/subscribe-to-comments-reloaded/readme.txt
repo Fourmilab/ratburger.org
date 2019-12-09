@@ -6,8 +6,8 @@ Plugin URI: http://subscribe-reloaded.com/
 Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
-Tested up to: 5.2
-Stable tag: 191028
+Tested up to: 5.3
+Stable tag: 191209
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,9 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+= v191209 =
+* **Improvement** Logged in users no longer need to submit the "email" form on a subscription page in order to access their subscriptions
+* **Improvement** Ability to filter/search the subscriptions table ( WP admin > StCR > Manage Subscriptions ) when there are more than 1000 subscriptions
 
 = v191028 =
 * **Fix** Issue with "Default Checkbox Value" not being saved
