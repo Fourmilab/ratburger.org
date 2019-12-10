@@ -655,7 +655,7 @@ error_log("class_bp_signup query " . $signups_table);
 				// Send the validation email.
 				} else {
 					$salutation = $signup->user_login;
-					if ( isset( $meta[ 'field_' . bp_xprofile_fullname_field_id() ] ) ) {
+					if ( bp_is_active( 'xprofile' ) && isset( $meta[ 'field_' . bp_xprofile_fullname_field_id() ] ) ) {
 						$salutation = $meta[ 'field_' . bp_xprofile_fullname_field_id() ];
 					}
 

@@ -2,9 +2,9 @@
 Contributors: johnjamesjacoby, DJPaul, boonebgorges, r-a-y, imath, mercime, tw2113, dcavins, hnla, karmatosed, slaFFik, dimensionmedia, henrywright, netweb, offereins, espellcaste, modemlooper, danbp, Venutius, apeatling, shanebp
 Tags: user profiles, activity streams, messaging, friends, user groups, notifications, community, social networking, intranet
 Requires at least: 4.7
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 5.0.0
+Stable tag: 5.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,6 @@ WordPress.org is home to some amazing extensions for BuddyPress, including:
 
 - [rtMedia for WordPress, BuddyPress and bbPress](https://wordpress.org/plugins/buddypress-media/)
 - [BuddyPress Docs](https://wordpress.org/plugins/buddypress-docs/)
-- [BuddyPress Activity Plus](https://wordpress.org/plugins/buddypress-activity-plus/)
 
 Search WordPress.org for "BuddyPress" to find them all!
 
@@ -126,6 +125,9 @@ Try <a href="https://wordpress.org/plugins/bbpress/">bbPress</a>. It integrates 
 
 == Upgrade Notice ==
 
+= 5.1.0 =
+See: https://codex.buddypress.org/releases/version-5-1-0/
+
 = 5.0.0 =
 See: https://codex.buddypress.org/releases/version-5-0-0/
 
@@ -145,6 +147,9 @@ See: https://codex.buddypress.org/releases/version-4-1-0/
 See: https://codex.buddypress.org/releases/version-4-0-0/
 
 == Changelog ==
+
+= 5.1.0 =
+See: https://codex.buddypress.org/releases/version-5-1-0/
 
 = 5.0.0 =
 See: https://codex.buddypress.org/releases/version-5-0-0/
