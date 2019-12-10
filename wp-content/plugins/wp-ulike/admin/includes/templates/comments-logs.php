@@ -3,7 +3,7 @@
  * Comments logs page template
  * 
  * @package    wp-ulike
- * @author     Alimir 2019
+ * @author     TechnoWich 2019
  * @link       https://wpulike.com
  */
 
@@ -83,12 +83,7 @@
 						</td>
 						<td>
 						<?php
-							if( $data_row->status == 'like'){
-								echo '<i class="wp-ulike-icons-thumb_up"></i>';
-							}
-							else{
-								echo '<i class="wp-ulike-icons-thumb_down"></i>';
-							}
+							echo $data_row->status;
 						?>
 						</td>
 						<td>

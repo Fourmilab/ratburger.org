@@ -3,7 +3,7 @@
  * WP ULike myCred support Class
  * 
  * @package    wp-ulike
- * @author     Alimir 2019
+ * @author     TechnoWich 2019
  * @link       https://wpulike.com
  */
 
@@ -60,13 +60,10 @@ if ( class_exists( 'myCRED_Hook' ) ) :
 		 */
 		public function status( $id , $key, $user_id, $status ) {
 
-			switch ( $status ) {
-				case 'like':
-					$this->like( $id , $key, $user_id );
-					break;
-
-				default:
-					$this->unlike( $id , $key, $user_id );
+			if( strpos( $status, 'un') === 0 ) {
+				$this->like( $id , $key, $user_id );
+			} else {
+				$this->unlike( $id , $key, $user_id );
 			}
 
 		}

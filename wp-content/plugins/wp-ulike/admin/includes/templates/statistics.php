@@ -3,7 +3,7 @@
  * Statistics page template
  * 
  * @package    wp-ulike
- * @author     Alimir 2019
+ * @author     TechnoWich 2019
  * @link       https://wpulike.com
  */
 
