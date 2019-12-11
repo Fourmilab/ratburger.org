@@ -762,17 +762,17 @@ if( ! function_exists( 'wp_ulike_get_options_info' ) ){
 	}
 }
 
-if( ! function_exists( 'wp_ulike_get_counter_value' ) ){
+if( ! function_exists( 'wp_ulike_get_counter_value_info' ) ){
 	/**
-	 * Get counter value
+	 * Get counter value info
 	 *
 	 * @param integer $ID
 	 * @param string $type
 	 * @param string $status
 	 * @param boolean $is_distinct
-	 * @return integer
+	 * @return WP_Error[]|integer
 	 */
-	function wp_ulike_get_counter_value( $ID, $type, $status = 'like', $is_distinct = true ){
+	function wp_ulike_get_counter_value_info( $ID, $type, $status = 'like', $is_distinct = true ){
 		global $wpdb;
 
 		$status = ltrim( $status, 'un');
@@ -802,6 +802,21 @@ if( ! function_exists( 'wp_ulike_get_counter_value' ) ){
 	}
 }
 
+if( ! function_exists( 'wp_ulike_get_counter_value' ) ){
+	/**
+	 * Get counter value
+	 *
+	 * @param integer $ID
+	 * @param string $type
+	 * @param string $status
+	 * @param boolean $is_distinct
+	 * @return integer
+	 */
+	function wp_ulike_get_counter_value( $ID, $type, $status = 'like', $is_distinct = true ){
+		$counter_info = wp_ulike_get_counter_value_info( $ID, $type, $status, $is_distinct );
+		return ! is_wp_error( $counter_info ) ? $counter_info : 0;
+	}
+}
 
 if( ! function_exists( 'wp_ulike_get_table_info' ) ){
 	/**
@@ -913,7 +928,7 @@ if( ! function_exists( 'wp_ulike_get_most_liked_posts' ) ){
 	 * Get most liked posts in query
 	 *
 	 * @param integer $numberposts
-	 * @param string $post_type
+	 * @param array|string $post_type
 	 * @param string $method
 	 * @param string $period
 	 * @param string $status
@@ -991,8 +1006,7 @@ if( ! function_exists( 'wp_ulike_get_post_likes' ) ){
 	 * @return          String
 	 */
 	function wp_ulike_get_post_likes( $post_ID, $status = 'like' ){
-		$value = wp_ulike_get_counter_value( $post_ID, 'post', $status );
-		return ! is_wp_error( $value ) ? $value : 0;
+		return wp_ulike_get_counter_value( $post_ID, 'post', $status );
 	}
 }
 
@@ -1167,8 +1181,7 @@ if( ! function_exists( 'wp_ulike_get_comment_likes' ) ){
 	 * @return          String
 	 */
 	function wp_ulike_get_comment_likes( $comment_ID ){
-		$value = wp_ulike_get_counter_value( $comment_ID, 'comment' );
-		return ! is_wp_error( $value ) ? $value : 0;
+		return wp_ulike_get_counter_value( $comment_ID, 'comment' );
 	}
 }
 
