@@ -542,7 +542,12 @@ function bp_notifications_get_notifications_for_user( $user_id, $format = 'strin
 	 */
 	return apply_filters( 'bp_core_get_notifications_for_user', $renderable, $user_id, $format );
 }
-/* END RATBURGER LOCAL CODE */
+/* RATBURGER LOCAL CODE
+   The entire function above, bp_notifications_get_notifications_for_user(), is
+   local code.  We have preserved internal local code sentinels to mark
+   changes from what was the original code before the function was
+   replaced in BuddyPress 3.0.0 and we replaced it with this version.
+   END RATBURGER LOCAL CODE */
 
 /** Delete ********************************************************************/
 
