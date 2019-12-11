@@ -79,7 +79,7 @@ function add_quote_button($output) {
 		/* RATBURGER LOCAL CODE
 		   We don't need this.
 		$button .= 'try { addComment.moveForm(\'div-comment-'.get_comment_ID().'\', \''.get_comment_ID().'\', \'respond\', \''.get_the_ID().'\'); } catch(e) {}; ';
-		*/
+		   END RATBURGER LOCAL CODE */
 		$button .= 'return false;">';
 		$button .= "" . get_option('quote_comments_title') . "";
 		
@@ -96,7 +96,7 @@ function add_quote_button($output) {
 			$button .= 'return false;">';
 			$button .= "" . get_option('quote_comments_replytitle') . "";
 		}
-		*/
+		   END RATBURGER LOCAL CODE */
 		
 		
 		// close anchor link if body text (if using get comment time, this </a> is already here due to a bug)

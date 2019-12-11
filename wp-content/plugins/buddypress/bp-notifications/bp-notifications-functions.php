@@ -353,7 +353,7 @@ function RB_OBSOLETE_bp_notifications_get_notifications_for_user( $user_id = 0 )
    marked as local code to distinguish them from the base code and
    make it easier to identify the changes required if they are
    eventually integrated into the new version of this function.
-*/
+   END RATBURGER LOCAL CODE */
 function bp_notifications_get_notifications_for_user( $user_id, $format = 'string' ) {
 
 	// Setup local variables.

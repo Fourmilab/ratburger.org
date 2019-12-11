@@ -373,6 +373,7 @@ class Walker_Comment extends Walker {
                 		return;
             		}
         	}
+            /* END RATBURGER LOCAL CODE */
 
 		$commenter = wp_get_current_commenter();
 		if ( $commenter['comment_author_email'] ) {

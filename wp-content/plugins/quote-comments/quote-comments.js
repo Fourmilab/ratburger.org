@@ -304,7 +304,7 @@ function inlinereply(postid, author, commentarea, commentID, mce) {
 
 	}
 }
-*/
+   END RATBURGER LOCAL CODE */
 
 
 function addQuote(comment,quote){

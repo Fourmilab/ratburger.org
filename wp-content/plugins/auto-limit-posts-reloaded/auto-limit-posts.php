@@ -88,7 +88,7 @@ function alpr_replace_content($content)
 				if ($alpr_post_linktext != "" && $alpr_share == "on"){
 					echo " <a id='alpr' style='visibility:visible;".$alpr_style.";' href='" .get_permalink(). "'>".$alpr_post_linktext."</a> | <a id='alpr' style='visibility:visible;".$alpr_style.";' target='_blank' href='https://www.socializer.info/share.asp?docurl=" .get_permalink(). "&doctitle=".get_the_title()."'>".$alpr_post_sharetext."</a>" ;
 				}
-                */
+                   END RATBURGER LOCAL CODE */
 				if ($alpr_post_linktext != "" && $alpr_share != "on"){
                     /* RATBURGER LOCAL CODE
                        Disable id='alpr'.  It's a duplicate
