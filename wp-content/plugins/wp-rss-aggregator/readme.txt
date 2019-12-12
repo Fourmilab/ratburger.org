@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 4.17
+Stable tag: 4.17.1
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -258,6 +258,11 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 
 == Changelog ==
+
+= 4.17.1 (2019-12-12) =
+
+**Fixed**
+- The new slug option was appearing on the edit pages for posts of all types.
 
 = 4.17 (2019-12-11) =
 
