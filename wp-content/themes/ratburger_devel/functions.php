@@ -1309,6 +1309,16 @@ function RB_fix_link_targets($ctext) {
     return preg_replace_callback("|(<a\s+)([^>]*)(>)|im",
         function($m) {
 
+            /*  If the link contains class="more-link", this
+                is a link to "Continue reading" the a post of
+                which this is the excerpt.  We wish to open
+                the full post in the same tab/window, so we
+                skip modification of the target here.  */
+
+            if (strpos($m[2], "class=\"more-link\"") !== FALSE) {
+                return $m[0];
+            }
+
             /*  If the link contains a target attribute,
                 extract the target name.  */
 
