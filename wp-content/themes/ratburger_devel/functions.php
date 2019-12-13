@@ -1372,4 +1372,10 @@ function RB_open_post_links_in_new_tab($ptext) {
 
    add_filter("the_content", "RB_open_post_links_in_new_tab", 97);
 
+/*  Disable periodic nagging of administrators to confirm
+    their E-mail addresses.  This idiotic "feature" was added
+    in WordPress 5.3.  This one-liner gets rid of it.  */
+
+add_filter("admin_email_check_interval", "__return_false");
+
 /* END RATBURGER LOCAL CODE */
