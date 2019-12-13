@@ -3,7 +3,7 @@ Contributors: wpforms, jaredatch, smub, slaFFik
 Tags: smtp, wp mail smtp, wordpress smtp, gmail smtp, sendgrid smtp, mailgun smtp, mail, mailer, phpmailer, wp_mail, email, mailgun, sengrid, gmail, wp smtp
 Requires at least: 4.9
 Tested up to: 5.3
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 Requires PHP: 5.3
 
 The most popular WordPress SMTP and PHP Mailer plugin. Trusted by over 1 million sites.
@@ -219,6 +219,10 @@ By all means please contact us to discuss features or options you'd like to see 
 6. Send a Test Email
 
 == Changelog ==
+
+= 1.8.1 - 2019-12-13 =
+* Fixed: Revert Guzzle version to 6.4.1 because Sendinblue and Gmail mailers may experience issues under certain circumstances while sending emails (not all sites are affected).
+* Fixed: Make compatible the WordPress PhpMailer class inline attachments management with the Sendgrid API.
 
 = 1.8.0 - 2019-12-12 =
 * Added: New recommended mailer: Pepipost.

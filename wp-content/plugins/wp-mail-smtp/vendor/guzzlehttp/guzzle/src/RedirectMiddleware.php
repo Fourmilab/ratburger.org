@@ -76,7 +76,7 @@ class RedirectMiddleware
     /**
      * @param RequestInterface  $request
      * @param array             $options
-     * @param ResponseInterface $response
+     * @param ResponseInterface|PromiseInterface $response
      *
      * @return ResponseInterface|PromiseInterface
      */
@@ -118,11 +118,6 @@ class RedirectMiddleware
         return $promise;
     }
 
-    /**
-     * Enable tracking on promise.
-     *
-     * @return PromiseInterface
-     */
     private function withTracking(PromiseInterface $promise, $uri, $statusCode)
     {
         return $promise->then(
@@ -140,13 +135,6 @@ class RedirectMiddleware
         );
     }
 
-    /**
-     * Check for too many redirects
-     *
-     * @return void
-     *
-     * @throws TooManyRedirectsException Too many redirects.
-     */
     private function guardMax(RequestInterface $request, array &$options)
     {
         $current = isset($options['__redirect_count'])
@@ -184,7 +172,7 @@ class RedirectMiddleware
         // would do.
         $statusCode = $response->getStatusCode();
         if ($statusCode == 303 ||
-            ($statusCode <= 302 && !$options['allow_redirects']['strict'])
+            ($statusCode <= 302 && $request->getBody() && !$options['allow_redirects']['strict'])
         ) {
             $modify['method'] = 'GET';
             $modify['body'] = '';

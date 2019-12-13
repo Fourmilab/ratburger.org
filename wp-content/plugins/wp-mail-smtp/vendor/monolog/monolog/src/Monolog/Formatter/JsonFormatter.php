@@ -145,7 +145,7 @@ class JsonFormatter extends NormalizerFormatter
             return 'Over 9 levels deep, aborting normalization';
         }
 
-        if (is_array($data)) {
+        if (is_array($data) || $data instanceof \Traversable) {
             $normalized = array();
 
             $count = 1;
@@ -186,7 +186,7 @@ class JsonFormatter extends NormalizerFormatter
         $data = array(
             'class' => Utils::getClass($e),
             'message' => $e->getMessage(),
-            'code' => (int) $e->getCode(),
+            'code' => $e->getCode(),
             'file' => $e->getFile().':'.$e->getLine(),
         );
 

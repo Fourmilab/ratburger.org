@@ -273,12 +273,14 @@ class Mailer extends MailerAbstract {
 				continue;
 			}
 
+			$filetype = str_replace( ';', '', trim( $attachment[4] ) );
+
 			$data[] = array(
-				'content'     => base64_encode( $file ),
-				'type'        => $attachment[4],
-				'filename'    => $attachment[2],
-				'disposition' => $attachment[6],
-				'content_id'  => $attachment[7],
+				'content'     => base64_encode( $file ), // string, 1 character.
+				'type'        => $filetype, // string, no ;, no CRLF.
+				'filename'    => empty( $attachment[2] ) ? 'file-' . wp_hash( microtime() ) . '.' . $filetype : trim( $attachment[2] ), // required string, no CRLF.
+				'disposition' => in_array( $attachment[6], array( 'inline', 'attachment' ), true ) ? $attachment[6] : 'attachment', // either inline or attachment.
+				'content_id'  => empty( $attachment[7] ) ? '' : trim( (string) $attachment[7] ), // string, no CRLF.
 			);
 		}
 
