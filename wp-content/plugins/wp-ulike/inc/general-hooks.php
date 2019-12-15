@@ -473,7 +473,7 @@ if( defined( 'BP_VERSION' ) ) {
                    secondary_item_id and that this may be removed
                    when the notification generation code is modified
                    to fetch it from there.)
-                        'component_action'  => 'wp_ulike' . $type . '_action',
+						'component_action'  => 'wp_ulike' . $type . '_action',
                 */
                         'component_action'  => 'wp_ulike' . $type . '_action_' . $user_ID,
                 /* END RATBURGER LOCAL CODE */
@@ -1055,8 +1055,21 @@ if( ! function_exists( 'wp_ulike_purge_wp_fastest_cache' ) && class_exists( 'WpF
 					}
 				}
 			}
-		} elseif( $type === '_liked' ){
-			$cache_interface->singleDeleteCache( false, $ID );
+		} elseif( in_array( $type, array( '_liked', '_commentliked' ) ) ){
+			$comment_id = false;
+			$post_id    = $ID;
+			if( $type === '_commentliked' ){
+				$comment = get_comment( $ID );
+				if( isset( $comment->comment_post_ID ) ){
+					$comment_id = $ID;
+					$post_id = $comment->comment_post_ID;
+				} else {
+					$post_id = NULL;
+				}
+			}
+			if( ! empty( $post_id ) ){
+				$cache_interface->singleDeleteCache( $comment_id, $post_id );
+			}
 		}
 
 	}
