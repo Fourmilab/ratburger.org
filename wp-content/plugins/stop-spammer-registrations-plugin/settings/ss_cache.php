@@ -7,15 +7,12 @@ if ( ! current_user_can( 'manage_options' ) ) {
 }
 
 ss_fix_post_vars();
-$stats = ss_get_stats();
+$stats   = ss_get_stats();
 extract( $stats );
 $now     = date( 'Y/m/d H:i:s', time() + ( get_option( 'gmt_offset' ) * 3600 ) );
 $options = ss_get_options();
 extract( $options );
-$trash   = SS_PLUGIN_URL . 'images/trash.png';
-$tdown   = SS_PLUGIN_URL . 'images/tdown.png';
-$tup     = SS_PLUGIN_URL . 'images/tup.png'; // fix this
-$whois   = SS_PLUGIN_URL . 'images/whois.png'; // fix this
+// temp: not used in file
 $nonce   = "";
 $ajaxurl = admin_url( 'admin-ajax.php' );
 
@@ -57,7 +54,7 @@ if ( wp_verify_nonce( $nonce, 'ss_stopspam_update' ) ) {
 		echo "<div class='notice notice-success'><p>Cache Cleared</p></div>";
 	}
 
-	$msg = '<div class="notice notice-success"><p>Options Updated</p></div>';
+	$msg = '<div class="notice notice-success is-dismissible"><p>Options Updated</p></div>';
 }
 
 $nonce = wp_create_nonce( 'ss_stopspam_update' );
@@ -68,13 +65,23 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
 	if ( ! empty( $msg ) ) {
 		echo "$msg";
 	} ?>
-    <p>Whenever a user tries to leave a comment, register, or login, they are recorded in the Good Cache if they pass or the Bad Cache if they fail. If a user is blocked from access, they are added to the Bad Cache. You can see the caches here. The caches clear themselves over time, but if you are getting lots of spam it is a good idea to clear these out manually by pressing the "Clear Cache" button.</p>
+    <p>Whenever a user tries to leave a comment, register, or login, they are
+        recorded in the Good Cache if they pass or the Bad Cache if they fail.
+        If a user is blocked from access, they are added to the Bad Cache. You
+        can see the caches here. The caches clear themselves over time, but if
+        you are getting lots of spam it is a good idea to clear these out
+        manually by pressing the "Clear Cache" button.</p>
     <form method="post" action="">
-        <input type="hidden" name="update_options" value="update"/>
-        <input type="hidden" name="ss_stop_spammers_control" value="<?php echo $nonce; ?>"/>
+        <input type="hidden" name="update_options" value="update" />
+        <input type="hidden" name="ss_stop_spammers_control" value="<?php echo $nonce; ?>" />
         <fieldset>
-            <legend><span style="font-weight:bold;font-size:1.2em">Bad Cache Size</span></legend>
-            <p>You can change the number of entries to keep in your history and cache. The size of these items is an issue and will cause problems with some WordPress installations. It is best to keep these small.</p>
+            <legend>
+				<span style="font-weight:bold;font-size:1.2em">Bad Cache Size</span>
+            </legend>
+            <p>You can change the number of entries to keep in your history and
+                cache. The size of these items is an issue and will cause
+                problems with some WordPress installations. It is best to keep
+                these small.</p>
             Bad IP Cache Size: <select name="ss_sp_cache">
                 <option value="0" <?php
 				if ( $ss_sp_cache == '0' ) {
@@ -112,12 +119,20 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
 				} ?>>200
                 </option>
             </select>
-            <p>Select the number of items to save in the bad IP cache. Avoid making this too big as it can cause the plugin to run out of memory.</p>
+            <p>Select the number of items to save in the bad IP cache. Avoid
+                making this too big as it can cause the plugin to run out of
+                memory.</p>
         </fieldset>
         <br />
         <fieldset>
-            <legend><span style="font-weight:bold;font-size:1.2em">Good Cache Size</span></legend>
-            <p>The good cache should be set to just a few entries. The first time a spammer hits your site he may not be well-known and once he gets in the Good Cache he can hit your site without being checked again. Increasing the size of the cache means a spammer has more opportunities to hit your site without a new check.</p>
+            <legend>
+				<span style="font-weight:bold;font-size:1.2em">Good Cache Size</span>
+            </legend>
+            <p>The good cache should be set to just a few entries. The first
+                time a spammer hits your site he may not be well-known and once
+                he gets in the Good Cache he can hit your site without being
+                checked again. Increasing the size of the cache means a spammer
+                has more opportunities to hit your site without a new check.</p>
             Good Cache Size:
             <select name="ss_sp_good">
                 <option value="1" <?php
@@ -173,7 +188,7 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
             </select>
         </fieldset>
         <br />
-        <p class="submit"><input class="button-primary" value="Save Changes" type="submit"/></p>
+        <p class="submit"><input class="button-primary" value="Save Changes" type="submit" /></p>
     </form>
 	<?php
 	if ( count( $badips ) == 0 && count( $goodips ) == 0 ) {
@@ -182,9 +197,9 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
 		?>
         <h2>Cached Values</h2>
         <form method="post" action="">
-            <input type="hidden" name="ss_stop_spammers_control" value="<?php echo $nonce; ?>"/>
-            <input type="hidden" name="ss_stop_clear_cache" value="true"/>
-            <p class="submit"><input class="button-primary" value="Clear the Cache" type="submit"/></p>
+            <input type="hidden" name="ss_stop_spammers_control" value="<?php echo $nonce; ?>" />
+            <input type="hidden" name="ss_stop_clear_cache" value="true" />
+            <p class="submit"><input class="button-primary" value="Clear the Cache" type="submit" /></p>
         </form>
         <table>
             <tr>
@@ -212,29 +227,8 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
 					?>
                     <td valign="top" id="badips"><?php
 						// use the be_load to get badips
-						$options = ss_get_options();
-						$stats   = ss_get_stats();
-						$show    = be_load( 'ss_get_bcache', 'x', $stats, $options );
-						/*
-						$show='';
-						$cont='badips';
-						foreach ( $badips as $key => $value ) {
-						$show.="<a href=\"https://www.stopforumspam.com/search?q=$key\" target=\"_stopspam\">$key: $value</a> ";
-						
-						// try ajax on the delete from bad cache
-						
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','delete_bcache','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Delete $key from Cache\" alt=\"Delete $key from Cache\" ><img src=\"$trash\" height=\"16px\" /></a> ";
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','add_black','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Add to $key Deny List\" alt=\"Add to Deny List\" ><img src=\"$tdown\" height=\"16px\" /></a> ";
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','add_white','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Add to $key Allow List\" alt=\"Add to Allow List\" ><img src=\"$tup\" height=\"16px\" /></a> ";
-						$who="<a title=\"Look Up WHOIS\" target=\"_stopspam\" href=\"https://lacnic.net/cgi-bin/lacnic/whois?lg=EN&query=$key\"><img src=\"$whois\" height=\"16px\" /></a> ";
-						$show.=$who;
-						$show.="<br />";
-						}
-						
-						*/
+						$show = be_load( 'ss_get_bcache', 'x', $stats,
+							$options );
 						echo $show;
 						?></td>
 					<?php
@@ -247,26 +241,8 @@ $nonce = wp_create_nonce( 'ss_stopspam_update' );
 					?>
                     <td valign="top" id="goodips"><?php
 						// use the be_load to get badips
-						$options = ss_get_options();
-						$stats   = ss_get_stats();
-						$show    = be_load( 'ss_get_gcache', 'x', $stats, $options );
-						/*$show='';
-						$cont='goodips';
-						foreach ( $goodips as $key => $value ) {
-						$show.="<a href=\"https://www.stopforumspam.com/search?q=$key\" target=\"_stopspam\">$key: $value</a> ";
-						
-						// try ajax on the delete from bad cache
-						
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','delete_gcache','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Delete $key from Cache\" alt=\"Delete $key from Cache\" ><img src=\"$trash\" height=\"16px\" /></a> ";
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','add_black','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Add to $key Deny List\" alt=\"Add to Deny List\" ><img src=\"$tdown\" height=\"16px\" /></a> ";
-						$onclick="onclick=\"sfs_ajax_process( '$key','$cont','add_white','$ajaxurl' );return false;\"";
-						$show.=" <a href=\"\" $onclick title=\"Add to $key Allow List\" alt=\"Add to Allow List\" ><img src=\"$tup\" height=\"16px\" /></a> ";
-						$show.="<br />";
-						}
-						
-						*/
+						$show = be_load( 'ss_get_gcache', 'x', $stats,
+							$options );
 						echo $show;
 						?></td>
 					<?php

@@ -6,7 +6,7 @@ $options = ss_get_options();
 if ( $options['addtoallowlist'] == 'Y' ) {
 	ss_sfs_check_admin(); // adds user to Allow List
 }
-// admin vs. mu admin
+// admin vs mu admin
 if ( SS_MU == 'Y' ) {
 	add_action( 'mu_rightnow_end', 'ss_sp_rightnow' );
 	add_filter( 'network_admin_plugin_action_links_' . plugin_basename( __FILE__ ), 'ss_sp_plugin_action_links' );
@@ -20,21 +20,22 @@ if ( SS_MU == 'Y' ) {
 }
 add_action( 'network_admin_menu', 'ss_admin_menu' );
 add_filter( 'comment_row_actions', 'ss_row', 1, 2 );
-// add_action('wp_ajax_nopriv_sfs_sub', 'sfs_handle_ajax_sub');	
+// add_action( 'wp_ajax_nopriv_sfs_sub', 'sfs_handle_ajax_sub' );	
 add_action( 'wp_ajax_sfs_sub', 'sfs_handle_ajax_sub' );
 // new replacement for multiple AJAX hooks
-// add_action('wp_ajax_nopriv_sfs_process', 'sfs_handle_ajax_sfs_process');	
+// add_action( 'wp_ajax_nopriv_sfs_process', 'sfs_handle_ajax_sfs_process' );	
 add_action( 'wp_ajax_sfs_process', 'sfs_handle_ajax_sfs_process' );
 add_action( 'manage_users_custom_column', 'ss_sfs_ip_column', 10, 3 );
 // the uninstall hook only gets set if user is logged in and can manage options (plugins)
 if ( function_exists( 'register_uninstall_hook' ) ) {
 // uncomment this or when we go to beta
-// register_uninstall_hook(__FILE__, 'ss_sfs_reg_uninstall');
+// register_uninstall_hook( __FILE__, 'ss_sfs_reg_uninstall' );
 }
 // do this only if a valid IP and not Cloudflare
 add_action( 'admin_enqueue_scripts', 'sfs_handle_ajax' );
 function sfs_handle_ajax() {
-	wp_enqueue_script( 'stop-spammers', SS_PLUGIN_URL . 'js/sfs_handle_ajax.js', false );
+	wp_enqueue_script( 'stop-spammers', SS_PLUGIN_URL . 'js/sfs_handle_ajax.js',
+		false );
 }
 
 function ss_sp_plugin_action_links( $links, $file ) {
@@ -59,10 +60,8 @@ function ss_sp_rightnow() {
 	extract( $stats );
 	$options = ss_get_options();
 	if ( $spmcount > 0 ) {
-// steal the Akismet stats CSS format 
 // get the path to the plugin
-		echo "<p>Stop Spammers has prevented <strong>$spmcount</strong> spammers from registering or leaving comments.";
-		echo "</p>";
+		echo "<p>Stop Spammers has prevented <strong>$spmcount</strong> spammers from registering or leaving comments.</p>";
 	}
 	if ( count( $wlrequests ) == 1 ) {
 		echo "<p><strong>" . count( $wlrequests ) . "</strong> user has been denied access and <a href='admin.php?page=ss_allowrequests'>requested</a> that you add them to the Allow List.</p>";
@@ -72,19 +71,19 @@ function ss_sp_rightnow() {
 }
 
 function ss_row( $actions, $comment ) {
-	$options = get_option( 'ss_stop_sp_reg_options' ); // for some reason the main call is not available?
-	$apikey  = $options['apikey'];
-	$email   = urlencode( $comment->comment_author_email );
-	$ip      = $comment->comment_author_IP;
-	$action  = "";
+	$options  = get_option( 'ss_stop_sp_reg_options' ); // for some reason the main call is not available?
+	$apikey   = $options['apikey'];
+	$email    = urlencode( $comment->comment_author_email );
+	$ip       = $comment->comment_author_IP;
+	$action   = "";
 // $action.="|";
 // $action.="<a title=\"Check Project HoneyPot\" target=\"_stopspam\" href=\"https://www.projecthoneypot.org/search_ip.php?ip=$ip\">Check HoneyPot</a>";
 // add the network check
 	$whois    = SS_PLUGIN_URL . 'images/whois.png';
-	$who      = "<a title=\"Look Up WHOIS\" target=\"_stopspam\" href=\"https://lacnic.net/cgi-bin/lacnic/whois?lg=EN&query=$ip\"><img src=\"$whois\" height=\"16px\"/></a>";
+	$who      = "<a title=\"Look Up WHOIS\" target=\"_stopspam\" href=\"https://lacnic.net/cgi-bin/lacnic/whois?lg=EN&query=$ip\"><img src=\"$whois\" height=\"16px\" /></a>";
 	$stophand = SS_PLUGIN_URL . 'images/stop.png';
-	$stop     = "<a title=\"Check Stop Forum Spam (SFS)\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/search.php?q=$ip\"><img src=\"$stophand\" height=\"16px\"/> </a>";
-	$action   .= " $who $stop";
+	$stop     = "<a title=\"Check Stop Forum Spam (SFS)\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/search.php?q=$ip\"><img src=\"$stophand\" height=\"16px\" /> </a>";
+	$action  .= " $who $stop";
 // now add the report function
 	$email = urlencode( $comment->comment_author_email );
 	if ( empty( $email ) ) {
@@ -100,7 +99,8 @@ function ss_row( $actions, $comment ) {
 	if ( empty( $evidence ) ) {
 		$evidence = '';
 	}
-	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', $content, $post, PREG_PATTERN_ORDER );
+	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',
+		$content, $post, PREG_PATTERN_ORDER );
 	if ( is_array( $post ) && is_array( $post[1] ) ) {
 		$urls1 = array_unique( $post[1] );
 	} else {
@@ -174,7 +174,7 @@ function sfs_handle_ajax_sub( $data ) {
 		echo " No Options Set";
 		exit();
 	}
-// print_r($options);
+// print_r( $options );
 	extract( $options );
 // get the comment_id parameter	
 	$comment_id = urlencode( $_GET['comment_id'] );
@@ -206,10 +206,10 @@ function sfs_handle_ajax_sub( $data ) {
 			exit();
 		}
 	}
-// print_r($comment);
-	$email   = urlencode( $comment['comment_author_email'] );
-	$uname   = urlencode( $comment['comment_author'] );
-	$ip_addr = $comment['comment_author_IP'];
+// print_r( $comment );
+	$email    = urlencode( $comment['comment_author_email'] );
+	$uname    = urlencode( $comment['comment_author'] );
+	$ip_addr  = $comment['comment_author_IP'];
 // code added as per Paul at Stop Forum Spam
 	$content  = $comment['comment_content'];
 	$evidence = $comment['comment_author_url'];
@@ -221,7 +221,8 @@ function sfs_handle_ajax_sub( $data ) {
 	if ( empty( $evidence ) ) {
 		$evidence = '';
 	}
-	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', $content, $post, PREG_PATTERN_ORDER );
+	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',
+		$content, $post, PREG_PATTERN_ORDER );
 	$urls1 = array();
 	$urls2 = array();
 	if ( is_array( $post ) && is_array( $post[1] ) ) {
@@ -250,7 +251,7 @@ function sfs_handle_ajax_sub( $data ) {
 	}
 	$hget = "https://www.stopforumspam.com/add.php?ip_addr=$ip_addr&api_key=$apikey&email=$email&username=$uname&evidence=$evidence";
 // echo $hget;
-	$ret = ss_read_file( $hget );
+	$ret  = ss_read_file( $hget );
 	if ( stripos( $ret, 'data submitted successfully' ) !== false ) {
 		echo $ret;
 	} else if ( stripos( $ret, 'recent duplicate entry' ) !== false ) {
@@ -262,7 +263,8 @@ function sfs_handle_ajax_sub( $data ) {
 }
 
 function sfs_get_urls( $content ) {
-	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', $content, $post, PREG_PATTERN_ORDER );
+	preg_match_all( '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',
+		$content, $post, PREG_PATTERN_ORDER );
 	$urls1 = array();
 	$urls2 = array();
 	$urls3 = array();
@@ -348,13 +350,13 @@ function sfs_handle_ajax_sfs_process_watch( $data ) {
 	$ip        = $_GET['ip'];
 	$container = $_GET['cont'];
 	$func      = $_GET['func'];
-// echo "error $ip, $func, $container,".print_r($_GET,true);exit();
+// echo "error $ip, $func, $container," . print_r( $_GET, true ) ;exit();
 // container is blank, goodips, badips or log
 // func is add_black, add_white, delete_gcache or delete_bcache
 	$options = ss_get_options();
 	$stats   = ss_get_stats();
-// $stats,$options);
-	$ansa = array();
+// $stats, $options );
+	$ansa    = array();
 	switch ( $func ) {
 		case 'delete_gcache':
 // deletes a Good Cache item
@@ -449,21 +451,22 @@ function ss_sfs_ip_column( $value, $column_name, $user_id ) {
 		$signup_ip2 = $signup_ip;
 		$ipline     = "";
 		if ( ! empty( $signup_ip ) ) {
-			$ipline = apply_filters( 'ip2link', $signup_ip2 ); // if the ip2link plugin is installed
+			$ipline = apply_filters( 'ip2link',
+				$signup_ip2 ); // if the ip2link plugin is installed
 // now add the check 
 			$user_info   = get_userdata( $user_id );
 			$useremail   = urlencode( $user_info->user_email ); // for reporting
 			$userurl     = urlencode( $user_info->user_url );
 			$username    = $user_info->display_name;
-			$stopper     = "<a title=\"Check Stop Forum Spam (SFS)\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/search.php?q=$signup_ip\"><img src=\"$stophand\" height=\"16px\"/></a>";
-			$honeysearch = "<a title=\"Check Project HoneyPot\" target=\"_stopspam\" href=\"https://www.projecthoneypot.org/ip_$signup_ip\"><img src=\"$search\" height=\"16px\"/></a>";
-			$botsearch   = "<a title=\"Check BotScout\" target=\"_stopspam\" href=\"https://botscout.com/search.htm?stype=q&sterm=$signup_ip\"><img src=\"$search\" height=\"16px\"/></a>";
-			$who         = "<br /><a title=\"Look Up WHOIS\" target=\"_stopspam\" href=\"https://lacnic.net/cgi-bin/lacnic/whois?lg=EN&query=$signup_ip\"><img src=\"$whois\" height=\"16px\"/></a>";
+			$stopper     = "<a title=\"Check Stop Forum Spam (SFS)\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/search.php?q=$signup_ip\"><img src=\"$stophand\" height=\"16px\" /></a>";
+			$honeysearch = "<a title=\"Check Project HoneyPot\" target=\"_stopspam\" href=\"https://www.projecthoneypot.org/ip_$signup_ip\"><img src=\"$search\" height=\"16px\" /></a>";
+			$botsearch   = "<a title=\"Check BotScout\" target=\"_stopspam\" href=\"https://botscout.com/search.htm?stype=q&sterm=$signup_ip\"><img src=\"$search\" height=\"16px\" /></a>";
+			$who         = "<br /><a title=\"Look Up WHOIS\" target=\"_stopspam\" href=\"https://lacnic.net/cgi-bin/lacnic/whois?lg=EN&query=$signup_ip\"><img src=\"$whois\" height=\"16px\" /></a>";
 			$action      = " $who $stopper $honeysearch $botsearch";
 			$options     = ss_get_options();
 			$apikey      = $options['apikey'];
 			if ( ! empty( $apikey ) ) {
-				$report = "<a title=\"Report to SFS\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/add.php?username=$username&email=$useremail&ip_addr=$signup_ip&evidence=$userurl&api_key=$apikey\"><img src=\"$stophand\" height=\"16px\"/></a>";
+				$report  = "<a title=\"Report to SFS\" target=\"_stopspam\" href=\"https://www.stopforumspam.com/add.php?username=$username&email=$useremail&ip_addr=$signup_ip&evidence=$userurl&api_key=$apikey\"><img src=\"$stophand\" height=\"16px\" /></a>";
 				$action .= $report;
 			}
 

@@ -4,10 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class ss_check_white extends be_module {
-	public function process( $ip, &$stats = array(), &$options = array(), &$post = array() ) {
+	public function process(
+		$ip, &$stats = array(), &$options = array(), &$post = array()
+	) {
 		$email = $post['email'];
-// $p=print_r($post,true);
-// if ($post['email']=='tester@tester.com') {
+// $p=print_r( $post,true );
+// if ( $post['email']=='tester@tester.com' ) {
 // return false; // use to test plugin
 // }
 // can't ever block local server because of cron jobs
@@ -17,15 +19,17 @@ class ss_check_white extends be_module {
 		$addons = apply_filters( 'ss_addons_allow', $addons );
 // these are the allow before addons
 // returns array 
-// [0]=class location,[1]=class name (also used as counter),[2]=addon name,
+// [0]=class location, [1]=class name (also used as counter), [2]=addon name,
 // [3]=addon author, [4]=addon description
 		if ( ! empty( $addons ) && is_array( $addons ) ) {
 			foreach ( $addons as $add ) {
 				if ( ! empty( $add ) && is_array( $add ) ) {
-					$reason = be_load( $add, ss_get_ip(), $stats, $options, $post );
+					$reason = be_load( $add, ss_get_ip(), $stats, $options,
+						$post );
 					if ( $reason !== false ) {
 // need to log a passed hit on post here
-						ss_log_good( ss_get_ip(), $reason, $add[1], $add ); // added get IP because it might be altered
+						ss_log_good( ss_get_ip(), $reason, $add[1],
+							$add ); // added get IP because it might be altered
 
 						return $reason;
 					}
@@ -35,7 +39,8 @@ class ss_check_white extends be_module {
 // checks the list of Allow List items according to the options being set
 // if Cloudflare or IP is local then the deny tests for IPs are not done
 		$actions = array(
-			'chkcloudflare', // moved back as first check because it fixes the IP if it is Cloudflare
+			'chkcloudflare',
+			// moved back as first check because it fixes the IP if it is Cloudflare
 			'chkadminlog',
 			'chkaws',
 			'chkgcache',
@@ -45,7 +50,7 @@ class ss_check_white extends be_module {
 			'chkpaypal',
 			'chkform',
 			'chkscripts',
-// 'chkvalidip', // handled in deny testing
+            // 'chkvalidip', // handled in deny testing
 			'chkwlem',
 			'chkwluserid',
 			'chkwlist',
@@ -66,7 +71,7 @@ class ss_check_white extends be_module {
 		}
 // these are the allow after addons
 // returns array 
-// [0]=class location,[1]=class name (also used as counter),[2]=addon name,
+// [0]=class location, [1]=class name (also used as counter), [2]=addon name,
 // [3]=addon author, [4]=addon description
 		return false;
 	}

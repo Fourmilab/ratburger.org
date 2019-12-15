@@ -96,26 +96,24 @@ function sfs_debug_msg( $msg ) {
 	if ( ! $debug ) {
 		return;
 	}
-	$now = date( 'Y/m/d H:i:s', time() + ( get_option( 'gmt_offset' ) * 3600 ) );
+	$now = date( 'Y/m/d H:i:s',
+		time() + ( get_option( 'gmt_offset' ) * 3600 ) );
 // get the program that is running
-	$sname = $_SERVER["REQUEST_URI"];
-	if ( empty( $sname ) ) {
-		$sname = $_SERVER["SCRIPT_NAME"];
-	}
-	$f = '';
-	$f = @fopen( SS_PLUGIN_DATA . ".sfs_debug_output.txt", 'a' );
-	if ( empty( $f ) ) {
-		return false;
-	}
-	@fwrite( $f, $now . ": " . $sname . ", " . $msg . ", " . $ip . "\r\n" );
-	@fclose( $f );
+	$sname = ( ! empty( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI']
+		: $_SERVER['SCRIPT_NAME'] );
+
+	@file_put_contents( SS_PLUGIN_DATA . ".sfs_debug_output.txt"
+		, "$now : $sname , $msg  ,  $ip \r\n"
+		, FILE_APPEND
+	);
+
 }
 
 function sfs_ErrorHandler( $errno, $errmsg, $filename, $linenum, $vars ) {
 // write the answers to the file
 // we are only concerned with the errors and warnings, not the notices
-// if ($errno==E_NOTICE || $errno==E_WARNING) return false;
-// if ($errno==2048) return; // WordPress throws deprecated all over the place
+// if ( $errno == E_NOTICE || $errno == E_WARNING ) return false;
+// if ( $errno == 2048 ) return; // WordPress throws deprecated all over the place
 	$serrno = "";
 	if (
 		( strpos( $filename, 'ss' ) === false )
@@ -144,7 +142,8 @@ function sfs_ErrorHandler( $errno, $errmsg, $filename, $linenum, $vars ) {
 	if ( strpos( $errmsg, 'modify header information' ) ) {
 		return false;
 	}
-	$now = date( 'Y/m/d H:i:s', time() + ( get_option( 'gmt_offset' ) * 3600 ) );
+	$now = date( 'Y/m/d H:i:s',
+		time() + ( get_option( 'gmt_offset' ) * 3600 ) );
 	$m1  = memory_get_usage( true );
 	$m2  = memory_get_peak_usage( true );
 	$ip  = ss_get_ip();
@@ -160,7 +159,8 @@ Memory Used, Peak: $m1, $m2
 ---------------------
 ";
 // write out the error
-	@file_put_contents( SS_PLUGIN_DATA . '.sfs_debug_output.txt', $msg, FILE_APPEND );
+	@file_put_contents( SS_PLUGIN_DATA . '.sfs_debug_output.txt', $msg,
+		FILE_APPEND );
 
 	return false;
 }

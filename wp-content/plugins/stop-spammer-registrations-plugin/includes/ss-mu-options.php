@@ -1,6 +1,6 @@
 <?php
 /*
-sfr-mu-options.php
+ss-mu-options.php
 provides mu support to the Stop Spammers plugin
 this hooks the options functions of WP in order to update one option from blog #1`
 */
