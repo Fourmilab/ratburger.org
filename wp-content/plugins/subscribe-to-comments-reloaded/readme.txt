@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.3
-Stable tag: 191209
+Stable tag: 191217
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,10 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+= v191217 =
+* **Improvement** Option to enable/disable the plugin from setting cookies (email address after subscription)
+* **Improvement** German translation improvements (thanks to Niklas Haupt)
+
 = v191209 =
 * **Improvement** Logged in users no longer need to submit the "email" form on a subscription page in order to access their subscriptions
 * **Improvement** Ability to filter/search the subscriptions table ( WP admin > StCR > Manage Subscriptions ) when there are more than 1000 subscriptions
