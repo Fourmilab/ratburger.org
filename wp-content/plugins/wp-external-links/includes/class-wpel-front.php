@@ -149,6 +149,10 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         $atts = $matches[ 1 ];
         $label = $matches[ 2 ];
 
+        if(strpos($atts,'href') === false){
+            return $original_link;
+        }
+
         $created_link = $this->get_created_link( $label, $atts );
 
         if ( false === $created_link ) {
@@ -271,12 +275,12 @@ final class WPEL_Front extends WPRun_Base_1x0x0
         }
 
         // add "sponsored"
-        if ( $this->opt( 'rel_sponsored', $type ) ) {
+        if ( 'external-links' === $type && $this->opt( 'rel_sponsored', $type ) ) {
             $link->add_to_attr( 'rel', 'sponsored' );
         }
 
         // add "ugc"
-        if ( $this->opt( 'rel_ugc', $type ) ) {
+        if ( 'external-links' === $type && $this->opt( 'rel_ugc', $type ) ) {
             $link->add_to_attr( 'rel', 'ugc' );
         }
 

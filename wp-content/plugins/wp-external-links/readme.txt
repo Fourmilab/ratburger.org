@@ -1,10 +1,10 @@
 === External Links - nofollow, noopener & new window ===
-Contributors: WebFactory, UnderConstructionPage, googlemapswidget, securityninja, wpreset
+Contributors: WebFactory, UnderConstructionPage, googlemapswidget, wpreset
 Tags: new window, new tab, external links, nofollow, noopener, ugc, sponsored, follow, dofollow, seo, noreferrer, internal links, target, links, link, internal link, external link
 Requires at least: 4.2
 Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 2.40
+Stable tag: 2.42
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -243,6 +243,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.42 =
+ * 2019-12-18
+ * fixed various undefined variable notices
+ * fixed an issue when there’s no href attribute set in an A element
+ 
 = 2.40 =
  * 2019-11-20
  * no longer loads CSS and FontAwesome globally on admin pages

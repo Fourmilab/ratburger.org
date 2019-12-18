@@ -179,7 +179,7 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
             }
         } else if ( isset( $this->tabs[ $type ][ 'fields' ] ) ) {
             $option_values = $this->tabs[ $type ][ 'fields' ]->get_option_values();
-            return $option_values[ $key ];
+            return @$option_values[ $key ];
         }
 
         trigger_error( 'Option value "'. $key .'" cannot be found.' );
