@@ -2496,6 +2496,7 @@ function wp_ajax_upload_attachment() {
 
 	if ( isset( $_REQUEST['post_id'] ) ) {
 		$post_id = $_REQUEST['post_id'];
+
 		/* RATBURGER LOCAL CODE
 		   Allow users who can edit posts to upload media in comments
 		   even on posts for which they are not the author.
