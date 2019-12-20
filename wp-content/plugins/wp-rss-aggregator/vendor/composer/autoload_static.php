@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit796829dbff036dfa1f01a56da70a551a
+class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -587,6 +587,7 @@ class ComposerStaticInit796829dbff036dfa1f01a56da70a551a
         'RebelCode\\Wpra\\Core\\Modules\\BlacklistToolModule' => __DIR__ . '/../..' . '/src/Modules/BlacklistToolModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\BulkAddToolModule' => __DIR__ . '/../..' . '/src/Modules/BulkAddToolModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\CoreModule' => __DIR__ . '/../..' . '/src/Modules/CoreModule.php',
+        'RebelCode\\Wpra\\Core\\Modules\\CronsToolModule' => __DIR__ . '/../..' . '/src/Modules/CronsToolModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\CustomFeedModule' => __DIR__ . '/../..' . '/src/Modules/CustomFeedModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\FeedBlacklistModule' => __DIR__ . '/../..' . '/src/Modules/FeedBlacklistModule.php',
         'RebelCode\\Wpra\\Core\\Modules\\FeedDisplayModule' => __DIR__ . '/../..' . '/src/Modules/FeedDisplayModule.php',
@@ -629,6 +630,7 @@ class ComposerStaticInit796829dbff036dfa1f01a56da70a551a
         'RebelCode\\Wpra\\Core\\RestApi\\EndPoints\\FeedTemplates\\GetTemplatesEndPoint' => __DIR__ . '/../..' . '/src/RestApi/EndPoints/FeedTemplates/GetTemplatesEndPoint.php',
         'RebelCode\\Wpra\\Core\\RestApi\\EndPoints\\FeedTemplates\\PatchTemplateEndPoint' => __DIR__ . '/../..' . '/src/RestApi/EndPoints/FeedTemplates/PatchTemplateEndPoint.php',
         'RebelCode\\Wpra\\Core\\RestApi\\EndPoints\\FeedTemplates\\RenderTemplateEndPoint' => __DIR__ . '/../..' . '/src/RestApi/EndPoints/FeedTemplates/RenderTemplateEndPoint.php',
+        'RebelCode\\Wpra\\Core\\RestApi\\EndPoints\\Handlers\\GetEntityHandler' => __DIR__ . '/../..' . '/src/RestApi/EndPoints/Handlers/GetEntityHandler.php',
         'RebelCode\\Wpra\\Core\\RestApi\\Transformers\\RecursiveToArrayTransformer' => __DIR__ . '/../..' . '/src/RestApi/Transformers/RecursiveToArrayTransformer.php',
         'RebelCode\\Wpra\\Core\\Templates\\Feeds\\FeedTemplateType' => __DIR__ . '/../..' . '/src/Templates/Feeds/FeedTemplateType.php',
         'RebelCode\\Wpra\\Core\\Templates\\Feeds\\LegacyDisplayTemplate' => __DIR__ . '/../..' . '/src/Templates/Feeds/LegacyDisplayTemplate.php',
@@ -1077,10 +1079,10 @@ class ComposerStaticInit796829dbff036dfa1f01a56da70a551a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit796829dbff036dfa1f01a56da70a551a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit796829dbff036dfa1f01a56da70a551a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit796829dbff036dfa1f01a56da70a551a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit796829dbff036dfa1f01a56da70a551a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$classMap;
 
         }, null, ClassLoader::class);
     }
