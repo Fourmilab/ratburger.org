@@ -58,7 +58,7 @@ function bp_activity_format_notifications( $action, $item_id, $secondary_item_id
 				$link = add_query_arg( 'rid', (int) $id, bp_activity_get_permalink( $activity_id ) );
                                 /* RATBURGER LOCAL CODE
                                    Add group name to commented on update message	
-			        $text = sprintf( __( '%1$s commented on one of your updates', 'buddypress' ), $user_fullname );
+				$text = sprintf( __( '%1$s commented on one of your updates', 'buddypress' ), $user_fullname );
 				*/
 				$RB_grp = new BP_Groups_Group((new BP_Activity_Activity((new BP_Activity_Activity($activity_id))->item_id))->item_id);
 				$text = sprintf( __( '%1$s commented on one of your updates in group %2$s', 'buddypress' ), $user_fullname, $RB_grp->name );
