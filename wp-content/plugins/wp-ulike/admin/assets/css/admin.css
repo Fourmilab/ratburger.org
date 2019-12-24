@@ -483,3 +483,23 @@ tr.hide-label td {
   margin-left: 25px;
   margin-right: 0;
 }
+.rtl .wp-ulike-pro-stats-banner .wp-ulike-inner:before {
+  left: 5%;
+  right: 40%;
+  background-position: bottom left;
+}
+.rtl .wp-ulike-go-pro-page h2 {
+  text-align: right;
+}
+.rtl .wp-ulike-go-pro-page .wp-ulike-btn {
+  margin-left: 15px;
+  margin-right: 0;
+}
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > thead > tr > th,
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > thead > tr > td,
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > tbody > tr > th,
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > tbody > tr > td,
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > tfoot > tr > th,
+.rtl .wp-ulike-go-pro-page .wp-ulike-simple-table > tfoot > tr > td {
+  text-align: right;
+}
