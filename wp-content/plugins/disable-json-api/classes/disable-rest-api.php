@@ -206,6 +206,10 @@ class Disable_REST_API {
 	private function get_wp_error( $access ) {
 		$error_message = esc_html__( 'DRA: Only authenticated users can access the REST API.', 'disable-json-api' );
 
+/* RATBURGER LOCAL CODE
+   Log REST API crack attempts.  */
+RB_dumpvar("REST API crack attempt from", $_SERVER["REMOTE_ADDR"]);
+/* END RATBURGER LOCAL CODE */
 		if ( is_wp_error( $access ) ) {
 			$access->add( 'rest_cannot_access', $error_message, array( 'status' => rest_authorization_required_code() ) );
 
