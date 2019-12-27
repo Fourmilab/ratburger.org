@@ -4,7 +4,7 @@ Tags: new window, new tab, external links, nofollow, noopener, ugc, sponsored, f
 Requires at least: 4.2
 Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 2.42
+Stable tag: 2.43
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -243,6 +243,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.43 =
+ * 2019-12-27
+ * improved link detection regex
+ 
 = 2.42 =
  * 2019-12-18
  * fixed various undefined variable notices

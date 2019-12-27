@@ -125,7 +125,7 @@ final class WPEL_Front extends WPRun_Base_1x0x0
          */
         $content = apply_filters( '_wpel_before_filter', $content );
 
-        $regexp_link = '/<a[^A-Za-z](.*?)>(.*?)<\/a[\s+]*>/is';
+        $regexp_link = '/<a[^A-Za-z>](.*?)>(.*?)<\/a[\s+]*>/is';
 
         $content = preg_replace_callback( $regexp_link, $this->get_callback( 'match_link' ), $content );
 
