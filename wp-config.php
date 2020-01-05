@@ -84,6 +84,13 @@ define('WP_DEBUG', false);
 define('AUTOMATIC_UPDATER_DISABLED', true);     // Disables all remote updates
 /* END RATBURGER LOCAL CODE */
 
+/* RATBURGER LOCAL CODE
+   Disable script load optimisation in the "Inline Spoilers"
+   plug-in so that spoilers work in comments on posts which do
+   not, themselves, include spoilers. */
+define('IS_OPTIMIZE_LOADER', false);
+/* END RATBURGER LOCAL CODE */
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
