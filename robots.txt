@@ -25,6 +25,13 @@ Disallow: /
 User-agent: MauiBot
 Disallow: /
 
+# SEMrushBot is up to no good and shows up in log-in
+# storm denial of service attacks.  In December 2019,
+# it accounted for more than 6% of all hits on the
+# site.
+User-agent: SemrushBot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
