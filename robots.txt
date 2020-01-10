@@ -32,6 +32,12 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
+# SemrushBot-BA is a mutant variant of SEMrushBot coming
+# from Cyprus which doesn't seem to respect our exclusion
+# of its parent strain.
+User-agent: SemrushBot-BA
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
