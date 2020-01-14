@@ -38,6 +38,22 @@ Disallow: /
 User-agent: SemrushBot-BA
 Disallow: /
 
+# Bingbot abuses the site, hitting very rapidly and retrieving
+# tag pages which cause a great deal of database overhead and
+# rendering computation.  Enough of it.
+User-agent: bingbot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+# I've seen bingbot hit the site (heavily) from an IP address
+# from which queries for robots.txt are being issued by a
+# user agent calling itself "msnbot".  Let's try blocking it
+# as well and see if it shuts up bingbot.
+User-agent: msnbot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
