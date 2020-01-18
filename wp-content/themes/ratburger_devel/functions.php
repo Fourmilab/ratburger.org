@@ -844,6 +844,72 @@ function rb_notif_delete_all_read() {
     }
 }
 
+/*  Prune expired notifications
+
+    Some users do not pay attention to notifications,
+    neither clicking through them (which marks them read)
+    or manually clearing them.  This can result in a huge
+    number of notifications being displayed on every
+    page in the notification drop-down menu.  Code in:
+        ~/plug/buddypress/bp-notifications/bp-notifications-adminbar.php
+    calls this function when it observes a suspiciously
+    large number of notifications queued for a user.  It
+    scans the notifications and deletes any which was
+    originally posted more than $exptime in seconds
+    ago.
+
+    We delete the notifications rather than marking them
+    read because a user who ignores unread notifications
+    is unlikely to visit or be inclined to clear up ones
+    marked as read.
+
+*/
+
+function rb_notif_prune($exptime) {
+    global $current_user;
+    $num_notif = 0;
+    $num_pruned = 0;
+    $num_failed = 0;
+
+    if (bp_has_notifications(
+            array('is_new' => 1,                // Retrieve only unread notifications
+                  'max' => false,
+                  'per_page' => 10000000))) {
+        while (bp_the_notifications()) {
+            $num_notif++;
+            $notif = bp_the_notification();
+            $notif_id = bp_get_the_notification_id();
+                $RB_time = explode(':', str_replace(' ', ':', bp_get_the_notification_date_notified()));
+                $RB_date = explode('-', str_replace(' ', '-', bp_get_the_notification_date_notified()));
+                $RB_not_time  = gmmktime((int) $RB_time[1], (int) $RB_time[2], (int) $RB_time[3],
+                                     (int) $RB_date[1], (int) $RB_date[2], (int) $RB_date[0]);
+            $RB_not_age = time() - $RB_not_time;
+            if (($RB_not_age) > $exptime) {
+                /*  Note that we can't use bp_notifications_delete_notification() here
+                    because it requires to be called in the context of a profile
+                    page.  We must call the lower level delete method here in order
+                    to bypass that check.  */
+                if (BP_Notifications_Notification::delete(array('id' => $notif_id))) {
+                    $num_pruned++;
+ //error_log("rb_notif_prune " . print_r($notif_id, TRUE) .
+ //    "  age " . print_r($RB_not_age, TRUE) .
+ //    "  date " . print_r($RB_not_time, TRUE) .
+ //    "  " . print_r(bp_get_the_notification_description(), TRUE));
+                } else {
+                    $num_failed = 0;
+                    RB_dumpvar("rb_notif_prune cannot delete", $notif_id);
+                }
+            }
+        }
+error_log("rb_notif_prune: " . print_r(bp_loggedin_user_id(), TRUE) .
+    " (" . $current_user->user_login . ")" .
+    "  Notifications: " . print_r($num_notif, TRUE) . ", " .
+        print_r($num_pruned, TRUE) . " pruned, " .
+        print_r($num_failed, TRUE) . " failed.");
+        return $num_pruned;
+    }
+}
+
 /*  Change expiration date for "Remember Me" cookie from 14
     to 180 days.  */
 
