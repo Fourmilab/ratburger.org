@@ -202,6 +202,13 @@
 
     /* RATBURGER LOCAL CODE */
 
+    //  Test if we're running on a page logged into my account
+
+    function RB_me() {
+        return document.getElementById("wp-admin-bar-user-info").innerHTML.match(/<span\s+class="username">\s*(\w+)\s*</)[1] ==
+            "johnwalker";
+    }
+
     /*  The following implements the automatic update of
         notifications in the administration toolbar.  If the
         document contains our hidden "RB_notif_update" iframe,
@@ -242,6 +249,7 @@
 
     //  Update the notification information in the admin bar
 
+    //  OBSOLETE  -- REMOVE WHEN RB-NOTIFICATIONS PLUG-IN PERMANENT
     function RB_updateNotifications() {
 //console.log("Tick...");
         /*  We update only if:
@@ -296,6 +304,7 @@
         guarantees we'll have had plenty of time for the page
         to load before we need to reference elements within it.  */
 
+if (0) {    // DISABLED: REPLACED BY RB-NOTIFICATIONS PLUG-IN
     if (!RB_inIframe()) {
         RB_notif_timer = window.setTimeout(RB_updateNotifications, RB_notif_interval);
         //  Set last update to initial page load time
@@ -317,5 +326,5 @@
         }
     }
 //else { console.log("In iframe--notification timer not started"); }
-
+}
     /* END RATBURGER LOCAL CODE */
