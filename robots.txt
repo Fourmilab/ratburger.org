@@ -54,6 +54,11 @@ Disallow: /
 User-agent: msnbot
 Disallow: /
 
+# BLEXBot hits the site hard and nobody knows who is
+# running it.  It comes from tacky locations.
+User-agent: BLEXBot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
