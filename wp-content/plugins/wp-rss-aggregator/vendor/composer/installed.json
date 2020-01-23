@@ -30,7 +30,8 @@
             "MIT"
         ],
         "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-        "homepage": "https://github.com/container-interop/container-interop"
+        "homepage": "https://github.com/container-interop/container-interop",
+        "abandoned": "psr/container"
     },
     {
         "name": "container-interop/service-provider",
@@ -812,7 +813,8 @@
                 "email": "development@dhii.co"
             }
         ],
-        "description": "Common abstract functionality for output renderers."
+        "description": "Common abstract functionality for output renderers.",
+        "abandoned": true
     },
     {
         "name": "dhii/output-renderer-base",
@@ -868,21 +870,22 @@
                 "email": "development@dhii.co"
             }
         ],
-        "description": "Base concrete functionality for output rendering."
+        "description": "Base concrete functionality for output rendering.",
+        "abandoned": true
     },
     {
         "name": "dhii/output-renderer-interface",
-        "version": "v0.3-alpha2",
-        "version_normalized": "0.3.0.0-alpha2",
+        "version": "v0.3",
+        "version_normalized": "0.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Dhii/output-renderer-interface.git",
-            "reference": "de48ea589e5e1caa1191f588a3aea7623ccbaf44"
+            "reference": "407014d7fd1af0427958f2acd61aff008ee9e032"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Dhii/output-renderer-interface/zipball/de48ea589e5e1caa1191f588a3aea7623ccbaf44",
-            "reference": "de48ea589e5e1caa1191f588a3aea7623ccbaf44",
+            "url": "https://api.github.com/repos/Dhii/output-renderer-interface/zipball/407014d7fd1af0427958f2acd61aff008ee9e032",
+            "reference": "407014d7fd1af0427958f2acd61aff008ee9e032",
             "shasum": ""
         },
         "require": {
@@ -901,7 +904,7 @@
         "suggest": {
             "dhii/container-helper-base": "Useful for reading data from different context types uniformly"
         },
-        "time": "2018-06-02T18:49:35+00:00",
+        "time": "2019-11-14T11:20:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1273,17 +1276,17 @@
     },
     {
         "name": "erusev/parsedown",
-        "version": "1.7.3",
-        "version_normalized": "1.7.3.0",
+        "version": "1.7.4",
+        "version_normalized": "1.7.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/erusev/parsedown.git",
-            "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7"
+            "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/erusev/parsedown/zipball/6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
-            "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
+            "url": "https://api.github.com/repos/erusev/parsedown/zipball/cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+            "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
             "shasum": ""
         },
         "require": {
@@ -1293,7 +1296,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35"
         },
-        "time": "2019-03-17T18:48:37+00:00",
+        "time": "2019-12-30T22:54:17+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1612,17 +1615,17 @@
     },
     {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.12.0",
-        "version_normalized": "1.12.0.0",
+        "version": "v1.13.1",
+        "version_normalized": "1.13.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "550ebaac289296ce228a706d0867afc34687e3f4"
+            "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/550ebaac289296ce228a706d0867afc34687e3f4",
-            "reference": "550ebaac289296ce228a706d0867afc34687e3f4",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+            "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
             "shasum": ""
         },
         "require": {
@@ -1631,11 +1634,11 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2019-08-06T08:03:45+00:00",
+        "time": "2019-11-27T13:56:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.12-dev"
+                "dev-master": "1.13-dev"
             }
         },
         "installation-source": "dist",
@@ -1729,17 +1732,17 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.39.0",
-        "version_normalized": "1.39.0.0",
+        "version": "v1.41.0",
+        "version_normalized": "1.41.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "44890db076c3f0db2bb627a81b246b617bd2413a"
+            "reference": "575cd5028362da591facde1ef5d7b94553c375c9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/44890db076c3f0db2bb627a81b246b617bd2413a",
-            "reference": "44890db076c3f0db2bb627a81b246b617bd2413a",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/575cd5028362da591facde1ef5d7b94553c375c9",
+            "reference": "575cd5028362da591facde1ef5d7b94553c375c9",
             "shasum": ""
         },
         "require": {
@@ -1751,11 +1754,11 @@
             "symfony/debug": "^2.7",
             "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
         },
-        "time": "2019-04-16T12:35:10+00:00",
+        "time": "2019-05-14T11:59:08+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.39-dev"
+                "dev-master": "1.41-dev"
             }
         },
         "installation-source": "dist",

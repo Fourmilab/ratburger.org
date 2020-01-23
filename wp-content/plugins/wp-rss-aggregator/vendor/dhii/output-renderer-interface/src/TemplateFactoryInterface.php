@@ -7,21 +7,21 @@ use Dhii\Factory\FactoryInterface;
 /**
  * Something that can create templates.
  *
- * @since [*next-version*]
+ * @since 0.3
  */
 interface TemplateFactoryInterface extends FactoryInterface
 {
     /**
      * The make config key that holds the template, which the new instance will represent.
      *
-     * @since [*next-version*]
+     * @since 0.3
      */
     const K_TEMPLATE = 'template';
 
     /**
      * {@inheritdoc}
      *
-     * @since [*next-version*]
+     * @since 0.3
      *
      * @return TemplateInterface The new template.
      */

@@ -7,21 +7,21 @@ use Dhii\Factory\FactoryInterface;
 /**
  * Something that can create blocks.
  *
- * @since [*next-version*]
+ * @since 0.3
  */
 interface BlockFactoryInterface extends FactoryInterface
 {
     /**
      * The make config key that holds the content of the block.
      *
-     * @since [*next-version*]
+     * @since 0.3
      */
     const K_CONTENT = 'content';
 
     /**
      * {@inheritdoc}
      *
-     * @since [*next-version*]
+     * @since 0.3
      *
      * @return BlockInterface The new block
      */

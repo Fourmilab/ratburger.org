@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
+class ComposerStaticInit46c8b76c439f86ad826af1a4d36b4e60
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -105,9 +105,9 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         ),
         'Dhii\\Validation\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/validation-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/validation-abstract/src',
-            2 => __DIR__ . '/..' . '/dhii/validation-base/src',
+            0 => __DIR__ . '/..' . '/dhii/validation-abstract/src',
+            1 => __DIR__ . '/..' . '/dhii/validation-base/src',
+            2 => __DIR__ . '/..' . '/dhii/validation-interface/src',
         ),
         'Dhii\\Util\\String\\' => 
         array (
@@ -123,14 +123,14 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         ),
         'Dhii\\Stats\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/stats-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
+            0 => __DIR__ . '/..' . '/dhii/stats-abstract/src',
+            1 => __DIR__ . '/..' . '/dhii/stats-interface/src',
         ),
         'Dhii\\Output\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/output-renderer-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/output-renderer-abstract/src',
-            2 => __DIR__ . '/..' . '/dhii/output-renderer-base/src',
+            0 => __DIR__ . '/..' . '/dhii/output-renderer-abstract/src',
+            1 => __DIR__ . '/..' . '/dhii/output-renderer-base/src',
+            2 => __DIR__ . '/..' . '/dhii/output-renderer-interface/src',
         ),
         'Dhii\\Iterator\\' => 
         array (
@@ -138,8 +138,8 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         ),
         'Dhii\\I18n\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/i18n-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/i18n-helper-base/src',
+            0 => __DIR__ . '/..' . '/dhii/i18n-helper-base/src',
+            1 => __DIR__ . '/..' . '/dhii/i18n-interface/src',
         ),
         'Dhii\\Factory\\' => 
         array (
@@ -147,14 +147,14 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         ),
         'Dhii\\Exception\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/exception-interface/src',
-            1 => __DIR__ . '/..' . '/dhii/exception/src',
+            0 => __DIR__ . '/..' . '/dhii/exception/src',
+            1 => __DIR__ . '/..' . '/dhii/exception-interface/src',
         ),
         'Dhii\\Di\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/di-interface/src',
+            0 => __DIR__ . '/..' . '/dhii/di/src',
             1 => __DIR__ . '/..' . '/dhii/di-abstract/src',
-            2 => __DIR__ . '/..' . '/dhii/di/src',
+            2 => __DIR__ . '/..' . '/dhii/di-interface/src',
         ),
         'Dhii\\Data\\Container\\' => 
         array (
@@ -162,9 +162,9 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         ),
         'Dhii\\Collection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dhii/collections-interface/src',
+            0 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
             1 => __DIR__ . '/..' . '/dhii/collections-abstract-base/src',
-            2 => __DIR__ . '/..' . '/dhii/collections-abstract/src',
+            2 => __DIR__ . '/..' . '/dhii/collections-interface/src',
         ),
         'DI\\' => 
         array (
@@ -727,6 +727,7 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         'Twig\\Node\\EmbedNode' => __DIR__ . '/..' . '/twig/twig/src/Node/EmbedNode.php',
         'Twig\\Node\\Expression\\AbstractExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/AbstractExpression.php',
         'Twig\\Node\\Expression\\ArrayExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/ArrayExpression.php',
+        'Twig\\Node\\Expression\\ArrowFunctionExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/ArrowFunctionExpression.php',
         'Twig\\Node\\Expression\\AssignNameExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/AssignNameExpression.php',
         'Twig\\Node\\Expression\\Binary\\AbstractBinary' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Binary/AbstractBinary.php',
         'Twig\\Node\\Expression\\Binary\\AddBinary' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Binary/AddBinary.php',
@@ -826,6 +827,7 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
         'Twig\\Test\\NodeTestCase' => __DIR__ . '/..' . '/twig/twig/src/Test/NodeTestCase.php',
         'Twig\\Token' => __DIR__ . '/..' . '/twig/twig/src/Token.php',
         'Twig\\TokenParser\\AbstractTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/AbstractTokenParser.php',
+        'Twig\\TokenParser\\ApplyTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/ApplyTokenParser.php',
         'Twig\\TokenParser\\AutoEscapeTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/AutoEscapeTokenParser.php',
         'Twig\\TokenParser\\BlockTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/BlockTokenParser.php',
         'Twig\\TokenParser\\DeprecatedTokenParser' => __DIR__ . '/..' . '/twig/twig/src/TokenParser/DeprecatedTokenParser.php',
@@ -1079,10 +1081,10 @@ class ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit1ed1f237c7c03e77bb8213b884aea306::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit46c8b76c439f86ad826af1a4d36b4e60::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit46c8b76c439f86ad826af1a4d36b4e60::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit46c8b76c439f86ad826af1a4d36b4e60::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit46c8b76c439f86ad826af1a4d36b4e60::$classMap;
 
         }, null, ClassLoader::class);
     }
