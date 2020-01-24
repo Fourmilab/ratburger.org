@@ -901,11 +901,11 @@ function rb_notif_prune($exptime) {
                 }
             }
         }
-error_log("rb_notif_prune: " . print_r(bp_loggedin_user_id(), TRUE) .
-    " (" . $current_user->user_login . ")" .
-    "  Notifications: " . print_r($num_notif, TRUE) . ", " .
-        print_r($num_pruned, TRUE) . " pruned, " .
-        print_r($num_failed, TRUE) . " failed.");
+//error_log("rb_notif_prune: " . print_r(bp_loggedin_user_id(), TRUE) .
+//    " (" . $current_user->user_login . ")" .
+//    "  Notifications: " . print_r($num_notif, TRUE) . ", " .
+//        print_r($num_pruned, TRUE) . " pruned, " .
+//        print_r($num_failed, TRUE) . " failed.");
         return $num_pruned;
     }
 }
