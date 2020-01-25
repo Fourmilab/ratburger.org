@@ -29,6 +29,11 @@ Order Deny,Allow
 Deny from all
 </Files>
 
+<Files .git>
+Order Deny,Allow
+Deny from all
+</Files>
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
