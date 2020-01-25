@@ -1454,4 +1454,13 @@ function RB_open_post_links_in_new_tab($ptext) {
 
 add_filter("admin_email_check_interval", "__return_false");
 
+/*  Unconditionally prohibit trackbacks/pingbacks regardless
+    of whether the post says they're accepted.  */
+
+function RB_disable_pingbacks($open, $post_id) {
+    return false;
+}
+
+add_filter("pings_open", "RB_disable_pingbacks", 10, 2);
+
 /* END RATBURGER LOCAL CODE */
