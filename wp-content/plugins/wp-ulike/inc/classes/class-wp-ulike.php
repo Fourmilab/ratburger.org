@@ -3,7 +3,7 @@
  * WP ULike Process Class
  * 
  * @package    wp-ulike
- * @author     TechnoWich 2019
+ * @author     TechnoWich 2020
  * @link       https://wpulike.com
  */
 
@@ -53,11 +53,8 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 		 * @return			String
 		 */
 		public function wp_get_ulike( array $data ){
-			//get loggin method option
-			$loggin_method = wp_ulike_get_setting( $data['setting'], 'logging_method' );
-
 			//Select the logging functionality
-			switch( $loggin_method ){
+			switch( $data['logging_method'] ){
 				case 'do_not_log':
 					return $this->do_not_log_method( $data );
 					break;
@@ -148,7 +145,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 
 			if( $type == 'post' ){
 
-				if( $this->has_permission( $data, 'by_cookie' ) ){
+				if( $this->has_permission( $data ) ){
 					$output = $this->get_template( $data, 1 );
 				}
 				else{
@@ -157,7 +154,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 
 			} elseif( $type == 'process' ) {
 
-				if( $this->has_permission( $data, 'by_cookie' ) ){
+				if( $this->has_permission( $data ) ){
 					$this->update_status( $factor, $user_status, true );
 					// Set cookie
 					setcookie( $cookie . $id, time(), 2147483647, '/' );
@@ -319,7 +316,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 		 * @param string $method
 		 * @return boolean
 		 */
-		public function has_permission( $args, $logging_method ){
+		public function has_permission( $args ){
 			// Extract data
 			extract( $args );
 
@@ -377,9 +374,9 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 			} else {
 				$button_class_name .= ' wp_ulike_put_text';
 				if($status == 2 && strpos( $user_status, 'dis') !== 0){
-					$button_text = wp_ulike_get_button_text( 'button_text_u' );
+					$button_text = wp_ulike_get_button_text( 'unlike', $args['setting'] );
 				} else {
-					$button_text = wp_ulike_get_button_text( 'button_text' );
+					$button_text = wp_ulike_get_button_text( 'like', $args['setting'] );
 				}
 			}
 
@@ -418,6 +415,7 @@ if ( ! class_exists( 'wp_ulike' ) ) {
 					"type"             => esc_attr( $args['method'] ),
 					"status"           => esc_attr( $status ),
 					"user_status"      => esc_attr( $user_status ),
+					"setting"      	   => esc_attr( $args['setting'] ),
 					"attributes"       => $args['attributes'],
 					"style"            => esc_html( $args['style'] ),
 					"button_type"      => esc_html( $args['button_type'] ),

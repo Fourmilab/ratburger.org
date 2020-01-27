@@ -3,7 +3,7 @@
  * Class for statistics process
  * 
  * @package    wp-ulike
- * @author     TechnoWich 2019
+ * @author     TechnoWich 2020
  * @link       https://wpulike.com
  */
 
@@ -106,8 +106,8 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 			$results = $this->select_data( $table );
 			// Create chart dataset
 			foreach( $results as $result ){
-				$output['label'][] = date_i18n( "M j, Y", strtotime( $result->labels ) );
-				$output['data'][]  = $result->counts;
+				$output['label'][] = !empty( $result->labels ) ? date_i18n( "M j, Y", strtotime( $result->labels ) ) : array();
+				$output['data'][]  = !empty( $result->counts ) ? $result->counts : array();
 			}
 			// Add chart options
 			if( ! empty( $output['data'] ) ){
@@ -196,6 +196,7 @@ if ( ! class_exists( 'wp_ulike_stats' ) ) {
 			$result = $this->wpdb->get_results( $query );
 
 			if( empty( $result ) ) {
+				$result =  new stdClass();
 				$result->labels = $result->counts = NULL;
 			}
 
