@@ -59,6 +59,11 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
+# TurnitinBot is an "anti plagiarism" crawler that sucks
+# up whole sites with no benefit to them.
+User-agent: TurnitinBot
+Disallow: /
+
 # Allow everybody else
 User-agent: *
 Allow: /
