@@ -1463,4 +1463,16 @@ function RB_disable_pingbacks($open, $post_id) {
 
 add_filter("pings_open", "RB_disable_pingbacks", 10, 2);
 
+/*  Remove the Subscribe to Comments Reloaded plug-in's
+    enabling non-logged-in visitors to the site to subscribe
+    E-mail addresses to comments.  */
+
+function RB_subscribe_reloaded_disable_visitors() {
+    global $wp_subscribe_reloaded;
+    remove_action("comment_form_must_log_in_after",
+        array($wp_subscribe_reloaded->stcr, "subscribe_reloaded_show"), 5);
+}
+
+add_action("wp_loaded", "RB_subscribe_reloaded_disable_visitors");
+
 /* END RATBURGER LOCAL CODE */
