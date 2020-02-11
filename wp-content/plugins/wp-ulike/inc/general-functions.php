@@ -1380,6 +1380,38 @@ if( ! function_exists( 'wp_ulike_date_i18n' ) ){
 	}
 }
 
+if( ! function_exists( 'wp_ulike_get_user_ip' ) ){
+	/**
+	 * Get user IP
+	 *
+	 * @return string
+	 */
+	function wp_ulike_get_user_ip(){
+		$ip = '';
+
+		if ( getenv( 'HTTP_CLIENT_IP' ) ) {
+			$ip = getenv( 'HTTP_CLIENT_IP' );
+		} elseif ( getenv( 'HTTP_X_FORWARDED_FOR' ) ) {
+			$ip = getenv( 'HTTP_X_FORWARDED_FOR' );
+		} elseif ( getenv( 'HTTP_X_FORWARDED' ) ) {
+			$ip = getenv( 'HTTP_X_FORWARDED' );
+		} elseif ( getenv( 'HTTP_FORWARDED_FOR' ) ) {
+			$ip = getenv( 'HTTP_FORWARDED_FOR' );
+		} elseif ( getenv( 'HTTP_FORWARDED' ) ) {
+			$ip = getenv( 'HTTP_FORWARDED' );
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			// Return local ip address
+			return '127.0.0.1';
+		}
+
+		return $ip;
+	}
+}
+
 if( ! function_exists( 'wp_ulike_generate_user_id' ) ){
 	/**
 	 * Convert IP to a integer value
@@ -1394,7 +1426,9 @@ if( ! function_exists( 'wp_ulike_generate_user_id' ) ){
 		if( filter_var( $user_ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
 		    return ip2long( $user_ip );
 		} else {
-		    $binary_val = '';
+			// Get non-anonymise IP address
+			$user_ip    = wp_ulike_get_user_ip();
+			$binary_val = '';
 		    foreach ( unpack( 'C*', inet_pton( $user_ip ) ) as $byte ) {
 		        $binary_val .= decbin( $byte );
 		    }
@@ -1682,6 +1716,7 @@ if( ! function_exists( 'wp_ulike_set_default_template' ) ){
 					data-ulike-id="<?php echo $ID; ?>"
 					data-ulike-nonce="<?php echo wp_create_nonce( $type . $ID ); ?>"
 					data-ulike-type="<?php echo $type; ?>"
+					data-ulike-template="<?php echo $style; ?>"
 					data-ulike-display-likers="<?php echo $display_likers; ?>"
 					data-ulike-disable-pophover="<?php echo $disable_pophover; ?>"
 					class="<?php echo $button_class; ?>">
@@ -1725,6 +1760,7 @@ if( ! function_exists( 'wp_ulike_set_simple_heart_template' ) ){
 					data-ulike-id="<?php echo $ID; ?>"
 					data-ulike-nonce="<?php echo wp_create_nonce( $type  . $ID ); ?>"
 					data-ulike-type="<?php echo $type; ?>"
+					data-ulike-template="<?php echo $style; ?>"
 					data-ulike-display-likers="<?php echo $display_likers; ?>"
 					data-ulike-disable-pophover="<?php echo $disable_pophover; ?>"
 					class="<?php echo $button_class; ?>">
@@ -1764,15 +1800,16 @@ if( ! function_exists( 'wp_ulike_set_robeen_template' ) ){
 	?>
 		<div class="wpulike wpulike-robeen <?php echo $wrapper_class; ?>" <?php echo $attributes; ?>>
 			<div class="<?php echo $general_class; ?>">
-					<label title="<?php echo esc_attr( 'like this' . $type ); ?>">
+					<label title="<?php _e( 'Like This', WP_ULIKE_SLUG ); ?>">
 					<input 	type="checkbox"
 							data-ulike-id="<?php echo $ID; ?>"
 							data-ulike-nonce="<?php echo wp_create_nonce( $type . $ID ); ?>"
 							data-ulike-type="<?php echo $type; ?>"
+							data-ulike-template="<?php echo $style; ?>"
 							data-ulike-display-likers="<?php echo $display_likers; ?>"
 							data-ulike-disable-pophover="<?php echo $disable_pophover; ?>"
 							class="<?php echo $button_class; ?>"
-							<?php echo  $status == 2  ? 'checked="checked"' : ''; ?> />
+							<?php echo in_array( $status, array( 2, 4 ) )  ? 'checked="checked"' : ''; ?> />
 					<?php do_action( 'wp_ulike_inside_like_button', $wp_ulike_template ); ?>
 					<svg class="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
 					    <g class="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
@@ -1843,6 +1880,7 @@ if( ! function_exists( 'wp_ulike_set_animated_heart_template' ) ){
 					data-ulike-id="<?php echo $ID; ?>"
 					data-ulike-nonce="<?php echo wp_create_nonce( $type  . $ID ); ?>"
 					data-ulike-type="<?php echo $type; ?>"
+					data-ulike-template="<?php echo $style; ?>"
 					data-ulike-display-likers="<?php echo $display_likers; ?>"
 					data-ulike-disable-pophover="<?php echo $disable_pophover; ?>"
 					data-ulike-append="<?php echo htmlspecialchars( '<svg class="wpulike-svg-heart wpulike-svg-heart-pop one" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop two" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop three" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop four" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop five" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop six" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop seven" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop eight" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg><svg class="wpulike-svg-heart wpulike-svg-heart-pop nine" viewBox="0 0 32 29.6"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg>' ); ?>"
