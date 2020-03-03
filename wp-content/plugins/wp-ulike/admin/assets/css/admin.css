@@ -356,6 +356,78 @@ https://wordpress.org/plugins/wp-ulike/
   padding: 0 5px;
 }
 
+.wp-ulike-simple-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 2rem;
+  background-color: transparent;
+}
+.wp-ulike-simple-table > thead > tr,
+.wp-ulike-simple-table > tbody > tr,
+.wp-ulike-simple-table > tfoot > tr {
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.wp-ulike-simple-table > thead > tr > th,
+.wp-ulike-simple-table > thead > tr > td,
+.wp-ulike-simple-table > tbody > tr > th,
+.wp-ulike-simple-table > tbody > tr > td,
+.wp-ulike-simple-table > tfoot > tr > th,
+.wp-ulike-simple-table > tfoot > tr > td {
+  text-align: left;
+  padding: 1rem;
+  vertical-align: top;
+  border-top: 0;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.wp-ulike-simple-table > thead > tr > th {
+  font-weight: 600;
+  color: #757575;
+  vertical-align: bottom;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.wp-ulike-simple-table > caption + thead > tr:first-child > th,
+.wp-ulike-simple-table > caption + thead > tr:first-child > td,
+.wp-ulike-simple-table > colgroup + thead > tr:first-child > th,
+.wp-ulike-simple-table > colgroup + thead > tr:first-child > td,
+.wp-ulike-simple-table > thead:first-child > tr:first-child > th,
+.wp-ulike-simple-table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+.wp-ulike-simple-table > tbody + tbody {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.wp-ulike-simple-table .table {
+  background-color: transparent;
+}
+.wp-ulike-simple-table .no-border {
+  border: 0;
+}
+.wp-ulike-simple-table.table-bordered {
+  border: 0;
+}
+.wp-ulike-simple-table.table-bordered > thead > tr > th,
+.wp-ulike-simple-table.table-bordered > thead > tr > td,
+.wp-ulike-simple-table.table-bordered > tbody > tr > th,
+.wp-ulike-simple-table.table-bordered > tbody > tr > td,
+.wp-ulike-simple-table.table-bordered > tfoot > tr > th,
+.wp-ulike-simple-table.table-bordered > tfoot > tr > td {
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+.wp-ulike-simple-table.table-bordered > thead > tr > th,
+.wp-ulike-simple-table.table-bordered > thead > tr > td {
+  border-bottom-width: 2px;
+}
+
+.wp-ulike-table-icon {
+  width: 18px;
+  height: 18px;
+}
+
 /**
  *	RTL support
  */
