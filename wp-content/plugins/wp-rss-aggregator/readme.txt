@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post
 Requires at least: 4.0 or higher
 Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 4.17.3
+Stable tag: 4.17.4
 License: GPLv3
 
 WP RSS Aggregator is the original & most popular WordPress solution for importing RSS feeds, auto-blogging, content curation & aggregation.
@@ -258,6 +258,32 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 
 == Changelog ==
+
+= 4.17.4 (2020-03-16) =
+**Changed**
+- The default template is now created based on type, not slug.
+
+**Fixed**
+- Templates could not be saved if the request contained extra form data.
+- The default template would be copied multiple times if a post on the site had the "default" slug.
+- Feed item title did not escape HTML entities correctly.
+- Source name and link were sometimes incorrect in the custom feed.
+- Undefined index during error handling.
+- Better error messages when an error occurs.
+
+= 4.17.3 (2020-01-23) =
+**Changed**
+- Updated code to fix deprecation warnings on PHP version 7.4 and later.
+- Updated the Twig library to version `1.41.0` to fix deprecation warnings on PHP version 7.4 and later.
+- Updated the default translation files to contain up-to-date text.
+
+**Fixed**
+- Removed a false-positive error from the log.
+- Localization in Twig templates did not work.
+- When revisions are enabled, an error would prevent feed sources from being saved.
+- Translations were being loaded from an invalid path.
+- The default featured image in the New/Edit Feed Source page did not preview after saving the feed source.
+- Missing space between the link `a` tag and the `href` attribute on PHP 7.4
 
 = 4.17.2 (2019-12-19) =
 **Added**
