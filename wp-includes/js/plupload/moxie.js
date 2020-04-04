@@ -899,6 +899,18 @@ define("moxie/core/utils/Env", [
 
 	        var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
 
+            /* RATBURGER LOCAL CODE
+               Fix user agent strings from browsers which append their
+               own innovative identities prior to the last "true name"
+               of the browser so this cretinous code does not break the
+               Upload File button in the Add Media mechanism.  This "fix"
+               is hideously fragile itself, but nothing as bad as this
+               entire snowdrift of hacks and kludges which should not exist
+               in the first place.  Without this, Safari and Brave on iOS,
+               Chromium on Ubuntu, inter alia, will not be able to upload
+               media.  */
+            ua = ua.replace(/(Gecko\)\s).*?\s(\w+\/(?:\d+\.\d*)?$)/, "$1$2");
+            /* END RATBURGER LOCAL CODE */
 	        this.getBrowser = function () {
 	            return mapper.rgx.apply(this, regexes.browser);
 	        };
