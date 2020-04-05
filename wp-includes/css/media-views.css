@@ -651,6 +651,10 @@
 }
 
 .media-router .media-menu-item {
+    /* RATBURGER LOCAL CODE
+       Fix "peek-a-boo" hiding of tabs in Add Media panel */
+    color: #124964;
+    /* END RATBURGER LOCAL CODE */
 	position: relative;
 	float: left;
 	border: 0;
@@ -1526,10 +1530,15 @@
 	display: inline-block !important;
 }
 
+/* RATBURGER LOCAL CODE
+   Disable idiot hiding of "Upload Files" button introduced
+   to improve "accessibility".  See WordPress Core
+   Changeset 47549.
 div.moxie-shim.moxie-shim-html5,
 div.moxie-shim.moxie-shim-html5 input[type="file"] {
 	display: none;
 }
+   END RATBURGER LOCAL CODE */
 
 /**
  * Selection
