@@ -452,6 +452,9 @@ class rsssl_admin extends rsssl_front_end
                     $link_close = '</a>';
 
                     printf(__("Really Simple SSL requires a valid SSL certificate. You can check your certificate on %sQualys SSL Labs%s.", "really-simple-ssl"), $link_open, $link_close);
+                    echo "<br><br>";
+                    printf(__("If your site has cPanel, you can %sget a free SSL certificate%s. ", "really-simple-ssl"), '<a target="_blank" href="https://really-simple-ssl.com/knowledge-base/how-to-install-a-free-ssl-certificate-on-your-wordpress-cpanel-hosting/">', '</a>');
+
                     ?>
                 </p>
             </div>
@@ -472,7 +475,7 @@ class rsssl_admin extends rsssl_front_end
                 <li class="message-li"><?php _e('Http references in your .css and .js files: change any http:// into //', 'really-simple-ssl'); ?></li>
                 <li class="message-li"><?php _e('Images, stylesheets or scripts from a domain without an SSL certificate: remove them or move to your own server', 'really-simple-ssl'); ?></li><?php
 
-                $backup_link = "https://freally-simple-ssl.com/knowledge-base/backing-up-your-site/";
+                $backup_link = "https://really-simple-ssl.com/knowledge-base/backing-up-your-site/";
                 $link_open = '<a target="_blank" href="'.$backup_link.'">';
                 $link_close = '</a>';
                 ?>
@@ -2695,7 +2698,7 @@ class rsssl_admin extends rsssl_front_end
                         'icon' => 'success'
                     ),
                     'no-ssl-detected' => array(
-                        'msg' => __('No SSL detected', 'really-simple-ssl'),
+	                    'msg' => sprintf(__("No SSL detected. See our guide on how to %sget a free SSL certificate%s ", "really-simple-ssl"), '<a target="_blank" href="https://really-simple-ssl.com/knowledge-base/how-to-install-a-free-ssl-certificate-on-your-wordpress-cpanel-hosting/">', '</a>'),
                         'icon' => 'warning'
                     ),
                     'ssl-detected' => array(
