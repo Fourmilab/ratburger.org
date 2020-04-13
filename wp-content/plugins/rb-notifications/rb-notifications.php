@@ -30,7 +30,8 @@
         header("Content-Type: application/json; charset=utf-8");
 
         $result = "{\n    \"source\": \"rb_notifications\",\n" .
-                  "    \"version\": \"1.0\",\n";
+                  "    \"version\": \"1.0\",\n" .
+                  "    \"status\": 200,\n";
 
         if (is_user_logged_in()) {
             $result .= "    \"user_id\": " . bp_loggedin_user_id() . ",\n";
@@ -90,12 +91,197 @@
         print($result);
     }
 
-    //  rb_notifications_query_vars  --  Register our query with the redirector
+    /*  rb_catchup  --  Scan for notifications to mark read for the
+                        item and time given by query arguments.
+                        If $counting is true, the number of items
+                        to be marked read is returned as an integer.
+                        Otherwise, the items are actually marked read
+                        and rb_notifications() is called to prepare
+                        and output a JSON list of notifications after
+                        marking those selected read.  In any case,
+                        the number marked read is returned.  */
+
+    function rb_catchup($counting = false, $co_time = 0, $co_what = "post", $co_id = 0) {
+
+        if ($counting) {
+            $rb_ca_time = $co_time;
+            $rb_ca_what = $co_what;
+            $rb_ca_id = $co_id;
+        } else {
+            //  Process arguments
+
+            //  Unix time to catch up to
+            $rb_ca_time = time();
+            if (isset($_GET["rb_ca_time"])) {
+                $rb_ca_time = intval($_GET["rb_ca_time"]);
+            }
+
+            //  Type of catch up
+            $rb_ca_what = "post";
+            if (isset($_GET["rb_ca_what"])) {
+                $rb_ca_what = $_GET["rb_ca_what"];
+            }
+
+            //  Identifier of item we're catching up
+            $rb_ca_id = 0;
+            if (isset($_GET["rb_ca_id"])) {
+                $rb_ca_id = intval($_GET["rb_ca_id"]);
+            }
+
+            //  Security hash
+            $rb_ca_hash = "";
+            if (isset($_GET["rb_ca_hash"])) {
+                $rb_ca_hash = $_GET["rb_ca_hash"];
+            }
+
+            //  Validate security hash
+
+            $reqsig = "k-" . $rb_ca_what . "-t-" .$rb_ca_time . "-i-" . $rb_ca_id;
+            if (!wp_verify_nonce($rb_ca_hash, $reqsig)) {
+                $result = "{\n    \"source\": \"rb_notifications\",\n" .
+                          "    \"version\": \"1.0\",\n" .
+                          "    \"status\": 403,\n" .
+                          "    \"error_message\": \"invalid security hash on rb_catchup request\"\n" .
+                          "}\n";
+error_log($result);
+
+                header("Content-Type: application/json; charset=utf-8");
+                print($result);
+                return;
+            }
+        }
+
+        $ntomark = 0;                       // Number to mark read
+
+        if (is_user_logged_in()) {
+            if (bp_has_notifications(
+                array("is_new" => 1,
+                      "sort_order" => "ASC",
+                      "max" => false,
+                      "per_page" => 100000000))) {
+
+                while (bp_the_notifications()) {
+
+                    $notif = bp_the_notification();
+
+                    /*  If the notification is later than the catch-up
+                        date, ignore it.  */
+
+                    $ntime = bp_get_the_notification_date_notified();
+                    $RB_time = explode(':', str_replace(' ', ':', $ntime));
+                    $RB_date = explode('-', str_replace(' ', '-', $ntime));
+                    $RB_not_time  = gmmktime((int) $RB_time[1], (int) $RB_time[2], (int) $RB_time[3],
+                                         (int) $RB_date[1], (int) $RB_date[2], (int) $RB_date[0]);
+
+                    $mark_read = FALSE;
+
+                    if ($RB_not_time < $rb_ca_time) {
+
+                        $action = bp_get_the_notification_component_action();
+                        preg_match('/wp_ulike_(.*?)_action/', $action, $type);
+
+                        //  Catching up on a post
+
+                        if ($rb_ca_what == "post") {
+
+                            //  This post liked
+
+                            if ($type[1] == "liked") {
+                                if (bp_get_the_notification_item_id() == $rb_ca_id) {
+                                    $mark_read = TRUE;          // Like of this post
+                                }
+                            }
+
+                            //  Comment on this post liked
+
+                            elseif ($type[1] == "commentliked") {
+                                if (get_comment(bp_get_the_notification_item_id())->comment_post_ID ==
+                                    $rb_ca_id) {
+                                    $mark_read = TRUE;          // Like of comment on this post
+                                }
+                            }
+
+                            //  New comment on this post
+
+                            elseif ($type[1] == "commentadded") {
+                                if (get_comment(bp_get_the_notification_item_id())->comment_post_ID ==
+                                    $rb_ca_id) {
+                                    $mark_read = TRUE;          // New comment on this post
+                                }
+                            }
+                        }
+
+                        //  Catching up on a group
+
+                        elseif ($rb_ca_what == "group") {
+
+                            //  New post in group
+
+                            if ($type[1] == "grouppost") {
+                                if (bp_get_the_notification_secondary_item_id() == $rb_ca_id) {
+                                    $mark_read = TRUE;
+                                }
+                            }
+
+                            //  New comment in group
+
+                            elseif ($type[1] == "groupcomment") {
+                                $RB_grp = (new BP_Groups_Group((new BP_Activity_Activity((new BP_Activity_Activity(bp_get_the_notification_item_id()))->item_id))->item_id))->id;
+                                if ($RB_grp == $rb_ca_id) {
+                                    $mark_read = TRUE;
+                                }
+                            }
+
+                            //  Group post or comment liked
+
+                            elseif ($type[1] == "activityliked") {
+                                $zzitem = bp_get_the_notification_item_id();
+                                $zzact = new BP_Activity_Activity($zzitem); // Activity for comment
+                                if ($zzact->type == "activity_comment") {
+                                    $zzact = new BP_Activity_Activity($zzact->item_id); // Activity for parent group
+                                }
+                                $zzgrp = new BP_Groups_Group($zzact->item_id); // Parent group object
+                                if ($zzgrp->id == $rb_ca_id) {
+                                    $mark_read = TRUE;
+                                }
+                            }
+                        }
+                    }
+
+                    if ($mark_read) {
+                        $ntomark++;
+                        if (!$counting) {
+                            /*  Note that we can't use
+                                bp_notifications_mark_notification()
+                                here because it requires to be
+                                called in the context of a profile
+                                page.  We must call the lower level
+                                update method here in order to
+                                bypass that check.  */
+                            $mr = BP_Notifications_Notification::update(
+                                            array("is_new" => false),
+                                            array("id" => bp_get_the_notification_id())
+                                      );
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!$counting) {
+            rb_notifications();
+        }
+
+        return $ntomark;
+   }
+
+    //  rb_notifications_query_vars  --  Register our queries with the redirector
 
     add_filter("query_vars", "rb_notifications_query_vars");
 
     function rb_notifications_query_vars($query_vars) {
         $query_vars[] = "rb_notifications";
+        $query_vars[] = "rb_catchup";
         return $query_vars;
     }
 
@@ -104,7 +290,10 @@
     add_action("parse_request", "rb_notifications_parse_request");
 
     function rb_notifications_parse_request($wp) {
-        if (array_key_exists("rb_notifications", $wp->query_vars)) {
+        if (array_key_exists("rb_catchup", $wp->query_vars)) {
+            rb_catchup(false);
+            die();
+        } elseif (array_key_exists("rb_notifications", $wp->query_vars)) {
             rb_notifications();
             die();
         }
@@ -116,13 +305,33 @@
     add_action("admin_enqueue_scripts", "rb_notifications_register_script");
 
     function rb_notifications_register_script() {
-//if (RB_me()) {
         //  Enqueue and register JavaScript in the footer
         wp_enqueue_script('rb_notifications', plugins_url("/js/rb-notifications.js" , __FILE__),
             array(), "1.0", true);
         //  Enqueue and register our CSS style sheet
         wp_enqueue_style('rb_notifications', plugins_url("/css/rb-notifications.css" , __FILE__),
             array(), "1.0", "all");
-//}
+    }
+
+    /*  rb_notifications_group_catchup  --  Add catch-up to BuddyPress
+                                            group navigation menu  */
+
+    if (function_exists("is_buddypress")) {     // Is BuddyPress installed ?
+        add_action("bp_group_options_nav", "rb_notifications_group_catchup");
+    }
+
+    function rb_notifications_group_catchup() {
+        $rb_markread = rb_catchup(true, time(), "group", bp_get_current_group_id());
+        if ($rb_markread > 0) {
+            $nots = ($rb_markread == 1) ? "" : "s";
+            echo("<li id=\"rb-catchup-li\"><a id='rb_bp_group_catchup' href='#' ".
+                 "onclick=\"rb_catchup('group', " .
+                        bp_get_current_group_id() . ", " . time() . ", " .
+                        "'" . wp_create_nonce("k-group-t-" . time() . "-i-" .
+                                              bp_get_current_group_id()) . "'" .
+                        "); return false;\">Clear " .
+                        $rb_markread . " notification" . $nots .
+                        "</a></li>");
+        }
     }
 ?>

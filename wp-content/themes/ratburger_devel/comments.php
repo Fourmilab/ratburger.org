@@ -21,6 +21,31 @@ if ( post_password_required() ) {
 ?>
 
 <div id="comments" class="comments-area">
+        <?php /* RATBURGER LOCAL CODE
+                 Prepare link to catch-up JavaScript handler.
+                 Note that this code must execute regardless
+                 of whether there are comments or not, as we
+                 use the link below in the no-comments case.  */
+
+            //  Determine candidates to mark read.  If nonzero, include link
+            $rb_markread = false;
+            if (($post->post_status == "publish") ||
+                ($post->post_status == "private")) {
+                $rb_markread = rb_catchup(true, time(), "post", $post->ID);
+                $rb_catchlink = "";
+                if ($rb_markread > 0) {
+                    $reqsig = "k-post-t-" . time() . "-i-" . $post->ID;
+                    $secsig = wp_create_nonce($reqsig);
+                    $nots = ($rb_markread == 1) ? "" : "s";
+                    $rb_catchlink = "<p><b><a id='rb_comment_catchup_1' " .
+                        "href='#' onclick=\"rb_catchup('post', " .
+                        $post->ID . ", " . time() . ", '" . $secsig . "'" .
+                        "); return false;\">Clear " .
+                        $rb_markread . " post notification" . $nots .
+                        ".</a></b></p>\n";
+                }
+            }
+        /* END RATBURGER LOCAL CODE */ ?>
 
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
@@ -53,15 +78,23 @@ if ( post_password_required() ) {
             rb_comments_navigation();
         /* END RATBURGER LOCAL CODE */ ?>
 
+        <?php /* RATBURGER LOCAL CODE
+                 Include link to catch-up on notifications.  */
+            //  Determine candidates to mark read.  If nonzero, include link
+            if ($rb_markread > 0) {
+                echo($rb_catchlink);
+            }
+        /* END RATBURGER LOCAL CODE */ ?>
+
 		<ol class="comment-list">
 			<?php
-				/* RATBURGER LOCAL CODE */
-				global $Ratburger_post_comment_number;
-				$Ratburger_post_comment_number = 0;
-				if (get_query_var('cpage')) {
-					$Ratburger_post_comment_number = get_query_var('comments_per_page') * (get_query_var('cpage') - 1);
-				}
-				/* END RATBURGER LOCAL CODE */
+                /* RATBURGER LOCAL CODE */
+                global $Ratburger_post_comment_number;
+                $Ratburger_post_comment_number = 0;
+                if (get_query_var('cpage')) {
+                    $Ratburger_post_comment_number = get_query_var('comments_per_page') * (get_query_var('cpage') - 1);
+                }
+                /* END RATBURGER LOCAL CODE */
 				wp_list_comments( array(
 					'style'       => 'ol',
 					'short_ping'  => true,
@@ -85,6 +118,13 @@ if ( post_password_required() ) {
 	?>
 		<p class="no-comments"><?php _e( 'Comments are closed.', 'twentysixteen' ); ?></p>
 	<?php endif; ?>
+
+    <?php /* RATBURGER LOCAL CODE
+             Include link to catch-up on notifications.  */
+        if ($rb_markread > 0) {
+            echo(str_replace("rb_comment_catchup_1", "rb_comment_catchup_2", $rb_catchlink));
+        }
+    /* END RATBURGER LOCAL CODE */ ?>
 
 	<?php
 		comment_form( array(

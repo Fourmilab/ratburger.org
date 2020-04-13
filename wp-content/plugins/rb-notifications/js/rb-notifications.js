@@ -65,6 +65,47 @@
         xhr.send();
     }
 
+    function rb_apply_notifications(stat, n) {
+    if (!stat) {
+//console.log("Retrieved notifications.");
+
+        //  Patch references to number of unread notifications
+
+        var unread = rb_notification_flag(n.unread_notifications_count);
+
+        //  Notifications bubble in admin bar, including class
+        document.getElementById("ab-pending-notifications").innerHTML = unread;
+        document.getElementById("ab-pending-notifications").setAttribute("class",
+            (n.unread_notifications_count == 0) ? "count no-alert" : "pending-count alert");
+
+        //  Unread count in avatar drop-down and fly-out menus
+        var ucount = (n.unread_notifications_count == 0) ? "" :
+            " <span class=\"count\">" + unread + "</span>";
+        document.getElementById("wp-admin-bar-my-account-notifications").innerHTML =
+            document.getElementById("wp-admin-bar-my-account-notifications").innerHTML.replace(
+                /(<\/span>Notifications).*?(<\/a>)/, "$1" + ucount + "$2");
+        document.getElementById("wp-admin-bar-my-account-notifications").innerHTML =
+            document.getElementById("wp-admin-bar-my-account-notifications").innerHTML.replace(
+                /(>Unread).*?(<\/a>)/, "$1" + ucount + "$2");
+
+        //  Replace drop-down notifications menu
+        rb_notifications_updateDropdownMenu(n);
+
+        //  Update count of unread Inbox messages
+        ucount = (n.unread_messages_count == 0) ? "" :
+            " <span class=\"count\">" + rb_notification_flag(n.unread_messages_count) + "</span>";
+        document.getElementById("wp-admin-bar-my-account-messages").innerHTML =
+            document.getElementById("wp-admin-bar-my-account-messages").innerHTML.replace(
+                /(<\/span>Messages).*?(<\/a>)/, "$1" + ucount + "$2");
+        document.getElementById("wp-admin-bar-my-account-messages-inbox").innerHTML =
+            document.getElementById("wp-admin-bar-my-account-messages-inbox").innerHTML.replace(
+                /(>Inbox).*?(<\/a>)/, "$1" + ucount + "$2");
+
+        rb_notifications_last_update = (new Date()).getTime();
+   }
+else { console.log("Error " + stat + " querying notifications."); }
+}
+
     //  Update the notification information in the admin bar
 
     function rb_notifications_updateNotifications() {
@@ -80,47 +121,7 @@
             document.getElementById("wp-admin-bar-bp-notifications")) {
 
             rb_notifications_getJSON(location.origin + "/?rb_notifications&rb_not_max=" + rb_notifications_max_menu,
-                function(stat, n) {
-                    if (!stat) {
-//console.log("Retrieved notifications.");
-
-                        //  Patch references to number of unread notifications
-
-                        var unread = rb_notification_flag(n.unread_notifications_count);
-
-                        //  Notifications bubble in admin bar, including class
-                        document.getElementById("ab-pending-notifications").innerHTML = unread;
-                        document.getElementById("ab-pending-notifications").setAttribute("class",
-                            (n.unread_notifications_count == 0) ? "count no-alert" : "pending-count alert");
-
-                        //  Unread count in avatar drop-down and fly-out menus
-                        var ucount = (n.unread_notifications_count == 0) ? "" :
-                            " <span class=\"count\">" + unread + "</span>";
-                        document.getElementById("wp-admin-bar-my-account-notifications").innerHTML =
-                            document.getElementById("wp-admin-bar-my-account-notifications").innerHTML.replace(
-                                /(<\/span>Notifications).*?(<\/a>)/, "$1" + ucount + "$2");
-                        document.getElementById("wp-admin-bar-my-account-notifications").innerHTML =
-                            document.getElementById("wp-admin-bar-my-account-notifications").innerHTML.replace(
-                                /(>Unread).*?(<\/a>)/, "$1" + ucount + "$2");
-
-                        //  Replace drop-down notifications menu
-                        rb_notifications_updateDropdownMenu(n);
-
-                        //  Update count of unread Inbox messages
-                        ucount = (n.unread_messages_count == 0) ? "" :
-                            " <span class=\"count\">" + rb_notification_flag(n.unread_messages_count) + "</span>";
-                        document.getElementById("wp-admin-bar-my-account-messages").innerHTML =
-                            document.getElementById("wp-admin-bar-my-account-messages").innerHTML.replace(
-                                /(<\/span>Messages).*?(<\/a>)/, "$1" + ucount + "$2");
-                        document.getElementById("wp-admin-bar-my-account-messages-inbox").innerHTML =
-                            document.getElementById("wp-admin-bar-my-account-messages-inbox").innerHTML.replace(
-                                /(>Inbox).*?(<\/a>)/, "$1" + ucount + "$2");
- 
-                        rb_notifications_last_update = (new Date()).getTime();
-                   }
-else { console.log("Error " + stat + " querying notifications."); }
-                }
-            );
+                rb_apply_notifications);
         }
 //else { console.log("Notifications update skipped."); }
 
@@ -241,5 +242,46 @@ else { console.log("Error " + stat + " querying notifications."); }
 //console.log("Onfocus: Notifications restarted.");
                 rb_notifications_forceUpdate();
             };
+        }
+    }
+
+    /*  rb_catchup  --  Catch-up notifications for an item being read.
+                        This function is called when the user clicks
+                        a catch-up link inserted in a page (post,
+                        group, etc.) which may have relevant notifications.
+                        It submits a URL which makes an rb_catchup query
+                        specifying the page type, the ID of the page,
+                        the time the page was displayed to the user
+                        (embedded in the function call in the link),
+                        and the hashed security code for the request.
+
+                        After submitting the URL, the catch-up link's body
+                        is replaced with confirmation the catch-up has
+                        been initiated and its onclick action is replaced
+                        with one which ignores subsequent clicks.  */
+
+
+    function rb_catchup(kind, id, time, scode) {
+        rb_notifications_getJSON(location.origin + "/?rb_catchup&rb_ca_time=" + time +
+            "&rb_ca_what=" + kind + "&rb_ca_id=" + id + "&rb_ca_hash=" + scode,
+            rb_apply_notifications);
+
+        if (kind == "post") {
+            //  Note that the first link may be missing on pages with no comments
+            rb_fix_catchup_link("rb_comment_catchup_1");
+            rb_fix_catchup_link("rb_comment_catchup_2");
+        } else if (kind == "group") {
+            rb_fix_catchup_link("rb_bp_group_catchup");
+        }
+    }
+
+    //  rb_fix_catchup_link  --  Disable catch-up link after it's clicked
+
+    function rb_fix_catchup_link(id) {
+        var l = document.getElementById(id);
+        if (l) {
+            l.innerHTML = "Notifications cleared";
+            l.style.color = "#B0B0B0";
+            l.onclick = function() { return false; };
         }
     }
