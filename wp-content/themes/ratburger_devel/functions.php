@@ -467,6 +467,7 @@ function ratburger_forums_filter_kses( $content ) {
         $forums_allowedtags['blockquote'] = array();
 
 	    /* Ratburger additional allowed tags */
+        $forums_allowedtags['a']['target'] = array();
 	    $forums_allowedtags['pre'] = array();
 	    $forums_allowedtags['pre']['style'] = array();
 	    $forums_allowedtags['span'] = array();
@@ -487,29 +488,55 @@ function ratburger_forums_filter_kses( $content ) {
         return wp_kses( $content, $forums_allowedtags );
 }
 
-remove_filter('bp_get_the_topic_post_content', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_the_topic_post_content', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_the_topic_post_excerpt', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_the_topic_post_excerpt', 'ratburger_forums_filter_kses', 1);
+/*  Replace the standard "bp_activity_filter_kses" function with
+    our custom, and more permissive, "ratburger_forums_filter_kses".  */
 
-remove_filter('bp_get_activity_action', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_action', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_content_body', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_content_body', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_content', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_content', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_parent_content', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_parent_content', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_latest_update', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_latest_update', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_latest_update_excerpt', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_latest_update_excerpt', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_get_activity_feed_item_description', 'bp_forms_filter_kses', 1);
-add_filter('bp_get_activity_feed_item_description', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_activity_content_before_save', 'bp_forms_filter_kses', 1);
-add_filter('bp_activity_content_before_save', 'ratburger_forums_filter_kses', 1);
-remove_filter('bp_activity_latest_update_content', 'bp_forms_filter_kses', 1);
-add_filter('bp_activity_latest_update_content', 'ratburger_forums_filter_kses', 1);
+remove_filter("bp_get_activity_content_body", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_content_body", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_get_activity_content", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_content", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_get_activity_parent_content", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_parent_content", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_get_activity_latest_update", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_latest_update", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_get_activity_latest_update_excerpt", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_latest_update_excerpt", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_get_activity_feed_item_description", "bp_activity_filter_kses", 1);
+add_filter("bp_get_activity_feed_item_description", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_activity_content_before_save", "bp_activity_filter_kses", 1);
+add_filter("bp_activity_content_before_save", "ratburger_forums_filter_kses", 1);
+
+remove_filter("bp_activity_latest_update_content", "bp_activity_filter_kses", 1);
+add_filter("bp_activity_latest_update_content", "ratburger_forums_filter_kses", 1);
+
+/*  Add target="_blank" to links in group posts and comments
+    so they open in a new tab/window.  */
+
+add_filter("bp_get_activity_content_body", "RB_fix_link_targets", 97);  // Posts
+add_filter("bp_get_activity_content", "RB_fix_link_targets", 97);       // Comments
+
+/*
+
+    Allow additional tags in BuddyPress group descriptions
+
+*/
+
+
+add_filter("bp_groups_filter_kses", "rb_bp_groups_filter_kses", 1);
+remove_filter("groups_group_description_before_save", "wp_filter_kses", 1);
+add_filter("groups_group_description_before_save", "bp_groups_filter_kses", 1);
+
+function rb_bp_groups_filter_kses($tags) {
+    $tags["a"]["target"] = array();
+
+    return $tags;
+}
 
 /*
 
@@ -1474,5 +1501,11 @@ function RB_subscribe_reloaded_disable_visitors() {
 }
 
 add_action("wp_loaded", "RB_subscribe_reloaded_disable_visitors");
+
+//  For developers, load the diagnostic functions
+
+if (RB_me() || RB_chef()) {
+    include get_template_directory() . '/ratburger/fnord.php';
+}
 
 /* END RATBURGER LOCAL CODE */
