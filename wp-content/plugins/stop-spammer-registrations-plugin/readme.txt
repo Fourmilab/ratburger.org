@@ -1,7 +1,7 @@
 === Stop Spammers ===
 Author: TrumaniPlugin URI: https://trumani.com
 Contributors: trumani, bhadaway, Keith Graham
-Tags: spam, security, anti-spam, spam blocker, block spam, signup spam, comment spam, spam filter, registration spam, spammer, spammers, spamming, xss, malware, virus, captcha, comment, comments, login, protection, user registration spamStable Tag: trunkVersion: 2020.1.2
+Tags: spam, security, anti-spam, spam blocker, block spam, signup spam, comment spam, spam filter, registration spam, spammer, spammers, spamming, xss, malware, virus, captcha, comment, comments, login, protection, user registration spamStable Tag: trunkVersion: 2020.1.4
 Tested up to: 5.3.2
 License: https://www.gnu.org/licenses/gpl.html
 
@@ -17,7 +17,7 @@ OR
 2. Upload the plugin folder to your wp-content/**plugins** folder.
 3. Activate the plugin from the plugins page in the admin.
 
-== Changelog ==
+== Changelog === 2020.1.1-2020.1.4 =* [Update] Various hotfixes
 = 2020.1 =
 * [NEW!] Check for Tor Exit Nodes
 * [NEW!] Check for too many periods

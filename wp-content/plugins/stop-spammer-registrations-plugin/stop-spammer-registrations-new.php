@@ -3,7 +3,7 @@
 Plugin Name: Stop Spammers
 Plugin URI: https://trumani.com/
 Description: Stop WordPress spam dead in its tracks. Designed to secure your website immediately. Enhance your UX with 30+ configurable options and a testing tool.
-Version: 2020.1.3
+Version: 2020.1.4
 Author: Trumani
 Author URI: https://trumani.com/
 License: https://www.gnu.org/licenses/gpl.html
