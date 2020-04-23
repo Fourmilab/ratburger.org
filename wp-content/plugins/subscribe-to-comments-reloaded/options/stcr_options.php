@@ -37,8 +37,7 @@ if ( array_key_exists( "generate_key", $_POST ) ) {
     echo __( 'Your settings have been successfully updated.', 'subscribe-to-comments-reloaded' );
     echo "</p></div>";
 
-}
-if ( array_key_exists( "reset_all_options", $_POST ) ) {
+} elseif ( array_key_exists( "reset_all_options", $_POST ) ) {
     $delete_subscriptions_selection = $_POST['options']['delete_options_subscriptions'];
     $deletion_result = $wp_subscribe_reloaded->stcr->utils->delete_all_settings( $delete_subscriptions_selection );
 
@@ -47,8 +46,7 @@ if ( array_key_exists( "reset_all_options", $_POST ) ) {
         // Restore settings
         $wp_subscribe_reloaded->stcr->utils->create_options();
     }
-}
-elseif( isset( $_POST['options'] ) ) { // Update options
+} elseif( isset( $_POST['options'] ) ) { // Update options
 
     $faulty_fields = array();
 
@@ -612,7 +610,7 @@ wp_print_scripts( 'quicktags' );
                             <a href="https://wordpress.org/support/plugin/subscribe-to-comments-reloaded/reviews/#new-post" target="_blank"><img src="<?php echo plugins_url(); ?>/subscribe-to-comments-reloaded/images/rate.png" alt="Rate Subscribe to Comments Reloaded" style="vertical-align: sub;" /></a>
                         </p>
                         <p>
-                            <i class="fas fa-bug"></i> Having issues? Please <a href="https://github.com/stcr/subscribe-to-comments-reloaded/issues/new" target="_blank">create a ticket</a>
+                            <i class="fas fa-bug"></i> Having issues? Please <a href="https://github.com/stcr/subscribe-to-comments-reloaded/issues/" target="_blank">create a ticket</a>
                         </p>
                     </div>
                 </div>
