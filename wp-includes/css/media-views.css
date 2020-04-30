@@ -1530,16 +1530,6 @@
 	display: inline-block !important;
 }
 
-/* RATBURGER LOCAL CODE
-   Disable idiot hiding of "Upload Files" button introduced
-   to improve "accessibility".  See WordPress Core
-   Changeset 47549.
-div.moxie-shim.moxie-shim-html5,
-div.moxie-shim.moxie-shim-html5 input[type="file"] {
-	display: none;
-}
-   END RATBURGER LOCAL CODE */
-
 /**
  * Selection
  */
