@@ -78,6 +78,17 @@ function bp_notifications_toolbar_menu() {
 	if ( ! empty( $notifications ) ) {
         /* RATBURGER LOCAL CODE
            Add menu item to mark all notifications read */
+        $t = time();
+        $secsig = wp_create_nonce("rb-markread-t-" . $t);
+        $wp_admin_bar->add_menu(array(
+                'parent' => 'bp-notifications',
+                'id'     => 'notification-' . 'mark-all-read',
+                'title'  => '<span class="rb_notif_mark_all_read rb_notif_highlight" ' .
+                    'onclick="rb_markread(' .
+                    $t . ", '" . $secsig . "');\">" .
+                    'Mark all notifications read</span>'
+        ));
+/* OBSOLETE
         $custom_kink = bp_get_root_domain() . '/members/' .
             wp_get_current_user()->user_login .
             '/notifications/unread/' .
@@ -87,8 +98,9 @@ function bp_notifications_toolbar_menu() {
                 'parent' => 'bp-notifications',
                 'id'     => 'notification-' . 'mark-all-read',
                 'title'  => '<span class="rb_notif_mark_all_read rb_notif_highlight">Mark all notifications read</span>',
-                'href'   => $custom_kink,
+                'href'   => $custom_kink
         ));
+*/
         $rb_maxnot_toolbar = 35;
         /* END RATBURGER LOCAL CODE */
 		foreach ( (array) $notifications as $notification ) {
@@ -121,7 +133,14 @@ function bp_notifications_toolbar_menu() {
 			'parent' => 'bp-notifications',
 			'id'     => 'no-notifications',
 			'title'  => __( 'No new notifications', 'buddypress' ),
-			'href'   => $menu_link,
+            /* RATBURGER LOCAL CODE
+               Make the "No new notifications" item link to the
+               read notifications page, not the unread notifications,
+               which we've just told the user is empty.
+                        'href'   => $menu_link,
+            */
+                        'href'   => $menu_link . "read",
+            /* END RATBURGER LOCAL CODE */
 		) );
 	}
 

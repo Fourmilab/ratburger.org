@@ -109,7 +109,6 @@ else { console.log("Error " + stat + " querying notifications."); }
     //  Update the notification information in the admin bar
 
     function rb_notifications_updateNotifications() {
-
         /*  We update only if:
                 We're not in an iframe
                 The user is logged in and notifications are shown
@@ -284,4 +283,22 @@ else { console.log("Error " + stat + " querying notifications."); }
             l.style.color = "#B0B0B0";
             l.onclick = function() { return false; };
         }
+    }
+
+    /*  rb_markread  --  Mark all notifications read.  This function
+                         is called when the user clicks the "Mark all
+                         notifications read" link in the notifications
+                         drop-down menu.  The link supplies the Unix time
+                         when the notifications list was last updated,
+                         and all notifications posted at or before that
+                         time are marked read by submitting an rb_markread
+                         query URL.  The updated notifications, returned
+                         by the query as JSON (which may contain new
+                         notifications which arrived after the time to
+                         which we're clearing) replaces the current list
+                         in the page.  */
+
+    function rb_markread(time, scode) {
+        rb_notifications_getJSON(location.origin + "/?rb_markread&rb_ca_time=" + time +
+            "&rb_ca_hash=" + scode, rb_apply_notifications);
     }

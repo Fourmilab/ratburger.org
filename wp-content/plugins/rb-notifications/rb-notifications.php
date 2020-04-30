@@ -48,6 +48,16 @@
                           "sort_order" => $rb_not_order,
                           "max" => false,
                           "per_page" => $rb_not_max))) {
+                $t = time();
+                $secsig = wp_create_nonce("rb-markread-t-" . $t);
+                $result .= "    \"unread_notifications_head\": " .
+                           json_encode("<li id=\"wp-admin-bar-notification-mark-all-read\">" .
+                           "<a class=\"ab-item\" href=\"#\" " .
+                           "onclick=\"rb_markread(" .
+                           $t . ", '" . $secsig . "'); return false;\">" .
+                           "<span class=\"rb_notif_mark_all_read rb_notif_highlight\">" .
+                           "Mark all notifications read</span></a></li>") . ",\n";
+/* OBSOLETE
                 $result .= "    \"unread_notifications_head\": " .
                            json_encode("<li id=\"wp-admin-bar-notification-mark-all-read\">" .
                            "<a class=\"ab-item\" href=\"" .
@@ -58,6 +68,7 @@
                            "&action=read&notification_id=all\">" .
                            "<span class=\"rb_notif_mark_all_read rb_notif_highlight\">" .
                            "Mark all notifications read</span></a></li>") . ",\n";
+*/
                 $result .= "    \"unread_notifications_count\": " .
                     buddypress()->notifications->query_loop->total_notification_count . ",\n";
                 $result .= "    \"unread_notifications\": [\n";
@@ -79,7 +90,7 @@
                 $result .= "    \"unread_notifications_head\": " .
                            json_encode("<li id=\"wp-admin-bar-no-notifications\">" .
                            "<a class=\"ab-item\" href=\"" .
-                           trailingslashit(bp_loggedin_user_domain() . bp_get_notifications_slug()) . "\">" .
+                           trailingslashit(bp_loggedin_user_domain() . bp_get_notifications_slug()) . "read\">" .
                            "No new notifications</a></li>") . ",\n";
                 $result .= "    \"unread_notifications_count\": 0\n";
             }
@@ -136,7 +147,7 @@
 
             //  Validate security hash
 
-            $reqsig = "k-" . $rb_ca_what . "-t-" .$rb_ca_time . "-i-" . $rb_ca_id;
+            $reqsig = "k-" . $rb_ca_what . "-t-" . $rb_ca_time . "-i-" . $rb_ca_id;
             if (!wp_verify_nonce($rb_ca_hash, $reqsig)) {
                 $result = "{\n    \"source\": \"rb_notifications\",\n" .
                           "    \"version\": \"1.0\",\n" .
@@ -275,6 +286,87 @@ error_log($result);
         return $ntomark;
    }
 
+    /*  rb_markread  --  Marks all notifications which were posted
+                         after the Unix time specified by the
+                         rb_ca_time argument read.  The items
+                         are marked read and rb_notifications()
+                         is called to prepare and output a JSON
+                         list of notifications after marking
+                         those selected read.  The number marked
+                         read is returned.  */
+
+
+    function rb_markread() {
+
+        //  Process arguments
+
+        //  Unix time to catch up to
+        $rb_ca_time = time();
+        if (isset($_GET["rb_ca_time"])) {
+            $rb_ca_time = intval($_GET["rb_ca_time"]);
+        }
+
+        //  Security hash
+        $rb_ca_hash = "";
+        if (isset($_GET["rb_ca_hash"])) {
+            $rb_ca_hash = $_GET["rb_ca_hash"];
+        }
+
+        //  Validate security hash
+
+        if (!wp_verify_nonce($rb_ca_hash, "rb-markread-t-" . $rb_ca_time)) {
+            $result = "{\n    \"source\": \"rb_notifications\",\n" .
+                      "    \"version\": \"1.0\",\n" .
+                      "    \"status\": 403,\n" .
+                      "    \"error_message\": \"invalid security hash on rb_markread request\"\n" .
+                      "}\n";
+error_log($result);
+
+            header("Content-Type: application/json; charset=utf-8");
+            print($result);
+            return;
+        }
+
+        $ntomark = 0;                       // Number to mark read
+
+        if (is_user_logged_in()) {
+            if (bp_has_notifications(
+                array("is_new" => 1,
+                      "sort_order" => "ASC",
+                      "max" => false,
+                      "per_page" => 100000000))) {
+
+                while (bp_the_notifications()) {
+
+                    $notif = bp_the_notification();
+
+                    /*  If the notification is later than the catch-up
+                        date, ignore it.  */
+
+                    $ntime = bp_get_the_notification_date_notified();
+                    $RB_time = explode(':', str_replace(' ', ':', $ntime));
+                    $RB_date = explode('-', str_replace(' ', '-', $ntime));
+                    $RB_not_time  = gmmktime((int) $RB_time[1], (int) $RB_time[2], (int) $RB_time[3],
+                                         (int) $RB_date[1], (int) $RB_date[2], (int) $RB_date[0]);
+
+                    $mark_read = $RB_not_time < $rb_ca_time;
+
+                    if ($RB_not_time <= $rb_ca_time) {
+                        $ntomark++;
+                        $mr = BP_Notifications_Notification::update(
+                                        array("is_new" => false),
+                                        array("id" => bp_get_the_notification_id())
+                                  );
+                    }
+                }
+            }
+        }
+
+        rb_notifications();
+
+        return $ntomark;
+   }
+
     //  rb_notifications_query_vars  --  Register our queries with the redirector
 
     add_filter("query_vars", "rb_notifications_query_vars");
@@ -282,6 +374,7 @@ error_log($result);
     function rb_notifications_query_vars($query_vars) {
         $query_vars[] = "rb_notifications";
         $query_vars[] = "rb_catchup";
+        $query_vars[] = "rb_markread";
         return $query_vars;
     }
 
@@ -292,6 +385,9 @@ error_log($result);
     function rb_notifications_parse_request($wp) {
         if (array_key_exists("rb_catchup", $wp->query_vars)) {
             rb_catchup(false);
+            die();
+        } elseif (array_key_exists("rb_markread", $wp->query_vars)) {
+            rb_markread();
             die();
         } elseif (array_key_exists("rb_notifications", $wp->query_vars)) {
             rb_notifications();
