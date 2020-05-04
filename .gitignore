@@ -1,8 +1,9 @@
 bp-editable-activity/
 wp-content/uploads/
-wp-content/updraft/
 serverstats/
 google*.html
 wp-content/log/wprss/
 wp-content/themes/ratburger_devel/ratburger/build.php
-wp-content/themes/twentynineteen/package-lock.json
+wp-content/themes/twentyseventeen
+wp-content/themes/twentynineteen
+wp-content/themes/twentytwenty
