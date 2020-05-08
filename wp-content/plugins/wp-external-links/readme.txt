@@ -2,9 +2,9 @@
 Contributors: WebFactory, UnderConstructionPage, googlemapswidget, wpreset
 Tags: new window, new tab, external links, nofollow, noopener, ugc, sponsored, follow, dofollow, seo, noreferrer, internal links, target, links, link, internal link, external link
 Requires at least: 4.2
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.3
-Stable tag: 2.43
+Stable tag: 2.45
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,10 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 
 == Changelog ==
+
+= 2.45 =
+ * 2020-05-08
+ * fixed compatibility issue with Site Kit by Google
 
 = 2.43 =
  * 2019-12-27

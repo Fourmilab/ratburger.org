@@ -107,9 +107,10 @@ final class WPEL_Settings_Page extends WPRun_Base_1x0x0
     {
         remove_filter('plugins_api_result', array($this, 'plugins_api_result'), 10, 3);
 
-        $res = self::add_plugin_featured('wp-reset', $res);
         $res = self::add_plugin_featured('wp-force-ssl', $res);
+        $res = self::add_plugin_featured('sticky-menu-or-anything-on-scroll', $res);
         $res = self::add_plugin_featured('eps-301-redirects', $res);
+        $res = self::add_plugin_featured('simple-author-box', $res);
 
         return $res;
     } // plugins_api_result
