@@ -4,7 +4,7 @@ Tags: new window, new tab, external links, nofollow, noopener, ugc, sponsored, f
 Requires at least: 4.2
 Tested up to: 5.4
 Requires PHP: 5.3
-Stable tag: 2.45
+Stable tag: 2.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -243,6 +243,11 @@ See [FAQ](https://wordpress.org/plugins/wp-external-links/faq/) for more info.
 
 == Changelog ==
 
+= 2.46 =
+ * 2020-05-09
+ * fixed "unable to save post" when using Gutenberg
+ * sorry for two updated in two days :(
+ 
 = 2.45 =
  * 2020-05-08
  * fixed compatibility issue with Site Kit by Google

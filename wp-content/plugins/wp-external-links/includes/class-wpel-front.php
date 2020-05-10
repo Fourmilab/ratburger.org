@@ -59,6 +59,17 @@ final class WPEL_Front extends WPRun_Base_1x0x0
             }
         }
     }
+    
+    
+    /**
+     * Turn off output buffer for REST API calls
+     * @param type $wp_rest_server
+     */
+    protected function action_rest_api_init()
+    {
+        ob_end_flush();
+    }
+
 
     /**
      * Get option value
