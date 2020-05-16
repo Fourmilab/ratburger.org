@@ -68,7 +68,7 @@ function bp_notifications_toolbar_menu() {
 	$menu_link     = trailingslashit( bp_loggedin_user_domain() . bp_get_notifications_slug() );
 
 	// Add the top-level Notifications button.
-	$wp_admin_bar->add_menu( array(
+	$wp_admin_bar->add_node( array(
 		'parent'    => 'top-secondary',
 		'id'        => 'bp-notifications',
 		'title'     => $menu_title,
@@ -88,19 +88,6 @@ function bp_notifications_toolbar_menu() {
                     $t . ", '" . $secsig . "');\">" .
                     'Mark all notifications read</span>'
         ));
-/* OBSOLETE
-        $custom_kink = bp_get_root_domain() . '/members/' .
-            wp_get_current_user()->user_login .
-            '/notifications/unread/' .
-             wp_nonce_url('', 'bp_notification_mark_read_all') .
-            '&action=read&notification_id=all';
-        $wp_admin_bar->add_menu(array(
-                'parent' => 'bp-notifications',
-                'id'     => 'notification-' . 'mark-all-read',
-                'title'  => '<span class="rb_notif_mark_all_read rb_notif_highlight">Mark all notifications read</span>',
-                'href'   => $custom_kink
-        ));
-*/
         $rb_maxnot_toolbar = 35;
         /* END RATBURGER LOCAL CODE */
 		foreach ( (array) $notifications as $notification ) {
@@ -121,7 +108,7 @@ function bp_notifications_toolbar_menu() {
                 break;
             }
             /* END RATBURGER LOCAL CODE */
-			$wp_admin_bar->add_menu( array(
+			$wp_admin_bar->add_node( array(
 				'parent' => 'bp-notifications',
 				'id'     => 'notification-' . $notification->id,
 				'title'  => $notification->content,
@@ -129,7 +116,7 @@ function bp_notifications_toolbar_menu() {
 			) );
 		}
 	} else {
-		$wp_admin_bar->add_menu( array(
+		$wp_admin_bar->add_node( array(
 			'parent' => 'bp-notifications',
 			'id'     => 'no-notifications',
 			'title'  => __( 'No new notifications', 'buddypress' ),
@@ -137,7 +124,7 @@ function bp_notifications_toolbar_menu() {
                Make the "No new notifications" item link to the
                read notifications page, not the unread notifications,
                which we've just told the user is empty.
-                        'href'   => $menu_link,
+			'href'   => $menu_link,
             */
                         'href'   => $menu_link . "read",
             /* END RATBURGER LOCAL CODE */
