@@ -204,7 +204,7 @@ class rsssl_admin extends rsssl_front_end
         //callbacks for the ajax dismiss buttons
         add_action('wp_ajax_dismiss_htaccess_warning', array($this, 'dismiss_htaccess_warning_callback'));
         add_action('wp_ajax_dismiss_success_message', array($this, 'dismiss_success_message_callback'));
-        add_action('wp_ajax_dismiss_review_notice', array($this, 'dismiss_review_notice_callback'));
+        add_action('wp_ajax_rsssl_dismiss_review_notice', array($this, 'dismiss_review_notice_callback'));
         add_action('wp_ajax_rsssl_dismiss_settings_notice', array($this, 'dismiss_settings_notice_callback'));
 
 
@@ -435,6 +435,15 @@ class rsssl_admin extends rsssl_front_end
     {
         if ($this->site_has_ssl) {
 	        ?>
+            <style>
+                .activate-ssl {
+                    border-left: 4px solid #F8BE2E;
+                }
+                .activate-ssl .button {
+                    margin-bottom:20px;
+                }
+                <?php echo apply_filters('rsssl_pro_inline_style', ''); ?>
+            </style>
             <div id="message" class="notice activate-ssl <?php echo apply_filters('rsssl_activate_notice_class', '');?>">
                 <?php
                   do_action('rsssl_activation_notice_inner');
@@ -447,6 +456,13 @@ class rsssl_admin extends rsssl_front_end
     public function no_ssl_detected()
     {
         if (!$this->site_has_ssl) { ?>
+            <style>
+                .rsssl-notice {
+                    background-color: #fff;
+                    border-left: 4px solid #F8BE2E;
+                    padding: 1px 15px;
+                }
+            </style>
             <div id="message" class="error notice rsssl-notice-certificate">
                 <h1><?php echo __("Detected possible certificate issues", "really-simple-ssl"); ?></h1>
                 <p>
@@ -516,8 +532,17 @@ class rsssl_admin extends rsssl_front_end
 
     public function show_enable_ssl_button()
     {
-        if ($this->site_has_ssl || (defined('rsssl_force_activate') && rsssl_force_activate)) {
+        if ($this->site_has_ssl || (defined('RSSSL_FORCE_ACTIVATE') && RSSSL_FORCE_ACTIVATE)) {
             ?>
+            <style>
+                .btn-premium {
+                    margin-left: 10px !important;
+                }
+                .btn-premium-activated {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+            </style>
             <p>
             <div class="rsssl-activate-ssl-button">
             <form action="" method="post">
@@ -597,6 +622,7 @@ class rsssl_admin extends rsssl_front_end
     {
 
         $options = get_option('rlrsssl_options');
+
         if (isset($options)) {
             $this->site_has_ssl = isset($options['site_has_ssl']) ? $options['site_has_ssl'] : FALSE;
             $this->hsts = isset($options['hsts']) ? $options['hsts'] : FALSE;
@@ -2244,12 +2270,19 @@ class rsssl_admin extends rsssl_front_end
                         <?php }
                         ?>
                     <li class="message-li"><?php _e("Improve your security", "really-simple-ssl");?>
-                        <a target="_blank" href="https://really-simple-ssl.com/new-security-headers-for-really-simple-ssl-pro-coming-up/"><?php _e("with security headers", "really-simple-ssl"); ?></a>
+	        <?php if (!defined('rsssl_pro_plugin')) {
+                $margin = '-20px';
+	        } else {
+	            $margin = '-60px';
+	        }?>
+                <a target="_blank" href="https://really-simple-ssl.com/new-security-headers-for-really-simple-ssl-pro-coming-up/"><?php _e("with security headers", "really-simple-ssl"); ?></a>
                         </li>
                     </ul>
                 </p>
+                <?php if (!defined('rsssl_pro_plugin')) { ?>
                     <a class="button action btn-premium btn-premium-activated" style="margin-bottom: 10px;" href="https://really-simple-ssl.com/pro" target="_blank"><?php _e("Really Simple SSL Pro", "really-simple-ssl"); ?></a>
-                    <div id="rsssl-logo" style="float: right; margin-top: -20px;"><img width=180px" src="<?php echo rsssl_url?>/assets/logo-really-simple-ssl.png" alt="review-logo"></div>
+                <?php } ?>
+                <div id="rsssl-logo" style="float: right; margin-top: <?php echo $margin ?>;"><img width=180px" src="<?php echo rsssl_url?>/assets/logo-really-simple-ssl.png" alt="review-logo"></div>
             </div>
             <style>
                 .message-ul {
@@ -2376,7 +2409,7 @@ class rsssl_admin extends rsssl_front_end
 
                 function rsssl_dismiss_review(type){
                     var data = {
-                        'action': 'dismiss_review_notice',
+                        'action': 'rsssl_dismiss_review_notice',
                         'type' : type,
                         'security': '<?php echo $ajax_nonce; ?>'
                     };
@@ -3348,9 +3381,12 @@ class rsssl_admin extends rsssl_front_end
     public function enqueue_assets($hook)
     {
         global $rsssl_admin_page;
-        //prevent from loading on other pages than settings page.
-        if ((!is_network_admin() && ($hook != $rsssl_admin_page)) && $this->ssl_enabled)
-            return;
+
+        /*
+         * load if this is the SSL settings page
+         */
+
+        if ( $hook != $rsssl_admin_page) return;
 
         if (is_rtl()) {
             wp_register_style('rlrsssl-css', trailingslashit(rsssl_url) . 'css/main-rtl.min.css', "", rsssl_version);
@@ -3763,10 +3799,17 @@ class rsssl_admin extends rsssl_front_end
     {
 
         ?>
+        <style>
+            #TB_ajaxContent {
+                text-align: center !important;
+            }
+            #TB_window {
+                height: 370px !important;
+            }
+        </style>
         <div><input class="thickbox button" title="" type="button" style="display: block; float: left;" alt="#TB_inline?
         height=370&width=400&inlineId=deactivate_keep_ssl" value="<?php echo __('Deactivate Plugin and keep SSL', 'really-simple-ssl'); ?>"/></div>
         <div id="deactivate_keep_ssl" style="display: none;">
-
             <h1 style="margin: 10px 0; text-align: center;"><?php _e("Are you sure?", "really-simple-ssl") ?></h1>
             <h2 style="margin: 20px 0; text-align: left;"><?php _e("Deactivating the plugin while keeping SSL will do the following:", "really-simple-ssl") ?></h2>
             <ul style="text-align: left; font-size: 1.2em;">
@@ -4292,7 +4335,6 @@ if (!function_exists('rsssl_does_not_use_pro')) {
 		    // Does not use RSSSL pro
 			return true;
 		} else {
-		    // Uses RSSSL pro
 			return false;
 		}
 	}
