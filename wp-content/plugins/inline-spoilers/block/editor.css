@@ -1,0 +1,32 @@
+/**
+ * @package Inline Spoilers
+ */
+
+.wp-block-inline-spoilers-block {
+    background-color: #E9E9E6;
+	border: 1px solid #C3CBD1;
+    border-left-width: 2px;
+}
+
+.wp-block-inline-spoilers-block .spoiler-title {
+    background: url(data:image/gif;base64,R0lGODlhCQAJAMQeAOLt+ff8//z+/4CRxo2by7vF6a254X6PxICQw87a74CQxuXo84CQxM/b7/H6/v7+/oGRxouayoGSxv7+/8LN7IqZyv7//4KSxur0/MrV74OTx9Ld8trl9gwMDP///wAAACH5BAEAAB4ALAAAAAAJAAkAAAU4oFcpwzFAkWgUVLZxCQGxLgdgGtS+t6NJmY5QOEFcNo/kZGLRXGwYR0DQjDSiU8uCIJJIGJdLKgQAOw==) no-repeat left center;
+    line-height: 1.5em;
+    margin-left: 6px;
+    padding: 0 6px 0 14px;
+}
+
+.wp-block-inline-spoilers-block .spoiler-title {
+    background-color: #E9E9E6;
+    color: #2A2A2A !important;
+    font-weight: bold;
+}
+
+.wp-block-inline-spoilers-block .spoiler-title br {
+    display: none;
+}
+
+.wp-block-inline-spoilers-block .spoiler-content {
+    background-color: #F5F5F5;
+    border-top: 1px solid #C3CBD1;
+    padding: 2px 6px;
+}
