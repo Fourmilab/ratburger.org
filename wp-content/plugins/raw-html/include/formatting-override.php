@@ -67,7 +67,7 @@ function rawhtml_add_conditional_filters($param = null){
 		foreach ( $functions as $func => $priority ){
 			if ( remove_filter($tag, $func, $priority) ){
 				add_filter( $tag, 'maybe_'.$func, $priority );
-			};
+			}
 		}
 	}
 
@@ -269,7 +269,7 @@ function rawhtml_save_postdata($post_id) {
 			$new_settings[$field] = true;
 		} else {
 			$new_settings[$field] = false;
-		};
+		}
 	}
 	rawhtml_save_post_settings($post_id, $new_settings);
 

@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: posts, formatting, javascript, html, css, code, disable
 Requires at least: 2.8
-Tested up to: 5.3
-Stable tag: 1.6.2
+Tested up to: 5.4
+Stable tag: 1.6.3
 
 Lets you use raw HTML or any other code in your posts. You can also disable smart quotes and other automatic formatting on a per-post basis.
 
@@ -23,6 +23,10 @@ RawHTML will also add new checkboxes to the "Edit Post" screen that let you disa
 * Disable convert_chars (the function that converts ampersands to HTML entities and "fixes" some Unicode characters).
 
 The free version only supports editing posts in the Text tab (called "HTML" in older WordPress versions). [Get the Pro version](http://rawhtmlpro.com/?utm_source=wordpress.org&utm_medium=readme_link&utm_campaign=RawHTML%20free) if you want to be able to switch between Text and the Visual editor without WordPress messing up your content.
+
+**Compatibility**
+
+This plugin doesn't fully support the Gutenberg editor. As of WordPress 5.0, some Raw HTML features will only work if you use the [Classic Editor](https://wordpress.org/plugins/classic-editor/) plugin. 
 
 **Usage**
 
@@ -60,8 +64,6 @@ This will ensure that the plugin doesn't strip `[raw]` blocks from automatically
 
 **Notes**
 
-This plugin doesn't fully support the Gutenberg editor. It will only work with the classic post editor.
-
 Some features of Raw HTML will only work for users who have the "unfiltered_html" capability. In a normal WordPress install that includes the Editor and Administrator roles. In a Multisite install, only the Super Admin has this capability by default.
 
 == Installation ==
@@ -89,6 +91,10 @@ Open to the post editor and click the "Screen Options" button in the top-right p
 
 
 == Changelog ==
+
+= 1.6.3 =
+* Fixed a potential PHP warning about an expression being passed by reference.
+* Tested up to WordPress 5.5-alpha.
 
 = 1.6.2 =
 * Fixed a conflict with Jetpack that could cause the plugin to trigger a fatal error during certain cron jobs.
