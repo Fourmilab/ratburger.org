@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.4
-Stable tag: 200422
+Stable tag: 200629
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,17 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+= v200629 =
+* **New** Option to show the subscription checkbox/select only for logged in users (option called "Enable only for logged in users" and located in WP admin > StCR > Options)
+* **New** Added [comment_date] and [comment_time] shortcodes which can be used in the "notification message".
+* **Improvement** Challenge question/answer now shows on "request management link" page as well
+* **Improvement** Replaced multiple instances of jQuery code to be raw JavaScript (not rely on jQuery)
+* **Tweak** Added label for the checkbox in "Screen Options"
+* **Tweak** Email input value fallback to "email" removed
+* **Fix** Subscriptions will no longer duplicate when post is copied/duplicated with the "Duplicate Post" plugin
+* **Fix** Fixed issue with PHP notice when $comment object does not have comment_approved set
+* **Fix** The jQuery code that handles moving the position of the checkbox is now added later on in the code to avoid issue when jQuery gets loaded in the footer
+
 = v200422 =
 * **New** Arabic translation, thanks to [Yaser Maadan](https://github.com/stcr/subscribe-to-comments-reloaded/issues/571)
 * **Fix** WP_PLUGIN_URL replaced by plugins_url()

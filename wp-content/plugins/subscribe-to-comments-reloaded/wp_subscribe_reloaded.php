@@ -8,7 +8,7 @@ if ( ! function_exists( 'add_action' ) ) {
 }
 
 // globals
-define( __NAMESPACE__.'\\VERSION','200422' );
+define( __NAMESPACE__.'\\VERSION','200629' );
 define( __NAMESPACE__.'\\DEVELOPMENT', false );
 define( __NAMESPACE__.'\\SLUG', "subscribe-to-comments-reloaded" );
 
@@ -155,7 +155,10 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
                 }
                 
                 // filter to add custom output before comment content
-                add_filter( 'comment_text', array( $this, 'comment_content_prepend' ), 10, 2 );
+				add_filter( 'comment_text', array( $this, 'comment_content_prepend' ), 10, 2 );
+				
+				// script to move the subscription form
+				add_action( 'wp_footer', array( $this, 'move_form_with_js' ), 20 );
 				
                 // enqueue scripts
 				$this->utils->hook_plugin_scripts();
@@ -214,7 +217,10 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
                 $this->utils->stcr_create_ajax_notices();
 
 				// download system information file
-                add_action( 'admin_init', array( $this, 'sysinfo_download' ) );
+				add_action( 'admin_init', array( $this, 'sysinfo_download' ) );
+				
+				// exclude subscriptions on post duplication
+				add_filter( 'duplicate_post_blacklist_filter', array( $this, 'duplicate_post_exclude_subs' ) );
 
 			}
 			
@@ -1433,7 +1439,9 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
 			$message = str_replace( '[comment_content]', $comment_content, $message );
 			$message = str_replace( '[manager_link]', $manager_link, $message );
 			$message = str_replace( '[oneclick_link]', $one_click_unsubscribe_link, $message );
-            $message = str_replace( '[comment_gravatar]', get_avatar($info->comment_author_email, 40), $message );
+			$message = str_replace( '[comment_gravatar]', get_avatar($info->comment_author_email, 40), $message );
+			$message = str_replace( '[comment_date]',  date( get_option( 'date_format'), strtotime( $comment->comment_date ) ), $message );
+			$message = str_replace( '[comment_time]',  date( get_option( 'time_format'), strtotime( $comment->comment_date ) ), $message );
 
 			// qTranslate support
 			if ( function_exists( 'qtrans_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) ) {
@@ -1481,9 +1489,20 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
 			$post_permalink = "post_permalink=" . $post_permalink;
 			$post_type = get_post_type( $post->ID );
 			$only_for_posts = get_option( 'subscribe_reloaded_only_for_posts', 'no' );
+			$only_for_logged_in = get_option( 'subscribe_reloaded_only_for_logged_in', 'no' );
 
 			// if not enabled for this post type, return default
 			if ( $only_for_posts == 'yes' && $post_type !== 'post' ) {
+				if ( $echo ) {
+					echo $submit_field;
+				} else {
+					return $submit_field;
+				}
+				return;
+			}
+
+			// only for logged in users
+			if ( $only_for_logged_in == 'yes' && ! is_user_logged_in() ) {
 				if ( $echo ) {
 					echo $submit_field;
 				} else {
@@ -1607,7 +1626,6 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
 			// Check for the Comment Form location
 			if( get_option('subscribe_reloaded_stcr_position') == 'yes' ) {
 				$output .= "<style type='text/css'>.stcr-hidden{display: none !important;}</style>";
-				$output .= "<script type='text/javascript'>jQuery(document).ready(function($){var stcr_form=$('div.stcr-form');stcr_form.prevUntil('form').each(function(){var _this=$(this);if(_this.find(':input[type=\"submit\"]').length){stcr_form.remove(),_this.before(stcr_form);$('div.stcr-form').removeClass('stcr-hidden');return false;}})});</script>";
 				$output .= "<div class='stcr-form stcr-hidden'>";
                 $output .= "<!-- Subscribe to Comments Reloaded version ". $wp_subscribe_reloaded->stcr->current_version . " -->";
                 $output .= "<!-- BEGIN: subscribe to comments reloaded -->" . $html_to_show . "<!-- END: subscribe to comments reloaded -->";
@@ -1667,6 +1685,11 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
          */
         public function comment_content_prepend( $comment_text, $comment = null ) {
 
+			// do not proceed if comment info is not passed
+			if ( empty( $comment ) || ! isset( $comment->comment_approved ) ) {
+				return $comment_text;
+			}
+
             global $wp_subscribe_reloaded;
             global $post;
 
@@ -1680,7 +1703,22 @@ if( ! class_exists('\\'.__NAMESPACE__.'\\wp_subscribe_reloaded') ) {
             // pass it back
             return $prepend . $comment_text;
 
-        }
+		}
+		
+		/**
+		 * Move form with JS
+		 * 
+		 * @since 200626
+		 */
+		public function move_form_with_js() {
+
+			if( get_option('subscribe_reloaded_stcr_position') == 'yes' ) {
+				$output .= "<script type='text/javascript'>jQuery(document).ready(function($){var stcr_form=$('div.stcr-form');stcr_form.prevUntil('form').each(function(){var _this=$(this);if(_this.find(':input[type=\"submit\"]').length){stcr_form.remove(),_this.before(stcr_form);$('div.stcr-form').removeClass('stcr-hidden');return false;}})});</script>";
+			}
+			
+			echo $output;
+
+		}
 
 	}
 

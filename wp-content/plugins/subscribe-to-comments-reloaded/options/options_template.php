@@ -23,6 +23,7 @@ $options = array(
     'enable_font_awesome'          => 'yesno',
     'delete_options_subscriptions' => 'yesno',
     'only_for_posts'               => 'yesno',
+    'only_for_logged_in'           => 'yesno',
     'use_cookies'                  => 'yesno',
     'use_challenge_question'       => 'yesno',
     'challenge_question'           => 'text',
@@ -93,7 +94,6 @@ wp_print_scripts( 'quicktags' );
 
         </div>
     </div>
-    <!--<script type="text/javascript" src="--><?php //echo plugins_url(); ?><!--/subscribe-to-comments-reloaded/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>-->
     <script type="text/javascript" src="<?php echo plugins_url(); ?>/subscribe-to-comments-reloaded/vendor/webui-popover/dist/jquery.webui-popover.min.js"></script>
 <?php
 //global $wp_subscribe_reloaded;
