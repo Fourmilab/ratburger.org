@@ -5,7 +5,7 @@ Tags: RSS import, RSS aggregator, feed import, content curation, feed to post, n
 Requires at least: 4.0 or higher
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 4.17.5
+Stable tag: 4.17.6
 License: GPLv3
 
 The most popular RSS aggregator for WordPress. Build a news aggregator with content from unlimited sources within minutes. Simple, robust & powerful.
@@ -42,11 +42,11 @@ Importing and displaying RSS feeds is a powerful tool for many website owners.
 
 == Real-life case studies ==
 
-Erik Tozier built up trust and credibility in the personal finance space by curating quality content for his readers, resulting in over 16,000 monthly page views within just 4 months. [Read the full case study](https://www.wprssaggregator.com/case-study-personal-finance-blogs-content-curation/) or watch the video below.
+Erik Tozier built up trust and credibility in the personal finance space by curating quality content for his readers, resulting in over 16,000 monthly page views within just 4 months. [Read the full case study](https://www.wprssaggregator.com/case-study-personal-finance-blogs-content-curation/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_case_study_pfb) or watch the video below.
 
 [youtube https://www.youtube.com/watch?v=6kADte55kcY]
 
-Ronald Heijnes has created a multilingual community within the WordPress space by aggregating the latest WordPress news from various sources in multiple languages. [Read the full case study](https://www.wprssaggregator.com/case-study-worldofwp-multilingual-news-aggregator/) or watch the video below.
+Ronald Heijnes has created a multilingual community within the WordPress space by aggregating the latest WordPress news from various sources in multiple languages. [Read the full case study](https://www.wprssaggregator.com/case-study-worldofwp-multilingual-news-aggregator/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_case_study_wow) or watch the video below.
 
 [youtube https://www.youtube.com/watch?v=wGHNrSrz8BU]
 
@@ -57,24 +57,24 @@ Ronald Heijnes has created a multilingual community within the WordPress space b
 * [Crypto Headlines](https://cryptoheadlines.com/youtube-videos/)' videos section shares Youtube videos from popular Youtubers in the Crypto space to keep readers informed.
 * [Euro Finance Blogs](https://eurofinanceblogs.com/) curates content on investment, personal finance, and early retirement, similar to Erik's story above.
 
-Browse through our [**Showcase**](https://www.wprssaggregator.com/showcase/) to see how WP RSS Aggregator is being put to great use on a large variety of WordPress sites, from CrossFit to celebrity news, and gaming to government updates.
+Browse through our [**Showcase**](https://www.wprssaggregator.com/showcase/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_showcase) to see how WP RSS Aggregator is being put to great use on a large variety of WordPress sites, from CrossFit to celebrity news, and gaming to government updates.
 
 == SEO benefits and other perks ==
 
-By using WP RSS Aggregator you can increase your WordPress site's credibility and improve your SEO by importing full or partial posts, videos, and more with our [premium add-ons](https://www.wprssaggregator.com/pricing/).
+By using WP RSS Aggregator you can increase your WordPress site's credibility and improve your SEO by importing full or partial posts, videos, and more with our [premium add-ons](https://www.wprssaggregator.com/pricing/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_seo_benefits).
 
 * Become an instant source of quality content.
 * Generate lots of new backlinks to your site.
 * Enhance your online presence and gain more trust.
 * And therefore, boost your SEO!
 
-Find out more... [**Content curation and SEO: What you need to know**](https://www.wprssaggregator.com/is-content-curation-good-for-seo/)
+Find out more... [**Content curation and SEO: What you need to know**](https://www.wprssaggregator.com/is-content-curation-good-for-seo/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_seo_benefits)
 
 *A word of advice: Don't steal other people's work; give credit where it's due. WP RSS Aggregator makes it super easy to automatically link to the original source every single time.*
 
 == Premium features ==
 
-WP RSS Aggregator can be extended through its powerful [premium add-ons](https://www.wprssaggregator.com/extensions/) and [discounted plans](https://www.wprssaggregator.com/pricing/).
+WP RSS Aggregator can be extended through its powerful [premium add-ons](https://www.wprssaggregator.com/extensions/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_premium_features) and [discounted plans](https://www.wprssaggregator.com/pricing/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_seo_benefits).
 
 * **[Feed to Post](https://www.wprssaggregator.com/extension/feed-to-post/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_f2p_link&utm_content=f2p_link)** is the most powerful add-on available, enabling you to import feeds into WordPress Posts or any other custom post type. It includes options such as automatically assigning a post type, the post status, categories, tags, images, authors, and more.
 * **[Full Text RSS Feeds](https://www.wprssaggregator.com/extension/full-text-rss-feeds/?utm_source=wordpress-dot-org&utm_medium=readme&utm_campaign=readme_ftr_link&utm_content=ftr_link)** takes Feed to Post to the next level by connecting it to our premium full text service. This helps bring in content from sources that don't provide it in their RSS feeds. It's especially useful when missing certain important images or other content.
@@ -252,6 +252,22 @@ Our complete Knowledge Base with FAQs can be found [here](https://kb.wprssaggreg
 
 
 == Changelog ==
+
+= 4.17.6 (2020-07-29) =
+**Added**
+- A link in the New/Edit Feed Source page on how to find an RSS feed.
+
+**Changed**
+- The "Force feed" option turns off SSL verification.
+- Improved wording on the Help page.
+- Dates in templates can now be translated.
+- The link to the article on how to find an RSS feed now links to an article from the plugin's knowledge base.
+- The "Unique Titles" feed option can now be set to default to the global setting.
+
+**Fixed**
+- Rewrite rules would always get flushed when plugins tamper with them, such as Polylang Pro.
+- The "Delete All Imported Items" reset option was deleting all posts on the site.
+- Image options would not show up when using Feed to Post to import Feed Items.
 
 = 4.17.5 (2020-04-22) =
 **Changed**

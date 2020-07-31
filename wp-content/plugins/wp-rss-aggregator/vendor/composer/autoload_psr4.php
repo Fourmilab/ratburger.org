@@ -8,7 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'Twig\\Extensions\\' => array($vendorDir . '/twig/extensions/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
+    'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'RebelCode\\Wpra\\Core\\' => array($baseDir . '/src'),
     'RebelCode\\Entities\\' => array($baseDir . '/lib/Entities'),
     'RebelCode\\Composer\\' => array($vendorDir . '/rebelcode/composer-cleanup-plugin/src'),
