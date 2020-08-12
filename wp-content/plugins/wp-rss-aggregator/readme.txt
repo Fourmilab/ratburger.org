@@ -3,7 +3,7 @@ Contributors: RebelCode, jeangalea, markzahra, Mekku
 Plugin URI: https://www.wprssaggregator.com
 Tags: RSS import, RSS aggregator, feed import, content curation, feed to post, news aggregator, autoblog, rss to post, content syndication, feeds, rss feeds, rss importer, feed importer, post importer, news importer
 Requires at least: 4.0 or higher
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.4
 Stable tag: 4.17.6
 License: GPLv3
