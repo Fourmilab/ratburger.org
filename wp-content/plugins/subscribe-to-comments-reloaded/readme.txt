@@ -7,7 +7,7 @@ Requires at least: 4.0
 Requires PHP: 5.6
 Requires MySQL: 5.6
 Tested up to: 5.4
-Stable tag: 200629
+Stable tag: 200813
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -99,6 +99,9 @@ Just go to the Options Panel and click the generate button. By generating a new 
 7. Manage the subscriptions on the Frontend Side.
 
 == Changelog ==
+= v200813 =
+* **Fix** Error when permanently deleting a post/page/... (related to WP 5.5 change in the "delete_post" hook coming with a 2nd parameter)
+
 = v200629 =
 * **New** Option to show the subscription checkbox/select only for logged in users (option called "Enable only for logged in users" and located in WP admin > StCR > Options)
 * **New** Added [comment_date] and [comment_time] shortcodes which can be used in the "notification message".
