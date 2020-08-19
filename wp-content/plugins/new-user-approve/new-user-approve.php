@@ -5,7 +5,7 @@
  Plugin URI: http://newuserapprove.com/
  Description: Allow administrators to approve users once they register. Only approved users will be allowed to access the site. For support, please go to the <a href="http://wordpress.org/support/plugin/new-user-approve">support forums</a> on wordpress.org.
  Author: NewUserApprove
- Version: 1.8
+ Version: 1.8.1
  Author URI: https://newuserapprove.com/
  Text Domain: new-user-approve
 */
@@ -125,6 +125,8 @@ class pw_new_user_approve
             3
         );
         add_filter( 'shake_error_codes', array( $this, 'failure_shake' ) );
+        add_filter( 'woocommerce_registration_auth_new_customer', array( $this, 'disable_woo_auto_login' ) );
+        
     }
     
     public function get_plugin_url()
@@ -851,6 +853,16 @@ class pw_new_user_approve
                 add_user_meta( $user->ID, 'pw_new_user_approve_has_signed_in', time() );
             }
         }
+    }
+
+    /**
+     * Disable auto login for WooCommerce
+     *
+     * @return boolean
+     */
+    public function disable_woo_auto_login( $new_customer )
+    {
+        return false;
     }
 
 }

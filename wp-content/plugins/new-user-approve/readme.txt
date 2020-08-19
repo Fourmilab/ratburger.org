@@ -1,10 +1,10 @@
 === New User Approve ===
 Contributors: wpexpertsio
 Donate link: https://newuserapprove.com
-Tags: users, registration, sign up, user management, login
-Requires at least: 3.5.1
-Tested up to: 5.4
-Stable tag: 1.8
+Tags: users, registration, sign up, user management, login, user approval
+Requires at least: 4.0
+Tested up to: 5.5
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,6 +43,10 @@ Each user that exists before New User Approve has been activated will be treated
 **[Follow New User Approve on Github](https://github.com/picklewagon/new-user-approve)**
 
 Further support at [newuserapprove.com](http://newuserapprove.com/).
+
+**Compatible with**
+✔️ [WooCoommerce](https://woocommerce.com/)
+✔️ [Memberpress](https://memberpress.com/)
 
 **Customize**
 
@@ -88,6 +92,11 @@ We are aware of a few issues with multisite
 5. Custom messages on the login screen.
 
 == Changelog ==
+
+= 1.8.1 =
+* Tested upto WordPress version 5.5
+* Tested for compatibility with [Memberpress](https://memberpress.com/)
+* Added: Compatibility for [WooCoommerce](https://woocommerce.com/)
 
 = 1.8 =
 * Tested with WordPress 5.4
