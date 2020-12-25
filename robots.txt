@@ -1,3 +1,8 @@
+
+# Disallow everybody
+User-agent: *
+Disallow: /
+
 # Twitterbot blasts in dozens of requests in seconds,
 # exhausting the PHP-fpm worker process pool.
 User-agent: Twitterbot
@@ -65,5 +70,5 @@ User-agent: TurnitinBot
 Disallow: /
 
 # Allow everybody else
-User-agent: *
-Allow: /
+#User-agent: *
+#Allow: /
